@@ -33,6 +33,7 @@ var combo_rank := 0
 var attack_elapsed := 0.0
 var gather_target_global := Vector2.ZERO
 var gather_sources: Array[Vector2] = []
+var gathered_enemies: Array[TrainingEnemy] = []
 var combo_wait := 0.0
 var attack_lock := 0.0
 var queued_attack := false
@@ -128,6 +129,7 @@ func _start_dash(movement: Vector2) -> void:
 	queued_attack = false
 	hit_targets.clear()
 	gather_sources.clear()
+	gathered_enemies.clear()
 	_play_sound("res://game/audio/dash.wav", attack_audio)
 
 
@@ -142,6 +144,7 @@ func set_combo_rank(rank: int) -> void:
 	queued_attack = false
 	hit_targets.clear()
 	gather_sources.clear()
+	gathered_enemies.clear()
 	queue_redraw()
 
 
@@ -173,11 +176,13 @@ func _start_attack() -> void:
 	queued_attack = false
 	hit_targets.clear()
 	gather_sources.clear()
+	gathered_enemies.clear()
 	impact_played_this_attack = false
 	_play_sound("res://game/audio/attack_%d.wav" % attack_step, attack_audio)
 
 
 func _hit_enemies(attack: Dictionary) -> void:
+	var new_gathered := false
 	for enemy in get_tree().get_nodes_in_group("training_enemies"):
 		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
 			continue
@@ -197,13 +202,34 @@ func _hit_enemies(attack: Dictionary) -> void:
 			gather_sources.append(enemy.global_position)
 		enemy.take_hit(ATTACK_DAMAGE * attack.multiplier, push_direction, finisher)
 		if attack_step == 3 and not enemy.is_queued_for_deletion():
-			enemy.gather_to(gather_target_global)
+			gathered_enemies.append(enemy)
+			new_gathered = true
 		var effect_direction: Vector2 = (gather_target_global - enemy.global_position).normalized() if attack_step == 3 else push_direction
 		attack_landed.emit(enemy.global_position, effect_direction, attack_step, finisher)
 		if not impact_played_this_attack:
 			impact_played_this_attack = true
 			impact_audio.pitch_scale = 1.22 if attack_step == 3 else 0.82 if finisher else 1.13 if attack_step == 1 else 0.98
 			_play_sound("res://game/audio/hit.wav", impact_audio)
+	if new_gathered:
+		_arrange_gathered_enemies()
+
+
+func _arrange_gathered_enemies() -> void:
+	var living: Array[TrainingEnemy] = []
+	for enemy in gathered_enemies:
+		if is_instance_valid(enemy) and not enemy.is_queued_for_deletion():
+			living.append(enemy)
+	living.sort_custom(func(a: TrainingEnemy, b: TrainingEnemy) -> bool:
+		return (a.global_position - gather_target_global).angle() < (b.global_position - gather_target_global).angle()
+	)
+	gathered_enemies = living
+	var count := living.size()
+	if count == 0:
+		return
+	var ring_radius := 0.0 if count == 1 else maxf(20.0, 20.0 / sin(PI / float(count)))
+	for index in range(count):
+		var angle := attack_direction.angle() - PI * 0.5 + float(index) * TAU / float(count)
+		living[index].gather_to(gather_target_global + Vector2.from_angle(angle) * ring_radius)
 
 
 func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void:

@@ -105,14 +105,23 @@ func _run() -> void:
 	player.global_position += Vector2(-20, 0)
 	await _frames(20)
 	_check(player.gather_target_global == fixed_gather_target, "gather target stays fixed while moving")
-	_check(left_durable.global_position.distance_to(fixed_gather_target) < 2.0, "first enemy gathers at one point")
-	_check(right_durable.global_position.distance_to(fixed_gather_target) < 2.0, "second enemy gathers at same point")
+	_check(left_durable.global_position.distance_to(fixed_gather_target) < 23.0, "first enemy stays in small gathered cluster")
+	_check(right_durable.global_position.distance_to(fixed_gather_target) < 23.0, "second enemy stays in small gathered cluster")
+	_check(left_durable.global_position.distance_to(right_durable.global_position) >= 37.0, "gathered enemies have distinct silhouettes")
 	_check(left_durable.health == 75.0 and right_durable.health == 75.0, "gather deals light damage once")
 	_check(outside.health == 22.0, "gather excludes enemies outside forward fan")
 	player._start_attack()
 	_check(player.attack_step == 4, "fourth hit follows gather")
 	await _frames(16)
 	_check(left_durable.health == 60.0 and right_durable.health == 60.0, "wide fourth hit lands on gathered enemies")
+	left_durable.global_position = Vector2(1500, 680)
+	right_durable.global_position = Vector2(1500, 720)
+	left_durable.knockback = Vector2.ZERO
+	right_durable.knockback = Vector2.ZERO
+	left_durable.stagger_time = 0.0
+	right_durable.stagger_time = 0.0
+	await _frames(190)
+	_check(left_durable.global_position.distance_to(right_durable.global_position) >= 33.0, "ordinary chasing enemies do not overlap")
 	_send_key(KEY_K, true)
 	_send_key(KEY_K, false)
 	await _frames(1)
@@ -139,7 +148,7 @@ func _run() -> void:
 		printerr("1A verification failed")
 		quit(1)
 	else:
-		print("1A verification passed: movement, dash, 0.70s hit protection, 2/3/4-hit combo, fast fan gather, wide fourth hit, pause, focus loss")
+		print("1A verification passed: movement, dash, 0.70s hit protection, 2/3/4-hit combo, separated gather, separated chase, wide fourth hit, pause, focus loss")
 		quit(0)
 
 
