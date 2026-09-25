@@ -1,7 +1,7 @@
 extends "res://game/main.gd"
 
 const ViewPropScript = preload("res://game/view_prop.gd")
-const MODE_NAMES := ["1  HIGH TOPDOWN", "2  MEDIUM OBLIQUE", "3  LOW OBLIQUE"]
+const MODE_NAMES := ["1  HIGH TOPDOWN", "2  MEDIUM", "3  LOW"]
 const MODE_ZOOMS := [1.05, 1.25, 1.43]
 const MODE_PITCHES := [0.0, 0.55, 1.0]
 const MODE_LOOKAHEAD := [0.0, 45.0, 70.0]
@@ -12,6 +12,7 @@ const PROP_POINTS := [
 ]
 
 var view_mode := 2
+var diamond_ground := true
 var view_props: Array = []
 var view_title: Label
 var view_detail: Label
@@ -41,6 +42,10 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_1 or event.keycode == KEY_2 or event.keycode == KEY_3:
 			set_view_mode(event.keycode - KEY_1 + 1)
 			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_G:
+			diamond_ground = not diamond_ground
+			set_view_mode(view_mode)
+			get_viewport().set_input_as_handled()
 
 
 func _process(delta: float) -> void:
@@ -65,13 +70,27 @@ func set_view_mode(mode: int) -> void:
 		enemy.visual_pitch = MODE_PITCHES[index]
 		enemy.queue_redraw()
 	for prop in view_props:
-		prop.configure(prop.kind, MODE_PITCHES[index])
-	if view_title != null:
-		view_title.text = MODE_NAMES[index]
-		view_detail.text = "ZOOM %.2f  |  FOOTPRINT %d px  |  LOOK AHEAD %d  |  Y SORT + FADE" % [
-			MODE_ZOOMS[index], int(36.0 * MODE_ZOOMS[index]), int(MODE_LOOKAHEAD[index])
-		]
+		prop.configure(prop.kind, MODE_PITCHES[index], ground_is_diamond())
+	_update_view_labels()
 	queue_redraw()
+
+
+func ground_is_diamond() -> bool:
+	return view_mode > 1 and diamond_ground
+
+
+func diamond_grid_point(u: int, v: int) -> Vector2:
+	return Vector2(1200.0 + float(u - v) * 80.0, 700.0 + float(u + v) * 40.0)
+
+
+func _update_view_labels() -> void:
+	if view_title == null:
+		return
+	var index := view_mode - 1
+	view_title.text = MODE_NAMES[index] + ("  2:1 DIAMOND" if ground_is_diamond() else "  SQUARE GRID")
+	view_detail.text = "ZOOM %.2f  |  FOOTPRINT %d px  |  LEAD %d  |  G GRID TOGGLE" % [
+		MODE_ZOOMS[index], int(36.0 * MODE_ZOOMS[index]), int(MODE_LOOKAHEAD[index])
+	]
 
 
 func _build_view_ui() -> void:
@@ -98,10 +117,18 @@ func _build_view_ui() -> void:
 		if child is CanvasLayer and child != canvas:
 			for control in child.get_children():
 				if control is Label and control.text.begins_with("WASD Move"):
-					control.text = "1/2/3 View  |  WASD Move  |  J / Click Attack  |  Space Dash  |  K Combo  |  Esc Pause  |  R Reset"
+					control.text = "1/2/3 View  |  G Grid  |  WASD Move  |  J / Click Attack  |  Space Dash  |  K Combo  |  Esc Pause  |  R Reset"
 
 
 func _draw() -> void:
+	if ground_is_diamond():
+		_draw_diamond_ground()
+	else:
+		_draw_square_ground()
+	draw_rect(Rect2(Vector2(16, 16), ARENA_SIZE - Vector2(32, 32)), Color("3f706e"), false, 14.0)
+
+
+func _draw_square_ground() -> void:
 	var pitch: float = MODE_PITCHES[view_mode - 1]
 	draw_rect(Rect2(Vector2.ZERO, ARENA_SIZE), Color("a5bea9"))
 	draw_rect(Rect2(0, 60, 2400, 170), Color("4f8f93"))
@@ -123,4 +150,36 @@ func _draw() -> void:
 	for x in range(100, 2350, 280):
 		draw_line(Vector2(x, 120), Vector2(x + 110, 120), Color("a1c7b5"), 3.0)
 		draw_line(Vector2(x + 80, 1250), Vector2(x + 190, 1250), Color("a1c7b5"), 3.0)
-	draw_rect(Rect2(Vector2(16, 16), ARENA_SIZE - Vector2(32, 32)), Color("3f706e"), false, 14.0)
+
+
+func _draw_diamond_ground() -> void:
+	const TILE_HALF_WIDTH := 80.0
+	const TILE_HALF_HEIGHT := 40.0
+	draw_rect(Rect2(Vector2.ZERO, ARENA_SIZE), Color("6a9b97"))
+	for u in range(-24, 25):
+		for v in range(-24, 25):
+			var center := diamond_grid_point(u, v)
+			if center.x < -TILE_HALF_WIDTH or center.x > ARENA_SIZE.x + TILE_HALF_WIDTH:
+				continue
+			if center.y < -TILE_HALF_HEIGHT or center.y > ARENA_SIZE.y + TILE_HALF_HEIGHT:
+				continue
+			var water := center.y < 235.0 or center.y > 1180.0
+			var margin := center.x < 250.0 or center.x > 2150.0
+			var color := Color("599492") if water else Color("abc3ad") if margin else Color("cbd0ae")
+			if (u + v) % 3 == 0:
+				color = color.lightened(0.055)
+			var points := PackedVector2Array([
+				center + Vector2(0, -TILE_HALF_HEIGHT),
+				center + Vector2(TILE_HALF_WIDTH, 0),
+				center + Vector2(0, TILE_HALF_HEIGHT),
+				center + Vector2(-TILE_HALF_WIDTH, 0)
+			])
+			draw_colored_polygon(points, color)
+			draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[3], points[0]]), Color(0.28, 0.43, 0.41, 0.20), 1.5)
+	for center in [Vector2(700, 700), Vector2(1200, 700), Vector2(1700, 700)]:
+		var plaza := PackedVector2Array([
+			center + Vector2(0, -92), center + Vector2(180, 0),
+			center + Vector2(0, 92), center + Vector2(-180, 0)
+		])
+		draw_colored_polygon(plaza, Color("decfa8"))
+		draw_polyline(PackedVector2Array([plaza[0], plaza[1], plaza[2], plaza[3], plaza[0]]), Color("688e85"), 4.0)
