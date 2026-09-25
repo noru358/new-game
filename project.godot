@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Loop Conquest - 1A Feel Sandbox"
-run/main_scene="res://game/main.tscn"
+config/name="Loop Conquest - 1B View Prototype"
+run/main_scene="res://game/view_prototype.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [display]
