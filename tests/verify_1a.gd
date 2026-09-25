@@ -41,6 +41,9 @@ func _run() -> void:
 	player.receive_hit(10.0)
 	player.receive_hit(10.0)
 	_check(player.health == 90.0, "hurt invulnerability")
+	_check(player.hurt_recoil.length() > 0.0, "hurt recoil")
+	_check(sandbox.hurt_feedback_time > 0.0, "visible hurt feedback")
+	_check(Engine.time_scale < 1.0, "brief hitstop on hurt")
 
 	player.global_position = Vector2(1200, 700)
 	player.facing = Vector2.RIGHT
@@ -70,6 +73,11 @@ func _run() -> void:
 	sandbox.get_window().focus_exited.emit()
 	_check(paused, "focus loss pauses")
 	sandbox._resume()
+	player.attack_audio.stop()
+	player.impact_audio.stop()
+	sandbox.queue_free()
+	for i in 10:
+		await process_frame
 
 	if failed:
 		printerr("1A verification failed")

@@ -12,6 +12,8 @@ Godot 4.6 project for testing movement, manual arcane melee, a three-hit combo, 
 
 The attack points in the movement direction, not at the cursor. Moving during an attack is allowed. The third hit is wider and stronger. Leaving the game window pauses it; returning does not resume automatically.
 
+The current 1A motion is a temporary feel test: the character sweeps magic with alternating hand gestures, then releases a wider third hit. Hits use brief impact slowdown, local sparks, short enemy stagger, and restrained camera motion. Player damage adds a short recoil, a health bar change, and a red edge cue. Final character animation and art remain for the later art stage.
+
 ## Run from source
 
 Open `project.godot` in Godot **4.6 stable**, then press F6/F5. Or run:

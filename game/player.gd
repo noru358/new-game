@@ -3,6 +3,8 @@ extends CharacterBody2D
 
 signal defeated
 signal health_changed
+signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int)
+signal hurt_received(hit_position: Vector2, direction: Vector2)
 
 const MAX_HEALTH := 100.0
 const MOVE_SPEED := 300.0
@@ -37,6 +39,9 @@ var dash_cooldown := 0.0
 var dash_direction := Vector2.RIGHT
 var hurt_immunity := 0.0
 var hit_flash := 0.0
+var hurt_stun_time := 0.0
+var hurt_recoil := Vector2.ZERO
+var impact_played_this_attack := false
 var hit_targets: Dictionary = {}
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -48,8 +53,13 @@ func _ready() -> void:
 	add_child(impact_audio)
 	attack_audio.volume_db = -7.0
 	impact_audio.volume_db = -8.0
-	attack_audio.max_polyphony = 4
-	impact_audio.max_polyphony = 4
+	attack_audio.max_polyphony = 1
+	impact_audio.max_polyphony = 1
+
+
+func _exit_tree() -> void:
+	attack_audio.stop()
+	impact_audio.stop()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -75,6 +85,8 @@ func _physics_process(delta: float) -> void:
 	attack_lock = maxf(0.0, attack_lock - delta)
 	hurt_immunity = maxf(0.0, hurt_immunity - delta)
 	hit_flash = maxf(0.0, hit_flash - delta)
+	hurt_stun_time = maxf(0.0, hurt_stun_time - delta)
+	hurt_recoil = hurt_recoil.move_toward(Vector2.ZERO, 2100.0 * delta)
 
 	if dash_requested and dash_cooldown <= 0.0:
 		_start_dash(movement)
@@ -86,7 +98,7 @@ func _physics_process(delta: float) -> void:
 		dash_time = maxf(0.0, dash_time - delta)
 		velocity = dash_direction * (DASH_DISTANCE / DASH_DURATION) * (dash_motion_time / delta)
 	else:
-		velocity = movement * MOVE_SPEED
+		velocity = movement * MOVE_SPEED * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
 	move_and_slide()
 	global_position = Vector2(
@@ -138,6 +150,7 @@ func _start_attack() -> void:
 	attack_direction = facing
 	queued_attack = false
 	hit_targets.clear()
+	impact_played_this_attack = false
 	_play_sound("res://game/audio/attack_%d.wav" % attack_step, attack_audio)
 
 
@@ -156,18 +169,30 @@ func _hit_enemies(attack: Dictionary) -> void:
 			continue
 		hit_targets[id] = true
 		enemy.take_hit(ATTACK_DAMAGE * attack.multiplier, offset.normalized(), attack_step == 3)
-		_play_sound("res://game/audio/hit.wav", impact_audio)
+		attack_landed.emit(enemy.global_position, offset.normalized(), attack_step)
+		if not impact_played_this_attack:
+			impact_played_this_attack = true
+			impact_audio.pitch_scale = 1.13 if attack_step == 1 else 0.98 if attack_step == 2 else 0.78
+			_play_sound("res://game/audio/hit.wav", impact_audio)
 
 
-func receive_hit(damage: float) -> void:
+func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void:
 	if health <= 0.0 or hurt_immunity > 0.0:
 		return
 	if dash_time > 0.0 and dash_elapsed <= DASH_INVULNERABILITY:
 		return
 	health = maxf(0.0, health - damage)
 	hurt_immunity = HURT_INVULNERABILITY
-	hit_flash = 0.16
+	hit_flash = 0.25
+	hurt_stun_time = 0.11
+	var push := global_position - source_position
+	if push.length_squared() < 0.01:
+		push = -facing
+	hurt_recoil = push.normalized() * 225.0
+	dash_time = 0.0
 	health_changed.emit()
+	hurt_received.emit(global_position, push.normalized())
+	impact_audio.pitch_scale = 1.0
 	_play_sound("res://game/audio/hurt.wav", impact_audio)
 	if health <= 0.0:
 		defeated.emit()
@@ -179,6 +204,9 @@ func require_attack_release() -> void:
 
 
 func _play_sound(path: String, player: AudioStreamPlayer) -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	player.stop()
 	player.stream = load(path)
 	player.play()
 
@@ -198,30 +226,76 @@ func _draw() -> void:
 		facing.rotated(-2.4) * 12.0
 	]), Color("34c8c2"))
 	draw_circle(facing * 10.0 + Vector2(0, -5), 3.0, Color("183944"))
+	if attack_step > 0:
+		_draw_hand_gesture()
+	if hit_flash > 0.0:
+		draw_arc(Vector2.ZERO, 22.0, 0.0, TAU, 30, Color(1.0, 0.32, 0.30, hit_flash * 2.7), 4.0)
 	if hurt_immunity > 0.0:
 		draw_arc(Vector2.ZERO, 23.0, 0.0, TAU, 32, Color(0.95, 0.86, 0.54, 0.55), 2.0)
 
 
 func _draw_attack() -> void:
 	var attack: Dictionary = ATTACKS[attack_step - 1]
-	var fade: float = 1.0 - attack_elapsed / (attack.windup + attack.active + attack.recovery)
-	var alpha: float = clampf(fade, 0.0, 1.0) * 0.42
+	var windup: float = attack.windup
+	var active: float = attack.active
+	var recovery: float = attack.recovery
+	var radius: float = attack.radius
+	var fade := 1.0 if attack_elapsed <= windup + active else 1.0 - (attack_elapsed - windup - active) / recovery
+	fade = clampf(fade, 0.0, 1.0)
 	var center_angle := attack_direction.angle()
 	var half_angle := deg_to_rad(attack.angle * 0.5)
 	var start_angle := center_angle - half_angle
 	var end_angle := center_angle + half_angle
 	var color := Color("4edbde") if attack_step == 1 else Color("b392fa") if attack_step == 2 else Color("ffdc82")
+	if attack_elapsed < windup:
+		var charge := attack_elapsed / windup
+		var charge_color := color
+		charge_color.a = 0.5 + charge * 0.35
+		draw_arc(attack_direction * 23.0, 10.0 + 5.0 * charge, center_angle - 1.0, center_angle + 1.0, 14, charge_color, 3.0)
+		return
+	var progress := clampf((attack_elapsed - windup) / active, 0.0, 1.0)
 	var fill := color
-	fill.a = alpha
+	fill.a = 0.10 * fade
 	var vertices := PackedVector2Array([Vector2.ZERO])
 	for i in range(25):
 		var angle := lerpf(start_angle, end_angle, float(i) / 24.0)
-		vertices.append(Vector2.from_angle(angle) * attack.radius)
+		vertices.append(Vector2.from_angle(angle) * radius)
 	draw_colored_polygon(vertices, fill)
 	var outline := color
-	outline.a = minf(1.0, alpha * 2.0)
-	draw_arc(Vector2.ZERO, attack.radius, start_angle, end_angle, 32, outline, 5.0 if attack_step == 3 else 3.0)
-	if attack_step == 2:
-		draw_arc(Vector2.ZERO, attack.radius * 0.7, start_angle, end_angle, 24, outline, 2.0)
-	elif attack_step == 3:
-		draw_arc(Vector2.ZERO, attack.radius * 0.55, start_angle, end_angle, 24, outline, 3.0)
+	outline.a = 0.9 * fade
+	if attack_step == 3:
+		var wave_radius := lerpf(radius * 0.5, radius, progress)
+		draw_arc(Vector2.ZERO, wave_radius, start_angle, end_angle, 32, outline, 8.0)
+		draw_arc(Vector2.ZERO, wave_radius * 0.77, start_angle, end_angle, 28, outline * Color(1, 1, 1, 0.48), 3.0)
+	else:
+		var sweep := lerpf(start_angle, end_angle, progress) if attack_step == 1 else lerpf(end_angle, start_angle, progress)
+		var tail := sweep - 0.48 if attack_step == 1 else sweep + 0.48
+		var arc_start := minf(sweep, tail)
+		var arc_end := maxf(sweep, tail)
+		var ribbon := PackedVector2Array()
+		for i in range(13):
+			ribbon.append(Vector2.from_angle(lerpf(arc_start, arc_end, float(i) / 12.0)) * radius)
+		for i in range(12, -1, -1):
+			ribbon.append(Vector2.from_angle(lerpf(arc_start, arc_end, float(i) / 12.0)) * (radius - 22.0))
+		var ribbon_color := color
+		ribbon_color.a = 0.48 * fade
+		draw_colored_polygon(ribbon, ribbon_color)
+		draw_arc(Vector2.ZERO, radius, arc_start, arc_end, 16, outline, 6.0)
+
+
+func _draw_hand_gesture() -> void:
+	var attack: Dictionary = ATTACKS[attack_step - 1]
+	var progress: float = clampf((attack_elapsed - attack.windup) / attack.active, 0.0, 1.0)
+	var perpendicular := attack_direction.orthogonal()
+	if attack_step == 3:
+		for side in [-1.0, 1.0]:
+			var shoulder: Vector2 = perpendicular * side * 8.0
+			var hand: Vector2 = attack_direction * (17.0 + progress * 14.0) + perpendicular * side * 7.0
+			draw_line(shoulder, hand, Color("f5db9a"), 5.0)
+			draw_circle(hand, 5.0, Color("fff1c7"))
+	else:
+		var sweep_side := lerpf(-1.0, 1.0, progress) if attack_step == 1 else lerpf(1.0, -1.0, progress)
+		var shoulder := perpendicular * (-sweep_side) * 8.0
+		var hand := attack_direction * 25.0 + perpendicular * sweep_side * 14.0
+		draw_line(shoulder, hand, Color("f5db9a"), 5.0)
+		draw_circle(hand, 5.0, Color("e9ffff") if attack_step == 1 else Color("f1e8ff"))

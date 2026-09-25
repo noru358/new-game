@@ -9,8 +9,14 @@ var pause_title: Label
 var pause_message: Label
 var pause_button: Button
 var status_label: Label
+var health_fill: ColorRect
+var hurt_edges: Array[ColorRect] = []
+var hurt_feedback_time := 0.0
+var camera_shake := 0.0
+var hitstop_until_usec := 0
 
 @onready var player: SandboxPlayer = $Player
+@onready var camera: Camera2D = $Player/Camera2D
 
 
 func _ready() -> void:
@@ -22,18 +28,38 @@ func _ready() -> void:
 		enemy.target = player
 		enemy.defeated.connect(_on_enemy_defeated)
 	player.defeated.connect(_on_player_defeated)
+	player.attack_landed.connect(_on_attack_landed)
+	player.hurt_received.connect(_on_player_hurt)
 	get_window().focus_exited.connect(_on_window_focus_exited)
 	_build_ui()
 	queue_redraw()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if hitstop_until_usec > 0 and Time.get_ticks_usec() >= hitstop_until_usec:
+		Engine.time_scale = 1.0
+		hitstop_until_usec = 0
 	status_label.text = "HP %d / 100    FRAGMENTS %d / 4    DASH %s" % [
 		int(player.health), remaining_enemies,
 		"READY" if player.dash_cooldown <= 0.0 else "%.1fs" % player.dash_cooldown
 	]
 	if remaining_enemies == 0:
 		status_label.text += "    ARENA CLEAR - R TO RESET"
+	health_fill.size.x = 300.0 * player.health / player.MAX_HEALTH
+	hurt_feedback_time = maxf(0.0, hurt_feedback_time - delta)
+	var edge_color := Color(0.82, 0.13, 0.13, hurt_feedback_time * 1.6)
+	for edge in hurt_edges:
+		edge.color = edge_color
+	camera_shake = maxf(0.0, camera_shake - 26.0 * delta)
+	if get_tree().paused:
+		camera.offset = Vector2.ZERO
+	else:
+		var pulse := float(Time.get_ticks_msec()) * 0.11
+		camera.offset = Vector2(sin(pulse), cos(pulse * 1.3)) * camera_shake
+
+
+func _exit_tree() -> void:
+	Engine.time_scale = 1.0
 
 
 func _input(event: InputEvent) -> void:
@@ -93,6 +119,31 @@ func _on_player_defeated() -> void:
 	pause_button.text = "Restart"
 
 
+func _on_attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int) -> void:
+	_spawn_impact(hit_position, direction, combo_step, false)
+	camera_shake = maxf(camera_shake, 3.3 if combo_step == 3 else 1.7)
+	_request_hitstop(0.045 if combo_step == 3 else 0.028)
+
+
+func _on_player_hurt(hit_position: Vector2, direction: Vector2) -> void:
+	_spawn_impact(hit_position, direction, 1, true)
+	hurt_feedback_time = 0.22
+	camera_shake = maxf(camera_shake, 4.5)
+	_request_hitstop(0.05)
+
+
+func _spawn_impact(hit_position: Vector2, direction: Vector2, combo_step: int, hurt: bool) -> void:
+	var effect := ImpactBurst.new()
+	effect.setup(combo_step, hurt, direction)
+	add_child(effect)
+	effect.global_position = hit_position
+
+
+func _request_hitstop(duration: float) -> void:
+	hitstop_until_usec = maxi(hitstop_until_usec, Time.get_ticks_usec() + int(duration * 1000000.0))
+	Engine.time_scale = 0.16
+
+
 func _on_pause_button_pressed() -> void:
 	if game_over:
 		_restart()
@@ -112,6 +163,18 @@ func _build_ui() -> void:
 	status_label.add_theme_constant_override("shadow_offset_x", 2)
 	status_label.add_theme_constant_override("shadow_offset_y", 2)
 	canvas.add_child(status_label)
+	var health_back := ColorRect.new()
+	health_back.position = Vector2(20, 48)
+	health_back.size = Vector2(304, 16)
+	health_back.color = Color("294950")
+	health_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	canvas.add_child(health_back)
+	health_fill = ColorRect.new()
+	health_fill.position = Vector2(2, 2)
+	health_fill.size = Vector2(300, 12)
+	health_fill.color = Color("f4bc77")
+	health_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	health_back.add_child(health_fill)
 	var controls := Label.new()
 	controls.text = "WASD Move  |  J / Left Click Attack (hold)  |  Space Dash  |  Esc Pause  |  R Reset"
 	controls.position = Vector2(20, 672)
@@ -121,6 +184,17 @@ func _build_ui() -> void:
 	controls.add_theme_constant_override("shadow_offset_x", 2)
 	controls.add_theme_constant_override("shadow_offset_y", 2)
 	canvas.add_child(controls)
+	for bounds in [
+		Rect2(0, 0, 1280, 15), Rect2(0, 705, 1280, 15),
+		Rect2(0, 0, 15, 720), Rect2(1265, 0, 15, 720)
+	]:
+		var edge := ColorRect.new()
+		edge.position = bounds.position
+		edge.size = bounds.size
+		edge.color = Color(0.82, 0.13, 0.13, 0.0)
+		edge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		canvas.add_child(edge)
+		hurt_edges.append(edge)
 	pause_overlay = ColorRect.new()
 	pause_overlay.color = Color(0.02, 0.08, 0.11, 0.7)
 	pause_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

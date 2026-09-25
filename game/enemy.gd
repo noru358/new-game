@@ -12,6 +12,7 @@ var health := MAX_HEALTH
 var target: Node2D
 var knockback := Vector2.ZERO
 var hit_flash := 0.0
+var stagger_time := 0.0
 
 
 func _ready() -> void:
@@ -22,8 +23,9 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(target):
 		return
 	hit_flash = maxf(0.0, hit_flash - delta)
-	knockback = knockback.move_toward(Vector2.ZERO, 480.0 * delta)
-	var chase := global_position.direction_to(target.global_position) * MOVE_SPEED
+	stagger_time = maxf(0.0, stagger_time - delta)
+	knockback = knockback.move_toward(Vector2.ZERO, 900.0 * delta)
+	var chase := Vector2.ZERO if stagger_time > 0.0 else global_position.direction_to(target.global_position) * MOVE_SPEED
 	velocity = chase + knockback
 	move_and_slide()
 	global_position = Vector2(
@@ -31,14 +33,15 @@ func _physics_process(delta: float) -> void:
 		clampf(global_position.y, 24.0, 1376.0)
 	)
 	if global_position.distance_to(target.global_position) <= RADIUS + 18.0:
-		target.receive_hit(CONTACT_DAMAGE)
+		target.receive_hit(CONTACT_DAMAGE, global_position)
 	queue_redraw()
 
 
 func take_hit(damage: float, push_direction: Vector2, is_finisher: bool) -> void:
 	health -= damage
-	hit_flash = 0.13
-	knockback = push_direction * (270.0 if is_finisher else 125.0)
+	hit_flash = 0.19
+	stagger_time = 0.15 if is_finisher else 0.09
+	knockback = push_direction * (300.0 if is_finisher else 170.0)
 	if health <= 0.0:
 		defeated.emit()
 		queue_free()
