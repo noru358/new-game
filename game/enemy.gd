@@ -7,6 +7,7 @@ const MAX_HEALTH := 22.0
 const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
 const RADIUS := 17.0
+const GATHER_DURATION := 0.12
 
 @export var max_health := MAX_HEALTH
 
@@ -15,6 +16,10 @@ var target: Node2D
 var knockback := Vector2.ZERO
 var hit_flash := 0.0
 var stagger_time := 0.0
+var gather_origin := Vector2.ZERO
+var gather_target := Vector2.ZERO
+var gather_elapsed := 0.0
+var gathering := false
 
 
 func _ready() -> void:
@@ -27,10 +32,19 @@ func _physics_process(delta: float) -> void:
 		return
 	hit_flash = maxf(0.0, hit_flash - delta)
 	stagger_time = maxf(0.0, stagger_time - delta)
-	knockback = knockback.move_toward(Vector2.ZERO, 900.0 * delta)
-	var chase := Vector2.ZERO if stagger_time > 0.0 else global_position.direction_to(target.global_position) * MOVE_SPEED
-	velocity = chase + knockback
-	move_and_slide()
+	if gathering:
+		gather_elapsed = minf(GATHER_DURATION, gather_elapsed + delta)
+		var fraction := gather_elapsed / GATHER_DURATION
+		var eased := fraction * fraction * (3.0 - 2.0 * fraction)
+		global_position = gather_origin.lerp(gather_target, eased)
+		velocity = Vector2.ZERO
+		if gather_elapsed >= GATHER_DURATION:
+			gathering = false
+	else:
+		knockback = knockback.move_toward(Vector2.ZERO, 900.0 * delta)
+		var chase := Vector2.ZERO if stagger_time > 0.0 else global_position.direction_to(target.global_position) * MOVE_SPEED
+		velocity = chase + knockback
+		move_and_slide()
 	global_position = Vector2(
 		clampf(global_position.x, 24.0, 2376.0),
 		clampf(global_position.y, 24.0, 1376.0)
@@ -41,6 +55,7 @@ func _physics_process(delta: float) -> void:
 
 
 func take_hit(damage: float, push_direction: Vector2, is_finisher: bool) -> void:
+	gathering = false
 	health -= damage
 	hit_flash = 0.19
 	stagger_time = 0.15 if is_finisher else 0.09
@@ -50,6 +65,15 @@ func take_hit(damage: float, push_direction: Vector2, is_finisher: bool) -> void
 		queue_free()
 	else:
 		queue_redraw()
+
+
+func gather_to(point: Vector2) -> void:
+	gather_origin = global_position
+	gather_target = point
+	gather_elapsed = 0.0
+	gathering = true
+	knockback = Vector2.ZERO
+	stagger_time = maxf(stagger_time, 0.38)
 
 
 func _draw() -> void:

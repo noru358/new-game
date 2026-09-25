@@ -78,26 +78,41 @@ func _run() -> void:
 	_send_key(KEY_K, false)
 	await _frames(1)
 	_check(player.combo_limit() == 4, "training toggle previews fourth hit")
-	var durable: TrainingEnemy = sandbox.get_node("Enemies/FragmentE")
-	durable.global_position = player.global_position + Vector2(142, 0)
-	player.facing = Vector2.RIGHT
+	var seen_steps := {}
 	_send_key(KEY_J, true)
-	await _frames(120)
+	for i in 100:
+		await physics_frame
+		if player.attack_step > 0:
+			seen_steps[player.attack_step] = true
 	_send_key(KEY_J, false)
-	_check(durable.health <= 60.0, "fourth-hit overhead slam reaches fixed forward target")
+	_check(seen_steps.has(3) and seen_steps.has(4), "hold reaches third and fourth hits")
 	await _frames(30)
+	var left_durable: TrainingEnemy = sandbox.get_node("Enemies/FragmentE")
+	var right_durable: TrainingEnemy = sandbox.get_node("Enemies/FragmentF")
+	var outside: TrainingEnemy = sandbox.get_node("Enemies/FragmentD")
+	left_durable.process_mode = Node.PROCESS_MODE_INHERIT
+	right_durable.process_mode = Node.PROCESS_MODE_INHERIT
 	player.set_combo_rank(2)
 	player.global_position = Vector2(1200, 700)
 	player.facing = Vector2.RIGHT
-	player.next_combo_step = 4
-	durable.health = 80.0
-	durable.global_position = Vector2(1278, 700)
+	left_durable.global_position = Vector2(1300, 655)
+	right_durable.global_position = Vector2(1300, 745)
+	outside.global_position = Vector2(1200, 470)
+	player.next_combo_step = 3
 	player._start_attack()
-	var fixed_slam_target := player.slam_target_global
-	player.global_position = Vector2(1000, 700)
-	await _frames(25)
-	_check(player.slam_target_global == fixed_slam_target, "slam target stays fixed while moving")
-	_check(durable.health == 60.0, "fourth hit still lands after player moves")
+	var fixed_gather_target := player.gather_target_global
+	_check(player.ATTACKS[2].windup + player.ATTACKS[2].active + player.ATTACKS[2].recovery <= 0.30, "gather is as quick as earlier hits")
+	player.global_position += Vector2(-20, 0)
+	await _frames(20)
+	_check(player.gather_target_global == fixed_gather_target, "gather target stays fixed while moving")
+	_check(left_durable.global_position.distance_to(fixed_gather_target) < 2.0, "first enemy gathers at one point")
+	_check(right_durable.global_position.distance_to(fixed_gather_target) < 2.0, "second enemy gathers at same point")
+	_check(left_durable.health == 75.0 and right_durable.health == 75.0, "gather deals light damage once")
+	_check(outside.health == 22.0, "gather excludes enemies outside forward fan")
+	player._start_attack()
+	_check(player.attack_step == 4, "fourth hit follows gather")
+	await _frames(16)
+	_check(left_durable.health == 60.0 and right_durable.health == 60.0, "wide fourth hit lands on gathered enemies")
 	_send_key(KEY_K, true)
 	_send_key(KEY_K, false)
 	await _frames(1)
@@ -124,7 +139,7 @@ func _run() -> void:
 		printerr("1A verification failed")
 		quit(1)
 	else:
-		print("1A verification passed: movement, dash, 0.70s hit protection, 2/3/4-hit combo, hold, slam, pause, focus loss")
+		print("1A verification passed: movement, dash, 0.70s hit protection, 2/3/4-hit combo, fast fan gather, wide fourth hit, pause, focus loss")
 		quit(0)
 
 

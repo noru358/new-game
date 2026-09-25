@@ -11,11 +11,11 @@ Godot 4.6 project for testing movement, manual arcane melee, a two-hit base comb
 | Esc | Pause or manually resume |
 | R | Reset the sandbox |
 
-The attack points in the movement direction, not at the cursor. Moving during an attack is allowed. The third hit is wider and stronger. The fourth hit drops magic vertically onto a fixed point in front of the character. Leaving the game window pauses it; returning does not resume automatically.
+The attack points in the movement direction, not at the cursor. Moving during an attack is allowed. The third hit quickly gathers enemies in a forward fan to one nearby point. The fourth hit releases the former wide magic wave. The vertical slam has been removed. Leaving the game window pauses it; returning does not resume automatically.
 
-The current 1A motion is a temporary feel test: the character sweeps magic with alternating hand gestures, releases a wider third hit, then brings both hands down for the fourth strike. Hits use brief impact slowdown, local sparks, short enemy stagger, and restrained camera motion. Player damage adds a short recoil, a health bar change, a red edge cue, and 0.70 seconds of damage protection. Final character animation and art remain for the later art stage.
+The current 1A motion is a temporary feel test: the character sweeps magic with alternating hand gestures, reaches out to clutch and pull enemies together on the third hit, then releases a wide wave on the fourth. Hits use brief impact slowdown, local sparks, short enemy stagger, and restrained camera motion. Player damage adds a short recoil, a health bar change, a red edge cue, and 0.70 seconds of damage protection. Final character animation and art remain for the later art stage.
 
-The run starts with two combo hits. In the later 1D upgrade system, sequential `U_CHAIN` choices will unlock hits three and four for that run. K only previews those hits in the 1A sandbox. The tougher enemy has 80 HP so you can land a full combo.
+The sandbox starts with two combo hits. In the later 1D upgrade system, sequential `U_CHAIN` choices will unlock hits three and four for each run. K only previews those hits in the 1A sandbox. Two tougher enemies have 80 HP each so you can test gathering multiple targets and hitting both with the fourth strike.
 
 ## Run from source
 
@@ -31,7 +31,7 @@ godot --path .
 godot --headless --path . --script res://tests/verify_1a.gd
 ```
 
-The verification script checks movement, dash distance and cooldown, 0.70 second hit protection, one-hit-per-press, held 2/3/4-hit combos, the fourth-hit strike area, and pause. Gameplay feel and focus switching require a person to test the running window.
+The verification script checks movement, dash distance and cooldown, 0.70 second hit protection, one-hit-per-press, held 2/3/4-hit combos, the third-hit fan and multi-target gathering, the wide fourth hit, and pause. Gameplay feel and focus switching require a person to test the running window.
 
 ## Scope
 

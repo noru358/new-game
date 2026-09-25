@@ -127,8 +127,8 @@ func _on_player_defeated() -> void:
 
 func _on_attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool) -> void:
 	_spawn_impact(hit_position, direction, combo_step, false)
-	camera_shake = maxf(camera_shake, 4.2 if combo_step == 4 else 3.3 if finisher else 1.7)
-	_request_hitstop(0.055 if combo_step == 4 else 0.045 if finisher else 0.028)
+	camera_shake = maxf(camera_shake, 3.3 if combo_step == 4 else 2.0 if combo_step == 3 else 3.3 if finisher else 1.7)
+	_request_hitstop(0.045 if combo_step == 4 else 0.025 if combo_step == 3 else 0.045 if finisher else 0.028)
 
 
 func _on_player_hurt(hit_position: Vector2, direction: Vector2) -> void:
