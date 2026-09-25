@@ -15,7 +15,7 @@ The attack points in the movement direction, not at the cursor. Moving during an
 
 The current 1A motion is a temporary feel test: the character sweeps magic with alternating hand gestures, releases a wider third hit, then brings both hands down for the fourth strike. Hits use brief impact slowdown, local sparks, short enemy stagger, and restrained camera motion. Player damage adds a short recoil, a health bar change, a red edge cue, and 0.70 seconds of damage protection. Final character animation and art remain for the later art stage.
 
-The run starts with two combo hits. In the later 1C upgrade system, sequential `U_CHAIN` choices will unlock hits three and four for that run. K only previews those hits in the 1A sandbox. The tougher enemy has 80 HP so you can land a full combo.
+The run starts with two combo hits. In the later 1D upgrade system, sequential `U_CHAIN` choices will unlock hits three and four for that run. K only previews those hits in the 1A sandbox. The tougher enemy has 80 HP so you can land a full combo.
 
 ## Run from source
 
@@ -35,4 +35,4 @@ The verification script checks movement, dash distance and cooldown, 0.70 second
 
 ## Scope
 
-1A has no wisp, XP, skill picks, boss, time-based spawning, campaign, or permanent progression. The flat grid is a temporary training arena, not the stage 1E temple map.
+1A has no wisp, XP, skill picks, boss, time-based spawning, campaign, or permanent progression. The flat grid and camera are temporary for combat testing; the viewpoint is explored in 1B and the temple map is built in 1F.
