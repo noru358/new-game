@@ -2,7 +2,8 @@ extends Node2D
 
 const ARENA_SIZE := Vector2(2400, 1400)
 
-var remaining_enemies := 4
+var remaining_enemies := 0
+var total_enemies := 0
 var game_over := false
 var pause_overlay: ColorRect
 var pause_title: Label
@@ -24,6 +25,8 @@ func _ready() -> void:
 	player.process_mode = Node.PROCESS_MODE_PAUSABLE
 	$Enemies.process_mode = Node.PROCESS_MODE_PAUSABLE
 	_register_inputs()
+	total_enemies = $Enemies.get_child_count()
+	remaining_enemies = total_enemies
 	for enemy in $Enemies.get_children():
 		enemy.target = player
 		enemy.defeated.connect(_on_enemy_defeated)
@@ -39,8 +42,8 @@ func _process(delta: float) -> void:
 	if hitstop_until_usec > 0 and Time.get_ticks_usec() >= hitstop_until_usec:
 		Engine.time_scale = 1.0
 		hitstop_until_usec = 0
-	status_label.text = "HP %d / 100    FRAGMENTS %d / 4    DASH %s" % [
-		int(player.health), remaining_enemies,
+	status_label.text = "HP %d / 100    FRAGMENTS %d / %d    COMBO %d    DASH %s" % [
+		int(player.health), remaining_enemies, total_enemies, player.combo_limit(),
 		"READY" if player.dash_cooldown <= 0.0 else "%.1fs" % player.dash_cooldown
 	]
 	if remaining_enemies == 0:
@@ -74,6 +77,9 @@ func _input(event: InputEvent) -> void:
 		elif event.keycode == KEY_R:
 			get_viewport().set_input_as_handled()
 			_restart()
+		elif event.keycode == KEY_K and not get_tree().paused and not game_over:
+			player.set_combo_rank((player.combo_rank + 1) % 3)
+			get_viewport().set_input_as_handled()
 
 
 func _notification(what: int) -> void:
@@ -119,10 +125,10 @@ func _on_player_defeated() -> void:
 	pause_button.text = "Restart"
 
 
-func _on_attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int) -> void:
+func _on_attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool) -> void:
 	_spawn_impact(hit_position, direction, combo_step, false)
-	camera_shake = maxf(camera_shake, 3.3 if combo_step == 3 else 1.7)
-	_request_hitstop(0.045 if combo_step == 3 else 0.028)
+	camera_shake = maxf(camera_shake, 4.2 if combo_step == 4 else 3.3 if finisher else 1.7)
+	_request_hitstop(0.055 if combo_step == 4 else 0.045 if finisher else 0.028)
 
 
 func _on_player_hurt(hit_position: Vector2, direction: Vector2) -> void:
@@ -176,7 +182,7 @@ func _build_ui() -> void:
 	health_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	health_back.add_child(health_fill)
 	var controls := Label.new()
-	controls.text = "WASD Move  |  J / Left Click Attack (hold)  |  Space Dash  |  Esc Pause  |  R Reset"
+	controls.text = "WASD Move  |  J / Left Click Attack (hold)  |  Space Dash  |  K Combo 2/3/4  |  Esc Pause  |  R Reset"
 	controls.position = Vector2(20, 672)
 	controls.add_theme_font_size_override("font_size", 19)
 	controls.add_theme_color_override("font_color", Color("f9f2d8"))

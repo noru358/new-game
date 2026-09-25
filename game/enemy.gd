@@ -8,6 +8,8 @@ const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
 const RADIUS := 17.0
 
+@export var max_health := MAX_HEALTH
+
 var health := MAX_HEALTH
 var target: Node2D
 var knockback := Vector2.ZERO
@@ -16,6 +18,7 @@ var stagger_time := 0.0
 
 
 func _ready() -> void:
+	health = max_health
 	add_to_group("training_enemies")
 
 
@@ -50,7 +53,8 @@ func take_hit(damage: float, push_direction: Vector2, is_finisher: bool) -> void
 
 
 func _draw() -> void:
-	var stone := Color("edf6e8") if hit_flash > 0.0 else Color("8bada0")
+	var reinforced := max_health > MAX_HEALTH
+	var stone := Color("edf6e8") if hit_flash > 0.0 else Color("9aa8c7") if reinforced else Color("8bada0")
 	var shade := Color("3c5d61")
 	draw_circle(Vector2(0, 7), 20.0, Color(0.02, 0.09, 0.11, 0.35))
 	draw_colored_polygon(PackedVector2Array([
@@ -62,7 +66,7 @@ func _draw() -> void:
 		Vector2(12, -9), Vector2(13, 6), Vector2(1, 12)
 	]), stone)
 	draw_line(Vector2(-7, -4), Vector2(8, 4), Color("295665"), 3.0)
-	draw_circle(Vector2(-4, -2), 2.0, Color("42d9d4"))
-	draw_circle(Vector2(7, 0), 2.0, Color("42d9d4"))
+	draw_circle(Vector2(-4, -2), 2.0, Color("f9c06f") if reinforced else Color("42d9d4"))
+	draw_circle(Vector2(7, 0), 2.0, Color("f9c06f") if reinforced else Color("42d9d4"))
 	draw_rect(Rect2(-18, -32, 36, 4), Color(0.05, 0.16, 0.18, 0.8))
-	draw_rect(Rect2(-18, -32, 36.0 * maxf(health, 0.0) / MAX_HEALTH, 4), Color("8ce2bc"))
+	draw_rect(Rect2(-18, -32, 36.0 * maxf(health, 0.0) / max_health, 4), Color("f9c06f") if reinforced else Color("8ce2bc"))

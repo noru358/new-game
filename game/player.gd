@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 signal defeated
 signal health_changed
-signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int)
+signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool)
 signal hurt_received(hit_position: Vector2, direction: Vector2)
 
 const MAX_HEALTH := 100.0
@@ -12,14 +12,16 @@ const DASH_DISTANCE := 130.0
 const DASH_DURATION := 0.16
 const DASH_COOLDOWN := 1.2
 const DASH_INVULNERABILITY := 0.10
-const HURT_INVULNERABILITY := 0.55
+const HURT_INVULNERABILITY := 0.70
 const COMBO_RESET_TIME := 0.75
 const ATTACK_DAMAGE := 10.0
+const SLAM_FORWARD_OFFSET := 78.0
 
 const ATTACKS := [
 	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 100.0, "angle": 100.0, "multiplier": 1.0},
-	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 100.0, "angle": 100.0, "multiplier": 1.0},
+	{"windup": 0.06, "active": 0.06, "recovery": 0.17, "radius": 105.0, "angle": 100.0, "multiplier": 1.2},
 	{"windup": 0.08, "active": 0.08, "recovery": 0.20, "radius": 120.0, "angle": 125.0, "multiplier": 1.5},
+	{"windup": 0.10, "active": 0.09, "recovery": 0.23, "radius": 65.0, "angle": 0.0, "multiplier": 2.0},
 ]
 
 var health := MAX_HEALTH
@@ -27,7 +29,9 @@ var facing := Vector2.RIGHT
 var attack_direction := Vector2.RIGHT
 var attack_step := 0
 var next_combo_step := 1
+var combo_rank := 0
 var attack_elapsed := 0.0
+var slam_target_global := Vector2.ZERO
 var combo_wait := 0.0
 var attack_lock := 0.0
 var queued_attack := false
@@ -125,6 +129,19 @@ func _start_dash(movement: Vector2) -> void:
 	_play_sound("res://game/audio/dash.wav", attack_audio)
 
 
+func combo_limit() -> int:
+	return 2 + combo_rank
+
+
+func set_combo_rank(rank: int) -> void:
+	combo_rank = clampi(rank, 0, 2)
+	attack_step = 0
+	next_combo_step = 1
+	queued_attack = false
+	hit_targets.clear()
+	queue_redraw()
+
+
 func _update_attack(delta: float) -> void:
 	if attack_step > 0:
 		attack_elapsed += delta
@@ -145,9 +162,11 @@ func _update_attack(delta: float) -> void:
 
 func _start_attack() -> void:
 	attack_step = next_combo_step
-	next_combo_step = 1 if attack_step == 3 else attack_step + 1
+	next_combo_step = 1 if attack_step >= combo_limit() else attack_step + 1
 	attack_elapsed = 0.0
 	attack_direction = facing
+	if attack_step == 4:
+		slam_target_global = global_position + attack_direction * SLAM_FORWARD_OFFSET
 	queued_attack = false
 	hit_targets.clear()
 	impact_played_this_attack = false
@@ -161,18 +180,26 @@ func _hit_enemies(attack: Dictionary) -> void:
 		var id := enemy.get_instance_id()
 		if hit_targets.has(id):
 			continue
-		var offset: Vector2 = enemy.global_position - global_position
-		if offset.length() > attack.radius + enemy.RADIUS:
-			continue
-		var angle_difference := absf(wrapf(offset.angle() - attack_direction.angle(), -PI, PI))
-		if angle_difference > deg_to_rad(attack.angle * 0.5):
-			continue
+		var offset: Vector2
+		if attack_step == 4:
+			offset = enemy.global_position - slam_target_global
+			if offset.length() > attack.radius + enemy.RADIUS:
+				continue
+		else:
+			offset = enemy.global_position - global_position
+			if offset.length() > attack.radius + enemy.RADIUS:
+				continue
+			var angle_difference := absf(wrapf(offset.angle() - attack_direction.angle(), -PI, PI))
+			if angle_difference > deg_to_rad(attack.angle * 0.5):
+				continue
+		var push_direction := offset.normalized() if offset.length_squared() > 0.01 else attack_direction
+		var finisher := attack_step == combo_limit()
 		hit_targets[id] = true
-		enemy.take_hit(ATTACK_DAMAGE * attack.multiplier, offset.normalized(), attack_step == 3)
-		attack_landed.emit(enemy.global_position, offset.normalized(), attack_step)
+		enemy.take_hit(ATTACK_DAMAGE * attack.multiplier, push_direction, finisher)
+		attack_landed.emit(enemy.global_position, push_direction, attack_step, finisher)
 		if not impact_played_this_attack:
 			impact_played_this_attack = true
-			impact_audio.pitch_scale = 1.13 if attack_step == 1 else 0.98 if attack_step == 2 else 0.78
+			impact_audio.pitch_scale = 0.72 if attack_step == 4 else 0.82 if finisher else 1.13 if attack_step == 1 else 0.98
 			_play_sound("res://game/audio/hit.wav", impact_audio)
 
 
@@ -242,6 +269,9 @@ func _draw_attack() -> void:
 	var radius: float = attack.radius
 	var fade := 1.0 if attack_elapsed <= windup + active else 1.0 - (attack_elapsed - windup - active) / recovery
 	fade = clampf(fade, 0.0, 1.0)
+	if attack_step == 4:
+		_draw_slam(attack, fade)
+		return
 	var center_angle := attack_direction.angle()
 	var half_angle := deg_to_rad(attack.angle * 0.5)
 	var start_angle := center_angle - half_angle
@@ -283,11 +313,48 @@ func _draw_attack() -> void:
 		draw_arc(Vector2.ZERO, radius, arc_start, arc_end, 16, outline, 6.0)
 
 
+func _draw_slam(attack: Dictionary, fade: float) -> void:
+	var target := to_local(slam_target_global)
+	var windup: float = attack.windup
+	var active: float = attack.active
+	var radius: float = attack.radius
+	var gold := Color("ffe09a")
+	if attack_elapsed < windup:
+		var charge := attack_elapsed / windup
+		var marker := gold
+		marker.a = 0.45 + 0.25 * charge
+		draw_arc(target, radius * (0.7 + 0.3 * charge), 0.0, TAU, 32, marker, 3.0)
+		var falling_point := target + Vector2(0.0, -100.0 * (1.0 - charge))
+		draw_line(target + Vector2(0.0, -100.0), falling_point, marker, 7.0)
+		draw_circle(falling_point, 9.0, marker)
+		return
+	var progress := clampf((attack_elapsed - windup) / active, 0.0, 1.0)
+	var beam := gold
+	beam.a = 0.30 * fade
+	draw_colored_polygon(PackedVector2Array([
+		target + Vector2(-8.0, -105.0), target + Vector2(8.0, -105.0),
+		target + Vector2(24.0, 0.0), target + Vector2(-24.0, 0.0)
+	]), beam)
+	var shock := gold
+	shock.a = 0.95 * fade
+	draw_arc(target, lerpf(20.0, radius, progress), 0.0, TAU, 40, shock, 8.0)
+	draw_circle(target, 15.0 * (1.0 - progress) * fade, Color(1.0, 0.98, 0.85, 0.75 * fade))
+	for i in range(6):
+		var ray := Vector2.from_angle(float(i) * TAU / 6.0)
+		draw_line(target + ray * (radius * 0.55), target + ray * (radius * 0.85), shock, 3.0)
+
+
 func _draw_hand_gesture() -> void:
 	var attack: Dictionary = ATTACKS[attack_step - 1]
 	var progress: float = clampf((attack_elapsed - attack.windup) / attack.active, 0.0, 1.0)
 	var perpendicular := attack_direction.orthogonal()
-	if attack_step == 3:
+	if attack_step == 4:
+		for side in [-1.0, 1.0]:
+			var shoulder: Vector2 = perpendicular * side * 8.0
+			var hand: Vector2 = attack_direction * (17.0 + progress * 9.0) + Vector2(0.0, -15.0 * (1.0 - progress)) + perpendicular * side * 7.0
+			draw_line(shoulder, hand, Color("f5db9a"), 5.0)
+			draw_circle(hand, 5.0, Color("fff1c7"))
+	elif attack_step == 3:
 		for side in [-1.0, 1.0]:
 			var shoulder: Vector2 = perpendicular * side * 8.0
 			var hand: Vector2 = attack_direction * (17.0 + progress * 14.0) + perpendicular * side * 7.0
