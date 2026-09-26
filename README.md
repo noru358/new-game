@@ -21,9 +21,11 @@ The current 1A motion is a temporary feel test: the character sweeps magic with 
 
 The sandbox starts with two combo hits. In the later 1D upgrade system, sequential `U_CHAIN` choices will unlock hits three and four for each run. K previews those hits here. Two tougher enemies have 80 HP each so you can test gathering multiple targets and hitting both with the fourth strike.
 
-The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. It fires every 1.8 seconds, deals 6.5 damage at the current base attack value, and acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. The temporary HUD line shows its cooldown.
+The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. After play feedback it fires every 1.6 seconds, deals 6.5 damage at the current base attack value, and acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. A small bright blue flame marks the launch, projectile trail, and impact. The temporary HUD line shows its cooldown.
 
 Future wisp upgrades include more wisps, orbiting contact damage, fire rate, damage, and attack pattern. The orbiting contact damage will add to the current projectile attack. These cards will unlock after conditions are met and must then be chosen again through level-up in each run. No upgrade or unlock is implemented in 1C; their exact rules belong to 1D.
+
+At a fully upgraded build, the manual attack and wisp should feel similarly present in combat. This is a feel target rather than an exact 50:50 damage split; it needs to be checked with the 1D upgrade system in play.
 
 ## Run from source
 

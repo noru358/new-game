@@ -16,7 +16,7 @@ func _run() -> void:
 	var enemies: Node2D = scene.get_node("Enemies")
 	_check(scene.view_mode == 2 and scene.ground_is_diamond(), "selected 1B view retained")
 	_check(wisp.process_mode == Node.PROCESS_MODE_PAUSABLE, "wisp pauses with battle")
-	_check(is_equal_approx(wisp.attack_interval, 1.8), "base fire interval")
+	_check(is_equal_approx(wisp.attack_interval, 1.6), "base fire interval")
 	_check(is_equal_approx(wisp.attack_range, 520.0), "base target range")
 	_check(is_equal_approx(wisp.projectile_speed, 620.0), "base projectile speed")
 	_check(is_equal_approx(wisp.damage_multiplier, 0.65), "base damage coefficient")
@@ -36,9 +36,11 @@ func _run() -> void:
 	var before_health := near_enemy.health
 	await _frames(1)
 	_check(wisp.shots_fired == 1, "automatic shot fires without manual input")
+	_check(wisp.muzzle_flash > 0.0, "shot creates a visible muzzle cue")
 	_check(player.attack_step == 0, "automatic shot does not use manual combo")
 	await _frames(27)
 	_check(is_equal_approx(near_enemy.health, before_health - player.ATTACK_DAMAGE * 0.65), "projectile deals base wisp damage once")
+	_check(get_nodes_in_group("wisp_flashes").size() > 0, "wisp impact creates a distinct flash")
 	_check(far_enemy.health == far_enemy.max_health, "nearest target takes the shot")
 	for enemy in enemies.get_children():
 		enemy.global_position = Vector2(2200, 1250)

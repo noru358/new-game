@@ -6,7 +6,7 @@ signal shot_fired(target: TrainingEnemy)
 const ProjectileScript = preload("res://game/wisp_projectile.gd")
 const FOLLOW_OFFSET := Vector2(-42.0, -30.0)
 
-@export var attack_interval := 1.8
+@export var attack_interval := 1.6
 @export var attack_range := 520.0
 @export var projectile_speed := 620.0
 @export var damage_multiplier := 0.65
@@ -16,6 +16,8 @@ var fire_cooldown := 0.35
 var age := 0.0
 var shots_fired := 0
 var shot_audio: AudioStreamPlayer2D
+var muzzle_flash := 0.0
+var shot_direction := Vector2.RIGHT
 
 
 func _ready() -> void:
@@ -31,6 +33,7 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(player) or player.health <= 0.0:
 		return
 	age += delta
+	muzzle_flash = maxf(0.0, muzzle_flash - delta)
 	var bob := Vector2(0.0, sin(age * 5.4) * 3.0)
 	global_position = global_position.lerp(player.global_position + FOLLOW_OFFSET + bob, minf(1.0, 13.0 * delta))
 	fire_cooldown = maxf(0.0, fire_cooldown - delta)
@@ -69,6 +72,8 @@ func _blocked_by_wall(point: Vector2) -> bool:
 
 func _fire(target: TrainingEnemy) -> void:
 	var direction := global_position.direction_to(target.global_position)
+	shot_direction = direction
+	muzzle_flash = 0.14
 	var projectile: Node2D = ProjectileScript.new()
 	projectile.setup(direction, projectile_speed, attack_range, player.ATTACK_DAMAGE * damage_multiplier)
 	projectile.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -84,11 +89,22 @@ func _draw() -> void:
 	var flicker := sin(age * 9.0) * 2.0
 	draw_circle(Vector2(0, 12), 10.0, Color(0.03, 0.13, 0.17, 0.28))
 	draw_circle(Vector2.ZERO, 15.0 + flicker, Color(0.39, 0.91, 0.81, 0.15))
+	draw_circle(Vector2.ZERO, 10.0 + flicker * 0.3, Color(0.19, 0.84, 0.94, 0.22))
 	draw_colored_polygon(PackedVector2Array([
 		Vector2(-8, 7), Vector2(-7, -5), Vector2(-2, -15 + flicker),
 		Vector2(2, -6), Vector2(5, -12 + flicker), Vector2(9, 4), Vector2(3, 10)
-	]), Color("55d6cc"))
+	]), Color("37c9e5"))
 	draw_colored_polygon(PackedVector2Array([
 		Vector2(-4, 5), Vector2(-2, -4), Vector2(0, -9 + flicker),
 		Vector2(5, 4), Vector2(1, 7)
-	]), Color("ffdf91"))
+	]), Color("d7fcff"))
+	for i in range(2):
+		var spark := Vector2(-11.0 + float(i) * 22.0, -7.0 - sin(age * 8.0 + float(i) * 2.7) * 4.0)
+		draw_circle(spark, 1.4, Color(0.57, 0.95, 1.0, 0.7))
+	if muzzle_flash > 0.0:
+		var alpha := muzzle_flash / 0.14
+		var tip := shot_direction * (14.0 + (1.0 - alpha) * 7.0)
+		draw_circle(shot_direction * 9.0, 10.0 * alpha, Color(0.29, 0.93, 1.0, 0.28 * alpha))
+		draw_line(shot_direction * 2.0, tip, Color(0.82, 1.0, 1.0, 0.9 * alpha), 3.0 * alpha)
+		draw_line(tip - shot_direction.rotated(0.7) * 5.0, tip, Color(0.38, 0.9, 1.0, 0.8 * alpha), 2.0 * alpha)
+		draw_line(tip - shot_direction.rotated(-0.7) * 5.0, tip, Color(0.38, 0.9, 1.0, 0.8 * alpha), 2.0 * alpha)
