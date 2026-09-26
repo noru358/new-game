@@ -99,6 +99,7 @@ func _on_window_focus_exited() -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	status_label.text = status_label.text.replace("FRAGMENTS", "ENEMIES")
 	if remaining_enemies == 0:
 		status_label.text = status_label.text.replace("ARENA CLEAR - R TO RESET", "WAVE CLEAR - N NEXT WAVE")
 	var lead: float = MODE_LOOKAHEAD[view_mode - 1]
@@ -120,8 +121,13 @@ func _next_practice_wave() -> void:
 	remaining_enemies = total_enemies
 	for i in range(PRACTICE_ENEMIES.size()):
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
-		enemy.name = "PracticeFragment%d" % i
-		enemy.max_health = 80.0 if i >= 4 else 22.0
+		enemy.name = "PracticeEnemy%d" % i
+		if i == 3 or i == 5:
+			enemy.role = TrainingEnemy.Role.LAMP
+			enemy.max_health = 30.0
+		elif i == 4:
+			enemy.role = TrainingEnemy.Role.BEAST
+			enemy.max_health = 45.0
 		enemy.position = PRACTICE_ENEMIES[i]
 		enemy.target = player
 		enemy.collision_mask = 6
@@ -192,6 +198,13 @@ func _build_view_ui() -> void:
 	wisp_status.add_theme_color_override("font_color", Color("e8f7bd"))
 	wisp_status.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
 	canvas.add_child(wisp_status)
+	var role_legend := Label.new()
+	role_legend.position = Vector2(20, 105)
+	role_legend.text = "붉은 뿔: 돌진 예고   |   금빛 등불: 사격 예고"
+	role_legend.add_theme_font_size_override("font_size", 16)
+	role_legend.add_theme_color_override("font_color", Color("f9e5b7"))
+	role_legend.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
+	canvas.add_child(role_legend)
 	for child in get_children():
 		if child is CanvasLayer and child != canvas:
 			for control in child.get_children():

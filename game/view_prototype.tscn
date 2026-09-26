@@ -25,11 +25,15 @@ position = Vector2(1040, 1080)
 
 [node name="FragmentD" parent="Enemies" instance=ExtResource("3_enemy")]
 position = Vector2(1800, 980)
+max_health = 30.0
+role = 2
 
 [node name="FragmentE" parent="Enemies" instance=ExtResource("3_enemy")]
 position = Vector2(1620, 620)
-max_health = 80.0
+max_health = 45.0
+role = 1
 
 [node name="FragmentF" parent="Enemies" instance=ExtResource("3_enemy")]
 position = Vector2(1620, 780)
-max_health = 80.0
+max_health = 30.0
+role = 2
