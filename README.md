@@ -1,5 +1,9 @@
 # Loop Conquest — 1F Temple Region Prototype
 
+The separate **Hybrid Height v01** comparison scene uses the existing 2D player, chasing enemy, navigation and wisp simulation with a 3D orthographic presentation. Run `godot --path . res://game/hybrid_height.tscn`, or export with `macOS Height Lab` / `Windows Height Lab`. The normal launch scene remains the previous temple prototype. The lab has three elevations, four ramps, four chasing enemies, the baseline two-hit combo and two dash charges. It does not include the XP/card UI or all five enemy roles. Landmark buttons jump to each approach, Tab toggles an overview, N respawns enemies, and R resets the scene. Esc resumes after focus loss.
+
+`HybridTerrain` is the common source for ground heights, ramp interpolation, 3D surfaces and 2D cliff barriers. Gameplay coordinates represent the ground plane; render positions add sampled elevation. Cliff barriers block melee and wisp shots, while connected ramps permit combat. Sprite feet and ground shadows follow the sampled surface. Projectile presentation follows the ground with a fixed offset in this comparison, without ballistic flight. Screen-space speed and art are still subject to play review. Overlapping walkable floors are outside this prototype.
+
 Godot 4.6 combat prototype with XP, level-up cards, wisp upgrades, and five enemy roles. The selected **medium 2:1 diamond** view is fixed. The current scene is the 3840 × 2160 temple region with a minimap, diagonal architectural terrain, and four named spaces. The original 1A combat sandbox remains available as `game/main.tscn` for regression checks.
 
 | Input | Action |
@@ -57,6 +61,7 @@ godot --headless --path . --script res://tests/verify_1d_play_feedback.gd
 godot --headless --path . --script res://tests/verify_1d_contact_ai.gd
 godot --headless --path . --script res://tests/verify_1e.gd
 godot --headless --path . --script res://tests/verify_1f.gd
+godot --headless --path . --script res://tests/verify_hybrid_height.gd
 ```
 
 The scripts check 1A combat behavior, the fixed 1B view and space layout, 1C wisp behavior, 1D growth and obstacle targeting, 1E mixed enemy roles, and 1F terrain, minimap, routes, and repeat wave. Screen readability, upgrade pacing, and combat feel require a person to test the running window.

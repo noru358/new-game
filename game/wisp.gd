@@ -30,6 +30,8 @@ var orbit_damage := 3.0
 var chain_jumps := 0
 var orbit_next_hits: Dictionary = {}
 var power_rank := 0
+var target_visibility_filter: Callable
+var follow_position_filter: Callable
 
 
 func _ready() -> void:
@@ -61,6 +63,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _outside_ruins(point: Vector2) -> Vector2:
+	if follow_position_filter.is_valid():
+		point = follow_position_filter.call(point)
 	if navigation == null:
 		return point
 	for obstacle in navigation.obstacles:
@@ -87,7 +91,8 @@ func find_target() -> TrainingEnemy:
 		var distance := global_position.distance_squared_to(candidate.global_position)
 		if distance > best_distance:
 			continue
-		if not screen.has_point(candidate.get_global_transform_with_canvas().origin):
+		var on_screen: bool = target_visibility_filter.call(candidate) if target_visibility_filter.is_valid() else screen.has_point(candidate.get_global_transform_with_canvas().origin)
+		if not on_screen:
 			continue
 		if _visible_aim_point(candidate).is_empty():
 			continue
