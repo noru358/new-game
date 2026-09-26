@@ -8,6 +8,7 @@ const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
 const RADIUS := 17.0
 const GATHER_DURATION := 0.12
+const GATHER_CONTACT_GRACE := 0.44
 
 @export var max_health := MAX_HEALTH
 
@@ -21,6 +22,7 @@ var gather_origin := Vector2.ZERO
 var gather_target := Vector2.ZERO
 var gather_elapsed := 0.0
 var gathering := false
+var gather_contact_grace := 0.0
 var navigation: ArenaNavigation
 var navigation_path := PackedVector2Array()
 var navigation_goal := Vector2.ZERO
@@ -37,6 +39,7 @@ func _physics_process(delta: float) -> void:
 		return
 	hit_flash = maxf(0.0, hit_flash - delta)
 	stagger_time = maxf(0.0, stagger_time - delta)
+	gather_contact_grace = maxf(0.0, gather_contact_grace - delta)
 	if gathering:
 		gather_elapsed = minf(GATHER_DURATION, gather_elapsed + delta)
 		var fraction := gather_elapsed / GATHER_DURATION
@@ -54,7 +57,7 @@ func _physics_process(delta: float) -> void:
 		clampf(global_position.x, 24.0, 2376.0),
 		clampf(global_position.y, 24.0, 1376.0)
 	)
-	if global_position.distance_to(target.global_position) <= RADIUS + 18.0:
+	if gather_contact_grace <= 0.0 and global_position.distance_to(target.global_position) <= RADIUS + 18.0:
 		target.receive_hit(CONTACT_DAMAGE, global_position)
 	queue_redraw()
 
@@ -93,6 +96,7 @@ func gather_to(point: Vector2) -> void:
 	gather_target = point
 	gather_elapsed = 0.0
 	gathering = true
+	gather_contact_grace = GATHER_CONTACT_GRACE
 	knockback = Vector2.ZERO
 	stagger_time = maxf(stagger_time, 0.38)
 

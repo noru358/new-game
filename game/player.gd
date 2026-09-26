@@ -54,6 +54,7 @@ var basic_damage_bonus := 0.0
 var basic_speed_bonus := 0.0
 var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
+var companion_orbit_time := 0.0
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -85,6 +86,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if health <= 0.0:
 		return
+	companion_orbit_time += delta
 	var movement := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if movement.length_squared() > 0.0:
 		facing = movement.normalized()
@@ -116,6 +118,7 @@ func _physics_process(delta: float) -> void:
 		clampf(global_position.x, 25.0, 2375.0),
 		clampf(global_position.y, 25.0, 1375.0)
 	)
+	_maintain_gather_spacing()
 	queue_redraw()
 
 
@@ -241,10 +244,41 @@ func _arrange_gathered_enemies() -> void:
 	var count := living.size()
 	if count == 0:
 		return
-	var ring_radius := 0.0 if count == 1 else maxf(20.0, 20.0 / sin(PI / float(count)))
+	var ring_radius := _gather_ring_radius(count)
 	for index in range(count):
 		var angle := attack_direction.angle() - PI * 0.5 + float(index) * TAU / float(count)
 		living[index].gather_to(gather_target_global + Vector2.from_angle(angle) * ring_radius)
+
+
+func _gather_ring_radius(count: int) -> float:
+	return 0.0 if count <= 1 else maxf(20.0, 20.0 / sin(PI / float(count)))
+
+
+func _maintain_gather_spacing() -> void:
+	if attack_step != 3 or gathered_enemies.is_empty():
+		return
+	var pulling := false
+	for enemy in gathered_enemies:
+		if is_instance_valid(enemy) and enemy.gathering:
+			pulling = true
+			break
+	if not pulling:
+		return
+	var distance_to_center := gather_target_global - global_position
+	var forward := distance_to_center.dot(attack_direction)
+	var side := (distance_to_center - attack_direction * forward).length()
+	var minimum := maxf(GATHER_FORWARD_OFFSET, 45.0 + _gather_ring_radius(gathered_enemies.size()))
+	if side >= minimum:
+		return
+	var needed_forward := sqrt(minimum * minimum - side * side)
+	var shift := maxf(0.0, needed_forward - forward)
+	if shift <= 0.0:
+		return
+	var movement := attack_direction * shift
+	gather_target_global += movement
+	for enemy in gathered_enemies:
+		if is_instance_valid(enemy) and enemy.gathering:
+			enemy.gather_target += movement
 
 
 func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void:

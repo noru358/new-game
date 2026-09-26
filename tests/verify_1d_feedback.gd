@@ -76,6 +76,13 @@ func _run() -> void:
 	growth.apply_card("S_WISP_ORBIT")
 	growth.apply_card("S_WISP_ORBIT")
 	_check(is_equal_approx(wisp.orbit_damage, 7.0), "orbit rank two increases contact damage")
+	growth.apply_card("S_WISP_COUNT")
+	growth.apply_card("S_WISP_COUNT")
+	wisp.set_physics_process(true)
+	await _frames(60)
+	for i in range(growth.wisps.size()):
+		for j in range(i + 1, growth.wisps.size()):
+			_check(growth.wisps[i].global_position.distance_to(growth.wisps[j].global_position) > 90.0, "new wisps join existing orbit without clustering")
 	scene.queue_free()
 	await _frames(3)
 	if failed:

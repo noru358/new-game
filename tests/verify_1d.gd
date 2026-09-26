@@ -78,6 +78,10 @@ func _run() -> void:
 	growth.apply_card("S_WISP_CHAIN")
 	growth.apply_card("S_SEAL")
 	_check(growth.wisps[0].orbit_enabled and growth.wisps[1].chain_jumps == 1 and growth.seal != null, "orbit, chain, and auxiliary seal activate")
+	await _frames(60)
+	for i in range(growth.wisps.size()):
+		for j in range(i + 1, growth.wisps.size()):
+			_check(growth.wisps[i].global_position.distance_to(growth.wisps[j].global_position) > 90.0, "three orbiting wisps remain evenly spaced after late unlock")
 	for companion in growth.wisps:
 		companion.set_physics_process(false)
 	growth.seal.set_physics_process(false)

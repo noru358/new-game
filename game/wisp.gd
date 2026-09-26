@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	age += delta
 	muzzle_flash = maxf(0.0, muzzle_flash - delta)
 	var bob := Vector2(0.0, sin(age * 5.4) * 3.0)
-	var offset := Vector2.from_angle(age * 3.0 + orbit_phase) * 64.0 + Vector2(0.0, -20.0) if orbit_enabled else follow_offset
+	var offset := Vector2.from_angle(player.companion_orbit_time * 3.0 + orbit_phase) * 64.0 + Vector2(0.0, -20.0) if orbit_enabled else follow_offset
 	global_position = global_position.lerp(player.global_position + offset + bob, minf(1.0, 13.0 * delta))
 	if orbit_enabled:
 		_hit_nearby_enemies()
