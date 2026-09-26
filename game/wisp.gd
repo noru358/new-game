@@ -6,11 +6,14 @@ signal enemy_hit(enemy: TrainingEnemy)
 
 const ProjectileScript = preload("res://game/wisp_projectile.gd")
 const FOLLOW_OFFSET := Vector2(-42.0, -30.0)
+const BASE_ATTACK_INTERVAL := 1.25
+const BASE_DAMAGE_MULTIPLIER := 1.0
+const DAMAGE_BONUS_PER_RANK := 0.20
 
-@export var attack_interval := 1.6
+@export var attack_interval := BASE_ATTACK_INTERVAL
 @export var attack_range := 520.0
 @export var projectile_speed := 620.0
-@export var damage_multiplier := 0.65
+@export var damage_multiplier := BASE_DAMAGE_MULTIPLIER
 
 var player: SandboxPlayer
 var fire_cooldown := 0.35
@@ -59,6 +62,8 @@ func _physics_process(delta: float) -> void:
 func find_target() -> TrainingEnemy:
 	var nearest: TrainingEnemy
 	var best_distance := attack_range * attack_range
+	var fallback: TrainingEnemy
+	var fallback_distance := best_distance
 	var screen := get_viewport().get_visible_rect()
 	for candidate in get_tree().get_nodes_in_group("training_enemies"):
 		if not candidate is TrainingEnemy or candidate.is_queued_for_deletion() or candidate.health <= 0.0:
@@ -70,9 +75,18 @@ func find_target() -> TrainingEnemy:
 			continue
 		if _visible_aim_point(candidate).is_empty():
 			continue
+		var incoming_damage := 0.0
+		for shot in get_tree().get_nodes_in_group("wisp_projectiles"):
+			if shot is WispProjectile and not shot.is_queued_for_deletion() and shot.target == candidate:
+				incoming_damage += shot.damage
+		if incoming_damage >= candidate.health:
+			if distance < fallback_distance:
+				fallback = candidate
+				fallback_distance = distance
+			continue
 		nearest = candidate
 		best_distance = distance
-	return nearest
+	return nearest if nearest != null else fallback
 
 
 func _blocked_by_wall(point: Vector2) -> bool:

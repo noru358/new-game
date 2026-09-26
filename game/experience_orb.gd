@@ -24,8 +24,8 @@ func _physics_process(delta: float) -> void:
 		collected.emit(value)
 		queue_free()
 		return
-	if distance < 145.0:
-		var speed := lerpf(360.0, 650.0, 1.0 - distance / 145.0)
+	if distance < 260.0:
+		var speed := lerpf(400.0, 700.0, 1.0 - distance / 260.0)
 		global_position = global_position.move_toward(player.global_position, speed * delta)
 	queue_redraw()
 

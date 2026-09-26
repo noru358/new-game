@@ -49,7 +49,7 @@ func _run() -> void:
 	_check(wisp.find_target() == moving, "wisp acquires exposed enemy")
 	var before := moving.health
 	var shot := WispProjectile.new()
-	shot.setup(Vector2.RIGHT, 620.0, 520.0, 6.5)
+	shot.setup(Vector2.RIGHT, 620.0, 520.0, 10.0)
 	shot.target = moving
 	scene.add_child(shot)
 	shot.global_position = wisp.global_position
@@ -61,12 +61,12 @@ func _run() -> void:
 	var growth: RunGrowth = scene.get_node("RunGrowth")
 	for i in range(3):
 		growth.apply_card("S_WISP_DAMAGE")
-	_check(is_equal_approx(wisp.damage_multiplier, 1.55) and wisp.power_rank == 3, "three power ranks raise projectile damage and impact")
+	_check(is_equal_approx(wisp.damage_multiplier, 1.6) and wisp.power_rank == 3, "three power ranks raise projectile damage and impact")
 	moving.health = moving.max_health
 	moving.global_position = Vector2(1350, 650)
 	wisp._fire(moving)
 	await _frames(25)
-	_check(is_equal_approx(moving.health, moving.max_health - 15.5), "fully upgraded wisp hit deals increased damage")
+	_check(is_equal_approx(moving.health, moving.max_health - 16.0), "fully upgraded wisp hit deals increased damage")
 	var strong_flash := false
 	for flash in get_nodes_in_group("wisp_flashes"):
 		if flash.power_rank == 3:

@@ -44,8 +44,8 @@ func _run() -> void:
 	orb_enemy.health = 1.0
 	orb_enemy.take_hit(2.0, Vector2.RIGHT, false)
 	await _frames(3)
-	_check(growth.xp == 1, "defeated enemy drops collectible XP")
-	growth.gain_xp(7)
+	_check(growth.xp == 2, "defeated enemy drops collectible XP")
+	growth.gain_xp(6)
 	_check(growth.level == 2 and growth.pending_choices == 1 and growth.choosing and paused, "level-up pauses combat for card selection")
 	_check(growth.current_choices.size() == 3 and _has_group(growth.current_choices, "BASIC") and _has_group(growth.current_choices, "AUTO"), "three choices include manual and auto options")
 	_check(growth.current_choices.has("U_CHAIN"), "combo unlock is offered while locked")
@@ -55,7 +55,9 @@ func _run() -> void:
 	scene._on_window_focus_exited()
 	_check(growth.choosing and paused and not scene.pause_overlay.visible, "focus loss does not replace level-up selection")
 	growth.current_choices = ["U_CHAIN"]
+	player.health = 60.0
 	_check(growth.choose_index(0), "first card can be selected")
+	_check(is_equal_approx(player.health, 80.0), "normal level-up selection restores 20 percent health")
 	_check(player.combo_limit() == 3 and not paused, "first chain rank unlocks third hit and resumes")
 	growth.gain_xp(12)
 	_check(growth.level == 3 and growth.unlocks.is_unlocked("S_WISP_COUNT"), "second cumulative level-up unlocks wisp count card")
@@ -67,12 +69,12 @@ func _run() -> void:
 	_check(growth.wisps.size() == 3, "count upgrades produce three companions")
 	growth.apply_card("S_WISP_CADENCE")
 	growth.apply_card("S_WISP_DAMAGE")
-	_check(is_equal_approx(growth.wisps[0].attack_interval, 1.44) and is_equal_approx(growth.wisps[2].damage_multiplier, 0.95) and growth.wisps[1].power_rank == 1, "wisp cadence and damage apply to every companion")
+	_check(is_equal_approx(growth.wisps[0].attack_interval, 1.125) and is_equal_approx(growth.wisps[2].damage_multiplier, 1.2) and growth.wisps[1].power_rank == 1, "wisp cadence and damage apply to every companion")
 	growth.apply_card("U_EDGE")
 	growth.apply_card("U_TEMPO")
 	growth.apply_card("U_REACH")
 	growth.apply_card("U_STEP")
-	_check(is_equal_approx(player.basic_damage_bonus, 0.15) and is_equal_approx(player.basic_speed_bonus, 0.12) and is_equal_approx(player.basic_reach_bonus, 0.15) and is_equal_approx(player.dash_cooldown_reduction, 0.08), "manual and dash upgrades remain separate")
+	_check(is_equal_approx(player.basic_damage_bonus, 0.15) and is_equal_approx(player.basic_speed_bonus, 0.12) and is_equal_approx(player.basic_reach_bonus, 0.15) and is_equal_approx(player.dash_cooldown_reduction, 0.15), "manual and dash upgrades remain separate")
 	growth.unlocks.lifetime_levelups = 6
 	growth.apply_card("S_WISP_ORBIT")
 	growth.apply_card("S_WISP_CHAIN")

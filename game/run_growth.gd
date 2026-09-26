@@ -12,13 +12,13 @@ const CARDS := {
 	"U_TEMPO": {"name": "빠른 손짓", "detail": "평타 공격 속도 +12%", "max": 3, "group": "BASIC"},
 	"U_REACH": {"name": "넓은 궤적", "detail": "평타 범위 +15%", "max": 3, "group": "BASIC"},
 	"U_CHAIN": {"name": "연속 손짓", "detail": "3타, 다음 등급에서 4타 해금", "max": 2, "group": "BASIC"},
-	"S_WISP_DAMAGE": {"name": "여우불 화력", "detail": "마탄 피해 계수 +0.30·적중 충격 강화", "max": 3, "group": "AUTO"},
+	"S_WISP_DAMAGE": {"name": "여우불 화력", "detail": "마탄 피해 계수 +0.20·적중 충격 강화", "max": 3, "group": "AUTO"},
 	"S_WISP_CADENCE": {"name": "빠른 여우불", "detail": "발사 간격 -10%", "max": 3, "group": "AUTO"},
 	"S_WISP_COUNT": {"name": "여우불 분화", "detail": "여우불 +1, 최대 3개", "max": 2, "group": "AUTO"},
 	"S_WISP_ORBIT": {"name": "회전 불꽃", "detail": "마탄을 유지하며 회전 접촉 피해", "max": 2, "group": "AUTO"},
 	"S_WISP_CHAIN": {"name": "연쇄 불꽃", "detail": "마탄 명중 후 가까운 적에게 연쇄", "max": 2, "group": "AUTO"},
 	"S_SEAL": {"name": "자동 마력진", "detail": "가까운 적에게 예고 후 범위 공격", "max": 3, "group": "AUTO"},
-	"U_STEP": {"name": "민첩한 대시", "detail": "대시 재사용 -8%", "max": 3, "group": "DASH"},
+	"U_STEP": {"name": "민첩한 대시", "detail": "대시 충전 강화", "max": 3, "group": "DASH"},
 }
 
 var arena: Node2D
@@ -55,12 +55,12 @@ func _ready() -> void:
 
 
 func next_xp() -> int:
-	return 8 + 4 * (level - 1)
+	return 8 + 2 * (level - 1)
 
 
 func on_enemy_defeated(enemy: TrainingEnemy) -> void:
 	var orb: ExperienceOrb = OrbScript.new()
-	orb.setup(4 if enemy.max_health > enemy.MAX_HEALTH else 1, player)
+	orb.setup(4 if enemy.max_health > enemy.MAX_HEALTH else 2, player)
 	orb.collected.connect(gain_xp)
 	arena.add_child(orb)
 	orb.global_position = enemy.global_position
@@ -110,8 +110,12 @@ func _start_choice() -> void:
 			continue
 		var card_id := current_choices[i]
 		var data: Dictionary = CARDS[card_id]
+		var next_rank := int(card_ranks.get(card_id, 0)) + 1
+		var detail: String = data.detail
+		if card_id == "U_STEP":
+			detail = ["재충전 15% 단축", "최대 충전 2회", "재충전 총 30% 단축"][next_rank - 1]
 		button.text = "%d  %s\n\n%s\n\n등급 %d / %d" % [
-			i + 1, data.name, data.detail, int(card_ranks.get(card_id, 0)) + 1, data.max
+			i + 1, data.name, detail, next_rank, data.max
 		]
 		button.show()
 
@@ -157,7 +161,7 @@ func choose_index(index: int) -> bool:
 	var card_id := current_choices[index]
 	apply_card(card_id)
 	pending_choices -= 1
-	_heal(0.10)
+	_heal(0.20)
 	choosing = false
 	overlay.hide()
 	current_choices.clear()
@@ -183,7 +187,7 @@ func apply_card(card_id: String) -> void:
 		"U_TEMPO": player.basic_speed_bonus = 0.12 * rank
 		"U_REACH": player.basic_reach_bonus = 0.15 * rank
 		"U_CHAIN": player.set_combo_rank(rank)
-		"U_STEP": player.dash_cooldown_reduction = 0.08 * rank
+		"U_STEP": player.set_dash_upgrade(rank)
 		"S_SEAL": _sync_seal(rank)
 		_: _sync_wisps()
 	card_applied.emit(card_id)
@@ -203,9 +207,9 @@ func _sync_wisps() -> void:
 		var wisp := wisps[i]
 		wisp.follow_offset = [Vector2(-42, -30), Vector2(42, -30), Vector2(0, -57)][i]
 		wisp.orbit_phase = TAU * float(i) / float(wisps.size())
-		wisp.attack_interval = 1.6 * (1.0 - 0.10 * float(card_ranks.get("S_WISP_CADENCE", 0)))
+		wisp.attack_interval = WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - 0.10 * float(card_ranks.get("S_WISP_CADENCE", 0)))
 		wisp.power_rank = int(card_ranks.get("S_WISP_DAMAGE", 0))
-		wisp.damage_multiplier = 0.65 + 0.30 * float(wisp.power_rank)
+		wisp.damage_multiplier = WispCompanion.BASE_DAMAGE_MULTIPLIER + WispCompanion.DAMAGE_BONUS_PER_RANK * float(wisp.power_rank)
 		wisp.orbit_enabled = int(card_ranks.get("S_WISP_ORBIT", 0)) > 0
 		wisp.orbit_damage = 4.0 + 3.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
 		wisp.chain_jumps = int(card_ranks.get("S_WISP_CHAIN", 0))

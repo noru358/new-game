@@ -3,7 +3,7 @@ extends Node2D
 
 var blocked := false
 var age := 0.0
-var duration := 0.20
+var duration := 0.24
 var power_rank := 0
 var sound_offset := 0.0
 
@@ -13,7 +13,7 @@ func _ready() -> void:
 	if not blocked and DisplayServer.get_name() != "headless":
 		var audio := AudioStreamPlayer2D.new()
 		audio.stream = preload("res://game/audio/wisp_hit.wav")
-		audio.volume_db = -13.0 + 1.5 * float(power_rank) + sound_offset
+		audio.volume_db = -11.0 + 1.5 * float(power_rank) + sound_offset
 		add_child(audio)
 		audio.play()
 

@@ -16,10 +16,10 @@ func _run() -> void:
 	var enemies: Node2D = scene.get_node("Enemies")
 	_check(scene.view_mode == 2 and scene.ground_is_diamond(), "selected 1B view retained")
 	_check(wisp.process_mode == Node.PROCESS_MODE_PAUSABLE, "wisp pauses with battle")
-	_check(is_equal_approx(wisp.attack_interval, 1.6), "base fire interval")
+	_check(is_equal_approx(wisp.attack_interval, 1.25), "current base fire interval")
 	_check(is_equal_approx(wisp.attack_range, 520.0), "base target range")
 	_check(is_equal_approx(wisp.projectile_speed, 620.0), "base projectile speed")
-	_check(is_equal_approx(wisp.damage_multiplier, 0.65), "base damage coefficient")
+	_check(is_equal_approx(wisp.damage_multiplier, 1.0), "current base damage coefficient")
 	player.health = 100.0
 	player.hurt_immunity = 100.0
 	for enemy in enemies.get_children():
@@ -39,7 +39,7 @@ func _run() -> void:
 	_check(wisp.muzzle_flash > 0.0, "shot creates a visible muzzle cue")
 	_check(player.attack_step == 0, "automatic shot does not use manual combo")
 	await _frames(27)
-	_check(is_equal_approx(near_enemy.health, before_health - player.ATTACK_DAMAGE * 0.65), "projectile deals base wisp damage once")
+	_check(is_equal_approx(near_enemy.health, before_health - player.ATTACK_DAMAGE), "projectile deals current base wisp damage once")
 	_check(get_nodes_in_group("wisp_flashes").size() > 0, "wisp impact creates a distinct flash")
 	_check(far_enemy.health == far_enemy.max_health, "nearest target takes the shot")
 	for enemy in enemies.get_children():
@@ -64,7 +64,7 @@ func _run() -> void:
 	wisp.process_mode = Node.PROCESS_MODE_DISABLED
 	near_enemy.global_position = Vector2(1350, 800)
 	var projectile: WispProjectile = load("res://game/wisp_projectile.gd").new()
-	projectile.setup(wisp.global_position.direction_to(near_enemy.global_position), 620.0, 520.0, 6.5)
+	projectile.setup(wisp.global_position.direction_to(near_enemy.global_position), 620.0, 520.0, 10.0)
 	scene.add_child(projectile)
 	projectile.global_position = wisp.global_position
 	before_health = near_enemy.health

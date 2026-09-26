@@ -9,13 +9,17 @@ const ChainArcScript = preload("res://game/wisp_chain_arc.gd")
 var direction := Vector2.RIGHT
 var speed := 620.0
 var maximum_distance := 520.0
-var damage := 6.5
+var damage := 10.0
 var distance_traveled := 0.0
 var age := 0.0
 var trail_points: Array[Vector2] = []
 var chain_jumps := 0
 var target: TrainingEnemy
 var power_rank := 0
+
+
+func _ready() -> void:
+	add_to_group("wisp_projectiles")
 
 
 func setup(new_direction: Vector2, new_speed: float, new_range: float, new_damage: float) -> void:
@@ -49,7 +53,7 @@ func _physics_process(delta: float) -> void:
 		flash.global_position = global_position
 		if hit.collider is TrainingEnemy and not hit.collider.is_queued_for_deletion():
 			var enemy: TrainingEnemy = hit.collider
-			enemy.take_hit(damage, direction, false, 1.0 + 0.08 * float(power_rank))
+			enemy.take_hit(damage, direction, false, 1.10 + 0.08 * float(power_rank))
 			enemy_hit.emit(enemy)
 			if chain_jumps > 0:
 				_chain_from(enemy)
