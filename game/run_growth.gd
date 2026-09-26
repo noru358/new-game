@@ -200,6 +200,7 @@ func _sync_wisps() -> void:
 		var companion: WispCompanion = WispScript.new()
 		companion.name = "Wisp%d" % (wisps.size() + 1)
 		companion.player = player
+		companion.navigation = wisps[0].navigation
 		companion.process_mode = Node.PROCESS_MODE_PAUSABLE
 		arena.add_child(companion)
 		wisps.append(companion)

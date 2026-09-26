@@ -32,8 +32,14 @@ func has_clear_path(from: Vector2, to: Vector2) -> bool:
 	var length_squared := segment.length_squared()
 	for obstacle in obstacles:
 		var center := Vector2(obstacle.x, obstacle.y)
+		var clearance := obstacle.z + ENEMY_RADIUS + 2.0
+		var start_offset := from - center
+		# An enemy touching a ruin can be inside this padded clearance.
+		# Let it move outward so the route finder can escape the contact edge.
+		if start_offset.length_squared() < clearance * clearance and start_offset.dot(segment) >= 0.0:
+			continue
 		var fraction := clampf((center - from).dot(segment) / maxf(length_squared, 1.0), 0.0, 1.0)
-		if center.distance_to(from + segment * fraction) < obstacle.z + ENEMY_RADIUS + 2.0:
+		if center.distance_to(from + segment * fraction) < clearance:
 			return false
 	return true
 

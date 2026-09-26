@@ -16,6 +16,7 @@ const DAMAGE_BONUS_PER_RANK := 0.20
 @export var damage_multiplier := BASE_DAMAGE_MULTIPLIER
 
 var player: SandboxPlayer
+var navigation: ArenaNavigation
 var fire_cooldown := 0.35
 var age := 0.0
 var shots_fired := 0
@@ -47,7 +48,7 @@ func _physics_process(delta: float) -> void:
 	muzzle_flash = maxf(0.0, muzzle_flash - delta)
 	var bob := Vector2(0.0, sin(age * 5.4) * 3.0)
 	var offset := Vector2.from_angle(player.companion_orbit_time * 3.0 + orbit_phase) * 64.0 + Vector2(0.0, -20.0) if orbit_enabled else follow_offset
-	global_position = global_position.lerp(player.global_position + offset + bob, minf(1.0, 13.0 * delta))
+	global_position = _outside_ruins(global_position.lerp(player.global_position + offset + bob, minf(1.0, 13.0 * delta)))
 	if orbit_enabled:
 		_hit_nearby_enemies()
 	fire_cooldown = maxf(0.0, fire_cooldown - delta)
@@ -57,6 +58,21 @@ func _physics_process(delta: float) -> void:
 			_fire(target)
 			fire_cooldown = attack_interval
 	queue_redraw()
+
+
+func _outside_ruins(point: Vector2) -> Vector2:
+	if navigation == null:
+		return point
+	for obstacle in navigation.obstacles:
+		var center := Vector2(obstacle.x, obstacle.y)
+		var safe_radius := obstacle.z + 12.0
+		if point.distance_squared_to(center) >= safe_radius * safe_radius:
+			continue
+		var outward := player.global_position - center
+		if outward.length_squared() < 0.01:
+			outward = point - center
+		point = center + outward.normalized() * safe_radius
+	return point
 
 
 func find_target() -> TrainingEnemy:
