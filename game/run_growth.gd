@@ -12,7 +12,7 @@ const CARDS := {
 	"U_TEMPO": {"name": "빠른 손짓", "detail": "평타 공격 속도 +12%", "max": 3, "group": "BASIC"},
 	"U_REACH": {"name": "넓은 궤적", "detail": "평타 범위 +15%", "max": 3, "group": "BASIC"},
 	"U_CHAIN": {"name": "연속 손짓", "detail": "3타, 다음 등급에서 4타 해금", "max": 2, "group": "BASIC"},
-	"S_WISP_DAMAGE": {"name": "여우불 화력", "detail": "마탄 피해 계수 +0.20", "max": 3, "group": "AUTO"},
+	"S_WISP_DAMAGE": {"name": "여우불 화력", "detail": "마탄 피해 계수 +0.30·적중 충격 강화", "max": 3, "group": "AUTO"},
 	"S_WISP_CADENCE": {"name": "빠른 여우불", "detail": "발사 간격 -10%", "max": 3, "group": "AUTO"},
 	"S_WISP_COUNT": {"name": "여우불 분화", "detail": "여우불 +1, 최대 3개", "max": 2, "group": "AUTO"},
 	"S_WISP_ORBIT": {"name": "회전 불꽃", "detail": "마탄을 유지하며 회전 접촉 피해", "max": 2, "group": "AUTO"},
@@ -204,9 +204,10 @@ func _sync_wisps() -> void:
 		wisp.follow_offset = [Vector2(-42, -30), Vector2(42, -30), Vector2(0, -57)][i]
 		wisp.orbit_phase = TAU * float(i) / float(wisps.size())
 		wisp.attack_interval = 1.6 * (1.0 - 0.10 * float(card_ranks.get("S_WISP_CADENCE", 0)))
-		wisp.damage_multiplier = 0.65 + 0.20 * float(card_ranks.get("S_WISP_DAMAGE", 0))
+		wisp.power_rank = int(card_ranks.get("S_WISP_DAMAGE", 0))
+		wisp.damage_multiplier = 0.65 + 0.30 * float(wisp.power_rank)
 		wisp.orbit_enabled = int(card_ranks.get("S_WISP_ORBIT", 0)) > 0
-		wisp.orbit_damage = 3.0 + 2.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
+		wisp.orbit_damage = 4.0 + 3.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
 		wisp.chain_jumps = int(card_ranks.get("S_WISP_CHAIN", 0))
 		if i > 0:
 			wisp.fire_cooldown = wisp.attack_interval * float(i) / float(wisps.size())

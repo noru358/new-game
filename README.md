@@ -21,11 +21,13 @@ The current 1A motion is a temporary feel test: the character sweeps magic with 
 
 Each run starts with two combo hits. Choose `U_CHAIN` once to unlock hit three and again for hit four. The card stays in the level-up offers until both are available. K no longer previews later hits in this scene. Two tougher enemies have 80 HP each so you can test gathering multiple targets and hitting both with the fourth strike.
 
-The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. After play feedback it fires every 1.6 seconds, deals 6.5 damage at the current base attack value, and acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. A small bright blue flame marks the launch, projectile trail, and impact. The temporary HUD line shows its cooldown.
+The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. It fires every 1.6 seconds, deals 6.5 damage at the current base attack value, and acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. The projectile gently adjusts toward a moving target for its first 0.42 seconds, while ruins still block it. The wisp can aim at the exposed edge of an enemy whose center is hidden by a ruin. A small bright blue flame marks the launch, projectile trail, and impact. The temporary HUD line shows its cooldown.
 
 Defeated enemies drop XP orbs. Collecting them fills a level meter (`8 + 4 × (level − 1)` XP for the next level); each level pauses combat for up to three card choices. The current pool has 11 card types: manual damage/speed/reach/combo, wisp damage/cadence/count/orbit/chain, an auxiliary auto seal, and dash cooldown. Count supports up to three wisps. Orbit contact damage adds to the projectile attack. The chain card links a hit to nearby enemies. The selected upgrades reset on R or a new run.
 
 Count, orbit, and chain cards permanently enter the offer pool after **2, 4, and 6 cumulative level-ups across runs**. The total is saved in two alternating `user://loop_conquest_1d_unlocks_*.json` files; the upgrade effects themselves still reset each run. The HUD shows the next unlock. These early thresholds are for the prototype and can be tuned after play. The record is local to each device and does not sync between macOS and Windows. After clearing six enemies, press N to repeat their placement and keep collecting XP. This is a practice loop, not the later timed spawn system.
+
+After the 1D play feedback, wisp power ranks add 0.30 damage coefficient each (up to 1.55), with a stronger local hit flash, short enemy recoil, and a distinct hit sound. Orbit damage is 4/7 per rank, and chain jumps retain 68% of the previous hit's damage. The six practice enemies now route around the nine ruin footprints when direct pursuit is blocked.
 
 At a fully upgraded build, the manual attack and wisp should feel similarly present in combat. This is a feel target rather than an exact 50:50 damage split; it needs to be checked with the 1D upgrade system in play.
 
@@ -44,9 +46,10 @@ godot --headless --path . --script res://tests/verify_1a.gd
 godot --headless --path . --script res://tests/verify_1b.gd
 godot --headless --path . --script res://tests/verify_1c.gd
 godot --headless --path . --script res://tests/verify_1d.gd
+godot --headless --path . --script res://tests/verify_1d_feedback.gd
 ```
 
-The scripts check 1A combat behavior, the 1B view and space layout, 1C wisp behavior, and 1D XP, card choice, combo unlocks, wisp/seal upgrades, persistent card unlocks, and practice wave reset. Screen readability, upgrade pacing, and combat feel require a person to test the running window.
+The scripts check 1A combat behavior, the 1B view and space layout, 1C wisp behavior, and 1D XP, card choice, combo unlocks, wisp/seal upgrades, persistent card unlocks, practice wave reset, obstacle routing, partial visibility, and moving-target hits. Screen readability, upgrade pacing, and combat feel require a person to test the running window.
 
 ## Scope
 

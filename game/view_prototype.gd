@@ -4,6 +4,7 @@ const ViewPropScript = preload("res://game/view_prop.gd")
 const WispScript = preload("res://game/wisp.gd")
 const GrowthScript = preload("res://game/run_growth.gd")
 const EnemyScene = preload("res://game/enemy.tscn")
+const NavigationScript = preload("res://game/arena_navigation.gd")
 const MODE_NAMES := ["1  HIGH TOPDOWN", "2  MEDIUM", "3  LOW"]
 const MODE_ZOOMS := [1.05, 1.25, 1.43]
 const MODE_PITCHES := [0.0, 0.55, 1.0]
@@ -27,6 +28,7 @@ var view_detail: Label
 var wisp_status: Label
 var wisp: Variant
 var growth: RunGrowth
+var arena_navigation: ArenaNavigation
 
 
 func _ready() -> void:
@@ -42,6 +44,10 @@ func _ready() -> void:
 		add_child(prop)
 		prop.configure(1 if i % 3 == 0 else 0, MODE_PITCHES[1])
 		view_props.append(prop)
+	arena_navigation = NavigationScript.new()
+	arena_navigation.setup(view_props)
+	for enemy in $Enemies.get_children():
+		enemy.navigation = arena_navigation
 	_build_view_ui()
 	set_view_mode(view_mode)
 	wisp = WispScript.new()
@@ -118,6 +124,7 @@ func _next_practice_wave() -> void:
 		enemy.position = PRACTICE_ENEMIES[i]
 		enemy.target = player
 		enemy.collision_mask = 6
+		enemy.navigation = arena_navigation
 		enemy.visual_pitch = MODE_PITCHES[view_mode - 1]
 		$Enemies.add_child(enemy)
 		enemy.defeated.connect(_on_enemy_defeated)

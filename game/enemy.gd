@@ -21,6 +21,10 @@ var gather_origin := Vector2.ZERO
 var gather_target := Vector2.ZERO
 var gather_elapsed := 0.0
 var gathering := false
+var navigation: ArenaNavigation
+var navigation_path := PackedVector2Array()
+var navigation_goal := Vector2.ZERO
+var navigation_repath_time := 0.0
 
 
 func _ready() -> void:
@@ -43,7 +47,7 @@ func _physics_process(delta: float) -> void:
 			gathering = false
 	else:
 		knockback = knockback.move_toward(Vector2.ZERO, 900.0 * delta)
-		var chase := Vector2.ZERO if stagger_time > 0.0 else global_position.direction_to(target.global_position) * MOVE_SPEED
+		var chase := Vector2.ZERO if stagger_time > 0.0 else _chase_direction(delta) * MOVE_SPEED
 		velocity = chase + knockback
 		move_and_slide()
 	global_position = Vector2(
@@ -55,12 +59,28 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 
-func take_hit(damage: float, push_direction: Vector2, is_finisher: bool) -> void:
+func _chase_direction(delta: float) -> Vector2:
+	var goal := target.global_position
+	if navigation == null or navigation.has_clear_path(global_position, goal):
+		navigation_path.clear()
+		return global_position.direction_to(goal)
+	navigation_repath_time -= delta
+	if navigation_repath_time <= 0.0 or navigation_path.is_empty() or navigation_goal.distance_to(goal) > 42.0:
+		navigation_path = navigation.find_path(global_position, goal)
+		navigation_goal = goal
+		navigation_repath_time = 0.28
+	for i in range(navigation_path.size() - 1, -1, -1):
+		if navigation.has_clear_path(global_position, navigation_path[i]):
+			return global_position.direction_to(navigation_path[i])
+	return Vector2.ZERO
+
+
+func take_hit(damage: float, push_direction: Vector2, is_finisher: bool, impact_scale: float = 1.0) -> void:
 	gathering = false
 	health -= damage
 	hit_flash = 0.19
-	stagger_time = 0.15 if is_finisher else 0.09
-	knockback = push_direction * (300.0 if is_finisher else 170.0)
+	stagger_time = 0.15 if is_finisher else 0.09 + 0.08 * (impact_scale - 1.0)
+	knockback = push_direction * (300.0 if is_finisher else 170.0 * impact_scale)
 	if health <= 0.0:
 		defeated.emit()
 		queue_free()

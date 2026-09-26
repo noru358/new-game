@@ -67,7 +67,7 @@ func _run() -> void:
 	_check(growth.wisps.size() == 3, "count upgrades produce three companions")
 	growth.apply_card("S_WISP_CADENCE")
 	growth.apply_card("S_WISP_DAMAGE")
-	_check(is_equal_approx(growth.wisps[0].attack_interval, 1.44) and is_equal_approx(growth.wisps[2].damage_multiplier, 0.85), "wisp cadence and damage apply to every companion")
+	_check(is_equal_approx(growth.wisps[0].attack_interval, 1.44) and is_equal_approx(growth.wisps[2].damage_multiplier, 0.95) and growth.wisps[1].power_rank == 1, "wisp cadence and damage apply to every companion")
 	growth.apply_card("U_EDGE")
 	growth.apply_card("U_TEMPO")
 	growth.apply_card("U_REACH")

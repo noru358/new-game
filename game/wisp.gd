@@ -25,6 +25,7 @@ var orbit_phase := 0.0
 var orbit_damage := 3.0
 var chain_jumps := 0
 var orbit_next_hits: Dictionary = {}
+var power_rank := 0
 
 
 func _ready() -> void:
@@ -67,7 +68,7 @@ func find_target() -> TrainingEnemy:
 			continue
 		if not screen.has_point(candidate.get_global_transform_with_canvas().origin):
 			continue
-		if _blocked_by_wall(candidate.global_position):
+		if _visible_aim_point(candidate).is_empty():
 			continue
 		nearest = candidate
 		best_distance = distance
@@ -80,12 +81,26 @@ func _blocked_by_wall(point: Vector2) -> bool:
 	return not get_world_2d().direct_space_state.intersect_ray(query).is_empty()
 
 
+func _visible_aim_point(candidate: TrainingEnemy) -> Dictionary:
+	var toward := global_position.direction_to(candidate.global_position)
+	var side := toward.orthogonal() * candidate.RADIUS * 0.65
+	for point in [candidate.global_position, candidate.global_position + side, candidate.global_position - side]:
+		if not _blocked_by_wall(point):
+			return {"point": point}
+	return {}
+
+
 func _fire(target: TrainingEnemy) -> void:
-	var direction := global_position.direction_to(target.global_position)
+	var aim := _visible_aim_point(target)
+	if aim.is_empty():
+		return
+	var direction := global_position.direction_to(aim.point)
 	shot_direction = direction
 	muzzle_flash = 0.14
 	var projectile: WispProjectile = ProjectileScript.new()
 	projectile.setup(direction, projectile_speed, attack_range, player.ATTACK_DAMAGE * damage_multiplier)
+	projectile.target = target
+	projectile.power_rank = power_rank
 	projectile.chain_jumps = chain_jumps
 	projectile.enemy_hit.connect(_on_projectile_hit)
 	projectile.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -117,7 +132,7 @@ func _hit_nearby_enemies() -> void:
 		candidate.take_hit(orbit_damage, direction, false)
 		enemy_hit.emit(candidate)
 		var flash := WispFlash.new()
-		flash.setup(direction, false)
+		flash.setup(direction, false, power_rank, -6.0)
 		flash.process_mode = Node.PROCESS_MODE_PAUSABLE
 		get_parent().add_child(flash)
 		flash.global_position = candidate.global_position
