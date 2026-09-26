@@ -31,10 +31,13 @@ var wave_hint: Label
 var wisp: Variant
 var growth: RunGrowth
 var arena_navigation: ArenaNavigation
+var practice_enemy_points: Array[Vector2] = []
 
 
 func _ready() -> void:
 	super._ready()
+	for point in PRACTICE_ENEMIES:
+		practice_enemy_points.append(point)
 	player.collision_mask = 4
 	for enemy in $Enemies.get_children():
 		enemy.collision_mask = 6
@@ -50,6 +53,7 @@ func _ready() -> void:
 	arena_navigation.setup(view_props)
 	for enemy in $Enemies.get_children():
 		enemy.navigation = arena_navigation
+		enemy.arena_bounds = player.arena_bounds
 		enemy.visual_pitch = VIEW_PITCH
 		enemy.queue_redraw()
 	camera.zoom = Vector2.ONE * CAMERA_ZOOM
@@ -105,6 +109,8 @@ func _process(delta: float) -> void:
 	var lead := CAMERA_LOOKAHEAD
 	camera.position = camera.position.lerp(player.facing * lead + Vector2(0, -lead * 0.22), minf(1.0, 5.0 * delta))
 	for prop in view_props:
+		if not prop is ViewProp:
+			continue
 		var behind: bool = player.global_position.y < prop.global_position.y
 		var close_x: bool = absf(player.global_position.x - prop.global_position.x) < prop.footprint_radius * 1.8
 		var close_y: bool = prop.global_position.y - player.global_position.y < 90.0
@@ -117,17 +123,18 @@ func _process(delta: float) -> void:
 
 
 func _next_practice_wave() -> void:
-	total_enemies = PRACTICE_ENEMIES.size()
+	total_enemies = practice_enemy_points.size()
 	remaining_enemies = total_enemies
-	for i in range(PRACTICE_ENEMIES.size()):
+	for i in range(practice_enemy_points.size()):
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
 		enemy.name = "PracticeEnemy%d" % i
 		enemy.role = PRACTICE_ROLES[i]
 		enemy.max_health = PRACTICE_HEALTH[i]
-		enemy.position = PRACTICE_ENEMIES[i]
+		enemy.position = practice_enemy_points[i]
 		enemy.target = player
 		enemy.collision_mask = 6
 		enemy.navigation = arena_navigation
+		enemy.arena_bounds = player.arena_bounds
 		enemy.visual_pitch = VIEW_PITCH
 		$Enemies.add_child(enemy)
 		enemy.defeated.connect(_on_enemy_defeated)

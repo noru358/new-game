@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Loop Conquest - 1E Enemy Roles Prototype"
-run/main_scene="res://game/view_prototype.tscn"
+config/name="Loop Conquest - 1F Temple Region Prototype"
+run/main_scene="res://game/temple_region.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [display]

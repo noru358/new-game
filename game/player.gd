@@ -59,6 +59,7 @@ var basic_speed_bonus := 0.0
 var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
 var companion_orbit_time := 0.0
+var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -135,8 +136,8 @@ func _physics_process(delta: float) -> void:
 		_update_attack(delta)
 	move_and_slide()
 	global_position = Vector2(
-		clampf(global_position.x, 25.0, 2375.0),
-		clampf(global_position.y, 25.0, 1375.0)
+		clampf(global_position.x, arena_bounds.position.x + 25.0, arena_bounds.end.x - 25.0),
+		clampf(global_position.y, arena_bounds.position.y + 25.0, arena_bounds.end.y - 25.0)
 	)
 	_maintain_gather_spacing()
 	queue_redraw()
