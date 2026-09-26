@@ -92,8 +92,8 @@ func _segment_hits_rect(from: Vector2, to: Vector2, area: Rect2) -> bool:
 
 
 func find_path(from: Vector2, to: Vector2) -> PackedVector2Array:
-	var start := _nearest_open(_cell_at(from))
-	var goal := _nearest_open(_cell_at(to))
+	var start := _nearest_open(_cell_at(from), from)
+	var goal := _nearest_open(_cell_at(to), to)
 	if start.x < 0 or goal.x < 0:
 		return PackedVector2Array()
 	return grid.get_point_path(start, goal)
@@ -106,7 +106,7 @@ func _cell_at(point: Vector2) -> Vector2i:
 	)
 
 
-func _nearest_open(cell: Vector2i) -> Vector2i:
+func _nearest_open(cell: Vector2i, world_point: Vector2) -> Vector2i:
 	for radius in range(6):
 		var best := Vector2i(-1, -1)
 		var best_distance := 9999
@@ -114,6 +114,10 @@ func _nearest_open(cell: Vector2i) -> Vector2i:
 			for x in range(maxi(0, cell.x - radius), mini(grid_size.x - 1, cell.x + radius) + 1):
 				var candidate := Vector2i(x, y)
 				if grid.is_point_solid(candidate):
+					continue
+				# A nearby grid cell across a cliff is not a valid start or goal.
+				# Otherwise the first waypoint asks the enemy to walk into the wall.
+				if not has_clear_path(world_point, grid.get_point_position(candidate)):
 					continue
 				var distance := (candidate - cell).length_squared()
 				if distance < best_distance:

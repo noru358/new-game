@@ -4,6 +4,8 @@ const Terrain = preload("res://game/hybrid_terrain.gd")
 const PlayerScene = preload("res://game/player.tscn")
 const EnemyScene = preload("res://game/enemy.tscn")
 const ActorTexture = preload("res://game/hybrid_actor.svg")
+const COMBAT_CAMERA_SIZE := 10.8
+const OVERVIEW_CAMERA_SIZE := 30.0
 var terrain := Terrain.new()
 var simulation := Node2D.new()
 var player: SandboxPlayer
@@ -15,6 +17,8 @@ var shots: Dictionary = {}
 var wisp_visual: MeshInstance3D
 var attack_visual := MeshInstance3D.new()
 var attack_mesh := ImmediateMesh.new()
+var attack_ray_limits: Dictionary = {}
+var attack_ray_reach := 0.0
 var hud: Label
 var pause_label: Label
 var pause_backdrop: ColorRect
@@ -24,7 +28,7 @@ var paused := false
 var terrain_mesh: MeshInstance3D
 
 func _ready() -> void:
-	get_window().title = "Loop Conquest — Hybrid Height v01"
+	get_window().title = "Loop Conquest — Hybrid Height v02"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_physics_priority = 100
 	_register_inputs()
@@ -47,6 +51,11 @@ func _ready() -> void:
 	player.arena_bounds = Rect2(Vector2.ZERO, Terrain.SIZE)
 	player.collision_mask = 4
 	player.input_rotation = -PI / 4.0
+	player.move_speed_multiplier = 1.12
+	player.dash_distance_multiplier = 1.16
+	player.basic_speed_bonus = 0.18
+	player.attack_active_multiplier = 1.6
+	player.attack_recovery_multiplier = 0.78
 	player.attack_path_filter = clear_attack
 	simulation.add_child(player)
 	player.set_dash_upgrade(2)
@@ -60,9 +69,14 @@ func _ready() -> void:
 	simulation.add_child(wisp)
 	wisp_visual = _sphere(0.13, Color("49dce8"))
 	add_child(wisp_visual)
+	wisp_visual.position = terrain.world_point(wisp.global_position, 80)
+	wisp_visual.reset_physics_interpolation()
 	wisp.enemy_hit.connect(func(enemy: TrainingEnemy): _flash(enemy.global_position, Color("66efff")))
 	attack_visual.mesh = attack_mesh
-	attack_visual.material_override = _material(Color("ffd486"), true)
+	var attack_material := _material(Color.WHITE, true)
+	attack_material.vertex_color_use_as_albedo = true
+	attack_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	attack_visual.material_override = attack_material
 	add_child(attack_visual)
 	spawn_enemies()
 	_build_ui()
@@ -70,7 +84,7 @@ func _ready() -> void:
 	camera.look_at(terrain.world_point(player.position), Vector3.UP)
 	camera.reset_physics_interpolation()
 	get_window().focus_exited.connect(func(): _set_paused(true))
-	print("Hybrid height v01 ready: 2D simulation, shared terrain data, orthographic 3D presentation")
+	print("Hybrid height v02 ready: 2D simulation, shared terrain data, orthographic 3D presentation")
 
 func _register_inputs() -> void:
 	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
@@ -110,12 +124,29 @@ func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> vo
 				vertices.append(Vector3(point.x, elevation.call(point), point.y))
 			_quad(st, vertices, color.lightened(0.035) if (x / 100 + z / 100) % 2 == 0 else color)
 
-func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, color: Color) -> void:
+func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, color: Color, openings: Dictionary = {}, skip_sides: Array = []) -> void:
 	var corners := [area.position, Vector2(area.end.x, area.position.y), area.end, Vector2(area.position.x, area.end.y)]
 	for i in range(4):
+		var side: String = ["north", "east", "south", "west"][i]
+		if side in skip_sides:
+			continue
 		var a: Vector2 = corners[i]
 		var b: Vector2 = corners[(i + 1) % 4]
-		_quad(st, [Vector3(a.x, bottom, a.y), Vector3(b.x, bottom, b.y), Vector3(b.x, elevation.call(b), b.y), Vector3(a.x, elevation.call(a), a.y)], color)
+		var axis := 0 if i % 2 == 0 else 1
+		var spans: Array = []
+		var cursor: float = minf(a[axis], b[axis])
+		for opening in openings.get(side, []):
+			if opening[0] > cursor:
+				spans.append([cursor, opening[0]])
+			cursor = opening[1]
+		if cursor < maxf(a[axis], b[axis]):
+			spans.append([cursor, maxf(a[axis], b[axis])])
+		for span in spans:
+			var p0 := a
+			var p1 := b
+			p0[axis] = span[0]
+			p1[axis] = span[1]
+			_quad(st, [Vector3(p0.x, bottom, p0.y), Vector3(p1.x, bottom, p1.y), Vector3(p1.x, elevation.call(p1), p1.y), Vector3(p0.x, elevation.call(p0), p0.y)], color)
 
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
@@ -124,18 +155,19 @@ func _build_terrain() -> void:
 	for plateau in terrain.plateaus:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else Color("e7ddbd"))
-		_sides(st, plateau.area, elevation, plateau.base, Color("798e80"))
+		_sides(st, plateau.area, elevation, plateau.base, Color("798e80"), plateau.openings)
 	for ramp in terrain.ramps:
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
-		_top(st, ramp.area, elevation, Color("c9bb91"))
-		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"))
+		var is_stone_path: bool = ramp.get("kind", "") == "stone_path"
+		_top(st, ramp.area, elevation, Color("a6aaa0") if is_stone_path else Color("c9bb91"))
+		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("677d78") if is_stone_path else Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
 		# Thin transverse bands follow the inclined surface; they are not flat diamonds.
 		var area: Rect2 = ramp.area
-		for i in range(1, 10):
+		for i in range(1, 9 if is_stone_path else 10):
 			var band := area
-			band.position[ramp.axis] += area.size[ramp.axis] * float(i) / 10.0
-			band.size[ramp.axis] = 3
-			_top(st, band, func(p): return terrain.ramp_height(ramp, p) + 0.5, Color("9a957f"))
+			band.position[ramp.axis] += area.size[ramp.axis] * float(i) / (9.0 if is_stone_path else 10.0)
+			band.size[ramp.axis] = 5 if is_stone_path else 3
+			_top(st, band, func(p): return terrain.ramp_height(ramp, p) + 0.5, Color("667e79") if is_stone_path else Color("9a957f"))
 	st.generate_normals()
 	terrain_mesh = MeshInstance3D.new()
 	terrain_mesh.mesh = st.commit()
@@ -159,7 +191,7 @@ func _build_camera() -> void:
 	sun.light_energy = 0.65
 	add_child(sun)
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.size = 14.4
+	camera.size = COMBAT_CAMERA_SIZE
 	add_child(camera)
 	camera.current = true
 
@@ -183,6 +215,8 @@ func _actor_visual(color: Color) -> Node3D:
 	# Offset in camera-up direction so billboard feet stay on the sampled ground.
 	sprite.position = Vector3(-0.353553, 0.866025, -0.353553) * 0.44
 	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	# Alpha-scissor writes depth consistently when the billboard brushes a cliff face.
+	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	sprite.modulate = color
 	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
 	root.add_child(sprite)
@@ -227,7 +261,12 @@ func _on_screen(candidate: Node2D) -> bool:
 	return not camera.is_position_behind(point) and get_viewport().get_visible_rect().has_point(camera.unproject_position(point))
 
 func _constrain_wisp(point: Vector2) -> Vector2:
-	return point if clear_attack(player.global_position, point) else player.global_position
+	var query := PhysicsRayQueryParameters2D.create(player.global_position, point, 4)
+	query.hit_from_inside = true
+	var hit := simulation.get_world_2d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():
+		return point
+	return hit.position.move_toward(player.global_position, 15.0)
 
 func _physics_process(delta: float) -> void:
 	if paused or not is_instance_valid(player): return
@@ -244,7 +283,7 @@ func _physics_process(delta: float) -> void:
 		var dx: float = (terrain.height_at(p + Vector2(1, 0)) - terrain.height_at(p - Vector2(1, 0))) * 0.5
 		var dz: float = (terrain.height_at(p + Vector2(0, 1)) - terrain.height_at(p - Vector2(0, 1))) * 0.5
 		visual.get_node("Shadow").quaternion = Quaternion(Vector3.UP, Vector3(-dx, 1, -dz).normalized())
-	wisp_visual.position = terrain.world_point(wisp.global_position, 80)
+	wisp_visual.position = wisp_visual.position.lerp(terrain.world_point(wisp.global_position, 80), minf(1.0, 13.0 * delta))
 	for shot in get_tree().get_nodes_in_group("wisp_projectiles"):
 		if not shots.has(shot):
 			var visual := _sphere(0.075, Color("96f4ff"))
@@ -269,20 +308,77 @@ func _draw_attack() -> void:
 	attack_mesh.clear_surfaces()
 	if player.attack_step == 0: return
 	var spec: Dictionary = player._attack_spec(player.attack_step)
-	var vertices := PackedVector3Array()
-	for i in range(24):
-		var angle: float = player.attack_direction.angle() - deg_to_rad(spec.angle) * 0.5 + deg_to_rad(spec.angle) * float(i) / 24.0
-		var next: float = angle + deg_to_rad(spec.angle) / 24.0
-		var a: Vector2 = player.position + Vector2.from_angle(angle) * spec.radius
-		var b: Vector2 = player.position + Vector2.from_angle(next) * spec.radius
-		if clear_attack(player.position, a) and clear_attack(player.position, b):
-			vertices.append(terrain.world_point(a, 15))
-			vertices.append(terrain.world_point(b, 15))
-	if vertices.is_empty(): return
-	attack_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-	for vertex in vertices:
-		attack_mesh.surface_add_vertex(vertex)
+	var elapsed: float = player.attack_elapsed
+	var windup: float = spec.windup
+	var active: float = spec.active
+	var recovery: float = spec.recovery
+	var reach: float = spec.radius
+	attack_ray_reach = reach + TrainingEnemy.RADIUS + 8.0
+	attack_ray_limits.clear()
+	var half_angle: float = deg_to_rad(spec.angle) * 0.5
+	var start: float = player.attack_direction.angle() - half_angle
+	var arc: float = half_angle * 2.0
+	var active_progress: float = clampf((elapsed - windup) / active, 0.0, 1.0)
+	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
+	var base := Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("ffe19a")
+	attack_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	# The translucent footprint is the same fan used by the hit test. The pale
+	# outer fringe represents the enemy's 17 px body radius at the boundary.
+	for i in range(32):
+		var a0 := start + arc * float(i) / 32.0
+		var a1 := start + arc * float(i + 1) / 32.0
+		for band in range(5):
+			var inner := reach * float(band) / 5.0
+			var outer := reach * float(band + 1) / 5.0
+			var tint := base
+			tint.a = (0.19 if elapsed >= windup else 0.055) * fade
+			_attack_band(a0, a1, inner, outer, tint)
+		var fringe := base
+		fringe.a = 0.09 * fade
+		_attack_band(a0, a1, reach, reach + TrainingEnemy.RADIUS, fringe)
+		var rim := base.lightened(0.55)
+		rim.a = (0.75 if elapsed >= windup else 0.4) * fade
+		_attack_band(a0, a1, reach + TrainingEnemy.RADIUS - 3.0, reach + TrainingEnemy.RADIUS + 2.0, rim)
+	# A moving broad blade gives the two starter slashes opposite directions.
+	if elapsed >= windup:
+		var direction := 1.0 if player.attack_step != 2 else -1.0
+		var head := start + arc * (active_progress if direction > 0.0 else 1.0 - active_progress)
+		var tail := head - direction * minf(0.64, arc * 0.45)
+		var slash_color := base.lightened(0.48)
+		slash_color.a = 0.93 * fade
+		for i in range(10):
+			var first := lerpf(tail, head, float(i) / 10.0)
+			var second := lerpf(tail, head, float(i + 1) / 10.0)
+			_attack_band(first, second, reach * 0.55, reach * 1.02, slash_color, 60.0)
+		var edge_color := Color.WHITE
+		edge_color.a = 0.56 * fade
+		_attack_band(head - direction * 0.055, head + direction * 0.055, reach * 0.32, reach * 1.06, edge_color, 67.0)
 	attack_mesh.surface_end()
+
+func _attack_band(a0: float, a1: float, inner: float, outer: float, color: Color, lift: float = 22.0) -> void:
+	var visible_distance := minf(_attack_visible_distance(a0), _attack_visible_distance(a1))
+	if visible_distance <= inner:
+		return
+	outer = minf(outer, visible_distance)
+	var origin := player.global_position
+	var p0 := origin + Vector2.from_angle(a0) * inner
+	var p1 := origin + Vector2.from_angle(a1) * inner
+	var p2 := origin + Vector2.from_angle(a1) * outer
+	var p3 := origin + Vector2.from_angle(a0) * outer
+	for point in [p0, p1, p2, p0, p2, p3]:
+		attack_mesh.surface_set_color(color)
+		attack_mesh.surface_add_vertex(terrain.world_point(point, lift))
+
+func _attack_visible_distance(angle: float) -> float:
+	if attack_ray_limits.has(angle):
+		return attack_ray_limits[angle]
+	var origin := player.global_position
+	var query := PhysicsRayQueryParameters2D.create(origin, origin + Vector2.from_angle(angle) * attack_ray_reach, 4)
+	query.hit_from_inside = true
+	var hit := simulation.get_world_2d().direct_space_state.intersect_ray(query)
+	var result := attack_ray_reach if hit.is_empty() else maxf(0.0, origin.distance_to(hit.position) - 2.0)
+	attack_ray_limits[angle] = result
+	return result
 
 func _flash(point: Vector2, color: Color) -> void:
 	var flash := _sphere(0.22, color)
@@ -314,9 +410,9 @@ func _build_ui() -> void:
 	help.add_theme_constant_override("shadow_offset_x", 1)
 	help.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(help)
-	var places := {"남쪽 입구": Vector2(930, 1780), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
+	var places := {"남쪽 입구": Vector2(930, 1780), "바위길": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
 	var row := HBoxContainer.new()
-	row.position = Vector2(710, 20)
+	row.position = Vector2(590, 20)
 	canvas.add_child(row)
 	for title in places:
 		var button := Button.new()
@@ -347,6 +443,8 @@ func teleport(point: Vector2) -> void:
 	player.reset_physics_interpolation()
 	wisp.position = point
 	wisp.reset_physics_interpolation()
+	wisp_visual.position = terrain.world_point(point, 80)
+	wisp_visual.reset_physics_interpolation()
 	actors[player].position = terrain.world_point(point)
 	actors[player].reset_physics_interpolation()
 	camera.position = terrain.world_point(point, 35) + Vector3(14, 11.431, 14)
@@ -363,7 +461,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_TAB:
 			overview = not overview
-			camera.size = 30.0 if overview else 14.4
+			camera.size = OVERVIEW_CAMERA_SIZE if overview else COMBAT_CAMERA_SIZE
 		elif event.keycode == KEY_N and not paused:
 			spawn_enemies()
 		elif event.keycode == KEY_R:

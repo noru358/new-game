@@ -61,6 +61,10 @@ var dash_cooldown_reduction := 0.0
 var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var input_rotation := 0.0
+var move_speed_multiplier := 1.0
+var dash_distance_multiplier := 1.0
+var attack_active_multiplier := 1.0
+var attack_recovery_multiplier := 1.0
 var attack_path_filter: Callable
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -132,9 +136,9 @@ func _physics_process(delta: float) -> void:
 		var dash_motion_time := minf(delta, dash_time)
 		dash_elapsed += dash_motion_time
 		dash_time = maxf(0.0, dash_time - delta)
-		velocity = dash_direction * (DASH_DISTANCE / DASH_DURATION) * (dash_motion_time / delta)
+		velocity = dash_direction * (DASH_DISTANCE * dash_distance_multiplier / DASH_DURATION) * (dash_motion_time / delta)
 	else:
-		velocity = movement * MOVE_SPEED * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
+		velocity = movement * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
 	move_and_slide()
 	global_position = Vector2(
@@ -191,8 +195,8 @@ func _attack_spec(step: int) -> Dictionary:
 	var attack: Dictionary = ATTACKS[step - 1].duplicate()
 	var speed_scale := 1.0 + basic_speed_bonus
 	attack.windup /= speed_scale
-	attack.active /= speed_scale
-	attack.recovery /= speed_scale
+	attack.active = attack.active * attack_active_multiplier / speed_scale
+	attack.recovery = attack.recovery * attack_recovery_multiplier / speed_scale
 	attack.radius *= 1.0 + basic_reach_bonus
 	return attack
 
