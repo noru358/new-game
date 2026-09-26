@@ -42,9 +42,10 @@ func _process(delta: float) -> void:
 	if hitstop_until_usec > 0 and Time.get_ticks_usec() >= hitstop_until_usec:
 		Engine.time_scale = 1.0
 		hitstop_until_usec = 0
-	status_label.text = "HP %d / 100    FRAGMENTS %d / %d    COMBO %d    DASH %s" % [
+	status_label.text = "HP %d / 100    FRAGMENTS %d / %d    COMBO %d    DASH %d/%d%s" % [
 		int(player.health), remaining_enemies, total_enemies, player.combo_limit(),
-		"READY" if player.dash_cooldown <= 0.0 else "%.1fs" % player.dash_cooldown
+		player.dash_charges, player.dash_max_charges,
+		"" if player.dash_charges == player.dash_max_charges else "  %.1fs" % player.dash_cooldown
 	]
 	if remaining_enemies == 0:
 		status_label.text += "    ARENA CLEAR - R TO RESET"

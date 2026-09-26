@@ -14,6 +14,7 @@ const DASH_COOLDOWN := 1.2
 const DASH_INVULNERABILITY := 0.10
 const HURT_INVULNERABILITY := 0.70
 const COMBO_RESET_TIME := 0.75
+const ATTACK_BUFFER_TIME := 0.18
 const ATTACK_DAMAGE := 10.0
 const GATHER_FORWARD_OFFSET := 65.0
 
@@ -38,11 +39,14 @@ var gathered_enemies: Array[TrainingEnemy] = []
 var combo_wait := 0.0
 var attack_lock := 0.0
 var queued_attack := false
+var attack_buffer_time := 0.0
 var dash_requested := false
 var attack_blocked_until_release := false
 var dash_time := 0.0
 var dash_elapsed := 0.0
 var dash_cooldown := 0.0
+var dash_charges := 1
+var dash_max_charges := 1
 var dash_direction := Vector2.RIGHT
 var hurt_immunity := 0.0
 var hit_flash := 0.0
@@ -50,6 +54,11 @@ var hurt_stun_time := 0.0
 var hurt_recoil := Vector2.ZERO
 var impact_played_this_attack := false
 var hit_targets: Dictionary = {}
+var basic_damage_bonus := 0.0
+var basic_speed_bonus := 0.0
+var basic_reach_bonus := 0.0
+var dash_cooldown_reduction := 0.0
+var companion_orbit_time := 0.0
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -74,6 +83,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("attack") and not attack_blocked_until_release:
 		queued_attack = true
+		attack_buffer_time = ATTACK_BUFFER_TIME
 	if event.is_action_pressed("dash"):
 		dash_requested = true
 
@@ -81,21 +91,37 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if health <= 0.0:
 		return
+	companion_orbit_time += delta
 	var movement := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if movement.length_squared() > 0.0:
 		facing = movement.normalized()
+		if attack_step > 0 and (attack_step != 3 or gathered_enemies.is_empty()):
+			if attack_step == 3 and not facing.is_equal_approx(attack_direction):
+				gather_target_global = global_position + facing * GATHER_FORWARD_OFFSET
+			attack_direction = facing
 	if attack_blocked_until_release:
 		if not Input.is_action_pressed("attack"):
 			attack_blocked_until_release = false
 
-	dash_cooldown = maxf(0.0, dash_cooldown - delta)
+	if dash_charges < dash_max_charges:
+		dash_cooldown = maxf(0.0, dash_cooldown - delta)
+		if dash_cooldown <= 0.0:
+			dash_charges += 1
+			if dash_charges < dash_max_charges:
+				dash_cooldown = dash_recharge_duration()
+	else:
+		dash_cooldown = 0.0
+	if queued_attack:
+		attack_buffer_time -= delta
+		if attack_buffer_time <= 0.0:
+			queued_attack = false
 	attack_lock = maxf(0.0, attack_lock - delta)
 	hurt_immunity = maxf(0.0, hurt_immunity - delta)
 	hit_flash = maxf(0.0, hit_flash - delta)
 	hurt_stun_time = maxf(0.0, hurt_stun_time - delta)
 	hurt_recoil = hurt_recoil.move_toward(Vector2.ZERO, 2100.0 * delta)
 
-	if dash_requested and dash_cooldown <= 0.0:
+	if dash_requested and dash_charges > 0:
 		_start_dash(movement)
 	dash_requested = false
 
@@ -112,6 +138,7 @@ func _physics_process(delta: float) -> void:
 		clampf(global_position.x, 25.0, 2375.0),
 		clampf(global_position.y, 25.0, 1375.0)
 	)
+	_maintain_gather_spacing()
 	queue_redraw()
 
 
@@ -119,23 +146,52 @@ func _start_dash(movement: Vector2) -> void:
 	dash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
 	dash_time = DASH_DURATION
 	dash_elapsed = 0.0
-	dash_cooldown = DASH_COOLDOWN
+	if dash_charges == dash_max_charges:
+		dash_cooldown = dash_recharge_duration()
+	dash_charges -= 1
 	if attack_step > 0:
-		var attack: Dictionary = ATTACKS[attack_step - 1]
+		var attack := _attack_spec(attack_step)
 		var remaining: float = attack.windup + attack.active + attack.recovery - attack_elapsed
 		attack_lock = maxf(attack_lock, remaining)
 	attack_step = 0
 	next_combo_step = 1
 	combo_wait = 0.0
 	queued_attack = false
+	attack_buffer_time = 0.0
 	hit_targets.clear()
 	gather_sources.clear()
 	gathered_enemies.clear()
 	_play_sound("res://game/audio/dash.wav", attack_audio)
 
 
+func dash_recharge_duration() -> float:
+	return DASH_COOLDOWN * (1.0 - dash_cooldown_reduction)
+
+
+func set_dash_upgrade(rank: int) -> void:
+	var previous_duration := dash_recharge_duration()
+	var previous_capacity := dash_max_charges
+	dash_cooldown_reduction = 0.15 if rank == 1 or rank == 2 else 0.30 if rank >= 3 else 0.0
+	dash_max_charges = 2 if rank >= 2 else 1
+	dash_charges = mini(dash_max_charges, dash_charges + dash_max_charges - previous_capacity)
+	if dash_charges >= dash_max_charges:
+		dash_cooldown = 0.0
+	elif dash_cooldown > 0.0:
+		dash_cooldown *= dash_recharge_duration() / previous_duration
+
+
 func combo_limit() -> int:
 	return 2 + combo_rank
+
+
+func _attack_spec(step: int) -> Dictionary:
+	var attack: Dictionary = ATTACKS[step - 1].duplicate()
+	var speed_scale := 1.0 + basic_speed_bonus
+	attack.windup /= speed_scale
+	attack.active /= speed_scale
+	attack.recovery /= speed_scale
+	attack.radius *= 1.0 + basic_reach_bonus
+	return attack
 
 
 func set_combo_rank(rank: int) -> void:
@@ -143,6 +199,7 @@ func set_combo_rank(rank: int) -> void:
 	attack_step = 0
 	next_combo_step = 1
 	queued_attack = false
+	attack_buffer_time = 0.0
 	hit_targets.clear()
 	gather_sources.clear()
 	gathered_enemies.clear()
@@ -152,7 +209,7 @@ func set_combo_rank(rank: int) -> void:
 func _update_attack(delta: float) -> void:
 	if attack_step > 0:
 		attack_elapsed += delta
-		var attack: Dictionary = ATTACKS[attack_step - 1]
+		var attack := _attack_spec(attack_step)
 		if attack_elapsed >= attack.windup and attack_elapsed < attack.windup + attack.active:
 			_hit_enemies(attack)
 		if attack_elapsed >= attack.windup + attack.active + attack.recovery:
@@ -175,6 +232,7 @@ func _start_attack() -> void:
 	if attack_step == 3:
 		gather_target_global = global_position + attack_direction * GATHER_FORWARD_OFFSET
 	queued_attack = false
+	attack_buffer_time = 0.0
 	hit_targets.clear()
 	gather_sources.clear()
 	gathered_enemies.clear()
@@ -201,7 +259,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 		hit_targets[id] = true
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
-		enemy.take_hit(ATTACK_DAMAGE * attack.multiplier, push_direction, finisher)
+		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus) * attack.multiplier, push_direction, finisher)
 		if attack_step == 3 and not enemy.is_queued_for_deletion():
 			gathered_enemies.append(enemy)
 			new_gathered = true
@@ -227,10 +285,41 @@ func _arrange_gathered_enemies() -> void:
 	var count := living.size()
 	if count == 0:
 		return
-	var ring_radius := 0.0 if count == 1 else maxf(20.0, 20.0 / sin(PI / float(count)))
+	var ring_radius := _gather_ring_radius(count)
 	for index in range(count):
 		var angle := attack_direction.angle() - PI * 0.5 + float(index) * TAU / float(count)
 		living[index].gather_to(gather_target_global + Vector2.from_angle(angle) * ring_radius)
+
+
+func _gather_ring_radius(count: int) -> float:
+	return 0.0 if count <= 1 else maxf(20.0, 20.0 / sin(PI / float(count)))
+
+
+func _maintain_gather_spacing() -> void:
+	if attack_step != 3 or gathered_enemies.is_empty():
+		return
+	var pulling := false
+	for enemy in gathered_enemies:
+		if is_instance_valid(enemy) and enemy.gathering:
+			pulling = true
+			break
+	if not pulling:
+		return
+	var distance_to_center := gather_target_global - global_position
+	var forward := distance_to_center.dot(attack_direction)
+	var side := (distance_to_center - attack_direction * forward).length()
+	var minimum := maxf(GATHER_FORWARD_OFFSET, 45.0 + _gather_ring_radius(gathered_enemies.size()))
+	if side >= minimum:
+		return
+	var needed_forward := sqrt(minimum * minimum - side * side)
+	var shift := maxf(0.0, needed_forward - forward)
+	if shift <= 0.0:
+		return
+	var movement := attack_direction * shift
+	gather_target_global += movement
+	for enemy in gathered_enemies:
+		if is_instance_valid(enemy) and enemy.gathering:
+			enemy.gather_target += movement
 
 
 func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void:
@@ -257,6 +346,7 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 
 func require_attack_release() -> void:
 	queued_attack = false
+	attack_buffer_time = 0.0
 	attack_blocked_until_release = true
 
 
@@ -307,7 +397,7 @@ func _draw() -> void:
 
 
 func _draw_attack() -> void:
-	var attack: Dictionary = ATTACKS[attack_step - 1]
+	var attack := _attack_spec(attack_step)
 	var windup: float = attack.windup
 	var active: float = attack.active
 	var recovery: float = attack.recovery
@@ -389,7 +479,7 @@ func _draw_gather(attack: Dictionary, fade: float) -> void:
 
 
 func _draw_hand_gesture() -> void:
-	var attack: Dictionary = ATTACKS[attack_step - 1]
+	var attack := _attack_spec(attack_step)
 	var progress: float = clampf((attack_elapsed - attack.windup) / attack.active, 0.0, 1.0)
 	var perpendicular := attack_direction.orthogonal()
 	if attack_step == 3:

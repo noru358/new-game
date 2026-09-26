@@ -4,14 +4,22 @@ extends Node2D
 signal enemy_hit(enemy: TrainingEnemy)
 
 const FlashScript = preload("res://game/wisp_flash.gd")
+const ChainArcScript = preload("res://game/wisp_chain_arc.gd")
 
 var direction := Vector2.RIGHT
 var speed := 620.0
 var maximum_distance := 520.0
-var damage := 6.5
+var damage := 10.0
 var distance_traveled := 0.0
 var age := 0.0
 var trail_points: Array[Vector2] = []
+var chain_jumps := 0
+var target: TrainingEnemy
+var power_rank := 0
+
+
+func _ready() -> void:
+	add_to_group("wisp_projectiles")
 
 
 func setup(new_direction: Vector2, new_speed: float, new_range: float, new_damage: float) -> void:
@@ -27,6 +35,7 @@ func _physics_process(delta: float) -> void:
 	if remaining <= 0.0:
 		queue_free()
 		return
+	_steer_to_target(delta)
 	var travel := minf(speed * delta, remaining)
 	var destination := global_position + direction * travel
 	trail_points.append(global_position)
@@ -38,20 +47,72 @@ func _physics_process(delta: float) -> void:
 	if not hit.is_empty():
 		global_position = hit.position
 		var flash: Node2D = FlashScript.new()
-		flash.setup(direction, not hit.collider is TrainingEnemy)
+		flash.setup(direction, not hit.collider is TrainingEnemy, power_rank)
 		flash.process_mode = Node.PROCESS_MODE_PAUSABLE
 		get_parent().add_child(flash)
 		flash.global_position = global_position
 		if hit.collider is TrainingEnemy and not hit.collider.is_queued_for_deletion():
 			var enemy: TrainingEnemy = hit.collider
-			enemy.take_hit(damage, direction, false)
+			enemy.take_hit(damage, direction, false, 1.10 + 0.08 * float(power_rank))
 			enemy_hit.emit(enemy)
+			if chain_jumps > 0:
+				_chain_from(enemy)
 		queue_free()
 		return
 	global_position = destination
 	distance_traveled += travel
 	age += delta
 	queue_redraw()
+
+
+func _steer_to_target(delta: float) -> void:
+	if age >= 0.42 or not is_instance_valid(target) or target.is_queued_for_deletion() or target.health <= 0.0:
+		return
+	var wall_ray := PhysicsRayQueryParameters2D.create(global_position, target.global_position, 4)
+	if not get_world_2d().direct_space_state.intersect_ray(wall_ray).is_empty():
+		return
+	var desired := global_position.direction_to(target.global_position)
+	var turn := wrapf(desired.angle() - direction.angle(), -PI, PI)
+	direction = direction.rotated(clampf(turn, -5.0 * delta, 5.0 * delta)).normalized()
+
+
+func _chain_from(first_enemy: TrainingEnemy) -> void:
+	var current_position := first_enemy.global_position
+	var visited := {first_enemy.get_instance_id(): true}
+	var screen := get_viewport().get_visible_rect()
+	for jump in range(chain_jumps):
+		var nearest: TrainingEnemy
+		var best_distance := 155.0 * 155.0
+		for candidate in get_tree().get_nodes_in_group("training_enemies"):
+			if not candidate is TrainingEnemy or candidate.is_queued_for_deletion() or candidate.health <= 0.0:
+				continue
+			if visited.has(candidate.get_instance_id()):
+				continue
+			var distance := current_position.distance_squared_to(candidate.global_position)
+			if distance > best_distance or not screen.has_point(candidate.get_global_transform_with_canvas().origin):
+				continue
+			var wall_ray := PhysicsRayQueryParameters2D.create(current_position, candidate.global_position, 4)
+			if not get_world_2d().direct_space_state.intersect_ray(wall_ray).is_empty():
+				continue
+			nearest = candidate
+			best_distance = distance
+		if nearest == null:
+			break
+		var next_position := nearest.global_position
+		var arc: Node2D = ChainArcScript.new()
+		arc.setup(current_position, next_position)
+		arc.process_mode = Node.PROCESS_MODE_PAUSABLE
+		get_parent().add_child(arc)
+		var chain_direction := current_position.direction_to(next_position)
+		nearest.take_hit(damage * pow(0.68, float(jump + 1)), chain_direction, false, 1.0 + 0.04 * float(power_rank))
+		var flash: WispFlash = FlashScript.new()
+		flash.setup(chain_direction, false, power_rank, -5.0)
+		flash.process_mode = Node.PROCESS_MODE_PAUSABLE
+		get_parent().add_child(flash)
+		flash.global_position = next_position
+		enemy_hit.emit(nearest)
+		visited[nearest.get_instance_id()] = true
+		current_position = next_position
 
 
 func _draw() -> void:
