@@ -21,6 +21,8 @@ func _run() -> void:
 	_check(scene.camera.limit_right == 3840 and scene.camera.limit_bottom == 2160, "camera follows the expanded region")
 	_check(scene.arena_navigation.grid_size == Vector2i(120, 68), "navigation covers the full region")
 	_check(scene.arena_navigation.obstacles.size() == 11 and scene.arena_navigation.rectangular_obstacles.size() == 10, "pillars, water and walls share navigation")
+	_check(scene.minimap.visible and not scene.role_panel.visible and scene.minimap._map_point(scene.REGION_SIZE).is_equal_approx(scene.minimap.size), "upper-right minimap covers the full region")
+	_check(scene.arena_navigation.is_open(Vector2(800, 500), 0.0) and not scene.arena_navigation.is_open(Vector2(800, 650), 0.0), "water collision follows the diamond axis instead of a screen rectangle")
 	var growth_rect := Rect2(scene.growth.hud.position, scene.growth.hud.get_combined_minimum_size())
 	var region_rect := Rect2(scene.region_label.position, scene.region_label.get_combined_minimum_size())
 	_check(not growth_rect.intersects(region_rect), "region label stays clear of growth information")
@@ -34,7 +36,7 @@ func _run() -> void:
 	_check(not water_hit.is_empty() and water_hit.collider is TempleBlock, "water collision matches navigation")
 	_check(not scene.arena_navigation.find_path(Vector2(800, 300), Vector2(800, 1000)).is_empty(), "north bank connects through the crossing")
 	_check(not scene.arena_navigation.has_clear_path(Vector2(3200, 1100), Vector2(3700, 1100)) and not scene.arena_navigation.find_path(Vector2(3200, 1100), Vector2(3700, 1100)).is_empty(), "sanctuary wall blocks shortcuts but leaves a route")
-	for point in [Vector2(600, 800), Vector2(1600, 1050), Vector2(2250, 1800), Vector2(2750, 1080), Vector2(3150, 980), Vector2(1970, 300)]:
+	for point in [Vector2(600, 800), Vector2(2000, 1000), Vector2(2250, 1800), Vector2(2750, 1080), Vector2(3150, 980), Vector2(1970, 300)]:
 		_check(scene.can_spawn_at(point), "each region has a reachable spawn candidate at %s" % point)
 	_check(not scene.can_spawn_at(Vector2(600, 500)) and not scene.can_spawn_at(player.global_position), "water and the player start are excluded from spawning")
 	var chaser: TrainingEnemy = enemies.get_node("FragmentA")

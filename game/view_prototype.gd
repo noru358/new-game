@@ -28,6 +28,7 @@ const PRACTICE_HEALTH := [22.0, 22.0, 22.0, 30.0, 45.0, 30.0, 32.0, 36.0]
 var view_props: Array = []
 var wisp_status: Label
 var wave_hint: Label
+var role_panel: ColorRect
 var wisp: Variant
 var growth: RunGrowth
 var arena_navigation: ArenaNavigation
@@ -57,6 +58,7 @@ func _ready() -> void:
 		enemy.visual_pitch = VIEW_PITCH
 		enemy.queue_redraw()
 	camera.zoom = Vector2.ONE * CAMERA_ZOOM
+	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	camera.position_smoothing_speed = 8.0
 	player.visual_pitch = VIEW_PITCH
 	player.queue_redraw()
@@ -106,8 +108,6 @@ func _process(delta: float) -> void:
 	status_label.text = status_label.text.replace("    ARENA CLEAR - R TO RESET", "")
 	if wave_hint != null:
 		wave_hint.visible = remaining_enemies == 0
-	var lead := CAMERA_LOOKAHEAD
-	camera.position = camera.position.lerp(player.facing * lead + Vector2(0, -lead * 0.22), minf(1.0, 5.0 * delta))
 	for prop in view_props:
 		if not prop is ViewProp:
 			continue
@@ -120,6 +120,11 @@ func _process(delta: float) -> void:
 			growth.wisps.size() if growth != null else 1,
 			"READY" if wisp.fire_cooldown <= 0.0 else "%.1fs" % wisp.fire_cooldown
 		]
+
+
+func _physics_process(delta: float) -> void:
+	var lead := CAMERA_LOOKAHEAD
+	camera.position = camera.position.lerp(player.facing * lead + Vector2(0, -lead * 0.22), minf(1.0, 5.0 * delta))
 
 
 func _next_practice_wave() -> void:
@@ -150,6 +155,7 @@ func _build_view_ui() -> void:
 	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(canvas)
 	var panel := ColorRect.new()
+	role_panel = panel
 	panel.position = Vector2(760, 12)
 	panel.size = Vector2(505, 94)
 	panel.color = Color(0.04, 0.13, 0.17, 0.80)
