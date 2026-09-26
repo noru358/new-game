@@ -1,11 +1,10 @@
-# Loop Conquest — 1D Play Feedback Prototype
+# Loop Conquest — 1E Enemy Roles Prototype
 
-Godot 4.6 combat prototype with XP, level-up cards, and wisp upgrades. The selected view is **2, medium 2:1 diamond**, and opens by default. The other views and G grid toggle remain for comparison. The original 1A combat sandbox remains available as `game/main.tscn`.
+Godot 4.6 combat prototype with XP, level-up cards, wisp upgrades, and three enemy roles. The selected **medium 2:1 diamond** view is fixed; the old view and grid comparison controls have been removed. The original 1A combat sandbox remains available as `game/main.tscn` for regression checks.
 
 | Input | Action |
 |---|---|
-| 1 / 2 / 3 | High topdown / medium / low view; choose a card while the level-up screen is open |
-| G | Switch square and 2:1 diamond ground in views 2 and 3 |
+| 1 / 2 / 3 | Choose a card while the level-up screen is open |
 | WASD | Move (8 directions) |
 | J or left mouse button | Attack once; hold to repeat |
 | Space | Dash in movement direction, or last movement direction |
@@ -13,15 +12,15 @@ Godot 4.6 combat prototype with XP, level-up cards, and wisp upgrades. The selec
 | Esc | Pause or manually resume |
 | R | Reset the sandbox |
 
-Each view keeps the same 2400 × 1400 playfield, nine column/ruin footprints, and six enemies. It changes camera zoom and lead, actor vertical shape, and prop height. Views 2 and 3 start with a real 2:1 diamond ground lattice and matching diamond prop tops; G restores the square ground lattice at the same camera scale for direct comparison. Props sort by their ground position, block movement at their footprints, and fade when they would hide the player. These are 2D projection sketches, not a tilted 3D camera or final art. View 2 with diamond ground is the camera and projection baseline for subsequent stages; final character and environment art remain open.
+The current practice field is 2400 × 1400 with nine column/ruin footprints and six enemies. It uses the chosen 2:1 diamond ground and prop tops, camera zoom 1.25, and ground-position Y-sort. Props block movement at their footprints and fade when they would hide the player. These are 2D projection sketches, not a tilted 3D camera or final art. The practice field is not the final temple map.
 
 The attack points in the movement direction, not at the cursor. Moving during an attack also steers the current swing. The third hit follows direction changes until it catches enemies, then keeps its pull point fixed so gathered enemies stay together. A brief input buffer accepts a late press for the next swing but drops an early released press instead of launching a stale attack. If the player moves toward the gathering point during the pull, the destination advances just enough to preserve contact distance. Gathered enemies cannot deal contact damage during the brief pull and follow-up window; ordinary contact resumes afterward. Enemies also keep their spacing while chasing. The fourth hit releases the former wide magic wave. The vertical slam has been removed. Leaving the game window pauses it; returning does not resume automatically.
 
 The current 1A motion is a temporary feel test: the character sweeps magic with alternating hand gestures, reaches out to clutch and pull enemies together on the third hit, then releases a wide wave on the fourth. Hits use brief impact slowdown, local sparks, short enemy stagger, and restrained camera motion. Player damage adds a short recoil, a health bar change, a red edge cue, and 0.70 seconds of damage protection. Final character animation and art remain for the later art stage.
 
-Each run starts with two combo hits. Choose `U_CHAIN` once to unlock hit three and again for hit four. The card stays in the level-up offers until both are available. K no longer previews later hits in this scene. Two tougher enemies have 80 HP each so you can test gathering multiple targets and hitting both with the fourth strike.
+Each run starts with two combo hits. Choose `U_CHAIN` once to unlock hit three and again for hit four. The card stays in the level-up offers until both are available. K no longer previews later hits in this scene. The six-enemy practice wave mixes three chasing fragments, one telegraphed charging beast, and two lanterns that warn before firing straight projectiles. Charge and shot lines lock their direction, so movement or a dash can evade them. Lanterns route around ruins to find a clear shot; hostile projectiles stop at ruins.
 
-The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. In this 1D feedback build, it fires every 1.25 seconds and deals 10 damage at the current base attack value. Multiple wisps prefer different enemies when an in-flight projectile already covers a kill. The wisp acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. The projectile gently adjusts toward a moving target for its first 0.42 seconds, while ruins still block it. The wisp can aim at the exposed edge of an enemy whose center is hidden by a ruin. A small bright blue flame marks the launch, projectile trail, and impact. The temporary HUD line shows its cooldown.
+The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. It fires every 1.25 seconds and deals 10 damage at the current base attack value. Multiple wisps prefer different enemies when an in-flight projectile already covers a kill. The wisp acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. The projectile gently adjusts toward a moving target for its first 0.42 seconds, while ruins still block it. The wisp can aim at the exposed edge of an enemy whose center is hidden by a ruin. A small bright blue flame marks the launch, projectile trail, and impact. The temporary HUD line shows its cooldown.
 
 Defeated enemies drop XP orbs. The pickup pull now starts within 260 px. Collecting them fills a level meter (`8 + 2 × (level − 1)` XP for the next level); ordinary enemies give 2 XP and tougher enemies give 4 XP. Each level pauses combat for up to three card choices and restores 20% maximum health after a choice. The current pool has 11 card types: manual damage/speed/reach/combo, wisp damage/cadence/count/orbit/chain, an auxiliary auto seal, and dash recharge. `U_STEP` rank 1 cuts recharge by 15%, rank 2 raises capacity to two dashes, and rank 3 cuts recharge by 30% total. The HUD shows ready charges and the next recharge. Wisp count supports up to three. Orbit contact damage adds to the projectile attack. The chain card links a hit to nearby enemies. The selected upgrades reset on R or a new run.
 
@@ -53,10 +52,12 @@ godot --headless --path . --script res://tests/verify_1d.gd
 godot --headless --path . --script res://tests/verify_1d_feedback.gd
 godot --headless --path . --script res://tests/verify_gather_safety.gd
 godot --headless --path . --script res://tests/verify_1d_play_feedback.gd
+godot --headless --path . --script res://tests/verify_1d_contact_ai.gd
+godot --headless --path . --script res://tests/verify_1e.gd
 ```
 
-The scripts check 1A combat behavior, the 1B view and space layout, 1C wisp behavior, and 1D XP, card choice, combo unlocks, wisp/seal upgrades, persistent card unlocks, practice wave reset, obstacle routing, partial visibility, and moving-target hits. Screen readability, upgrade pacing, and combat feel require a person to test the running window.
+The scripts check 1A combat behavior, the fixed 1B view and space layout, 1C wisp behavior, 1D growth and obstacle targeting, and 1E mixed enemy roles, attack warnings, dodges, and wall blocking. Screen readability, upgrade pacing, and combat feel require a person to test the running window.
 
 ## Scope
 
-1D has no new enemy roles, boss, time-based spawning, campaign, or full meta progression. Only the lifetime card-unlock counter persists between runs. The blockout is for testing combat and growth; the temple map is built in 1F.
+1E has no boss, time-based spawning, campaign, or full meta progression. Only the lifetime card-unlock counter persists between runs. The blockout is for testing combat, growth, and enemy roles; the temple map is built in 1F. Current sound effects are temporary combat feedback and will be replaced during the later audio and visual pass.

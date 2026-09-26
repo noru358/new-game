@@ -116,7 +116,7 @@ func _run() -> void:
 	await _frames(2)
 	scene.remaining_enemies = 0
 	scene._next_practice_wave()
-	_check(enemies.get_child_count() == 6 and scene.remaining_enemies == 6 and growth.level == 3 and player.combo_limit() == 4, "N practice wave restores enemies while keeping run growth")
+	_check(enemies.get_child_count() == 8 and scene.remaining_enemies == 8 and growth.level == 3 and player.combo_limit() == 4, "N practice wave restores enemies while keeping run growth")
 	for card_id in RunGrowth.CARDS:
 		growth.card_ranks[card_id] = RunGrowth.CARDS[card_id].max
 	player.health = 30.0

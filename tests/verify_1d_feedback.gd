@@ -24,7 +24,7 @@ func _run() -> void:
 		var right: Vector2 = prop.global_position + Vector2(100, 0)
 		_check(not scene.arena_navigation.has_clear_path(left, right) and not scene.arena_navigation.find_path(left, right).is_empty(), "each ruin has a route around its footprint")
 
-	var chaser: TrainingEnemy = enemies.get_node("FragmentE")
+	var chaser: TrainingEnemy = enemies.get_node("FragmentA")
 	player.global_position = Vector2(1360, 755)
 	chaser.global_position = Vector2(1180, 755)
 	_check(not scene.arena_navigation.has_clear_path(chaser.global_position, player.global_position), "ruin blocks direct pursuit")

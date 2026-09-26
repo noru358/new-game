@@ -14,7 +14,7 @@ func _run() -> void:
 	var player: SandboxPlayer = scene.get_node("Player")
 	var wisp: WispCompanion = scene.get_node("Wisp")
 	var enemies: Node2D = scene.get_node("Enemies")
-	_check(scene.view_mode == 2 and scene.ground_is_diamond(), "selected 1B view retained")
+	_check(is_equal_approx(scene.camera.zoom.x, 1.25) and scene.diamond_grid_point(1, 0) - scene.diamond_grid_point(0, 0) == Vector2(80, 40), "selected 1B view retained")
 	_check(wisp.process_mode == Node.PROCESS_MODE_PAUSABLE, "wisp pauses with battle")
 	_check(is_equal_approx(wisp.attack_interval, 1.25), "current base fire interval")
 	_check(is_equal_approx(wisp.attack_range, 520.0), "base target range")
