@@ -168,4 +168,10 @@ func _send_key(key: Key, pressed: bool) -> void:
 	event.keycode = key
 	event.physical_keycode = key
 	event.pressed = pressed
-	Input.parse_input_event(event)
+	if key == KEY_J or key == KEY_SPACE:
+		var action := "attack" if key == KEY_J else "dash"
+		if pressed:
+			Input.action_press(action)
+		else:
+			Input.action_release(action)
+	root.push_input(event)

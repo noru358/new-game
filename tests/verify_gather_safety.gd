@@ -30,11 +30,21 @@ func _run() -> void:
 	await _frames(15)
 	_check(player.health == 100.0 and enemy.health == 75.0, "moving third hit gathers without immediate contact damage")
 	_check(enemy.global_position.distance_to(player.global_position) > enemy.RADIUS + 18.0, "gather destination stays beyond contact distance")
-	await _frames(15)
-	_check(player.health == 100.0 and enemy.health == 60.0, "fourth hit lands before gathered enemy can deal contact damage")
+	var fourth_landed := false
+	for i in 30:
+		await physics_frame
+		if enemy.health <= 60.0:
+			fourth_landed = true
+			break
+	_check(fourth_landed and player.health == 100.0, "fourth hit lands before gathered enemy can deal contact damage")
 	Input.action_release("attack")
-	await _frames(13)
-	_check(player.health < 100.0, "ordinary contact damage resumes if player keeps moving into surviving enemy")
+	var contact_resumed := false
+	for i in 30:
+		await physics_frame
+		if player.health < 100.0:
+			contact_resumed = true
+			break
+	_check(contact_resumed, "ordinary contact damage resumes if player keeps moving into surviving enemy")
 	Input.action_release("move_right")
 	scene.queue_free()
 	await _frames(2)

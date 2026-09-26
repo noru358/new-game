@@ -41,6 +41,8 @@ Open `project.godot` in Godot **4.6 stable**, then press F6/F5. Or run:
 godot --path .
 ```
 
+On a fresh clone, open the project once in the editor (or run `godot --headless --editor --path . --quit`) to import assets and register GDScript classes before running the command-line checks below.
+
 ## Verify
 
 ```sh
