@@ -118,7 +118,7 @@ func _blocked_by_wall(point: Vector2) -> bool:
 
 func _visible_aim_point(candidate: TrainingEnemy) -> Dictionary:
 	var toward := global_position.direction_to(candidate.global_position)
-	var side := toward.orthogonal() * candidate.RADIUS * 0.65
+	var side := toward.orthogonal() * candidate.collision_radius * 0.65
 	for point in [candidate.global_position, candidate.global_position + side, candidate.global_position - side]:
 		if not _blocked_by_wall(point):
 			return {"point": point}
@@ -155,7 +155,7 @@ func _hit_nearby_enemies() -> void:
 	for candidate in get_tree().get_nodes_in_group("training_enemies"):
 		if not candidate is TrainingEnemy or candidate.is_queued_for_deletion() or candidate.health <= 0.0:
 			continue
-		if global_position.distance_to(candidate.global_position) > candidate.RADIUS + 13.0:
+		if global_position.distance_to(candidate.global_position) > candidate.collision_radius + 13.0:
 			continue
 		if _blocked_by_wall(candidate.global_position):
 			continue

@@ -32,6 +32,22 @@ func _run() -> void:
 	scene.player.attack_direction = Vector2.RIGHT
 	scene._draw_attack()
 	_check(scene.attack_mesh.get_surface_count() > 0, "active attack has a visible filled mesh")
+	var vertices: PackedVector3Array = scene.attack_mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var lowest := INF
+	var highest := -INF
+	var furthest := 0.0
+	for vertex in vertices:
+		lowest = minf(lowest, vertex.y / HybridTerrain.SCALE)
+		highest = maxf(highest, vertex.y / HybridTerrain.SCALE)
+		furthest = maxf(furthest, Vector2(vertex.x, vertex.z).distance_to(scene.player.position * HybridTerrain.SCALE) / HybridTerrain.SCALE)
+	var ground_height: float = scene.terrain.height_at(scene.player.position)
+	_check(lowest >= ground_height + 69.9 and highest <= ground_height + 90.1, "attack stays in the air at fixed elevations, even near changing terrain (ground %.2f, min %.2f, max %.2f)" % [ground_height, lowest, highest])
+	_check(furthest >= strike.radius + scene.ACTOR_CLEARANCE and furthest <= strike.radius + scene.ACTOR_CLEARANCE + 2.1, "visible reach includes the enemy body radius used by melee")
+	_check(scene.attack_visual.material_override.no_depth_test, "air slash remains visible beside the cliff")
+	scene.teleport(Vector2(1120, 840))
+	scene.player.attack_direction = Vector2.RIGHT
+	scene._draw_attack()
+	_check(scene._attack_reach(0.0, strike.radius + scene.ACTOR_CLEARANCE) < 40.0 and scene.attack_mesh.get_surface_count() > 0, "bright reach stops at the cliff while the airborne slash remains")
 	scene.player.attack_step = 0
 	scene.teleport(Vector2(1180, 840))
 	scene.wisp.set_physics_process(true)
@@ -49,6 +65,7 @@ func _run() -> void:
 	Input.action_release("move_up")
 	scene.wisp.set_physics_process(false)
 	_check(stable_wall_visual, "player and wisp keep a stable level while pressed against a cliff")
+	_check(scene.player.get_node("CollisionShape2D").shape.radius == scene.ACTOR_CLEARANCE and scene.player.position.x >= 1185.0, "actor collision keeps the sprite clear of the terrace side")
 	scene.teleport(Vector2(1250, 840))
 	var pursuer: TrainingEnemy
 	for actor in scene.actors:
@@ -81,5 +98,5 @@ func _run() -> void:
 	scene.queue_free()
 	await _frames(3)
 	if failures == 0:
-		print("Hybrid feedback verification passed: camera, attack mesh, mobility, wall stability and both cliff detours")
+		print("Hybrid feedback verification passed: camera, air slash reach, mobility, wall clearance and both cliff detours")
 	quit(1 if failures else 0)

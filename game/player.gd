@@ -61,6 +61,7 @@ var dash_cooldown_reduction := 0.0
 var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var input_rotation := 0.0
+var collision_radius := 18.0
 var move_speed_multiplier := 1.0
 var dash_distance_multiplier := 1.0
 var attack_active_multiplier := 1.0
@@ -256,7 +257,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 		if hit_targets.has(id):
 			continue
 		var offset: Vector2 = enemy.global_position - global_position
-		if offset.length() > attack.radius + enemy.RADIUS:
+		if offset.length() > attack.radius + enemy.collision_radius:
 			continue
 		var angle_difference := absf(wrapf(offset.angle() - attack_direction.angle(), -PI, PI))
 		if angle_difference > deg_to_rad(attack.angle * 0.5):

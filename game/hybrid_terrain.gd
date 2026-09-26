@@ -5,6 +5,8 @@ const SIZE := Vector2(2400, 2000)
 const SCALE := 0.01
 const COURT := Rect2(600, 500, 1200, 1000)
 const TERRACE := Rect2(1150, 800, 450, 400)
+const STONE_COUNT := 6
+const STONE_BEVEL := 0.42
 
 # One surface per ground position. Geometry, height and blocked edges share these records.
 var plateaus := [
@@ -16,12 +18,20 @@ var ramps := [
 	{"area": Rect2(800, 1500, 260, 300), "axis": 1, "from": 160.0, "to": 0.0, "name": "남쪽 경사로"},
 	{"area": Rect2(1800, 1050, 300, 260), "axis": 0, "from": 160.0, "to": 0.0, "name": "측면 경사로"},
 	{"area": Rect2(850, 900, 300, 200), "axis": 0, "from": 160.0, "to": 320.0, "name": "테라스 경사로"},
-	{"area": Rect2(1210, 1500, 160, 280), "axis": 1, "from": 160.0, "to": 0.0, "name": "바위길", "kind": "stone_path"}
+	{"area": Rect2(1210, 1500, 160, 280), "axis": 1, "from": 160.0, "to": 0.0, "name": "디딤돌", "kind": "stepping_stones"}
 ]
 
 func ramp_height(ramp: Dictionary, point: Vector2) -> float:
 	var area: Rect2 = ramp.area
 	var fraction: float = (point[ramp.axis] - area.position[ramp.axis]) / area.size[ramp.axis]
+	if ramp.get("kind", "") == "stepping_stones":
+		var position := clampf(fraction, 0.0, 1.0) * STONE_COUNT
+		var step := mini(floori(position), STONE_COUNT - 1)
+		var phase := position - step
+		var start_height: float = lerpf(ramp.from, ramp.to, float(step) / STONE_COUNT)
+		var end_height: float = lerpf(ramp.from, ramp.to, float(step + 1) / STONE_COUNT)
+		var bevel := clampf((phase - (1.0 - STONE_BEVEL)) / STONE_BEVEL, 0.0, 1.0)
+		return lerpf(start_height, end_height, bevel)
 	return lerpf(ramp.from, ramp.to, clampf(fraction, 0.0, 1.0))
 
 func height_at(point: Vector2) -> float:

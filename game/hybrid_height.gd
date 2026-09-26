@@ -6,6 +6,7 @@ const EnemyScene = preload("res://game/enemy.tscn")
 const ActorTexture = preload("res://game/hybrid_actor.svg")
 const COMBAT_CAMERA_SIZE := 10.8
 const OVERVIEW_CAMERA_SIZE := 30.0
+const ACTOR_CLEARANCE := 30.0
 var terrain := Terrain.new()
 var simulation := Node2D.new()
 var player: SandboxPlayer
@@ -17,8 +18,6 @@ var shots: Dictionary = {}
 var wisp_visual: MeshInstance3D
 var attack_visual := MeshInstance3D.new()
 var attack_mesh := ImmediateMesh.new()
-var attack_ray_limits: Dictionary = {}
-var attack_ray_reach := 0.0
 var hud: Label
 var pause_label: Label
 var pause_backdrop: ColorRect
@@ -28,7 +27,7 @@ var paused := false
 var terrain_mesh: MeshInstance3D
 
 func _ready() -> void:
-	get_window().title = "Loop Conquest — Hybrid Height v02"
+	get_window().title = "Loop Conquest — Hybrid Height v03"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_physics_priority = 100
 	_register_inputs()
@@ -44,8 +43,11 @@ func _ready() -> void:
 		block.setup(area, false)
 		simulation.add_child(block)
 		obstacles.append(block)
+	navigation.agent_radius = ACTOR_CLEARANCE
+	navigation.strict_contact_escape = true
 	navigation.setup(obstacles, Terrain.SIZE)
 	player = PlayerScene.instantiate()
+	_set_actor_radius(player, ACTOR_CLEARANCE)
 	player.get_node("Camera2D").enabled = false
 	player.position = Vector2(930, 1780)
 	player.arena_bounds = Rect2(Vector2.ZERO, Terrain.SIZE)
@@ -76,6 +78,7 @@ func _ready() -> void:
 	var attack_material := _material(Color.WHITE, true)
 	attack_material.vertex_color_use_as_albedo = true
 	attack_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	attack_material.no_depth_test = true
 	attack_visual.material_override = attack_material
 	add_child(attack_visual)
 	spawn_enemies()
@@ -84,7 +87,7 @@ func _ready() -> void:
 	camera.look_at(terrain.world_point(player.position), Vector3.UP)
 	camera.reset_physics_interpolation()
 	get_window().focus_exited.connect(func(): _set_paused(true))
-	print("Hybrid height v02 ready: 2D simulation, shared terrain data, orthographic 3D presentation")
+	print("Hybrid height v03 ready: 2D simulation, shared terrain data, orthographic 3D presentation")
 
 func _register_inputs() -> void:
 	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
@@ -148,6 +151,40 @@ func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, co
 			p1[axis] = span[1]
 			_quad(st, [Vector3(p0.x, bottom, p0.y), Vector3(p1.x, bottom, p1.y), Vector3(p1.x, elevation.call(p1), p1.y), Vector3(p0.x, elevation.call(p0), p0.y)], color)
 
+func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	var step_length := area.size.y / Terrain.STONE_COUNT
+	var x0 := area.position.x
+	var x1 := area.end.x
+	var edges: Array[Vector2] = [Vector2(8, 21), Vector2(22, 9), Vector2(5, 18), Vector2(19, 7), Vector2(10, 16), Vector2(15, 11)]
+	for i in Terrain.STONE_COUNT:
+		var stone_left: float = x0 + edges[i].x
+		var stone_right: float = x1 - edges[i].y
+		var link_left := x0 + 30.0
+		var link_right := x1 - 30.0
+		var y0 := area.position.y + step_length * i
+		var seam := y0 + step_length * (1.0 - Terrain.STONE_BEVEL)
+		var y1 := y0 + step_length
+		var h0: float = lerpf(ramp.from, ramp.to, float(i) / Terrain.STONE_COUNT)
+		var h1: float = lerpf(ramp.from, ramp.to, float(i + 1) / Terrain.STONE_COUNT)
+		var face := Color("aeb8aa") if i % 2 == 0 else Color("a1ada2")
+		var outline := [
+			Vector2(stone_left + 10, y0), Vector2(stone_right - 11, y0),
+			Vector2(stone_right, y0 + 7), Vector2(stone_right - 7, seam),
+			Vector2(stone_left + 9, seam), Vector2(stone_left, y0 + 6)
+		]
+		var center := Vector2((stone_left + stone_right) * 0.5, (y0 + seam) * 0.5)
+		for side in outline.size():
+			var a: Vector2 = outline[side]
+			var b: Vector2 = outline[(side + 1) % outline.size()]
+			for vertex in [Vector3(center.x, h0, center.y), Vector3(a.x, h0, a.y), Vector3(b.x, h0, b.y)]:
+				st.set_color(face)
+				st.add_vertex(vertex * Terrain.SCALE)
+			_quad(st, [Vector3(a.x, 0, a.y), Vector3(b.x, 0, b.y), Vector3(b.x, h0, b.y), Vector3(a.x, h0, a.y)], Color("71857d"))
+		_quad(st, [Vector3(link_left, h0, seam), Vector3(link_right, h0, seam), Vector3(link_right, h1, y1), Vector3(link_left, h1, y1)], Color("647b72"))
+		for x in [link_left, link_right]:
+			_quad(st, [Vector3(x, 0, seam), Vector3(x, 0, y1), Vector3(x, h1, y1), Vector3(x, h0, seam)], Color("647970"))
+
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -157,17 +194,19 @@ func _build_terrain() -> void:
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else Color("e7ddbd"))
 		_sides(st, plateau.area, elevation, plateau.base, Color("798e80"), plateau.openings)
 	for ramp in terrain.ramps:
+		if ramp.get("kind", "") == "stepping_stones":
+			_stepping_stones(st, ramp)
+			continue
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
-		var is_stone_path: bool = ramp.get("kind", "") == "stone_path"
-		_top(st, ramp.area, elevation, Color("a6aaa0") if is_stone_path else Color("c9bb91"))
-		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("677d78") if is_stone_path else Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+		_top(st, ramp.area, elevation, Color("c9bb91"))
+		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
 		# Thin transverse bands follow the inclined surface; they are not flat diamonds.
 		var area: Rect2 = ramp.area
-		for i in range(1, 9 if is_stone_path else 10):
+		for i in range(1, 10):
 			var band := area
-			band.position[ramp.axis] += area.size[ramp.axis] * float(i) / (9.0 if is_stone_path else 10.0)
-			band.size[ramp.axis] = 5 if is_stone_path else 3
-			_top(st, band, func(p): return terrain.ramp_height(ramp, p) + 0.5, Color("667e79") if is_stone_path else Color("9a957f"))
+			band.position[ramp.axis] += area.size[ramp.axis] * float(i) / 10.0
+			band.size[ramp.axis] = 3
+			_top(st, band, func(p): return terrain.ramp_height(ramp, p) + 0.5, Color("9a957f"))
 	st.generate_normals()
 	terrain_mesh = MeshInstance3D.new()
 	terrain_mesh.mesh = st.commit()
@@ -234,6 +273,13 @@ func _actor_visual(color: Color) -> Node3D:
 	add_child(root)
 	return root
 
+func _set_actor_radius(actor: CharacterBody2D, radius: float) -> void:
+	var collision: CollisionShape2D = actor.get_node("CollisionShape2D")
+	var shape: CircleShape2D = collision.shape.duplicate()
+	shape.radius = radius
+	collision.shape = shape
+	actor.set("collision_radius", radius)
+
 func spawn_enemies() -> void:
 	for actor in actors.keys():
 		if actor != player:
@@ -242,6 +288,8 @@ func spawn_enemies() -> void:
 			actors.erase(actor)
 	for point in [Vector2(480, 1660), Vector2(720, 680), Vector2(1430, 1000), Vector2(2200, 1170)]:
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
+		_set_actor_radius(enemy, ACTOR_CLEARANCE)
+		enemy.contact_margin = 3.0
 		enemy.position = point
 		enemy.target = player
 		enemy.arena_bounds = Rect2(Vector2.ZERO, Terrain.SIZE)
@@ -313,8 +361,7 @@ func _draw_attack() -> void:
 	var active: float = spec.active
 	var recovery: float = spec.recovery
 	var reach: float = spec.radius
-	attack_ray_reach = reach + TrainingEnemy.RADIUS + 8.0
-	attack_ray_limits.clear()
+	var effective_reach := reach + ACTOR_CLEARANCE
 	var half_angle: float = deg_to_rad(spec.angle) * 0.5
 	var start: float = player.attack_direction.angle() - half_angle
 	var arc: float = half_angle * 2.0
@@ -322,23 +369,21 @@ func _draw_attack() -> void:
 	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
 	var base := Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("ffe19a")
 	attack_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
-	# The translucent footprint is the same fan used by the hit test. The pale
-	# outer fringe represents the enemy's 17 px body radius at the boundary.
+	# Keep the swing in one plane at chest height. Sampling the ground height at
+	# every vertex folded the old mesh over stairs and cliffs. The pale blade
+	# still swings in air; the bright reach guide stops where damage is blocked.
 	for i in range(32):
 		var a0 := start + arc * float(i) / 32.0
 		var a1 := start + arc * float(i + 1) / 32.0
-		for band in range(5):
-			var inner := reach * float(band) / 5.0
-			var outer := reach * float(band + 1) / 5.0
-			var tint := base
-			tint.a = (0.19 if elapsed >= windup else 0.055) * fade
-			_attack_band(a0, a1, inner, outer, tint)
-		var fringe := base
-		fringe.a = 0.09 * fade
-		_attack_band(a0, a1, reach, reach + TrainingEnemy.RADIUS, fringe)
+		var visible_reach := minf(_attack_reach(a0, effective_reach), _attack_reach(a1, effective_reach))
+		var tint := base
+		tint.a = (0.075 if elapsed >= windup else 0.025) * fade
+		if visible_reach > reach * 0.28:
+			_attack_band(a0, a1, reach * 0.28, visible_reach, tint, 70.0)
 		var rim := base.lightened(0.55)
-		rim.a = (0.75 if elapsed >= windup else 0.4) * fade
-		_attack_band(a0, a1, reach + TrainingEnemy.RADIUS - 3.0, reach + TrainingEnemy.RADIUS + 2.0, rim)
+		rim.a = (0.88 if elapsed >= windup else 0.42) * fade
+		if visible_reach > 8.0:
+			_attack_band(a0, a1, visible_reach - 5.0, visible_reach + 2.0, rim, 72.0)
 	# A moving broad blade gives the two starter slashes opposite directions.
 	if elapsed >= windup:
 		var direction := 1.0 if player.attack_step != 2 else -1.0
@@ -349,36 +394,30 @@ func _draw_attack() -> void:
 		for i in range(10):
 			var first := lerpf(tail, head, float(i) / 10.0)
 			var second := lerpf(tail, head, float(i + 1) / 10.0)
-			_attack_band(first, second, reach * 0.55, reach * 1.02, slash_color, 60.0)
+			_attack_band(first, second, reach * 0.48, effective_reach * 0.96, slash_color, 88.0)
 		var edge_color := Color.WHITE
-		edge_color.a = 0.56 * fade
-		_attack_band(head - direction * 0.055, head + direction * 0.055, reach * 0.32, reach * 1.06, edge_color, 67.0)
+		edge_color.a = 0.78 * fade
+		_attack_band(head - direction * 0.065, head + direction * 0.065, reach * 0.30, effective_reach, edge_color, 90.0)
 	attack_mesh.surface_end()
 
-func _attack_band(a0: float, a1: float, inner: float, outer: float, color: Color, lift: float = 22.0) -> void:
-	var visible_distance := minf(_attack_visible_distance(a0), _attack_visible_distance(a1))
-	if visible_distance <= inner:
-		return
-	outer = minf(outer, visible_distance)
+func _attack_reach(angle: float, limit: float) -> float:
+	var from := player.global_position
+	var to := from + Vector2.from_angle(angle) * limit
+	var query := PhysicsRayQueryParameters2D.create(from, to, 4)
+	query.hit_from_inside = true
+	var hit := simulation.get_world_2d().direct_space_state.intersect_ray(query)
+	return maxf(0.0, from.distance_to(hit.position) - 1.0) if not hit.is_empty() else limit
+
+func _attack_band(a0: float, a1: float, inner: float, outer: float, color: Color, lift: float) -> void:
 	var origin := player.global_position
+	var elevation := terrain.height_at(origin) + lift
 	var p0 := origin + Vector2.from_angle(a0) * inner
 	var p1 := origin + Vector2.from_angle(a1) * inner
 	var p2 := origin + Vector2.from_angle(a1) * outer
 	var p3 := origin + Vector2.from_angle(a0) * outer
 	for point in [p0, p1, p2, p0, p2, p3]:
 		attack_mesh.surface_set_color(color)
-		attack_mesh.surface_add_vertex(terrain.world_point(point, lift))
-
-func _attack_visible_distance(angle: float) -> float:
-	if attack_ray_limits.has(angle):
-		return attack_ray_limits[angle]
-	var origin := player.global_position
-	var query := PhysicsRayQueryParameters2D.create(origin, origin + Vector2.from_angle(angle) * attack_ray_reach, 4)
-	query.hit_from_inside = true
-	var hit := simulation.get_world_2d().direct_space_state.intersect_ray(query)
-	var result := attack_ray_reach if hit.is_empty() else maxf(0.0, origin.distance_to(hit.position) - 2.0)
-	attack_ray_limits[angle] = result
-	return result
+		attack_mesh.surface_add_vertex(Vector3(point.x, elevation, point.y) * Terrain.SCALE)
 
 func _flash(point: Vector2, color: Color) -> void:
 	var flash := _sphere(0.22, color)
@@ -410,7 +449,7 @@ func _build_ui() -> void:
 	help.add_theme_constant_override("shadow_offset_x", 1)
 	help.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(help)
-	var places := {"남쪽 입구": Vector2(930, 1780), "바위길": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
+	var places := {"남쪽 입구": Vector2(930, 1780), "디딤돌": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
 	var row := HBoxContainer.new()
 	row.position = Vector2(590, 20)
 	canvas.add_child(row)

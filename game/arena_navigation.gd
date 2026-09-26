@@ -5,6 +5,8 @@ const CELL_SIZE := 32.0
 const DEFAULT_ARENA_SIZE := Vector2(2400, 1400)
 const ENEMY_RADIUS := 17.0
 
+var agent_radius := ENEMY_RADIUS
+var strict_contact_escape := false
 var grid := AStarGrid2D.new()
 var grid_size := Vector2i(75, 44)
 var obstacles: Array[Vector3] = []
@@ -28,11 +30,13 @@ func setup(props: Array, arena_size: Vector2 = DEFAULT_ARENA_SIZE) -> void:
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
 			var point := Vector2(float(x) + 0.5, float(y) + 0.5) * CELL_SIZE
-			if not is_open(point, ENEMY_RADIUS + 20.0):
+			if not is_open(point, agent_radius + 20.0):
 				grid.set_point_solid(Vector2i(x, y), true)
 
 
-func is_open(point: Vector2, clearance: float = ENEMY_RADIUS) -> bool:
+func is_open(point: Vector2, clearance: float = -1.0) -> bool:
+	if clearance < 0.0:
+		clearance = agent_radius
 	for obstacle in obstacles:
 		if point.distance_to(Vector2(obstacle.x, obstacle.y)) < obstacle.z + clearance:
 			return false
@@ -49,7 +53,7 @@ func has_clear_path(from: Vector2, to: Vector2) -> bool:
 	var length_squared := segment.length_squared()
 	for obstacle in obstacles:
 		var center := Vector2(obstacle.x, obstacle.y)
-		var clearance := obstacle.z + ENEMY_RADIUS + 2.0
+		var clearance := obstacle.z + agent_radius + 2.0
 		var start_offset := from - center
 		# An enemy touching a ruin can be inside this padded clearance.
 		# Let it move outward so the route finder can escape the contact edge.
@@ -61,9 +65,21 @@ func has_clear_path(from: Vector2, to: Vector2) -> bool:
 	for obstacle in rectangular_obstacles:
 		var local_from: Vector2 = (from - obstacle.center).rotated(-obstacle.angle)
 		var local_to: Vector2 = (to - obstacle.center).rotated(-obstacle.angle)
-		var expanded := Rect2(-obstacle.half_size, obstacle.half_size * 2.0).grow(ENEMY_RADIUS + 2.0)
-		if expanded.has_point(local_from) and local_from.dot(local_to - local_from) >= 0.0:
-			continue
+		var expanded := Rect2(-obstacle.half_size, obstacle.half_size * 2.0).grow(agent_radius + 2.0)
+		if expanded.has_point(local_from):
+			if not strict_contact_escape and local_from.dot(local_to - local_from) >= 0.0:
+				continue
+			if strict_contact_escape:
+				var solid := Rect2(-obstacle.half_size, obstacle.half_size * 2.0)
+				var nearest := Vector2(
+					clampf(local_from.x, solid.position.x, solid.end.x),
+					clampf(local_from.y, solid.position.y, solid.end.y)
+				)
+				var outward := local_from - nearest
+				# At a cliff contact edge, only a tangent or outward segment can
+				# escape clearance. The center test accepts corner shortcuts.
+				if outward.length_squared() > 0.001 and outward.dot(local_to - local_from) >= 0.0:
+					continue
 		if _segment_hits_rect(local_from, local_to, expanded):
 			return false
 	return true

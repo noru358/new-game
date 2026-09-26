@@ -32,6 +32,8 @@ const SUPPORT_COOLDOWN_MULTIPLIER := 1.3
 @export var role: Role = Role.FRAGMENT
 
 var health := MAX_HEALTH
+var collision_radius := RADIUS
+var contact_margin := 0.0
 var visual_pitch := 0.0
 var target: Node2D
 var knockback := Vector2.ZERO
@@ -103,7 +105,7 @@ func _physics_process(delta: float) -> void:
 		clampf(global_position.x, arena_bounds.position.x + 24.0, arena_bounds.end.x - 24.0),
 		clampf(global_position.y, arena_bounds.position.y + 24.0, arena_bounds.end.y - 24.0)
 	)
-	if gather_contact_grace <= 0.0 and global_position.distance_to(target.global_position) <= RADIUS + 18.0:
+	if gather_contact_grace <= 0.0 and global_position.distance_to(target.global_position) <= collision_radius + target.collision_radius + contact_margin:
 		if role == Role.FRAGMENT:
 			target.receive_hit(CONTACT_DAMAGE, global_position)
 		elif role == Role.SUPPORT:
