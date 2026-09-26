@@ -15,8 +15,15 @@ const PROP_POINTS := [
 ]
 const PRACTICE_ENEMIES := [
 	Vector2(850, 520), Vector2(1600, 610), Vector2(1040, 1080),
-	Vector2(1800, 980), Vector2(1620, 620), Vector2(1620, 780)
+	Vector2(1800, 980), Vector2(1620, 620), Vector2(1620, 780),
+	Vector2(1010, 960), Vector2(1740, 700)
 ]
+const PRACTICE_ROLES := [
+	TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT,
+	TrainingEnemy.Role.LAMP, TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP,
+	TrainingEnemy.Role.ZONE, TrainingEnemy.Role.SUPPORT
+]
+const PRACTICE_HEALTH := [22.0, 22.0, 22.0, 30.0, 45.0, 30.0, 32.0, 36.0]
 
 var view_props: Array = []
 var wisp_status: Label
@@ -115,12 +122,8 @@ func _next_practice_wave() -> void:
 	for i in range(PRACTICE_ENEMIES.size()):
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
 		enemy.name = "PracticeEnemy%d" % i
-		if i == 3 or i == 5:
-			enemy.role = TrainingEnemy.Role.LAMP
-			enemy.max_health = 30.0
-		elif i == 4:
-			enemy.role = TrainingEnemy.Role.BEAST
-			enemy.max_health = 45.0
+		enemy.role = PRACTICE_ROLES[i]
+		enemy.max_health = PRACTICE_HEALTH[i]
 		enemy.position = PRACTICE_ENEMIES[i]
 		enemy.target = player
 		enemy.collision_mask = 6
@@ -141,7 +144,7 @@ func _build_view_ui() -> void:
 	add_child(canvas)
 	var panel := ColorRect.new()
 	panel.position = Vector2(760, 12)
-	panel.size = Vector2(505, 72)
+	panel.size = Vector2(505, 94)
 	panel.color = Color(0.04, 0.13, 0.17, 0.80)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(panel)
@@ -153,7 +156,7 @@ func _build_view_ui() -> void:
 	panel.add_child(role_title)
 	var role_detail := Label.new()
 	role_detail.position = Vector2(13, 36)
-	role_detail.text = "붉은 뿔: 돌진 예고   |   금빛 등불: 사격 예고"
+	role_detail.text = "붉은 뿔: 돌진   ·   금빛 등불: 사격\n청록 원: 장판   ·   보라 고리: 적 강화"
 	role_detail.add_theme_font_size_override("font_size", 16)
 	role_detail.add_theme_color_override("font_color", Color("d8e9de"))
 	panel.add_child(role_detail)
@@ -164,7 +167,7 @@ func _build_view_ui() -> void:
 	wisp_status.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
 	canvas.add_child(wisp_status)
 	wave_hint = Label.new()
-	wave_hint.position = Vector2(875, 98)
+	wave_hint.position = Vector2(875, 116)
 	wave_hint.text = "훈련 완료 · N 다음 배치"
 	wave_hint.add_theme_font_size_override("font_size", 18)
 	wave_hint.add_theme_color_override("font_color", Color("e8f7bd"))

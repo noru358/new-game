@@ -15,13 +15,15 @@ func _run() -> void:
 	var enemies: Node2D = arena.get_node("Enemies")
 	var beast: TrainingEnemy = enemies.get_node("FragmentE")
 	var lamp: TrainingEnemy = enemies.get_node("FragmentF")
-	var counts := [0, 0, 0]
+	var zone_caster: TrainingEnemy = enemies.get_node("ZoneG")
+	var support: TrainingEnemy = enemies.get_node("SupportH")
+	var counts := [0, 0, 0, 0, 0]
 	for enemy in enemies.get_children():
 		counts[enemy.role] += 1
 		enemy.set_physics_process(false)
 		enemy.global_position = Vector2(2200, 1250)
-	_check(counts == [3, 1, 2] and enemies.get_child_count() == 6, "same-size practice wave mixes three roles")
-	_check(beast.max_health == 45.0 and lamp.max_health == 30.0, "new roles use planned base health")
+	_check(counts == [3, 1, 2, 1, 1] and enemies.get_child_count() == 8, "practice wave mixes five roles")
+	_check(beast.max_health == 45.0 and lamp.max_health == 30.0 and zone_caster.max_health == 32.0 and support.max_health == 36.0, "special roles use planned health")
 	player.set_physics_process(false)
 	arena.wisp.set_physics_process(false)
 	player.global_position = Vector2(700, 700)
@@ -29,6 +31,7 @@ func _run() -> void:
 	player.hurt_immunity = 0.0
 
 	beast.global_position = Vector2(900, 700)
+	_check(beast.BEAST_WARNING < 0.5 and beast.BEAST_CHARGE_SPEED >= 600.0 and beast.BEAST_COOLDOWN < 3.0, "beast charge is quicker and recovers sooner")
 	beast.set_physics_process(true)
 	await _frames(3)
 	_check(beast.warning_time > 0.0 and beast.attacks_started == 1, "beast warns before charging")
@@ -104,6 +107,42 @@ func _run() -> void:
 	await _frames(80)
 	_check(not is_instance_valid(bolt) and player.health == 100.0, "ruin stops a hostile projectile")
 
+	player.global_position = Vector2(700, 700)
+	player.health = 100.0
+	player.hurt_immunity = 0.0
+	zone_caster.global_position = Vector2(960, 700)
+	zone_caster.attack_cooldown = 0.0
+	zone_caster.set_physics_process(true)
+	await _frames(3)
+	var zone: EnemyZone = get_first_node_in_group("enemy_zones")
+	_check(zone != null and zone.warning_time > 0.0, "zone caster marks a visible target area")
+	player.global_position = Vector2(700, 850)
+	await _frames(38)
+	_check(player.health == 100.0 and zone.warning_time <= 0.0, "moving off the marked area avoids activation")
+	player.global_position = Vector2(700, 700)
+	await _frames(2)
+	_check(player.health == 91.0, "active area deals nine damage when entered")
+	zone_caster.set_physics_process(false)
+	zone_caster.queue_free()
+	await _frames(2)
+	_check(get_nodes_in_group("enemy_zones").is_empty(), "defeating caster clears its area")
+
+	var fragment: TrainingEnemy = enemies.get_node("FragmentA")
+	fragment.global_position = Vector2(950, 700)
+	fragment.attack_cooldown = 1.0
+	support.global_position = Vector2(980, 800)
+	fragment.set_physics_process(true)
+	await _frames(2)
+	_check(fragment.support_boost and fragment.velocity.length() > fragment.MOVE_SPEED * 1.2, "support aura speeds nearby allies")
+	fragment.attack_cooldown = 1.0
+	await _frames(30)
+	var boosted_cooldown := fragment.attack_cooldown
+	support.global_position = Vector2(2200, 1250)
+	fragment.attack_cooldown = 1.0
+	await _frames(30)
+	_check(not fragment.support_boost and fragment.velocity.length() <= fragment.MOVE_SPEED + 1.0 and fragment.attack_cooldown > boosted_cooldown + 0.1, "leaving aura removes speed and cooldown boosts")
+	fragment.set_physics_process(false)
+
 	for enemy in enemies.get_children():
 		enemy.queue_free()
 	await _frames(2)
@@ -115,17 +154,17 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	_check(not arena.wave_hint.visible, "wave prompt clears for the next practice wave")
-	counts = [0, 0, 0]
+	counts = [0, 0, 0, 0, 0]
 	for enemy in enemies.get_children():
 		counts[enemy.role] += 1
-	_check(counts == [3, 1, 2], "next practice wave keeps the mixed roster")
+	_check(counts == [3, 1, 2, 1, 1], "next practice wave keeps all five roles")
 	arena.queue_free()
 	await _frames(3)
 	if failed:
 		printerr("1E verification failed")
 		quit(1)
 	else:
-		print("1E verification passed: mixed roles, dodgeable charge, ranged warning, wall and pause")
+		print("1E verification passed: five roles, quicker charge, ranged warning, zone, support, wall and pause")
 		quit(0)
 
 

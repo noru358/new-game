@@ -3,9 +3,10 @@ extends CharacterBody2D
 
 signal defeated
 
-enum Role { FRAGMENT, BEAST, LAMP }
+enum Role { FRAGMENT, BEAST, LAMP, ZONE, SUPPORT }
 
 const BoltScript = preload("res://game/enemy_bolt.gd")
+const ZoneScript = preload("res://game/enemy_zone.gd")
 const MAX_HEALTH := 22.0
 const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
@@ -13,13 +14,19 @@ const RADIUS := 17.0
 const GATHER_DURATION := 0.12
 const GATHER_CONTACT_GRACE := 0.44
 const BEAST_SPEED := 125.0
-const BEAST_CHARGE_SPEED := 460.0
-const BEAST_WARNING := 0.65
-const BEAST_CHARGE_DURATION := 0.45
-const BEAST_COOLDOWN := 3.5
+const BEAST_CHARGE_SPEED := 620.0
+const BEAST_WARNING := 0.42
+const BEAST_CHARGE_DURATION := 0.43
+const BEAST_COOLDOWN := 2.8
 const LAMP_SPEED := 85.0
 const LAMP_WARNING := 0.6
 const LAMP_COOLDOWN := 2.5
+const ZONE_SPEED := 90.0
+const ZONE_COOLDOWN := 3.2
+const SUPPORT_SPEED := 100.0
+const SUPPORT_RADIUS := 250.0
+const SUPPORT_MOVE_MULTIPLIER := 1.25
+const SUPPORT_COOLDOWN_MULTIPLIER := 1.3
 
 @export var max_health := MAX_HEALTH
 @export var role: Role = Role.FRAGMENT
@@ -46,6 +53,7 @@ var locked_direction := Vector2.RIGHT
 var charge_has_hit := false
 var attacks_started := 0
 var attacks_fired := 0
+var support_boost := false
 
 
 func _ready() -> void:
@@ -59,7 +67,8 @@ func _physics_process(delta: float) -> void:
 	hit_flash = maxf(0.0, hit_flash - delta)
 	stagger_time = maxf(0.0, stagger_time - delta)
 	gather_contact_grace = maxf(0.0, gather_contact_grace - delta)
-	attack_cooldown = maxf(0.0, attack_cooldown - delta)
+	support_boost = _has_support_aura()
+	attack_cooldown = maxf(0.0, attack_cooldown - delta * (SUPPORT_COOLDOWN_MULTIPLIER if support_boost else 1.0))
 	var charging_this_frame := role == Role.BEAST and charge_time > 0.0
 	if gathering:
 		gather_elapsed = minf(GATHER_DURATION, gather_elapsed + delta)
@@ -76,7 +85,11 @@ func _physics_process(delta: float) -> void:
 			match role:
 				Role.BEAST: movement = _beast_velocity(delta)
 				Role.LAMP: movement = _lamp_velocity(delta)
+				Role.ZONE: movement = _zone_velocity(delta)
+				Role.SUPPORT: movement = _support_velocity(delta)
 				_: movement = _chase_direction(delta) * MOVE_SPEED
+			if support_boost and not charging_this_frame:
+				movement *= SUPPORT_MOVE_MULTIPLIER
 		velocity = movement + knockback
 		move_and_slide()
 		if charging_this_frame and get_slide_collision_count() > 0:
@@ -92,6 +105,8 @@ func _physics_process(delta: float) -> void:
 	if gather_contact_grace <= 0.0 and global_position.distance_to(target.global_position) <= RADIUS + 18.0:
 		if role == Role.FRAGMENT:
 			target.receive_hit(CONTACT_DAMAGE, global_position)
+		elif role == Role.SUPPORT:
+			target.receive_hit(7.0, global_position)
 		elif role == Role.BEAST and charging_this_frame and not charge_has_hit:
 			charge_has_hit = true
 			target.receive_hit(15.0, global_position)
@@ -111,7 +126,7 @@ func _beast_velocity(delta: float) -> Vector2:
 			charge_has_hit = false
 			attacks_fired += 1
 		return Vector2.ZERO
-	if attack_cooldown <= 0.0 and global_position.distance_to(target.global_position) <= 230.0 and _clear_shot_to_player():
+	if attack_cooldown <= 0.0 and global_position.distance_to(target.global_position) <= 260.0 and _clear_shot_to_player():
 		locked_direction = global_position.direction_to(target.global_position)
 		warning_time = BEAST_WARNING
 		attacks_started += 1
@@ -145,11 +160,49 @@ func _lamp_velocity(delta: float) -> Vector2:
 	return Vector2.ZERO
 
 
-func _retreat_velocity() -> Vector2:
+func _zone_velocity(delta: float) -> Vector2:
+	var distance := global_position.distance_to(target.global_position)
+	var clear_shot := _clear_shot_to_player()
+	if attack_cooldown <= 0.0 and distance <= 340.0 and clear_shot:
+		var zone: Node2D = ZoneScript.new()
+		zone.setup(self, target)
+		zone.process_mode = Node.PROCESS_MODE_PAUSABLE
+		get_parent().get_parent().add_child(zone)
+		zone.global_position = target.global_position
+		attack_cooldown = ZONE_COOLDOWN
+		attacks_started += 1
+		attacks_fired += 1
+	if not clear_shot or distance > 340.0:
+		return _chase_direction(delta) * ZONE_SPEED
+	if distance < 190.0:
+		return _retreat_velocity(ZONE_SPEED)
+	return Vector2.ZERO
+
+
+func _support_velocity(delta: float) -> Vector2:
+	var distance := global_position.distance_to(target.global_position)
+	if distance < 185.0:
+		return _retreat_velocity(SUPPORT_SPEED)
+	if distance > 310.0 or not _clear_shot_to_player():
+		return _chase_direction(delta) * SUPPORT_SPEED
+	return Vector2.ZERO
+
+
+func _has_support_aura() -> bool:
+	if role == Role.SUPPORT:
+		return false
+	for candidate in get_tree().get_nodes_in_group("training_enemies"):
+		if candidate is TrainingEnemy and candidate.role == Role.SUPPORT and candidate.health > 0.0 and not candidate.is_queued_for_deletion():
+			if global_position.distance_to(candidate.global_position) <= SUPPORT_RADIUS:
+				return true
+	return false
+
+
+func _retreat_velocity(speed: float = LAMP_SPEED) -> Vector2:
 	var away := target.global_position.direction_to(global_position)
 	for direction in [away, away.rotated(PI * 0.5), away.rotated(-PI * 0.5)]:
 		if navigation == null or navigation.has_clear_path(global_position, global_position + direction * 55.0):
-			return direction * LAMP_SPEED
+			return direction * speed
 	return Vector2.ZERO
 
 
@@ -217,13 +270,13 @@ func _interrupt_special() -> void:
 
 func _draw() -> void:
 	if warning_time > 0.0:
-		var length := 220.0 if role == Role.BEAST else 400.0
+		var length := 280.0 if role == Role.BEAST else 400.0
 		var color := Color(1.0, 0.30, 0.20, 0.38) if role == Role.BEAST else Color(1.0, 0.79, 0.28, 0.36)
 		draw_line(Vector2.ZERO, locked_direction * length, color, 12.0 if role == Role.BEAST else 3.0)
 		draw_arc(Vector2.ZERO, 25.0, -PI * 0.5, -PI * 0.5 + TAU * (1.0 - warning_time / (BEAST_WARNING if role == Role.BEAST else LAMP_WARNING)), 24, color.lightened(0.4), 4.0)
 	var reinforced := max_health > MAX_HEALTH
-	var stone := Color("edf6e8") if hit_flash > 0.0 else Color("b87360") if role == Role.BEAST else Color("f1cb72") if role == Role.LAMP else Color("9aa8c7") if reinforced else Color("8bada0")
-	var shade := Color("613c44") if role == Role.BEAST else Color("62527c") if role == Role.LAMP else Color("3c5d61")
+	var stone := Color("edf6e8") if hit_flash > 0.0 else Color("b87360") if role == Role.BEAST else Color("f1cb72") if role == Role.LAMP else Color("72d7cf") if role == Role.ZONE else Color("be9fe9") if role == Role.SUPPORT else Color("9aa8c7") if reinforced else Color("8bada0")
+	var shade := Color("613c44") if role == Role.BEAST else Color("62527c") if role == Role.LAMP else Color("306f72") if role == Role.ZONE else Color("594f79") if role == Role.SUPPORT else Color("3c5d61")
 	if visual_pitch > 0.0:
 		var shadow := PackedVector2Array()
 		for i in range(25):
@@ -247,7 +300,7 @@ func _draw() -> void:
 			Vector2(13, top + 2), Vector2(13, 5), Vector2(1, 12)
 		]), stone)
 	draw_line(Vector2(-7, -4), Vector2(8, 4), Color("295665"), 3.0)
-	var eye := Color("fff3ad") if role == Role.LAMP else Color("ffb073") if role == Role.BEAST or reinforced else Color("42d9d4")
+	var eye := Color("fff3ad") if role == Role.LAMP else Color("ffb073") if role == Role.BEAST or reinforced else Color("e6d2ff") if role == Role.SUPPORT else Color("42d9d4")
 	draw_circle(Vector2(-4, -2), 2.0, eye)
 	draw_circle(Vector2(7, 0), 2.0, eye)
 	if role == Role.BEAST:
@@ -257,6 +310,14 @@ func _draw() -> void:
 		draw_circle(Vector2(0, -18), 13.0, Color(1.0, 0.76, 0.24, 0.22))
 		draw_circle(Vector2(0, -18), 5.0, Color("ffe391"))
 		draw_line(Vector2(-13, 8), Vector2(13, 8), Color("ffe391"), 3.0)
+	elif role == Role.ZONE:
+		draw_arc(Vector2(0, -18), 11.0, 0.0, TAU, 20, Color("b5fff4"), 3.0)
+		draw_line(Vector2(-12, 8), Vector2(12, 8), Color("b5fff4"), 3.0)
+	elif role == Role.SUPPORT:
+		draw_arc(Vector2.ZERO, SUPPORT_RADIUS, 0.0, TAU, 48, Color(0.78, 0.51, 0.98, 0.14), 2.0)
+		draw_colored_polygon(PackedVector2Array([Vector2(0, -31), Vector2(11, -18), Vector2(0, -5), Vector2(-11, -18)]), Color("e2baff"))
+	if support_boost:
+		draw_arc(Vector2.ZERO, 23.0, 0.0, TAU, 20, Color(0.83, 0.55, 1.0, 0.8), 2.5)
 	var health_y := -32.0 - visual_pitch * 18.0
 	draw_rect(Rect2(-18, health_y, 36, 4), Color(0.05, 0.16, 0.18, 0.8))
-	draw_rect(Rect2(-18, health_y, 36.0 * maxf(health, 0.0) / max_health, 4), Color("f7c066") if role == Role.LAMP else Color("ed9072") if role == Role.BEAST else Color("f9c06f") if reinforced else Color("8ce2bc"))
+	draw_rect(Rect2(-18, health_y, 36.0 * maxf(health, 0.0) / max_health, 4), Color("f7c066") if role == Role.LAMP else Color("ed9072") if role == Role.BEAST else Color("8fe8d8") if role == Role.ZONE else Color("d4abf7") if role == Role.SUPPORT else Color("f9c06f") if reinforced else Color("8ce2bc"))
