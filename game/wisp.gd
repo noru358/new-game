@@ -137,6 +137,7 @@ func _fire(target: TrainingEnemy) -> void:
 	projectile.target = target
 	projectile.power_rank = power_rank
 	projectile.chain_jumps = chain_jumps
+	projectile.target_visibility_filter = target_visibility_filter
 	projectile.enemy_hit.connect(_on_projectile_hit)
 	projectile.process_mode = Node.PROCESS_MODE_PAUSABLE
 	get_parent().add_child(projectile)

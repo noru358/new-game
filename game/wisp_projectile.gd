@@ -16,6 +16,7 @@ var trail_points: Array[Vector2] = []
 var chain_jumps := 0
 var target: TrainingEnemy
 var power_rank := 0
+var target_visibility_filter: Callable
 
 
 func _ready() -> void:
@@ -89,7 +90,8 @@ func _chain_from(first_enemy: TrainingEnemy) -> void:
 			if visited.has(candidate.get_instance_id()):
 				continue
 			var distance := current_position.distance_squared_to(candidate.global_position)
-			if distance > best_distance or not screen.has_point(candidate.get_global_transform_with_canvas().origin):
+			var on_screen: bool = target_visibility_filter.call(candidate) if target_visibility_filter.is_valid() else screen.has_point(candidate.get_global_transform_with_canvas().origin)
+			if distance > best_distance or not on_screen:
 				continue
 			var wall_ray := PhysicsRayQueryParameters2D.create(current_position, candidate.global_position, 4)
 			if not get_world_2d().direct_space_state.intersect_ray(wall_ray).is_empty():

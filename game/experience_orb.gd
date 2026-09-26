@@ -6,6 +6,10 @@ signal collected(amount: int)
 var value := 1
 var player: SandboxPlayer
 var age := 0.0
+var path_filter: Callable
+
+func _ready() -> void:
+	add_to_group("experience_orbs")
 
 
 func setup(amount: int, target: SandboxPlayer) -> void:
@@ -20,13 +24,15 @@ func _physics_process(delta: float) -> void:
 		return
 	age += delta
 	var distance := global_position.distance_to(player.global_position)
-	if distance < 22.0:
+	var reachable: bool = not path_filter.is_valid() or path_filter.call(global_position, player.global_position)
+	if distance < 22.0 and reachable:
 		collected.emit(value)
 		queue_free()
 		return
 	if distance < 260.0:
 		var speed := lerpf(400.0, 700.0, 1.0 - distance / 260.0)
-		global_position = global_position.move_toward(player.global_position, speed * delta)
+		if reachable:
+			global_position = global_position.move_toward(player.global_position, speed * delta)
 	queue_redraw()
 
 

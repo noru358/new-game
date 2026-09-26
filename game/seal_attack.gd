@@ -9,6 +9,7 @@ var cooldown := 0.8
 var telegraph := 0.0
 var burst_time := 0.0
 var radius := 66.0
+var target_visibility_filter: Callable
 
 
 func _ready() -> void:
@@ -43,7 +44,8 @@ func _find_target() -> TrainingEnemy:
 		if not candidate is TrainingEnemy or candidate.is_queued_for_deletion() or candidate.health <= 0.0:
 			continue
 		var distance := player.global_position.distance_squared_to(candidate.global_position)
-		if distance > best_distance or not screen.has_point(candidate.get_global_transform_with_canvas().origin):
+		var on_screen: bool = target_visibility_filter.call(candidate) if target_visibility_filter.is_valid() else screen.has_point(candidate.get_global_transform_with_canvas().origin)
+		if distance > best_distance or not on_screen:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(player.global_position, candidate.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():
@@ -58,7 +60,7 @@ func _explode() -> void:
 	for candidate in get_tree().get_nodes_in_group("training_enemies"):
 		if not candidate is TrainingEnemy or candidate.is_queued_for_deletion() or candidate.health <= 0.0:
 			continue
-		if global_position.distance_to(candidate.global_position) > radius + candidate.RADIUS:
+		if global_position.distance_to(candidate.global_position) > radius + candidate.collision_radius:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(global_position, candidate.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():

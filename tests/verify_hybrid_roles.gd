@@ -26,8 +26,9 @@ func _run() -> void:
 			by_role[actor.role] = by_role.get(actor.role, 0) + 1
 			_check(actor.projectile_parent == scene.simulation and actor.collision_radius == scene.ACTOR_CLEARANCE, "hybrid enemies use hidden 2D projectiles and matching clearance")
 	_check(by_role.get(TrainingEnemy.Role.FRAGMENT, 0) == 3 and by_role.get(TrainingEnemy.Role.LAMP, 0) == 2 and by_role.get(TrainingEnemy.Role.BEAST, 0) == 1 and by_role.get(TrainingEnemy.Role.ZONE, 0) == 1 and by_role.get(TrainingEnemy.Role.SUPPORT, 0) == 1, "all five accepted enemy roles are present")
-	scene._set_combo_rank(2)
-	_check(scene.player.combo_limit() == 4, "comparison controls enable the full four-hit combo")
+	scene.growth.apply_card("U_CHAIN")
+	scene.growth.apply_card("U_CHAIN")
+	_check(scene.player.combo_limit() == 4, "growth cards enable the full four-hit combo")
 	for step in [3, 4]:
 		scene.player.attack_step = step
 		scene.player.attack_elapsed = 0.1
@@ -84,5 +85,5 @@ func _run() -> void:
 	scene.queue_free()
 	await _frames(3)
 	if failures == 0:
-		print("Hybrid roles verification passed: four-hit comparison, five roles, depth-tested warnings, bolt hit, blocked zone and support")
+		print("Hybrid roles verification passed: four-hit growth, five roles, depth-tested warnings, bolt hit, blocked zone and support")
 	quit(1 if failures else 0)

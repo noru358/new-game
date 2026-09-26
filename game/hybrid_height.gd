@@ -3,6 +3,7 @@ extends Node3D
 const Terrain = preload("res://game/hybrid_terrain.gd")
 const PlayerScene = preload("res://game/player.tscn")
 const EnemyScene = preload("res://game/enemy.tscn")
+const GrowthScript = preload("res://game/run_growth.gd")
 const ActorTexture = preload("res://game/hybrid_actor.svg")
 const COMBAT_CAMERA_SIZE := 10.8
 const OVERVIEW_CAMERA_SIZE := 30.0
@@ -14,6 +15,7 @@ var terrain := Terrain.new()
 var simulation := Node2D.new()
 var player: SandboxPlayer
 var wisp: WispCompanion
+var growth: RunGrowth
 var navigation := ArenaNavigation.new()
 var camera := Camera3D.new()
 var actors: Dictionary = {}
@@ -21,10 +23,16 @@ var actor_motion: Dictionary = {}
 var shots: Dictionary = {}
 var shot_motion: Dictionary = {}
 var wisp_visual: MeshInstance3D
+var wisp_visuals: Dictionary = {}
+var wisp_motion: Dictionary = {}
+var orbs: Dictionary = {}
+var orb_motion: Dictionary = {}
+var growth_save_prefix := "user://loop_conquest_hybrid_lab_unlocks"
 var attack_visual := MeshInstance3D.new()
 var attack_mesh := ImmediateMesh.new()
 var warning_visual := MeshInstance3D.new()
 var warning_mesh := ImmediateMesh.new()
+var seal_visual: MeshInstance3D
 var hud: Label
 var pause_label: Label
 var pause_backdrop: ColorRect
@@ -40,7 +48,7 @@ var previous_attack_direction := Vector2.RIGHT
 var current_attack_direction := Vector2.RIGHT
 
 func _ready() -> void:
-	get_window().title = "Loop Conquest — Hybrid Height v04"
+	get_window().title = "Loop Conquest — Hybrid Height v05"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_physics_priority = 100
 	_register_inputs()
@@ -87,7 +95,19 @@ func _ready() -> void:
 	add_child(wisp_visual)
 	wisp_visual.position = terrain.world_point(wisp.global_position, 80)
 	wisp_visual.reset_physics_interpolation()
-	wisp.enemy_hit.connect(func(enemy: TrainingEnemy): _flash(enemy.global_position, Color("66efff")))
+	wisp_visuals[wisp] = wisp_visual
+	wisp_motion[wisp] = [wisp.global_position, wisp.global_position]
+	growth = GrowthScript.new()
+	growth.setup(simulation, player, wisp)
+	growth.unlocks.save_prefix = growth_save_prefix
+	growth.basic_speed_base = player.basic_speed_bonus
+	growth.hud_position = Vector2(28, 128)
+	growth.orb_path_filter = clear_attack
+	# Keep the accepted two-charge movement baseline in this comparison scene.
+	growth.card_ranks["U_STEP"] = 2
+	add_child(growth)
+	growth.card_applied.connect(_on_card_applied)
+	_sync_wisp_visuals()
 	attack_visual.mesh = attack_mesh
 	var attack_material := _material(Color.WHITE, true)
 	attack_material.vertex_color_use_as_albedo = true
@@ -104,13 +124,19 @@ func _ready() -> void:
 	warning_visual.material_override = warning_material
 	warning_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	add_child(warning_visual)
+	seal_visual = _sphere(0.17, Color("dfbaff"))
+	seal_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	seal_visual.hide()
+	add_child(seal_visual)
 	spawn_enemies()
 	_build_ui()
 	camera.position = terrain.world_point(player.position) + Vector3(14, 11.431, 14)
 	camera.look_at(terrain.world_point(player.position), Vector3.UP)
 	camera.reset_physics_interpolation()
-	get_window().focus_exited.connect(func(): _set_paused(true))
-	print("Hybrid height v04 ready: depth-tested combat, render-interpolated motion and five enemy roles")
+	get_window().focus_exited.connect(func():
+		if not growth.choosing: _set_paused(true)
+	)
+	print("Hybrid height v05 ready: growth, XP, wisps and seal")
 
 func _register_inputs() -> void:
 	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
@@ -311,6 +337,7 @@ func spawn_enemies() -> void:
 			if is_instance_valid(actor): actor.queue_free()
 			actors[actor].queue_free()
 			actors.erase(actor)
+			actor_motion.erase(actor)
 	for i in ENEMY_POINTS.size():
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
 		_set_actor_radius(enemy, ACTOR_CLEARANCE)
@@ -332,7 +359,11 @@ func spawn_enemies() -> void:
 			visual.add_child(marker)
 		actors[enemy] = visual
 		actor_motion[enemy] = [enemy.global_position, enemy.global_position]
-		enemy.defeated.connect(func(): kills += 1)
+		enemy.defeated.connect(_on_enemy_defeated.bind(enemy))
+
+func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
+	kills += 1
+	growth.on_enemy_defeated(enemy)
 
 func _enemy_color(role: TrainingEnemy.Role) -> Color:
 	match role:
@@ -359,6 +390,36 @@ func _constrain_wisp(point: Vector2) -> Vector2:
 		return point
 	return hit.position.move_toward(player.global_position, 15.0)
 
+func _on_card_applied(card_id: String) -> void:
+	if card_id.begins_with("S_WISP"):
+		_sync_wisp_visuals()
+	if growth.seal != null:
+		growth.seal.target_visibility_filter = _on_screen
+		if not growth.seal.enemy_hit.is_connected(_on_seal_hit):
+			growth.seal.enemy_hit.connect(_on_seal_hit)
+
+func _on_seal_hit(enemy: TrainingEnemy) -> void:
+	_flash(enemy.global_position, Color("d29bff"))
+
+func _sync_wisp_visuals() -> void:
+	for companion in growth.wisps:
+		companion.target_visibility_filter = _on_screen
+		companion.follow_position_filter = _constrain_wisp
+		if not companion.enemy_hit.is_connected(_on_wisp_hit):
+			companion.enemy_hit.connect(_on_wisp_hit)
+		if not wisp_visuals.has(companion):
+			var new_visual := _sphere(0.13, Color("49dce8"))
+			new_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+			add_child(new_visual)
+			new_visual.position = terrain.world_point(companion.global_position, 80)
+			wisp_visuals[companion] = new_visual
+			wisp_motion[companion] = [companion.global_position, companion.global_position]
+		var visual: MeshInstance3D = wisp_visuals[companion]
+		(visual.material_override as StandardMaterial3D).albedo_color = Color("49dce8").lerp(Color("e3ffff"), float(companion.power_rank) / 3.0)
+
+func _on_wisp_hit(enemy: TrainingEnemy) -> void:
+	_flash(enemy.global_position, Color("66efff"))
+
 func _physics_process(delta: float) -> void:
 	if paused or not is_instance_valid(player): return
 	for actor in actors.keys():
@@ -379,11 +440,32 @@ func _physics_process(delta: float) -> void:
 	current_attack_step = player.attack_step
 	current_attack_elapsed = player.attack_elapsed
 	current_attack_direction = player.attack_direction
-	wisp_visual.position = wisp_visual.position.lerp(terrain.world_point(wisp.global_position, 80), minf(1.0, 13.0 * delta))
+	for companion in wisp_visuals:
+		if not is_instance_valid(companion): continue
+		var samples: Array = wisp_motion[companion]
+		wisp_motion[companion] = [samples[1], companion.global_position]
+		wisp_visuals[companion].position = terrain.world_point(companion.global_position, 80)
+	for orb in get_tree().get_nodes_in_group("experience_orbs"):
+		if not orbs.has(orb):
+			var visual := _sphere(0.105, Color("79f5bd"))
+			visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+			add_child(visual)
+			visual.position = terrain.world_point(orb.global_position, 50.0)
+			orbs[orb] = visual
+			orb_motion[orb] = [orb.global_position, orb.global_position]
+		var samples: Array = orb_motion[orb]
+		orb_motion[orb] = [samples[1], orb.global_position]
+	for orb in orbs.keys():
+		if not is_instance_valid(orb) or orb.is_queued_for_deletion():
+			orbs[orb].queue_free()
+			orbs.erase(orb)
+			orb_motion.erase(orb)
 	for group in ["wisp_projectiles", "enemy_bolts"]:
 		for shot in get_tree().get_nodes_in_group(group):
 			if not shots.has(shot):
-				var visual := _sphere(0.075 if group == "wisp_projectiles" else 0.095, Color("96f4ff") if group == "wisp_projectiles" else Color("ffe18c"))
+				var powered: bool = group == "wisp_projectiles"
+				var rank: int = shot.power_rank if powered else 0
+				var visual := _sphere(0.075 + 0.015 * float(rank) if powered else 0.095, Color("96f4ff").lerp(Color.WHITE, float(rank) / 3.0) if powered else Color("ffe18c"))
 				visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 				add_child(visual)
 				shots[shot] = visual
@@ -418,6 +500,24 @@ func _process(delta: float) -> void:
 		if is_instance_valid(shot):
 			var samples: Array = shot_motion[shot]
 			shots[shot].position = terrain.world_point((samples[0] as Vector2).lerp(samples[1], fraction), 55.0)
+	for companion in wisp_visuals:
+		if not is_instance_valid(companion): continue
+		var samples: Array = wisp_motion[companion]
+		var point: Vector2 = (samples[0] as Vector2).lerp(samples[1], fraction)
+		var visual: MeshInstance3D = wisp_visuals[companion]
+		visual.position = terrain.world_point(point, 80.0 + sin(companion.age * 5.4) * 3.0)
+		visual.scale = Vector3.ONE * (1.0 + 0.15 * float(companion.power_rank) + (0.45 if companion.muzzle_flash > 0.0 else 0.0))
+	for orb in orbs:
+		if not is_instance_valid(orb): continue
+		var samples: Array = orb_motion[orb]
+		var point: Vector2 = (samples[0] as Vector2).lerp(samples[1], fraction)
+		orbs[orb].position = terrain.world_point(point, 50.0 + sin(orb.age * 6.0) * 6.0)
+		orbs[orb].rotation.y += delta * 2.5
+	seal_visual.visible = growth.seal != null and (growth.seal.telegraph > 0.0 or growth.seal.burst_time > 0.0)
+	if seal_visual.visible:
+		var seal := growth.seal
+		seal_visual.position = terrain.world_point(seal.global_position, 76.0)
+		seal_visual.scale = Vector3.ONE * (1.7 if seal.burst_time > 0.0 else 1.0 + 0.30 * sin(Time.get_ticks_msec() * 0.018))
 	var focus := terrain.world_point(player_point, 35)
 	if overview: focus = Vector3(12, 0.8, 10)
 	camera.position = camera.position.lerp(focus + Vector3(14, 11.431, 14), 1.0 - exp(-8.0 * delta))
@@ -518,6 +618,8 @@ func _draw_enemy_warnings(fraction: float) -> void:
 			showing = true
 			break
 	if not get_tree().get_nodes_in_group("enemy_zones").is_empty(): showing = true
+	if growth != null and growth.seal != null and (growth.seal.telegraph > 0.0 or growth.seal.burst_time > 0.0): showing = true
+	if not get_tree().get_nodes_in_group("wisp_chain_arcs").is_empty(): showing = true
 	if not showing: return
 	warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	for actor in actors:
@@ -546,24 +648,51 @@ func _draw_enemy_warnings(fraction: float) -> void:
 			first_reach = second_reach
 			if limit > 8.0:
 				_warning_arc(center, a0, a1, limit, 5.0, color)
+	if growth != null and growth.seal != null and (growth.seal.telegraph > 0.0 or growth.seal.burst_time > 0.0):
+		var seal := growth.seal
+		var center: Vector2 = seal.global_position
+		var bursting := seal.burst_time > 0.0
+		var fade := seal.burst_time / 0.19 if bursting else 1.0 - seal.telegraph / 0.45
+		var color := Color(0.93, 0.74, 1.0, 0.95 if bursting else 0.48 + fade * 0.42)
+		var first_reach := _attack_reach_at(center, 0.0, seal.radius)
+		for i in 48:
+			var a0 := TAU * float(i) / 48.0
+			var a1 := TAU * float(i + 1) / 48.0
+			var next_reach := _attack_reach_at(center, a1, seal.radius)
+			var limit := minf(first_reach, next_reach)
+			first_reach = next_reach
+			if limit > 8.0:
+				_warning_arc(center, a0, a1, limit, 9.0 if bursting else 6.0, color, 60.0, terrain.height_at(center))
+				if bursting:
+					_warning_arc(center, a0, a1, limit * 0.55, 19.0, Color(0.7, 0.38, 1.0, 0.23 * fade), 58.0, terrain.height_at(center))
+	for arc in get_tree().get_nodes_in_group("wisp_chain_arcs"):
+		if not is_instance_valid(arc) or arc.is_queued_for_deletion(): continue
+		var strength: float = 1.0 - arc.age / arc.duration
+		var start: Vector2 = arc.global_position
+		var finish: Vector2 = start + arc.end_point
+		var middle: Vector2 = start.lerp(finish, 0.5) + arc.end_point.orthogonal().normalized() * 12.0 * strength
+		var chain_height := maxf(terrain.height_at(start), terrain.height_at(finish))
+		_warning_strip(start, middle, 4.0, Color(0.50, 0.93, 1.0, strength), 65.0, chain_height)
+		_warning_strip(middle, finish, 4.0, Color(0.50, 0.93, 1.0, strength), 65.0, chain_height)
 	warning_mesh.surface_end()
 
-func _warning_strip(first: Vector2, second: Vector2, width: float, color: Color) -> void:
+func _warning_strip(first: Vector2, second: Vector2, width: float, color: Color, lift: float = 9.0, ground_height: float = -10000.0) -> void:
 	var side := (second - first).normalized().orthogonal() * width * 0.5
-	_warning_quad([first - side, first + side, second + side, second - side], color)
+	_warning_quad([first - side, first + side, second + side, second - side], color, lift, ground_height)
 
-func _warning_arc(center: Vector2, a0: float, a1: float, radius: float, width: float, color: Color) -> void:
+func _warning_arc(center: Vector2, a0: float, a1: float, radius: float, width: float, color: Color, lift: float = 9.0, ground_height: float = -10000.0) -> void:
 	_warning_quad([
 		center + Vector2.from_angle(a0) * (radius - width),
 		center + Vector2.from_angle(a1) * (radius - width),
 		center + Vector2.from_angle(a1) * radius,
 		center + Vector2.from_angle(a0) * radius
-	], color)
+	], color, lift, ground_height)
 
-func _warning_quad(points: Array, color: Color) -> void:
+func _warning_quad(points: Array, color: Color, lift: float = 9.0, ground_height: float = -10000.0) -> void:
 	for index in [0, 1, 2, 0, 2, 3]:
 		warning_mesh.surface_set_color(color)
-		warning_mesh.surface_add_vertex(terrain.world_point(points[index], 9.0))
+		var point: Vector2 = points[index]
+		warning_mesh.surface_add_vertex(terrain.world_point(point, lift) if ground_height <= -9999.0 else Vector3(point.x, ground_height + lift, point.y) * Terrain.SCALE)
 
 func _flash(point: Vector2, color: Color) -> void:
 	var flash := _sphere(0.22, color)
@@ -579,7 +708,7 @@ func _build_ui() -> void:
 	add_child(canvas)
 	var panel := ColorRect.new()
 	panel.position = Vector2(16, 16)
-	panel.size = Vector2(445, 104)
+	panel.size = Vector2(445, 172)
 	panel.color = Color(0.05, 0.12, 0.14, 0.88)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(panel)
@@ -614,16 +743,6 @@ func _build_ui() -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(func(): teleport(places[title]))
 		row.add_child(button)
-	var combo_row := HBoxContainer.new()
-	combo_row.position = Vector2(590, 70)
-	canvas.add_child(combo_row)
-	for rank in range(3):
-		var combo_button := Button.new()
-		combo_button.text = "%d타 시험" % (rank + 2)
-		combo_button.custom_minimum_size = Vector2(125, 38)
-		combo_button.focus_mode = Control.FOCUS_NONE
-		combo_button.pressed.connect(_set_combo_rank.bind(rank))
-		combo_row.add_child(combo_button)
 	pause_backdrop = ColorRect.new()
 	pause_backdrop.position = Vector2(450, 303)
 	pause_backdrop.size = Vector2(380, 66)
@@ -638,10 +757,6 @@ func _build_ui() -> void:
 	pause_label.hide()
 	canvas.add_child(pause_label)
 
-func _set_combo_rank(rank: int) -> void:
-	player.set_combo_rank(rank)
-	_update_hud()
-
 func teleport(point: Vector2) -> void:
 	player.position = point
 	actor_motion[player] = [point, point]
@@ -649,10 +764,13 @@ func teleport(point: Vector2) -> void:
 	player.dash_time = 0
 	player.hurt_recoil = Vector2.ZERO
 	player.reset_physics_interpolation()
-	wisp.position = point
-	wisp.reset_physics_interpolation()
-	wisp_visual.position = terrain.world_point(point, 80)
-	wisp_visual.reset_physics_interpolation()
+	for companion in wisp_visuals:
+		var wisp_point: Vector2 = point + companion.follow_offset
+		companion.position = wisp_point
+		companion.reset_physics_interpolation()
+		wisp_motion[companion] = [wisp_point, wisp_point]
+		wisp_visuals[companion].position = terrain.world_point(wisp_point, 80)
+		wisp_visuals[companion].reset_physics_interpolation()
 	actors[player].position = terrain.world_point(point)
 	actors[player].reset_physics_interpolation()
 	camera.position = terrain.world_point(point, 35) + Vector3(14, 11.431, 14)
@@ -667,6 +785,10 @@ func _set_paused(value: bool) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
+		if growth != null and growth.choosing:
+			if event.keycode >= KEY_1 and event.keycode <= KEY_3:
+				growth.choose_index(event.keycode - KEY_1)
+			return
 		if event.keycode == KEY_TAB:
 			overview = not overview
 			camera.size = OVERVIEW_CAMERA_SIZE if overview else COMBAT_CAMERA_SIZE

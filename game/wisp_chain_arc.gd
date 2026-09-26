@@ -5,6 +5,9 @@ var end_point := Vector2.ZERO
 var age := 0.0
 var duration := 0.17
 
+func _ready() -> void:
+	add_to_group("wisp_chain_arcs")
+
 
 func setup(start: Vector2, finish: Vector2) -> void:
 	position = start

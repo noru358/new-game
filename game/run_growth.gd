@@ -38,6 +38,9 @@ var overlay: ColorRect
 var choice_title: Label
 var choice_buttons: Array[Button] = []
 var unlock_notice := ""
+var basic_speed_base := 0.0
+var hud_position := Vector2(20, 104)
+var orb_path_filter: Callable
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -61,6 +64,7 @@ func next_xp() -> int:
 func on_enemy_defeated(enemy: TrainingEnemy) -> void:
 	var orb: ExperienceOrb = OrbScript.new()
 	orb.setup(4 if enemy.max_health > enemy.MAX_HEALTH else 2, player)
+	orb.path_filter = orb_path_filter
 	orb.collected.connect(gain_xp)
 	arena.add_child(orb)
 	orb.global_position = enemy.global_position
@@ -184,7 +188,7 @@ func apply_card(card_id: String) -> void:
 	card_ranks[card_id] = rank
 	match card_id:
 		"U_EDGE": player.basic_damage_bonus = 0.15 * rank
-		"U_TEMPO": player.basic_speed_bonus = 0.12 * rank
+		"U_TEMPO": player.basic_speed_bonus = basic_speed_base + 0.12 * rank
 		"U_REACH": player.basic_reach_bonus = 0.15 * rank
 		"U_CHAIN": player.set_combo_rank(rank)
 		"U_STEP": player.set_dash_upgrade(rank)
@@ -254,7 +258,7 @@ func _build_ui() -> void:
 	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(canvas)
 	hud = Label.new()
-	hud.position = Vector2(20, 104)
+	hud.position = hud_position
 	hud.add_theme_font_size_override("font_size", 17)
 	hud.add_theme_color_override("font_color", Color("e5fff5"))
 	hud.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
