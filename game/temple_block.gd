@@ -3,12 +3,14 @@ extends StaticBody2D
 
 var footprint_size := Vector2(100, 40)
 var water := false
+var terrace_edge := false
 
 
-func setup(area: Rect2, is_water: bool, angle: float = 0.0) -> void:
+func setup(area: Rect2, is_water: bool, angle: float = 0.0, is_terrace_edge: bool = false) -> void:
 	global_position = area.get_center()
 	footprint_size = area.size
 	water = is_water
+	terrace_edge = is_terrace_edge
 	rotation = angle
 	queue_redraw()
 
@@ -31,6 +33,9 @@ func _draw() -> void:
 	if water:
 		return
 	var half := footprint_size * 0.5
+	if terrace_edge:
+		draw_line(Vector2(-half.x, 0), Vector2(half.x, 0), Color("b8c4a7"), 2.0)
+		return
 	var top := Rect2(-half - Vector2(0, 20), footprint_size)
 	draw_rect(Rect2(-half, footprint_size), Color("5e7773"))
 	draw_rect(top, Color("bac8b0"))

@@ -21,15 +21,10 @@ func _draw() -> void:
 	if not is_instance_valid(region):
 		return
 	draw_rect(Rect2(Vector2.ZERO, size), Color("b7cdb8"))
-	_draw_plaza(region.WEST_COURT_CENTER, region.WEST_COURT_HALF.x, region.WEST_COURT_HALF.y, Color("ead9b2"))
-	_draw_plaza(region.WEST_UPPER_LANDING, 200.0, 110.0, Color("e0d0aa"))
-	_draw_plaza(region.WEST_LOWER_LANDING, 200.0, 110.0, Color("e0d0aa"))
+	_draw_plaza(region.WEST_COURT_CENTER, region.WEST_COURT_HALF.x, region.WEST_COURT_HALF.y, Color("cdd2bb"))
 	_draw_plaza(Vector2(1830, 1080), 820.0, 385.0, Color("ebd5a8"))
 	_draw_plaza(Vector2(3130, 1080), 400.0, 280.0, Color("e8d3a3"))
-	_draw_plaza(region.WEST_GATE, 180.0, 80.0, Color("f0e0b5"))
 	_draw_plaza(region.UPPER_TERRACE_CENTER, region.UPPER_TERRACE_HALF.x, region.UPPER_TERRACE_HALF.y, Color("f3eacb"))
-	for patch in region.WET_BANK_AREAS:
-		draw_colored_polygon(_map_points(PackedVector2Array(patch)), Color("8db9ad"))
 	for i in range(region.WATER_AREAS.size()):
 		var world_points: PackedVector2Array = region.rotated_rect_points(region.WATER_AREAS[i], region.WATER_ANGLES[i])
 		draw_colored_polygon(_map_points(world_points), Color("388c94"))

@@ -21,9 +21,32 @@ func _run() -> void:
 	_check(scene.REGION_SIZE == Vector2(3840, 2160) and player.arena_bounds.size == scene.REGION_SIZE, "scrolling region uses expanded actor bounds")
 	_check(scene.camera.limit_right == 3840 and scene.camera.limit_bottom == 2160, "camera follows the expanded region")
 	_check(scene.arena_navigation.grid_size == Vector2i(120, 68), "navigation covers the full region")
-	_check(scene.arena_navigation.obstacles.size() == 13 and scene.arena_navigation.rectangular_obstacles.size() == 13, "pillars, water and walls share navigation")
-	_check(scene.arena_navigation.is_open(Vector2(1160, 1180), 25.0) and not scene.arena_navigation.is_open(Vector2(1160, 1060), 0.0), "courtyard gate stays open between two pylons")
-	_check(scene.arena_navigation.has_clear_path(Vector2(1230, 1180), Vector2(1500, 1180)) and not scene.arena_navigation.has_clear_path(Vector2(1450, 950), Vector2(1450, 1180)), "upper terrace has a central stair and blocked side approach")
+	_check(scene.arena_navigation.obstacles.size() == 11 and scene.arena_navigation.rectangular_obstacles.size() == 15, "pillars, water and walls share navigation")
+	var terrace_center := Vector2(1550, 1180)
+	_check(scene.arena_navigation.has_clear_path(Vector2(1200, 1180), terrace_center), "diamond stair is the open entrance to the terrace")
+	_check(not scene.arena_navigation.has_clear_path(terrace_center, Vector2(1550, 900)) and not scene.arena_navigation.has_clear_path(terrace_center, Vector2(1550, 1460)) and not scene.arena_navigation.has_clear_path(terrace_center, Vector2(2000, 1180)), "terrace cannot be left through north, south or east edges")
+	for target in [Vector2(1320, 1100), Vector2(1320, 1260)]:
+		_check(not scene.arena_navigation.has_clear_path(terrace_center, target), "side of stair does not leak toward %s" % target)
+	for target in [Vector2(1550, 900), Vector2(1550, 1460), Vector2(2000, 1180), Vector2(1320, 1100), Vector2(1320, 1260)]:
+		var terrace_edge_ray := PhysicsRayQueryParameters2D.create(terrace_center, target, 4)
+		var terrace_edge_hit := scene.get_world_2d().direct_space_state.intersect_ray(terrace_edge_ray)
+		_check(not terrace_edge_hit.is_empty() and terrace_edge_hit.collider is TempleBlock, "terrace perimeter physically blocks %s" % target)
+	for action in ["move_up", "move_down", "move_right"]:
+		player.global_position = terrace_center
+		player.reset_physics_interpolation()
+		await _frames(2)
+		Input.action_press(action)
+		await _frames(90)
+		Input.action_release(action)
+		var offset: Vector2 = player.global_position - scene.UPPER_TERRACE_CENTER
+		_check(absf(offset.x) / scene.UPPER_TERRACE_HALF.x + absf(offset.y) / scene.UPPER_TERRACE_HALF.y < 1.05, "player cannot walk off terrace via %s" % action)
+	player.global_position = Vector2(1780, 1180)
+	player.reset_physics_interpolation()
+	player.dash_charges = 1
+	player.dash_requested = true
+	player.facing = Vector2.RIGHT
+	await _frames(20)
+	_check(player.global_position.x < 1850.0, "dash cannot pass through the terrace rim")
 	_check(scene.minimap.visible and not scene.role_panel.visible and scene.minimap._map_point(scene.REGION_SIZE).is_equal_approx(scene.minimap.size), "upper-right minimap covers the full region")
 	_check(scene.arena_navigation.is_open(Vector2(600, 850), 0.0) and not scene.arena_navigation.is_open(Vector2(600, 700), 0.0), "water collision follows the diamond axis instead of a screen rectangle")
 	var growth_rect := Rect2(scene.growth.hud.position, scene.growth.hud.get_combined_minimum_size())
@@ -69,7 +92,7 @@ func _run() -> void:
 		printerr("1F verification failed")
 		quit(1)
 	else:
-		print("1F verification passed: region identity, scrolling bounds, water crossing, walls, spawn areas, repeat wave")
+		print("1F verification passed: region identity, scrolling bounds, water crossing, stair and terrace boundary, spawn areas, repeat wave")
 		quit(0)
 
 

@@ -8,9 +8,6 @@ const REGION_SIZE := Vector2(3840, 2160)
 const PLAYER_START := Vector2(760, 1190)
 const WEST_COURT_CENTER := Vector2(760, 1180)
 const WEST_COURT_HALF := Vector2(560, 280)
-const WEST_UPPER_LANDING := Vector2(900, 875)
-const WEST_LOWER_LANDING := Vector2(900, 1485)
-const WEST_GATE := Vector2(1320, 1180)
 const UPPER_TERRACE_CENTER := Vector2(1550, 1180)
 const UPPER_TERRACE_HALF := Vector2(300, 150)
 const ENEMY_POINTS := [
@@ -22,8 +19,7 @@ const PILLAR_POINTS := [
 	Vector2(610, 1060), Vector2(930, 1060), Vector2(610, 1300),
 	Vector2(930, 1300), Vector2(1800, 820), Vector2(1940, 1330),
 	Vector2(2350, 1110), Vector2(2650, 760), Vector2(2650, 1410),
-	Vector2(3040, 810), Vector2(3290, 1330),
-	Vector2(1160, 1060), Vector2(1160, 1300)
+	Vector2(3040, 810), Vector2(3290, 1330)
 ]
 const WATER_AREAS := [
 	Rect2(-132, 520, 984, 112), Rect2(980, 924, 358, 112),
@@ -32,17 +28,14 @@ const WATER_AREAS := [
 	Rect2(2110, 330, 310, 160)
 ]
 const WATER_ANGLES := [DIAMOND_ANGLE, DIAMOND_ANGLE, -DIAMOND_ANGLE, -DIAMOND_ANGLE, DIAMOND_ANGLE, DIAMOND_ANGLE]
-const WET_BANK_AREAS := [
-	[Vector2(980, 968), Vector2(1040, 995), Vector2(1080, 1030), Vector2(1130, 1015), Vector2(1185, 1050), Vector2(1210, 1010), Vector2(1090, 955)],
-	[Vector2(980, 1392), Vector2(1040, 1365), Vector2(1080, 1330), Vector2(1130, 1345), Vector2(1185, 1310), Vector2(1210, 1350), Vector2(1090, 1405)]
-]
 const WALL_AREAS := [
 	Rect2(2500, 880, 230, 50), Rect2(2500, 1260, 230, 50),
 	Rect2(3120, 925, 540, 52), Rect2(3120, 1183, 540, 52),
 	Rect2(2740, 680, 240, 50),
-	Rect2(1391, 1054, 168, 28), Rect2(1391, 1279, 168, 28)
+	Rect2(1349, 1061, 212, 32), Rect2(1349, 1267, 212, 32),
+	Rect2(1532, 1089, 336, 32), Rect2(1532, 1239, 336, 32)
 ]
-const WALL_ANGLES := [DIAMOND_ANGLE, -DIAMOND_ANGLE, DIAMOND_ANGLE, -DIAMOND_ANGLE, -DIAMOND_ANGLE, -DIAMOND_ANGLE, DIAMOND_ANGLE]
+const WALL_ANGLES := [DIAMOND_ANGLE, -DIAMOND_ANGLE, DIAMOND_ANGLE, -DIAMOND_ANGLE, -DIAMOND_ANGLE, -DIAMOND_ANGLE, DIAMOND_ANGLE, DIAMOND_ANGLE, -DIAMOND_ANGLE]
 const SPAWN_AREAS := [
 	Rect2(380, 730, 760, 670), Rect2(1260, 650, 1000, 800),
 	Rect2(1810, 1500, 780, 470), Rect2(2540, 780, 380, 620),
@@ -63,14 +56,14 @@ func _ready() -> void:
 		var pillar: ViewProp = ViewPropScript.new()
 		pillar.name = "TemplePillar%d" % i
 		pillar.position = PILLAR_POINTS[i]
-		pillar.footprint_radius = 42.0 if i >= 11 else 38.0 if i % 4 == 0 else 31.0
+		pillar.footprint_radius = 38.0 if i % 4 == 0 else 31.0
 		add_child(pillar)
-		pillar.configure(1 if i >= 11 or i % 4 == 0 else 0, VIEW_PITCH)
+		pillar.configure(1 if i % 4 == 0 else 0, VIEW_PITCH)
 		view_props.append(pillar)
 	for i in range(WATER_AREAS.size()):
 		_add_block(WATER_AREAS[i], true, WATER_ANGLES[i])
 	for i in range(WALL_AREAS.size()):
-		_add_block(WALL_AREAS[i], false, WALL_ANGLES[i])
+		_add_block(WALL_AREAS[i], false, WALL_ANGLES[i], i >= 5)
 	arena_navigation = NavigationScript.new()
 	arena_navigation.setup(view_props, REGION_SIZE)
 	player.arena_bounds = Rect2(Vector2.ZERO, REGION_SIZE)
@@ -119,10 +112,10 @@ func _build_minimap() -> void:
 	wave_hint.position = Vector2(970, 228)
 
 
-func _add_block(area: Rect2, water: bool, angle: float) -> void:
+func _add_block(area: Rect2, water: bool, angle: float, terrace_edge: bool = false) -> void:
 	var block: TempleBlock = TempleBlockScript.new()
 	block.name = "Water%d" % view_props.size() if water else "TempleWall%d" % view_props.size()
-	block.setup(area, water, angle)
+	block.setup(area, water, angle, terrace_edge)
 	add_child(block)
 	view_props.append(block)
 
@@ -186,15 +179,10 @@ func _draw() -> void:
 			])
 			draw_colored_polygon(points, color)
 			draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[3], points[0]]), Color(0.27, 0.44, 0.42, 0.14), 1.3)
-	_draw_plaza(WEST_COURT_CENTER, WEST_COURT_HALF.x, WEST_COURT_HALF.y, Color("e0d7b2"))
-	_draw_plaza(WEST_UPPER_LANDING, 200.0, 110.0, Color("d9cda8"))
-	_draw_plaza(WEST_LOWER_LANDING, 200.0, 110.0, Color("d9cda8"))
+	_draw_court_paving()
 	_draw_plaza(Vector2(1830, 1080), 820.0, 385.0, Color("e7d8ae"))
 	_draw_plaza(Vector2(3130, 1080), 400.0, 280.0, Color("e0d1a7"))
-	_draw_plaza(WEST_GATE, 180.0, 80.0, Color("eadfba"))
 	_draw_raised_terrace()
-	for patch in WET_BANK_AREAS:
-		draw_colored_polygon(PackedVector2Array(patch), Color("8db9ad"))
 	for i in range(WATER_AREAS.size()):
 		var points := rotated_rect_points(WATER_AREAS[i], WATER_ANGLES[i])
 		draw_colored_polygon(points, Color("367f85"))
@@ -218,6 +206,17 @@ func _draw_plaza(center: Vector2, half_width: float, half_height: float, color: 
 	draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[3], points[0]]), Color("759c8d"), 5.0)
 
 
+func _draw_court_paving() -> void:
+	var center := WEST_COURT_CENTER
+	var half := WEST_COURT_HALF
+	var points := PackedVector2Array([
+		center + Vector2(0, -half.y), center + Vector2(half.x, 0),
+		center + Vector2(0, half.y), center + Vector2(-half.x, 0)
+	])
+	draw_colored_polygon(points, Color(0.80, 0.76, 0.61, 0.34))
+	draw_polyline(PackedVector2Array([points[0], points[1], points[2], points[3], points[0]]), Color(0.49, 0.61, 0.54, 0.36), 2.0)
+
+
 func _draw_raised_terrace() -> void:
 	var center := UPPER_TERRACE_CENTER
 	var half := UPPER_TERRACE_HALF
@@ -228,17 +227,21 @@ func _draw_raised_terrace() -> void:
 	draw_colored_polygon(PackedVector2Array([left, bottom, bottom + face_drop, left + face_drop]), Color("809d91"))
 	draw_colored_polygon(PackedVector2Array([bottom, right, right + face_drop, bottom + face_drop]), Color("6f8c82"))
 	_draw_plaza(center, half.x, half.y, Color("e9dfbd"))
-	for step in range(4):
-		var x0 := 1260.0 + float(step) * 35.0
-		var x1 := x0 + 35.0
-		var half0 := 40.0 + float(step) * 9.0
-		var half1 := half0 + 9.0
+	var stair_center := Vector2(1330, 1180)
+	var stair := PackedVector2Array([
+		stair_center + Vector2(0, -95), stair_center + Vector2(200, 0),
+		stair_center + Vector2(0, 95), stair_center + Vector2(-200, 0)
+	])
+	draw_colored_polygon(stair, Color("d9d8bb"))
+	draw_polyline(PackedVector2Array([stair[0], stair[1], stair[2], stair[3], stair[0]]), Color("a9b6a1"), 2.0)
+	for step in range(3):
+		var tread_center := Vector2(1240.0 + float(step) * 62.0, 1180.0)
 		var tread := PackedVector2Array([
-			Vector2(x0, 1180.0 - half0), Vector2(x1, 1180.0 - half1),
-			Vector2(x1, 1180.0 + half1), Vector2(x0, 1180.0 + half0)
+			tread_center + Vector2(0, -26), tread_center + Vector2(55, 0),
+			tread_center + Vector2(0, 26), tread_center + Vector2(-55, 0),
+			tread_center + Vector2(0, -26)
 		])
-		draw_colored_polygon(tread, Color("e9dcba") if step % 2 == 0 else Color("d3c7a8"))
-		draw_line(tread[1], tread[2], Color("a4a68e"), 2.0)
+		draw_polyline(tread, Color(0.53, 0.62, 0.56, 0.55), 2.0)
 
 
 func rotated_rect_points(area: Rect2, angle: float) -> PackedVector2Array:
