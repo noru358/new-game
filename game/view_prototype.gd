@@ -1,6 +1,7 @@
 extends "res://game/main.gd"
 
 const ViewPropScript = preload("res://game/view_prop.gd")
+const WispScript = preload("res://game/wisp.gd")
 const MODE_NAMES := ["1  HIGH TOPDOWN", "2  MEDIUM", "3  LOW"]
 const MODE_ZOOMS := [1.05, 1.25, 1.43]
 const MODE_PITCHES := [0.0, 0.55, 1.0]
@@ -17,6 +18,8 @@ var diamond_ground := true
 var view_props: Array = []
 var view_title: Label
 var view_detail: Label
+var wisp_status: Label
+var wisp: Variant
 
 
 func _ready() -> void:
@@ -34,6 +37,11 @@ func _ready() -> void:
 		view_props.append(prop)
 	_build_view_ui()
 	set_view_mode(view_mode)
+	wisp = WispScript.new()
+	wisp.name = "Wisp"
+	wisp.player = player
+	wisp.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(wisp)
 	queue_redraw()
 
 
@@ -58,6 +66,8 @@ func _process(delta: float) -> void:
 		var close_x: bool = absf(player.global_position.x - prop.global_position.x) < prop.footprint_radius * 1.8
 		var close_y: bool = prop.global_position.y - player.global_position.y < 90.0
 		prop.modulate.a = lerpf(prop.modulate.a, 0.48 if behind and close_x and close_y else 1.0, minf(1.0, 12.0 * delta))
+	if wisp_status != null and wisp != null:
+		wisp_status.text = "WISP 1  |  AUTO SHOT  |  %s" % ("READY" if wisp.fire_cooldown <= 0.0 else "%.1fs" % wisp.fire_cooldown)
 
 
 func set_view_mode(mode: int) -> void:
@@ -114,6 +124,12 @@ func _build_view_ui() -> void:
 	view_detail.add_theme_font_size_override("font_size", 14)
 	view_detail.add_theme_color_override("font_color", Color("d8e9de"))
 	panel.add_child(view_detail)
+	wisp_status = Label.new()
+	wisp_status.position = Vector2(20, 77)
+	wisp_status.add_theme_font_size_override("font_size", 17)
+	wisp_status.add_theme_color_override("font_color", Color("e8f7bd"))
+	wisp_status.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
+	canvas.add_child(wisp_status)
 	for child in get_children():
 		if child is CanvasLayer and child != canvas:
 			for control in child.get_children():
