@@ -50,6 +50,10 @@ var hurt_stun_time := 0.0
 var hurt_recoil := Vector2.ZERO
 var impact_played_this_attack := false
 var hit_targets: Dictionary = {}
+var basic_damage_bonus := 0.0
+var basic_speed_bonus := 0.0
+var basic_reach_bonus := 0.0
+var dash_cooldown_reduction := 0.0
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -119,9 +123,9 @@ func _start_dash(movement: Vector2) -> void:
 	dash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
 	dash_time = DASH_DURATION
 	dash_elapsed = 0.0
-	dash_cooldown = DASH_COOLDOWN
+	dash_cooldown = DASH_COOLDOWN * (1.0 - dash_cooldown_reduction)
 	if attack_step > 0:
-		var attack: Dictionary = ATTACKS[attack_step - 1]
+		var attack := _attack_spec(attack_step)
 		var remaining: float = attack.windup + attack.active + attack.recovery - attack_elapsed
 		attack_lock = maxf(attack_lock, remaining)
 	attack_step = 0
@@ -138,6 +142,16 @@ func combo_limit() -> int:
 	return 2 + combo_rank
 
 
+func _attack_spec(step: int) -> Dictionary:
+	var attack: Dictionary = ATTACKS[step - 1].duplicate()
+	var speed_scale := 1.0 + basic_speed_bonus
+	attack.windup /= speed_scale
+	attack.active /= speed_scale
+	attack.recovery /= speed_scale
+	attack.radius *= 1.0 + basic_reach_bonus
+	return attack
+
+
 func set_combo_rank(rank: int) -> void:
 	combo_rank = clampi(rank, 0, 2)
 	attack_step = 0
@@ -152,7 +166,7 @@ func set_combo_rank(rank: int) -> void:
 func _update_attack(delta: float) -> void:
 	if attack_step > 0:
 		attack_elapsed += delta
-		var attack: Dictionary = ATTACKS[attack_step - 1]
+		var attack := _attack_spec(attack_step)
 		if attack_elapsed >= attack.windup and attack_elapsed < attack.windup + attack.active:
 			_hit_enemies(attack)
 		if attack_elapsed >= attack.windup + attack.active + attack.recovery:
@@ -201,7 +215,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 		hit_targets[id] = true
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
-		enemy.take_hit(ATTACK_DAMAGE * attack.multiplier, push_direction, finisher)
+		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus) * attack.multiplier, push_direction, finisher)
 		if attack_step == 3 and not enemy.is_queued_for_deletion():
 			gathered_enemies.append(enemy)
 			new_gathered = true
@@ -307,7 +321,7 @@ func _draw() -> void:
 
 
 func _draw_attack() -> void:
-	var attack: Dictionary = ATTACKS[attack_step - 1]
+	var attack := _attack_spec(attack_step)
 	var windup: float = attack.windup
 	var active: float = attack.active
 	var recovery: float = attack.recovery
@@ -389,7 +403,7 @@ func _draw_gather(attack: Dictionary, fade: float) -> void:
 
 
 func _draw_hand_gesture() -> void:
-	var attack: Dictionary = ATTACKS[attack_step - 1]
+	var attack := _attack_spec(attack_step)
 	var progress: float = clampf((attack_elapsed - attack.windup) / attack.active, 0.0, 1.0)
 	var perpendicular := attack_direction.orthogonal()
 	if attack_step == 3:

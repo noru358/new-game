@@ -2,6 +2,8 @@ extends "res://game/main.gd"
 
 const ViewPropScript = preload("res://game/view_prop.gd")
 const WispScript = preload("res://game/wisp.gd")
+const GrowthScript = preload("res://game/run_growth.gd")
+const EnemyScene = preload("res://game/enemy.tscn")
 const MODE_NAMES := ["1  HIGH TOPDOWN", "2  MEDIUM", "3  LOW"]
 const MODE_ZOOMS := [1.05, 1.25, 1.43]
 const MODE_PITCHES := [0.0, 0.55, 1.0]
@@ -10,6 +12,10 @@ const PROP_POINTS := [
 	Vector2(420, 360), Vector2(720, 520), Vector2(1000, 575),
 	Vector2(1270, 755), Vector2(1520, 900), Vector2(1790, 580),
 	Vector2(690, 1050), Vector2(1920, 1090), Vector2(1450, 370)
+]
+const PRACTICE_ENEMIES := [
+	Vector2(850, 520), Vector2(1600, 610), Vector2(1040, 1080),
+	Vector2(1800, 980), Vector2(1620, 620), Vector2(1620, 780)
 ]
 
 # Selected 1B baseline. Other modes remain available only for comparison.
@@ -20,6 +26,7 @@ var view_title: Label
 var view_detail: Label
 var wisp_status: Label
 var wisp: Variant
+var growth: RunGrowth
 
 
 func _ready() -> void:
@@ -42,10 +49,30 @@ func _ready() -> void:
 	wisp.player = player
 	wisp.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(wisp)
+	growth = GrowthScript.new()
+	growth.name = "RunGrowth"
+	growth.setup(self, player, wisp)
+	add_child(growth)
+	for enemy in $Enemies.get_children():
+		enemy.defeated.connect(growth.on_enemy_defeated.bind(enemy))
 	queue_redraw()
 
 
 func _input(event: InputEvent) -> void:
+	if growth != null and growth.choosing:
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode >= KEY_1 and event.keycode <= KEY_3:
+				growth.choose_index(event.keycode - KEY_1)
+				get_viewport().set_input_as_handled()
+		return
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_K:
+			get_viewport().set_input_as_handled()
+			return
+		if event.keycode == KEY_N and remaining_enemies == 0 and not get_tree().paused:
+			_next_practice_wave()
+			get_viewport().set_input_as_handled()
+			return
 	super._input(event)
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_1 or event.keycode == KEY_2 or event.keycode == KEY_3:
@@ -57,8 +84,16 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
+func _on_window_focus_exited() -> void:
+	if growth != null and growth.choosing:
+		return
+	super._on_window_focus_exited()
+
+
 func _process(delta: float) -> void:
 	super._process(delta)
+	if remaining_enemies == 0:
+		status_label.text = status_label.text.replace("ARENA CLEAR - R TO RESET", "WAVE CLEAR - N NEXT WAVE")
 	var lead: float = MODE_LOOKAHEAD[view_mode - 1]
 	camera.position = camera.position.lerp(player.facing * lead + Vector2(0, -lead * 0.22), minf(1.0, 5.0 * delta))
 	for prop in view_props:
@@ -67,7 +102,26 @@ func _process(delta: float) -> void:
 		var close_y: bool = prop.global_position.y - player.global_position.y < 90.0
 		prop.modulate.a = lerpf(prop.modulate.a, 0.48 if behind and close_x and close_y else 1.0, minf(1.0, 12.0 * delta))
 	if wisp_status != null and wisp != null:
-		wisp_status.text = "WISP 1  |  AUTO SHOT  |  %s" % ("READY" if wisp.fire_cooldown <= 0.0 else "%.1fs" % wisp.fire_cooldown)
+		wisp_status.text = "WISP %d  |  AUTO SHOT  |  %s" % [
+			growth.wisps.size() if growth != null else 1,
+			"READY" if wisp.fire_cooldown <= 0.0 else "%.1fs" % wisp.fire_cooldown
+		]
+
+
+func _next_practice_wave() -> void:
+	total_enemies = PRACTICE_ENEMIES.size()
+	remaining_enemies = total_enemies
+	for i in range(PRACTICE_ENEMIES.size()):
+		var enemy: TrainingEnemy = EnemyScene.instantiate()
+		enemy.name = "PracticeFragment%d" % i
+		enemy.max_health = 80.0 if i >= 4 else 22.0
+		enemy.position = PRACTICE_ENEMIES[i]
+		enemy.target = player
+		enemy.collision_mask = 6
+		enemy.visual_pitch = MODE_PITCHES[view_mode - 1]
+		$Enemies.add_child(enemy)
+		enemy.defeated.connect(_on_enemy_defeated)
+		enemy.defeated.connect(growth.on_enemy_defeated.bind(enemy))
 
 
 func set_view_mode(mode: int) -> void:
@@ -134,7 +188,7 @@ func _build_view_ui() -> void:
 		if child is CanvasLayer and child != canvas:
 			for control in child.get_children():
 				if control is Label and control.text.begins_with("WASD Move"):
-					control.text = "1/2/3 View  |  G Grid  |  WASD Move  |  J / Click Attack  |  Space Dash  |  K Combo  |  Esc Pause  |  R Reset"
+					control.text = "1/2/3 View  |  G Grid  |  WASD Move  |  J / Click Attack  |  Space Dash  |  N Next Wave  |  Esc Pause  |  R Reset"
 
 
 func _draw() -> void:

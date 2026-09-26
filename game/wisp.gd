@@ -2,6 +2,7 @@ class_name WispCompanion
 extends Node2D
 
 signal shot_fired(target: TrainingEnemy)
+signal enemy_hit(enemy: TrainingEnemy)
 
 const ProjectileScript = preload("res://game/wisp_projectile.gd")
 const FOLLOW_OFFSET := Vector2(-42.0, -30.0)
@@ -18,11 +19,17 @@ var shots_fired := 0
 var shot_audio: AudioStreamPlayer2D
 var muzzle_flash := 0.0
 var shot_direction := Vector2.RIGHT
+var follow_offset := FOLLOW_OFFSET
+var orbit_enabled := false
+var orbit_phase := 0.0
+var orbit_damage := 3.0
+var chain_jumps := 0
+var orbit_next_hits: Dictionary = {}
 
 
 func _ready() -> void:
 	if is_instance_valid(player):
-		global_position = player.global_position + FOLLOW_OFFSET
+		global_position = player.global_position + follow_offset
 	shot_audio = AudioStreamPlayer2D.new()
 	shot_audio.stream = preload("res://game/audio/wisp_shot.wav")
 	shot_audio.volume_db = -11.0
@@ -35,7 +42,10 @@ func _physics_process(delta: float) -> void:
 	age += delta
 	muzzle_flash = maxf(0.0, muzzle_flash - delta)
 	var bob := Vector2(0.0, sin(age * 5.4) * 3.0)
-	global_position = global_position.lerp(player.global_position + FOLLOW_OFFSET + bob, minf(1.0, 13.0 * delta))
+	var offset := Vector2.from_angle(age * 3.0 + orbit_phase) * 64.0 + Vector2(0.0, -20.0) if orbit_enabled else follow_offset
+	global_position = global_position.lerp(player.global_position + offset + bob, minf(1.0, 13.0 * delta))
+	if orbit_enabled:
+		_hit_nearby_enemies()
 	fire_cooldown = maxf(0.0, fire_cooldown - delta)
 	if fire_cooldown <= 0.0:
 		var target := find_target()
@@ -74,8 +84,10 @@ func _fire(target: TrainingEnemy) -> void:
 	var direction := global_position.direction_to(target.global_position)
 	shot_direction = direction
 	muzzle_flash = 0.14
-	var projectile: Node2D = ProjectileScript.new()
+	var projectile: WispProjectile = ProjectileScript.new()
 	projectile.setup(direction, projectile_speed, attack_range, player.ATTACK_DAMAGE * damage_multiplier)
+	projectile.chain_jumps = chain_jumps
+	projectile.enemy_hit.connect(_on_projectile_hit)
 	projectile.process_mode = Node.PROCESS_MODE_PAUSABLE
 	get_parent().add_child(projectile)
 	projectile.global_position = global_position
@@ -83,6 +95,32 @@ func _fire(target: TrainingEnemy) -> void:
 	shot_fired.emit(target)
 	if DisplayServer.get_name() != "headless":
 		shot_audio.play()
+
+
+func _on_projectile_hit(enemy: TrainingEnemy) -> void:
+	enemy_hit.emit(enemy)
+
+
+func _hit_nearby_enemies() -> void:
+	for candidate in get_tree().get_nodes_in_group("training_enemies"):
+		if not candidate is TrainingEnemy or candidate.is_queued_for_deletion() or candidate.health <= 0.0:
+			continue
+		if global_position.distance_to(candidate.global_position) > candidate.RADIUS + 13.0:
+			continue
+		if _blocked_by_wall(candidate.global_position):
+			continue
+		var id := candidate.get_instance_id()
+		if age < float(orbit_next_hits.get(id, 0.0)):
+			continue
+		orbit_next_hits[id] = age + 0.85
+		var direction := global_position.direction_to(candidate.global_position)
+		candidate.take_hit(orbit_damage, direction, false)
+		enemy_hit.emit(candidate)
+		var flash := WispFlash.new()
+		flash.setup(direction, false)
+		flash.process_mode = Node.PROCESS_MODE_PAUSABLE
+		get_parent().add_child(flash)
+		flash.global_position = candidate.global_position
 
 
 func _draw() -> void:
