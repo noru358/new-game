@@ -24,6 +24,9 @@ var shot_audio: AudioStreamPlayer2D
 var muzzle_flash := 0.0
 var shot_direction := Vector2.RIGHT
 var follow_offset := FOLLOW_OFFSET
+var facing_formation := false
+var formation_index := 0
+var formation_count := 1
 var orbit_enabled := false
 var orbit_phase := 0.0
 var orbit_damage := 3.0
@@ -36,7 +39,7 @@ var follow_position_filter: Callable
 
 func _ready() -> void:
 	if is_instance_valid(player):
-		global_position = player.global_position + follow_offset
+		global_position = player.global_position + formation_offset()
 	shot_audio = AudioStreamPlayer2D.new()
 	shot_audio.stream = preload("res://game/audio/wisp_shot.wav")
 	shot_audio.volume_db = -11.0
@@ -49,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	age += delta
 	muzzle_flash = maxf(0.0, muzzle_flash - delta)
 	var bob := Vector2(0.0, sin(age * 5.4) * 3.0)
-	var offset := Vector2.from_angle(player.companion_orbit_time * 3.0 + orbit_phase) * 64.0 + Vector2(0.0, -20.0) if orbit_enabled else follow_offset
+	var offset := Vector2.from_angle(player.companion_orbit_time * 3.0 + orbit_phase) * 64.0 + Vector2(0.0, -20.0) if orbit_enabled else formation_offset()
 	global_position = _outside_ruins(global_position.lerp(player.global_position + offset + bob, minf(1.0, 13.0 * delta)))
 	if orbit_enabled:
 		_hit_nearby_enemies()
@@ -60,6 +63,17 @@ func _physics_process(delta: float) -> void:
 			_fire(target)
 			fire_cooldown = attack_interval
 	queue_redraw()
+
+func formation_offset() -> Vector2:
+	if not facing_formation:
+		return follow_offset
+	var forward := player.facing.normalized()
+	var side := forward.orthogonal()
+	if formation_count == 1:
+		return -forward * 54.0
+	if formation_count == 2:
+		return -forward * 38.0 + side * (-48.0 if formation_index == 0 else 48.0)
+	return -forward * 68.0 if formation_index == 0 else -forward * 32.0 + side * (-52.0 if formation_index == 1 else 52.0)
 
 
 func _outside_ruins(point: Vector2) -> Vector2:
@@ -142,6 +156,7 @@ func _fire(target: TrainingEnemy) -> void:
 	projectile.process_mode = Node.PROCESS_MODE_PAUSABLE
 	get_parent().add_child(projectile)
 	projectile.global_position = global_position
+	projectile.visual_origin = global_position
 	shots_fired += 1
 	shot_fired.emit(target)
 	if DisplayServer.get_name() != "headless":

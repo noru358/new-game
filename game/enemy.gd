@@ -11,7 +11,7 @@ const MAX_HEALTH := 22.0
 const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
 const RADIUS := 17.0
-const GATHER_DURATION := 0.12
+const GATHER_DURATION := 0.18
 const GATHER_CONTACT_GRACE := 0.44
 const BEAST_SPEED := 125.0
 const BEAST_CHARGE_SPEED := 620.0
@@ -218,11 +218,12 @@ func _clear_shot_to_player() -> bool:
 
 
 func _fire_bolt() -> void:
-	var bolt: Node2D = BoltScript.new()
+	var bolt: EnemyBolt = BoltScript.new()
 	bolt.setup(locked_direction, 240.0, 12.0)
 	bolt.process_mode = Node.PROCESS_MODE_PAUSABLE
 	(get_parent().get_parent() if projectile_parent == null else projectile_parent).add_child(bolt)
 	bolt.global_position = global_position + locked_direction * 24.0
+	bolt.visual_origin = bolt.global_position
 	attacks_fired += 1
 
 

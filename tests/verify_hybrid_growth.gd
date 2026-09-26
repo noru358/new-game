@@ -28,17 +28,9 @@ func _run() -> void:
 		if actor is TrainingEnemy:
 			enemy = actor
 			break
-	enemy.position = scene.player.position + Vector2(220, 0)
-	var defeated_at: Vector2 = enemy.global_position
+	enemy.position = Vector2(480, 1660)
 	enemy.take_hit(100.0, Vector2.RIGHT, false)
-	await _frames(2)
-	_check(scene.kills == 1 and scene.orbs.size() == 1, "enemy defeat creates a visible 3D XP orb")
-	var orb: ExperienceOrb = scene.orbs.keys()[0]
-	_check(orb.global_position.distance_to(defeated_at) < 30.0, "XP spawns at the defeated enemy")
-	_check(orb.path_filter.is_valid() and scene.orbs[orb].position.y > 0.0, "XP follows terrain height and checks wall paths")
-	scene.teleport(orb.global_position)
-	await _frames(3)
-	_check(scene.growth.xp == 2 and scene.orbs.is_empty(), "pickup grants XP and removes its 3D visual")
+	_check(scene.kills == 1 and scene.growth.xp == 2 and get_nodes_in_group("experience_orbs").is_empty(), "distant enemy defeat grants XP immediately without a pickup")
 	scene.growth.gain_xp(6)
 	_check(scene.growth.choosing and paused and scene.growth.current_choices.has("U_CHAIN"), "level-up pauses with a three-card choice including combo")
 	var first_index: int = scene.growth.current_choices.find("U_CHAIN")
@@ -56,6 +48,15 @@ func _run() -> void:
 	_check(scene.growth.wisps.size() == 2 and scene.wisp_visuals.size() == 2, "additional wisp gains a separate 3D visual")
 	var extra: WispCompanion = scene.growth.wisps[1]
 	_check(extra.target_visibility_filter.is_valid() and extra.follow_position_filter.is_valid(), "new wisp inherits camera and cliff filters")
+	var left: Vector2 = scene.growth.wisps[0].formation_offset()
+	var right: Vector2 = extra.formation_offset()
+	_check(is_equal_approx(left.dot(scene.player.facing), right.dot(scene.player.facing)) and absf(left.dot(scene.player.facing.orthogonal()) + right.dot(scene.player.facing.orthogonal())) < 0.01, "two wisps balance around player facing")
+	scene.player.facing = Vector2.UP
+	left = scene.growth.wisps[0].formation_offset()
+	right = extra.formation_offset()
+	_check(is_equal_approx(left.dot(scene.player.facing), right.dot(scene.player.facing)) and absf(left.dot(scene.player.facing.orthogonal()) + right.dot(scene.player.facing.orthogonal())) < 0.01, "wisp pair rotates with player direction")
+	scene.growth.apply_card("S_WISP_COUNT")
+	_check(scene.growth.wisps.size() == 3 and scene.wisp_visuals.size() == 3, "third wisp completes the facing-based formation")
 	scene.growth.unlocks.lifetime_levelups = 6
 	scene.growth.apply_card("S_WISP_ORBIT")
 	scene.growth.apply_card("S_WISP_CHAIN")
@@ -91,5 +92,5 @@ func _run() -> void:
 	for suffix in ["_a.json", "_b.json"]:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path("user://verify_hybrid_growth_temp" + suffix))
 	if failures == 0:
-		print("Hybrid growth verification passed: XP, cards, combo, wisps and airborne seal")
+		print("Hybrid growth verification passed: automatic XP, cards, combo, facing wisps and airborne seal")
 	quit(1 if failures else 0)

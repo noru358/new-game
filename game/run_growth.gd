@@ -3,7 +3,6 @@ extends Node
 
 signal card_applied(card_id: String)
 
-const OrbScript = preload("res://game/experience_orb.gd")
 const WispScript = preload("res://game/wisp.gd")
 const SealScript = preload("res://game/seal_attack.gd")
 
@@ -40,7 +39,6 @@ var choice_buttons: Array[Button] = []
 var unlock_notice := ""
 var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
-var orb_path_filter: Callable
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -62,12 +60,7 @@ func next_xp() -> int:
 
 
 func on_enemy_defeated(enemy: TrainingEnemy) -> void:
-	var orb: ExperienceOrb = OrbScript.new()
-	orb.setup(4 if enemy.max_health > enemy.MAX_HEALTH else 2, player)
-	orb.path_filter = orb_path_filter
-	orb.collected.connect(gain_xp)
-	arena.add_child(orb)
-	orb.global_position = enemy.global_position
+	gain_xp(4 if enemy.max_health > enemy.MAX_HEALTH else 2)
 
 
 func gain_xp(amount: int) -> void:
@@ -205,11 +198,16 @@ func _sync_wisps() -> void:
 		companion.name = "Wisp%d" % (wisps.size() + 1)
 		companion.player = player
 		companion.navigation = wisps[0].navigation
+		companion.facing_formation = wisps[0].facing_formation
+		companion.formation_index = wisps.size()
+		companion.formation_count = count
 		companion.process_mode = Node.PROCESS_MODE_PAUSABLE
 		arena.add_child(companion)
 		wisps.append(companion)
 	for i in range(wisps.size()):
 		var wisp := wisps[i]
+		wisp.formation_index = i
+		wisp.formation_count = wisps.size()
 		wisp.follow_offset = [Vector2(-42, -30), Vector2(42, -30), Vector2(0, -57)][i]
 		wisp.orbit_phase = TAU * float(i) / float(wisps.size())
 		wisp.attack_interval = WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - 0.10 * float(card_ranks.get("S_WISP_CADENCE", 0)))

@@ -298,7 +298,8 @@ func _arrange_gathered_enemies() -> void:
 	var ring_radius := _gather_ring_radius(count)
 	for index in range(count):
 		var angle := attack_direction.angle() - PI * 0.5 + float(index) * TAU / float(count)
-		living[index].gather_to(gather_target_global + Vector2.from_angle(angle) * ring_radius)
+		var desired: Vector2 = gather_target_global + Vector2.from_angle(angle) * ring_radius
+		living[index].gather_to(_constrain_gather(living[index], desired))
 
 
 func _gather_ring_radius(count: int) -> float:
@@ -329,7 +330,24 @@ func _maintain_gather_spacing() -> void:
 	gather_target_global += movement
 	for enemy in gathered_enemies:
 		if is_instance_valid(enemy) and enemy.gathering:
-			enemy.gather_target += movement
+			var desired: Vector2 = enemy.gather_target + movement
+			enemy.gather_target = _constrain_gather(enemy, desired)
+
+func _constrain_gather(enemy: TrainingEnemy, desired: Vector2) -> Vector2:
+	var start := enemy.global_position
+	var motion := desired - start
+	if motion.length_squared() < 0.01:
+		return desired
+	var direction := motion.normalized()
+	var side := direction.orthogonal() * enemy.collision_radius * 0.85
+	var allowed := motion.length()
+	for offset in [Vector2.ZERO, side, -side]:
+		var query := PhysicsRayQueryParameters2D.create(start + offset, desired + offset, 4)
+		query.hit_from_inside = true
+		var hit := get_world_2d().direct_space_state.intersect_ray(query)
+		if not hit.is_empty():
+			allowed = minf(allowed, maxf(0.0, (hit.position as Vector2).distance_to(start + offset) - (enemy.collision_radius + 2.0 if offset == Vector2.ZERO else 3.0)))
+	return start + direction * allowed
 
 
 func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void:

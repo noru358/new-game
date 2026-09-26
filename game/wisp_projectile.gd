@@ -17,6 +17,7 @@ var chain_jumps := 0
 var target: TrainingEnemy
 var power_rank := 0
 var target_visibility_filter: Callable
+var visual_origin := Vector2.ZERO
 
 
 func _ready() -> void:

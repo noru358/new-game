@@ -1,11 +1,14 @@
 class_name EnemyBolt
 extends Node2D
 
+const MAXIMUM_DISTANCE := 760.0
+
 var direction := Vector2.RIGHT
 var speed := 240.0
 var damage := 12.0
 var distance_traveled := 0.0
-var maximum_distance := 760.0
+var maximum_distance := MAXIMUM_DISTANCE
+var visual_origin := Vector2.ZERO
 
 
 func setup(new_direction: Vector2, new_speed: float, new_damage: float) -> void:

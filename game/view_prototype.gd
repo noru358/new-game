@@ -66,6 +66,7 @@ func _ready() -> void:
 	wisp = WispScript.new()
 	wisp.name = "Wisp"
 	wisp.player = player
+	wisp.facing_formation = true
 	wisp.navigation = arena_navigation
 	wisp.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(wisp)

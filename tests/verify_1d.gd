@@ -44,7 +44,7 @@ func _run() -> void:
 	orb_enemy.health = 1.0
 	orb_enemy.take_hit(2.0, Vector2.RIGHT, false)
 	await _frames(3)
-	_check(growth.xp == 2, "defeated enemy drops collectible XP")
+	_check(growth.xp == 2, "defeated enemy grants XP immediately")
 	growth.gain_xp(6)
 	_check(growth.level == 2 and growth.pending_choices == 1 and growth.choosing and paused, "level-up pauses combat for card selection")
 	_check(growth.current_choices.size() == 3 and _has_group(growth.current_choices, "BASIC") and _has_group(growth.current_choices, "AUTO"), "three choices include manual and auto options")
