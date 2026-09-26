@@ -43,7 +43,15 @@ func _run() -> void:
 	var ground_height: float = scene.terrain.height_at(scene.player.position)
 	_check(lowest >= ground_height + 69.9 and highest <= ground_height + 90.1, "attack stays in the air at fixed elevations, even near changing terrain (ground %.2f, min %.2f, max %.2f)" % [ground_height, lowest, highest])
 	_check(furthest >= strike.radius + scene.ACTOR_CLEARANCE and furthest <= strike.radius + scene.ACTOR_CLEARANCE + 2.1, "visible reach includes the enemy body radius used by melee")
-	_check(scene.attack_visual.material_override.no_depth_test, "air slash remains visible beside the cliff")
+	_check(not scene.attack_visual.material_override.no_depth_test, "terrain depth hides the air slash behind a cliff")
+	var slash_origin: Vector2 = scene.player.position
+	scene._draw_attack_at(slash_origin, strike.windup + strike.active * 0.30, Vector2.RIGHT)
+	var earlier: PackedVector3Array = scene.attack_mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	scene._draw_attack_at(slash_origin, strike.windup + strike.active * 0.42, Vector2.RIGHT)
+	var later: PackedVector3Array = scene.attack_mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	_check(earlier[earlier.size() - 1].distance_to(later[later.size() - 1]) > 0.01, "blade motion advances between physics ticks")
+	scene.actor_motion[scene.player] = [Vector2(1000, 1000), Vector2(1040, 1000)]
+	_check(scene._render_position(scene.player, 0.5).is_equal_approx(Vector2(1020, 1000)), "actor presentation interpolates between physics positions")
 	scene.teleport(Vector2(1120, 840))
 	scene.player.attack_direction = Vector2.RIGHT
 	scene._draw_attack()

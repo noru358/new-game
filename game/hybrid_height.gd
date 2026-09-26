@@ -7,6 +7,9 @@ const ActorTexture = preload("res://game/hybrid_actor.svg")
 const COMBAT_CAMERA_SIZE := 10.8
 const OVERVIEW_CAMERA_SIZE := 30.0
 const ACTOR_CLEARANCE := 30.0
+const ENEMY_POINTS := [Vector2(480, 1660), Vector2(720, 680), Vector2(1430, 1000), Vector2(1700, 1320), Vector2(2100, 1100), Vector2(890, 600), Vector2(1380, 1360), Vector2(2100, 1240)]
+const ENEMY_ROLES := [TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.ZONE, TrainingEnemy.Role.SUPPORT]
+const ENEMY_HEALTH := [22.0, 22.0, 22.0, 45.0, 30.0, 30.0, 32.0, 36.0]
 var terrain := Terrain.new()
 var simulation := Node2D.new()
 var player: SandboxPlayer
@@ -14,10 +17,14 @@ var wisp: WispCompanion
 var navigation := ArenaNavigation.new()
 var camera := Camera3D.new()
 var actors: Dictionary = {}
+var actor_motion: Dictionary = {}
 var shots: Dictionary = {}
+var shot_motion: Dictionary = {}
 var wisp_visual: MeshInstance3D
 var attack_visual := MeshInstance3D.new()
 var attack_mesh := ImmediateMesh.new()
+var warning_visual := MeshInstance3D.new()
+var warning_mesh := ImmediateMesh.new()
 var hud: Label
 var pause_label: Label
 var pause_backdrop: ColorRect
@@ -25,9 +32,15 @@ var overview := false
 var kills := 0
 var paused := false
 var terrain_mesh: MeshInstance3D
+var previous_attack_step := 0
+var current_attack_step := 0
+var previous_attack_elapsed := 0.0
+var current_attack_elapsed := 0.0
+var previous_attack_direction := Vector2.RIGHT
+var current_attack_direction := Vector2.RIGHT
 
 func _ready() -> void:
-	get_window().title = "Loop Conquest — Hybrid Height v03"
+	get_window().title = "Loop Conquest — Hybrid Height v04"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_physics_priority = 100
 	_register_inputs()
@@ -62,6 +75,7 @@ func _ready() -> void:
 	simulation.add_child(player)
 	player.set_dash_upgrade(2)
 	actors[player] = _actor_visual(Color.WHITE)
+	actor_motion[player] = [player.global_position, player.global_position]
 	player.attack_landed.connect(func(point: Vector2, _direction: Vector2, _step: int, _finisher: bool): _flash(point, Color("ffd486")))
 	wisp = WispCompanion.new()
 	wisp.player = player
@@ -78,16 +92,25 @@ func _ready() -> void:
 	var attack_material := _material(Color.WHITE, true)
 	attack_material.vertex_color_use_as_albedo = true
 	attack_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	attack_material.no_depth_test = true
+	# Opaque terrain writes depth; the swing must disappear behind a wall.
+	attack_material.no_depth_test = false
 	attack_visual.material_override = attack_material
+	attack_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	add_child(attack_visual)
+	warning_visual.mesh = warning_mesh
+	var warning_material := _material(Color.WHITE, true)
+	warning_material.vertex_color_use_as_albedo = true
+	warning_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	warning_visual.material_override = warning_material
+	warning_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	add_child(warning_visual)
 	spawn_enemies()
 	_build_ui()
 	camera.position = terrain.world_point(player.position) + Vector3(14, 11.431, 14)
 	camera.look_at(terrain.world_point(player.position), Vector3.UP)
 	camera.reset_physics_interpolation()
 	get_window().focus_exited.connect(func(): _set_paused(true))
-	print("Hybrid height v03 ready: 2D simulation, shared terrain data, orthographic 3D presentation")
+	print("Hybrid height v04 ready: depth-tested combat, render-interpolated motion and five enemy roles")
 
 func _register_inputs() -> void:
 	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
@@ -231,6 +254,7 @@ func _build_camera() -> void:
 	add_child(sun)
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	camera.size = COMBAT_CAMERA_SIZE
+	camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	add_child(camera)
 	camera.current = true
 
@@ -247,6 +271,7 @@ func _sphere(radius: float, color: Color) -> MeshInstance3D:
 
 func _actor_visual(color: Color) -> Node3D:
 	var root := Node3D.new()
+	root.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	var sprite := Sprite3D.new()
 	sprite.name = "Body"
 	sprite.texture = ActorTexture
@@ -286,18 +311,36 @@ func spawn_enemies() -> void:
 			if is_instance_valid(actor): actor.queue_free()
 			actors[actor].queue_free()
 			actors.erase(actor)
-	for point in [Vector2(480, 1660), Vector2(720, 680), Vector2(1430, 1000), Vector2(2200, 1170)]:
+	for i in ENEMY_POINTS.size():
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
 		_set_actor_radius(enemy, ACTOR_CLEARANCE)
 		enemy.contact_margin = 3.0
-		enemy.position = point
+		enemy.position = ENEMY_POINTS[i]
+		enemy.role = ENEMY_ROLES[i]
+		enemy.max_health = ENEMY_HEALTH[i]
 		enemy.target = player
 		enemy.arena_bounds = Rect2(Vector2.ZERO, Terrain.SIZE)
 		enemy.collision_mask = 6
 		enemy.navigation = navigation
+		enemy.projectile_parent = simulation
+		enemy.zone_path_filter = clear_attack
 		simulation.add_child(enemy)
-		actors[enemy] = _actor_visual(Color("e9a09a"))
+		var visual := _actor_visual(_enemy_color(enemy.role))
+		if enemy.role != TrainingEnemy.Role.FRAGMENT:
+			var marker := _sphere(0.14 if enemy.role == TrainingEnemy.Role.BEAST else 0.11, _enemy_color(enemy.role).lightened(0.25))
+			marker.position.y = 0.86
+			visual.add_child(marker)
+		actors[enemy] = visual
+		actor_motion[enemy] = [enemy.global_position, enemy.global_position]
 		enemy.defeated.connect(func(): kills += 1)
+
+func _enemy_color(role: TrainingEnemy.Role) -> Color:
+	match role:
+		TrainingEnemy.Role.BEAST: return Color("e79683")
+		TrainingEnemy.Role.LAMP: return Color("ffe0a0")
+		TrainingEnemy.Role.ZONE: return Color("74ded8")
+		TrainingEnemy.Role.SUPPORT: return Color("cba9f2")
+		_: return Color("aec8be")
 
 func clear_attack(from: Vector2, to: Vector2) -> bool:
 	var query := PhysicsRayQueryParameters2D.create(from, to, 4)
@@ -322,48 +365,92 @@ func _physics_process(delta: float) -> void:
 		if not is_instance_valid(actor):
 			actors[actor].queue_free()
 			actors.erase(actor)
+			actor_motion.erase(actor)
 			continue
 		var visual: Node3D = actors[actor]
+		var samples: Array = actor_motion.get(actor, [actor.global_position, actor.global_position])
+		actor_motion[actor] = [samples[1], actor.global_position]
+		# Keep the physics pose available to physics-frame checks. The render
+		# callback replaces it with an interpolated pose before drawing.
 		visual.position = terrain.world_point(actor.global_position)
-		if actor == player:
-			visual.get_node("Body").flip_h = player.facing.x - player.facing.y < -0.1
-		var p: Vector2 = actor.global_position
-		var dx: float = (terrain.height_at(p + Vector2(1, 0)) - terrain.height_at(p - Vector2(1, 0))) * 0.5
-		var dz: float = (terrain.height_at(p + Vector2(0, 1)) - terrain.height_at(p - Vector2(0, 1))) * 0.5
-		visual.get_node("Shadow").quaternion = Quaternion(Vector3.UP, Vector3(-dx, 1, -dz).normalized())
+	previous_attack_step = current_attack_step
+	previous_attack_elapsed = current_attack_elapsed
+	previous_attack_direction = current_attack_direction
+	current_attack_step = player.attack_step
+	current_attack_elapsed = player.attack_elapsed
+	current_attack_direction = player.attack_direction
 	wisp_visual.position = wisp_visual.position.lerp(terrain.world_point(wisp.global_position, 80), minf(1.0, 13.0 * delta))
-	for shot in get_tree().get_nodes_in_group("wisp_projectiles"):
-		if not shots.has(shot):
-			var visual := _sphere(0.075, Color("96f4ff"))
-			add_child(visual)
-			shots[shot] = visual
-		shots[shot].position = terrain.world_point(shot.global_position, 55)
+	for group in ["wisp_projectiles", "enemy_bolts"]:
+		for shot in get_tree().get_nodes_in_group(group):
+			if not shots.has(shot):
+				var visual := _sphere(0.075 if group == "wisp_projectiles" else 0.095, Color("96f4ff") if group == "wisp_projectiles" else Color("ffe18c"))
+				visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+				add_child(visual)
+				shots[shot] = visual
+				shot_motion[shot] = [shot.global_position, shot.global_position]
+			var samples: Array = shot_motion[shot]
+			shot_motion[shot] = [samples[1], shot.global_position]
+			shots[shot].position = terrain.world_point(shot.global_position, 55)
 	for shot in shots.keys():
 		if not is_instance_valid(shot):
 			shots[shot].queue_free()
 			shots.erase(shot)
-	var focus := terrain.world_point(player.global_position, 35)
+			shot_motion.erase(shot)
+	_update_hud()
+
+func _process(delta: float) -> void:
+	if paused or not is_instance_valid(player): return
+	var fraction := Engine.get_physics_interpolation_fraction()
+	for actor in actors:
+		if not is_instance_valid(actor): continue
+		var point := _render_position(actor, fraction)
+		var visual: Node3D = actors[actor]
+		visual.position = terrain.world_point(point)
+		if actor == player:
+			visual.get_node("Body").flip_h = player.facing.x - player.facing.y < -0.1
+		elif actor is TrainingEnemy:
+			visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
+		var dx: float = (terrain.height_at(point + Vector2(1, 0)) - terrain.height_at(point - Vector2(1, 0))) * 0.5
+		var dz: float = (terrain.height_at(point + Vector2(0, 1)) - terrain.height_at(point - Vector2(0, 1))) * 0.5
+		visual.get_node("Shadow").quaternion = Quaternion(Vector3.UP, Vector3(-dx, 1, -dz).normalized())
+	var player_point := _render_position(player, fraction)
+	for shot in shots:
+		if is_instance_valid(shot):
+			var samples: Array = shot_motion[shot]
+			shots[shot].position = terrain.world_point((samples[0] as Vector2).lerp(samples[1], fraction), 55.0)
+	var focus := terrain.world_point(player_point, 35)
 	if overview: focus = Vector3(12, 0.8, 10)
 	camera.position = camera.position.lerp(focus + Vector3(14, 11.431, 14), 1.0 - exp(-8.0 * delta))
-	_draw_attack()
-	_update_hud()
+	var attack_elapsed := current_attack_elapsed
+	var attack_direction := current_attack_direction
+	if current_attack_step == previous_attack_step:
+		attack_elapsed = lerpf(previous_attack_elapsed, current_attack_elapsed, fraction)
+		attack_direction = Vector2.from_angle(lerp_angle(previous_attack_direction.angle(), current_attack_direction.angle(), fraction))
+	_draw_attack_at(player_point, attack_elapsed, attack_direction)
+	_draw_enemy_warnings(fraction)
+
+func _render_position(actor: Node2D, fraction: float) -> Vector2:
+	var samples: Array = actor_motion.get(actor, [actor.global_position, actor.global_position])
+	return (samples[0] as Vector2).lerp(samples[1], fraction)
 
 func _update_hud() -> void:
 	if hud == null: return
-	hud.text = "높이 비교  ·  %s\nHP %d   대시 %d/%d   처치 %d\n%s" % [terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	hud.text = "높이 비교  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
 
 func _draw_attack() -> void:
+	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)
+
+func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> void:
 	attack_mesh.clear_surfaces()
 	if player.attack_step == 0: return
 	var spec: Dictionary = player._attack_spec(player.attack_step)
-	var elapsed: float = player.attack_elapsed
 	var windup: float = spec.windup
 	var active: float = spec.active
 	var recovery: float = spec.recovery
 	var reach: float = spec.radius
 	var effective_reach := reach + ACTOR_CLEARANCE
 	var half_angle: float = deg_to_rad(spec.angle) * 0.5
-	var start: float = player.attack_direction.angle() - half_angle
+	var start: float = direction.angle() - half_angle
 	var arc: float = half_angle * 2.0
 	var active_progress: float = clampf((elapsed - windup) / active, 0.0, 1.0)
 	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
@@ -372,44 +459,48 @@ func _draw_attack() -> void:
 	# Keep the swing in one plane at chest height. Sampling the ground height at
 	# every vertex folded the old mesh over stairs and cliffs. The pale blade
 	# still swings in air; the bright reach guide stops where damage is blocked.
+	var first_reach := _attack_reach_at(origin, start, effective_reach)
 	for i in range(32):
 		var a0 := start + arc * float(i) / 32.0
 		var a1 := start + arc * float(i + 1) / 32.0
-		var visible_reach := minf(_attack_reach(a0, effective_reach), _attack_reach(a1, effective_reach))
+		var second_reach := _attack_reach_at(origin, a1, effective_reach)
+		var visible_reach := minf(first_reach, second_reach)
+		first_reach = second_reach
 		var tint := base
 		tint.a = (0.075 if elapsed >= windup else 0.025) * fade
 		if visible_reach > reach * 0.28:
-			_attack_band(a0, a1, reach * 0.28, visible_reach, tint, 70.0)
+			_attack_band(origin, a0, a1, reach * 0.28, visible_reach, tint, 70.0)
 		var rim := base.lightened(0.55)
 		rim.a = (0.88 if elapsed >= windup else 0.42) * fade
 		if visible_reach > 8.0:
-			_attack_band(a0, a1, visible_reach - 5.0, visible_reach + 2.0, rim, 72.0)
+			_attack_band(origin, a0, a1, visible_reach - 5.0, visible_reach + 2.0, rim, 72.0)
 	# A moving broad blade gives the two starter slashes opposite directions.
 	if elapsed >= windup:
-		var direction := 1.0 if player.attack_step != 2 else -1.0
-		var head := start + arc * (active_progress if direction > 0.0 else 1.0 - active_progress)
-		var tail := head - direction * minf(0.64, arc * 0.45)
+		var sweep_sign := 1.0 if player.attack_step != 2 else -1.0
+		var head := start + arc * (active_progress if sweep_sign > 0.0 else 1.0 - active_progress)
+		var tail := head - sweep_sign * minf(0.64, arc * 0.45)
 		var slash_color := base.lightened(0.48)
 		slash_color.a = 0.93 * fade
 		for i in range(10):
 			var first := lerpf(tail, head, float(i) / 10.0)
 			var second := lerpf(tail, head, float(i + 1) / 10.0)
-			_attack_band(first, second, reach * 0.48, effective_reach * 0.96, slash_color, 88.0)
+			_attack_band(origin, first, second, reach * 0.48, effective_reach * 0.96, slash_color, 88.0)
 		var edge_color := Color.WHITE
 		edge_color.a = 0.78 * fade
-		_attack_band(head - direction * 0.065, head + direction * 0.065, reach * 0.30, effective_reach, edge_color, 90.0)
+		_attack_band(origin, head - sweep_sign * 0.065, head + sweep_sign * 0.065, reach * 0.30, effective_reach, edge_color, 90.0)
 	attack_mesh.surface_end()
 
 func _attack_reach(angle: float, limit: float) -> float:
-	var from := player.global_position
+	return _attack_reach_at(player.global_position, angle, limit)
+
+func _attack_reach_at(from: Vector2, angle: float, limit: float) -> float:
 	var to := from + Vector2.from_angle(angle) * limit
 	var query := PhysicsRayQueryParameters2D.create(from, to, 4)
 	query.hit_from_inside = true
 	var hit := simulation.get_world_2d().direct_space_state.intersect_ray(query)
 	return maxf(0.0, from.distance_to(hit.position) - 1.0) if not hit.is_empty() else limit
 
-func _attack_band(a0: float, a1: float, inner: float, outer: float, color: Color, lift: float) -> void:
-	var origin := player.global_position
+func _attack_band(origin: Vector2, a0: float, a1: float, inner: float, outer: float, color: Color, lift: float) -> void:
 	var elevation := terrain.height_at(origin) + lift
 	var p0 := origin + Vector2.from_angle(a0) * inner
 	var p1 := origin + Vector2.from_angle(a1) * inner
@@ -418,6 +509,61 @@ func _attack_band(a0: float, a1: float, inner: float, outer: float, color: Color
 	for point in [p0, p1, p2, p0, p2, p3]:
 		attack_mesh.surface_set_color(color)
 		attack_mesh.surface_add_vertex(Vector3(point.x, elevation, point.y) * Terrain.SCALE)
+
+func _draw_enemy_warnings(fraction: float) -> void:
+	warning_mesh.clear_surfaces()
+	var showing := false
+	for actor in actors:
+		if actor is TrainingEnemy and is_instance_valid(actor) and actor.warning_time > 0.0 and (actor.role == TrainingEnemy.Role.BEAST or actor.role == TrainingEnemy.Role.LAMP):
+			showing = true
+			break
+	if not get_tree().get_nodes_in_group("enemy_zones").is_empty(): showing = true
+	if not showing: return
+	warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	for actor in actors:
+		if not actor is TrainingEnemy or not is_instance_valid(actor) or actor.warning_time <= 0.0: continue
+		if actor.role != TrainingEnemy.Role.BEAST and actor.role != TrainingEnemy.Role.LAMP: continue
+		var source: Vector2 = _render_position(actor, fraction)
+		var length := 280.0 if actor.role == TrainingEnemy.Role.BEAST else 400.0
+		var limit := _attack_reach_at(source, actor.locked_direction.angle(), length)
+		var color := Color(1.0, 0.30, 0.20, 0.72) if actor.role == TrainingEnemy.Role.BEAST else Color(1.0, 0.80, 0.28, 0.72)
+		var width := 10.0 if actor.role == TrainingEnemy.Role.BEAST else 5.0
+		if limit > ACTOR_CLEARANCE:
+			for i in 8:
+				var first: Vector2 = source + actor.locked_direction * lerpf(ACTOR_CLEARANCE, limit, float(i) / 8.0)
+				var second: Vector2 = source + actor.locked_direction * lerpf(ACTOR_CLEARANCE, limit, float(i + 1) / 8.0)
+				_warning_strip(first, second, width, color)
+	for zone in get_tree().get_nodes_in_group("enemy_zones"):
+		if not is_instance_valid(zone) or zone.is_queued_for_deletion(): continue
+		var center: Vector2 = zone.global_position
+		var color := Color(0.28, 0.95, 0.89, 0.82) if zone.warning_time <= 0.0 else Color(0.20, 0.84, 0.81, 0.55)
+		var first_reach := _attack_reach_at(center, 0.0, EnemyZone.RADIUS)
+		for i in 48:
+			var a0 := TAU * float(i) / 48.0
+			var a1 := TAU * float(i + 1) / 48.0
+			var second_reach := _attack_reach_at(center, a1, EnemyZone.RADIUS)
+			var limit := minf(first_reach, second_reach)
+			first_reach = second_reach
+			if limit > 8.0:
+				_warning_arc(center, a0, a1, limit, 5.0, color)
+	warning_mesh.surface_end()
+
+func _warning_strip(first: Vector2, second: Vector2, width: float, color: Color) -> void:
+	var side := (second - first).normalized().orthogonal() * width * 0.5
+	_warning_quad([first - side, first + side, second + side, second - side], color)
+
+func _warning_arc(center: Vector2, a0: float, a1: float, radius: float, width: float, color: Color) -> void:
+	_warning_quad([
+		center + Vector2.from_angle(a0) * (radius - width),
+		center + Vector2.from_angle(a1) * (radius - width),
+		center + Vector2.from_angle(a1) * radius,
+		center + Vector2.from_angle(a0) * radius
+	], color)
+
+func _warning_quad(points: Array, color: Color) -> void:
+	for index in [0, 1, 2, 0, 2, 3]:
+		warning_mesh.surface_set_color(color)
+		warning_mesh.surface_add_vertex(terrain.world_point(points[index], 9.0))
 
 func _flash(point: Vector2, color: Color) -> void:
 	var flash := _sphere(0.22, color)
@@ -433,7 +579,7 @@ func _build_ui() -> void:
 	add_child(canvas)
 	var panel := ColorRect.new()
 	panel.position = Vector2(16, 16)
-	panel.size = Vector2(300, 104)
+	panel.size = Vector2(445, 104)
 	panel.color = Color(0.05, 0.12, 0.14, 0.88)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(panel)
@@ -449,6 +595,14 @@ func _build_ui() -> void:
 	help.add_theme_constant_override("shadow_offset_x", 1)
 	help.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(help)
+	var roles := Label.new()
+	roles.text = "적: 회색 추격 · 빨강 돌진 · 금빛 사격 · 청록 장판 · 보라 강화"
+	roles.position = Vector2(20, 643)
+	roles.add_theme_font_size_override("font_size", 17)
+	roles.add_theme_color_override("font_shadow_color", Color.BLACK)
+	roles.add_theme_constant_override("shadow_offset_x", 1)
+	roles.add_theme_constant_override("shadow_offset_y", 1)
+	canvas.add_child(roles)
 	var places := {"남쪽 입구": Vector2(930, 1780), "디딤돌": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
 	var row := HBoxContainer.new()
 	row.position = Vector2(590, 20)
@@ -460,6 +614,16 @@ func _build_ui() -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(func(): teleport(places[title]))
 		row.add_child(button)
+	var combo_row := HBoxContainer.new()
+	combo_row.position = Vector2(590, 70)
+	canvas.add_child(combo_row)
+	for rank in range(3):
+		var combo_button := Button.new()
+		combo_button.text = "%d타 시험" % (rank + 2)
+		combo_button.custom_minimum_size = Vector2(125, 38)
+		combo_button.focus_mode = Control.FOCUS_NONE
+		combo_button.pressed.connect(_set_combo_rank.bind(rank))
+		combo_row.add_child(combo_button)
 	pause_backdrop = ColorRect.new()
 	pause_backdrop.position = Vector2(450, 303)
 	pause_backdrop.size = Vector2(380, 66)
@@ -474,8 +638,13 @@ func _build_ui() -> void:
 	pause_label.hide()
 	canvas.add_child(pause_label)
 
+func _set_combo_rank(rank: int) -> void:
+	player.set_combo_rank(rank)
+	_update_hud()
+
 func teleport(point: Vector2) -> void:
 	player.position = point
+	actor_motion[player] = [point, point]
 	player.velocity = Vector2.ZERO
 	player.dash_time = 0
 	player.hurt_recoil = Vector2.ZERO

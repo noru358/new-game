@@ -57,6 +57,8 @@ var attacks_started := 0
 var attacks_fired := 0
 var support_boost := false
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
+var projectile_parent: Node
+var zone_path_filter: Callable
 
 
 func _ready() -> void:
@@ -97,7 +99,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		if charging_this_frame and get_slide_collision_count() > 0:
 			for i in range(get_slide_collision_count()):
-				if get_slide_collision(i).get_collider() is ViewProp:
+				if get_slide_collision(i).get_collider() is ViewProp or get_slide_collision(i).get_collider() is TempleBlock:
 					charge_time = 0.0
 					attack_cooldown = BEAST_COOLDOWN
 					break
@@ -169,8 +171,9 @@ func _zone_velocity(delta: float) -> Vector2:
 	if attack_cooldown <= 0.0 and distance <= 340.0 and clear_shot:
 		var zone: Node2D = ZoneScript.new()
 		zone.setup(self, target)
+		zone.damage_path_filter = zone_path_filter
 		zone.process_mode = Node.PROCESS_MODE_PAUSABLE
-		get_parent().get_parent().add_child(zone)
+		(get_parent().get_parent() if projectile_parent == null else projectile_parent).add_child(zone)
 		zone.global_position = target.global_position
 		attack_cooldown = ZONE_COOLDOWN
 		attacks_started += 1
@@ -218,7 +221,7 @@ func _fire_bolt() -> void:
 	var bolt: Node2D = BoltScript.new()
 	bolt.setup(locked_direction, 240.0, 12.0)
 	bolt.process_mode = Node.PROCESS_MODE_PAUSABLE
-	get_parent().get_parent().add_child(bolt)
+	(get_parent().get_parent() if projectile_parent == null else projectile_parent).add_child(bolt)
 	bolt.global_position = global_position + locked_direction * 24.0
 	attacks_fired += 1
 

@@ -11,6 +11,7 @@ var target: SandboxPlayer
 var warning_time := WARNING
 var active_time := ACTIVE
 var hit_cooldown := 0.0
+var damage_path_filter: Callable
 
 
 func setup(new_source: Node2D, new_target: SandboxPlayer) -> void:
@@ -31,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		active_time = maxf(0.0, active_time - delta)
 		hit_cooldown = maxf(0.0, hit_cooldown - delta)
-		if hit_cooldown <= 0.0 and global_position.distance_to(target.global_position) <= RADIUS:
+		if hit_cooldown <= 0.0 and global_position.distance_to(target.global_position) <= RADIUS and (not damage_path_filter.is_valid() or damage_path_filter.call(global_position, target.global_position)):
 			target.receive_hit(DAMAGE, global_position)
 			hit_cooldown = 0.75
 		if active_time <= 0.0:
