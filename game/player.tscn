@@ -14,6 +14,7 @@ script = ExtResource("1_player")
 shape = SubResource("CircleShape2D_player")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+process_callback = 0
 zoom = Vector2(1.25, 1.25)
 limit_left = 0
 limit_top = 0

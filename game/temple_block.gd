@@ -5,15 +5,16 @@ var footprint_size := Vector2(100, 40)
 var water := false
 
 
-func setup(area: Rect2, is_water: bool) -> void:
+func setup(area: Rect2, is_water: bool, angle: float = 0.0) -> void:
 	global_position = area.get_center()
 	footprint_size = area.size
 	water = is_water
+	rotation = angle
 	queue_redraw()
 
 
-func navigation_rect() -> Rect2:
-	return Rect2(global_position - footprint_size * 0.5, footprint_size)
+func navigation_obstacle() -> Dictionary:
+	return {"center": global_position, "half_size": footprint_size * 0.5, "angle": rotation}
 
 
 func _ready() -> void:

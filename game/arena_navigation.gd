@@ -8,7 +8,7 @@ const ENEMY_RADIUS := 17.0
 var grid := AStarGrid2D.new()
 var grid_size := Vector2i(75, 44)
 var obstacles: Array[Vector3] = []
-var rectangular_obstacles: Array[Rect2] = []
+var rectangular_obstacles: Array[Dictionary] = []
 
 
 func setup(props: Array, arena_size: Vector2 = DEFAULT_ARENA_SIZE) -> void:
@@ -24,7 +24,7 @@ func setup(props: Array, arena_size: Vector2 = DEFAULT_ARENA_SIZE) -> void:
 		if prop is ViewProp:
 			obstacles.append(Vector3(prop.global_position.x, prop.global_position.y, prop.footprint_radius))
 		elif prop is TempleBlock:
-			rectangular_obstacles.append(prop.navigation_rect())
+			rectangular_obstacles.append(prop.navigation_obstacle())
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
 			var point := Vector2(float(x) + 0.5, float(y) + 0.5) * CELL_SIZE
@@ -37,7 +37,9 @@ func is_open(point: Vector2, clearance: float = ENEMY_RADIUS) -> bool:
 		if point.distance_to(Vector2(obstacle.x, obstacle.y)) < obstacle.z + clearance:
 			return false
 	for obstacle in rectangular_obstacles:
-		if obstacle.grow(clearance).has_point(point):
+		var local_point: Vector2 = (point - obstacle.center).rotated(-obstacle.angle)
+		var half: Vector2 = obstacle.half_size + Vector2.ONE * clearance
+		if absf(local_point.x) < half.x and absf(local_point.y) < half.y:
 			return false
 	return true
 
@@ -57,10 +59,12 @@ func has_clear_path(from: Vector2, to: Vector2) -> bool:
 		if center.distance_to(from + segment * fraction) < clearance:
 			return false
 	for obstacle in rectangular_obstacles:
-		var expanded := obstacle.grow(ENEMY_RADIUS + 2.0)
-		if expanded.has_point(from) and (from - expanded.get_center()).dot(segment) >= 0.0:
+		var local_from: Vector2 = (from - obstacle.center).rotated(-obstacle.angle)
+		var local_to: Vector2 = (to - obstacle.center).rotated(-obstacle.angle)
+		var expanded := Rect2(-obstacle.half_size, obstacle.half_size * 2.0).grow(ENEMY_RADIUS + 2.0)
+		if expanded.has_point(local_from) and local_from.dot(local_to - local_from) >= 0.0:
 			continue
-		if _segment_hits_rect(from, to, expanded):
+		if _segment_hits_rect(local_from, local_to, expanded):
 			return false
 	return true
 
