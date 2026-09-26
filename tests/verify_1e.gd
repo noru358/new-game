@@ -108,7 +108,13 @@ func _run() -> void:
 		enemy.queue_free()
 	await _frames(2)
 	arena.remaining_enemies = 0
+	await process_frame
+	await process_frame
+	_check(arena.wave_hint.visible and not arena.status_label.text.contains("ARENA CLEAR"), "wave prompt stays separate from the left HUD")
 	arena._next_practice_wave()
+	await process_frame
+	await process_frame
+	_check(not arena.wave_hint.visible, "wave prompt clears for the next practice wave")
 	counts = [0, 0, 0]
 	for enemy in enemies.get_children():
 		counts[enemy.role] += 1
