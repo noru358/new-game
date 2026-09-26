@@ -39,7 +39,20 @@ func _run() -> void:
 			actor.set_physics_process(false)
 			enemies.append(actor)
 	scene.player.hurt_immunity = 1000.0
+	_check(scene.minimap is HybridMinimap and scene.minimap._map_point(Vector2.ZERO).x > 0.0, "height lab includes a terrain-based minimap")
+	var first_view: PackedVector2Array = scene.minimap.camera_ground_footprint()
+	_check(first_view.size() == 4 and first_view[0].distance_to(first_view[2]) > 100.0, "minimap derives the visible ground footprint from the actual 3D camera")
+	var first_center: Vector2 = (first_view[0] + first_view[2]) * 0.5
+	scene.teleport(Vector2(2080, 1180))
+	await _frames(2)
+	var moved_view: PackedVector2Array = scene.minimap.camera_ground_footprint()
+	var moved_center: Vector2 = (moved_view[0] + moved_view[2]) * 0.5
+	_check(moved_center.distance_to(first_center) > 400.0, "minimap viewport follows a teleport across the terrain")
 	_check(scene.terrain.height_at(Vector2(300, 300)) == 0 and scene.terrain.height_at(Vector2(700, 700)) == 160 and scene.terrain.height_at(Vector2(1300, 1000)) == 320, "lowland, courtyard and terrace have distinct heights")
+	_check(not scene.clear_attack(Vector2(420, 1640), Vector2(800, 1640)) and scene.clear_attack(Vector2(420, 1850), Vector2(800, 1850)), "southern water blocks the direct route but leaves a dry lowland detour")
+	_check(not scene.clear_attack(Vector2(1480, 1650), Vector2(1780, 1650)) and scene.clear_attack(Vector2(1480, 1850), Vector2(1780, 1850)), "eastern water also has a lower dry detour")
+	var around_water: PackedVector2Array = scene.navigation.find_path(Vector2(420, 1640), Vector2(880, 1640))
+	_check(around_water.size() > 2 and around_water[1].y > 1670.0, "enemy navigation routes around the same deep-water footprint shown on the map: %s" % [around_water])
 	_check(is_equal_approx(scene.terrain.height_at(Vector2(930, 350)), 80) and is_equal_approx(scene.terrain.height_at(Vector2(1000, 1000)), 240), "both levels interpolate continuously on ramps")
 	for route in [[Vector2(930, 1850), Vector2.UP, 120], [Vector2(930, 150), Vector2.DOWN, 100], [Vector2(2200, 1180), Vector2.LEFT, 100]]:
 		scene.teleport(route[0])
@@ -110,6 +123,14 @@ func _run() -> void:
 	target.set_physics_process(true)
 	await _frames(150)
 	_check(target.position.y > 350 and scene.terrain.height_at(target.position) > 60, "existing 2D enemy navigation ascends northern ramp")
+	scene.teleport(Vector2(900, 1620))
+	target.position = Vector2(420, 1640)
+	target.velocity = Vector2.ZERO
+	target.knockback = Vector2.ZERO
+	target.navigation_path.clear()
+	target.navigation_repath_time = 0.0
+	await _frames(700)
+	_check(target.position.distance_to(scene.player.position) < 150.0, "pursuer follows the dry southern detour around deep water: %s" % target.position)
 	scene._set_paused(true)
 	var paused_position := target.position
 	await _frames(10)

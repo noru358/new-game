@@ -20,6 +20,16 @@ var ramps := [
 	{"area": Rect2(850, 900, 300, 200), "axis": 0, "from": 160.0, "to": 320.0, "name": "테라스 경사로"},
 	{"area": Rect2(1210, 1500, 160, 280), "axis": 1, "from": 160.0, "to": 0.0, "name": "디딤돌", "kind": "stepping_stones"}
 ]
+# Deep water frames the southern ramp and stones without closing either
+# stone-side corner. Both channels end before the south edge of the lowland.
+var water_areas := [
+	Rect2(470, 1510, 290, 75),
+	Rect2(505, 1585, 255, 95),
+	Rect2(530, 1680, 220, 90),
+	Rect2(1540, 1510, 230, 75),
+	Rect2(1510, 1585, 250, 95),
+	Rect2(1530, 1680, 210, 90)
+]
 
 func ramp_height(ramp: Dictionary, point: Vector2) -> float:
 	var area: Rect2 = ramp.area
@@ -53,6 +63,8 @@ func world_point(point: Vector2, lift: float = 0.0) -> Vector3:
 
 func barriers() -> Array[Rect2]:
 	var result: Array[Rect2] = []
+	for water in water_areas:
+		result.append(water)
 	for plateau in plateaus:
 		var a: Rect2 = plateau.area
 		for side in ["north", "south", "west", "east"]:

@@ -4,11 +4,12 @@ const Terrain = preload("res://game/hybrid_terrain.gd")
 const PlayerScene = preload("res://game/player.tscn")
 const EnemyScene = preload("res://game/enemy.tscn")
 const GrowthScript = preload("res://game/run_growth.gd")
+const MinimapScript = preload("res://game/hybrid_minimap.gd")
 const ActorTexture = preload("res://game/hybrid_actor.svg")
 const COMBAT_CAMERA_SIZE := 10.8
 const OVERVIEW_CAMERA_SIZE := 30.0
 const ACTOR_CLEARANCE := 30.0
-const ENEMY_POINTS := [Vector2(480, 1660), Vector2(720, 680), Vector2(1430, 1000), Vector2(1700, 1320), Vector2(2100, 1100), Vector2(890, 600), Vector2(1380, 1360), Vector2(2100, 1240)]
+const ENEMY_POINTS := [Vector2(390, 1660), Vector2(720, 680), Vector2(1430, 1000), Vector2(1700, 1320), Vector2(2100, 1100), Vector2(890, 600), Vector2(1380, 1360), Vector2(2100, 1240)]
 const ENEMY_ROLES := [TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.ZONE, TrainingEnemy.Role.SUPPORT]
 const ENEMY_HEALTH := [22.0, 22.0, 22.0, 45.0, 30.0, 30.0, 32.0, 36.0]
 var terrain := Terrain.new()
@@ -34,6 +35,7 @@ var warning_mesh := ImmediateMesh.new()
 var warning_vertex_count := 0
 var seal_visual: MeshInstance3D
 var hud: Label
+var minimap: Control
 var pause_label: Label
 var pause_backdrop: ColorRect
 var overview := false
@@ -48,7 +50,7 @@ var previous_attack_direction := Vector2.RIGHT
 var current_attack_direction := Vector2.RIGHT
 
 func _ready() -> void:
-	get_window().title = "Loop Conquest — Hybrid Height v06"
+	get_window().title = "Loop Conquest — Hybrid Court v07"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_physics_priority = 100
 	_register_inputs()
@@ -61,7 +63,7 @@ func _ready() -> void:
 	var obstacles: Array = []
 	for area in terrain.barriers():
 		var block := TempleBlock.new()
-		block.setup(area, false)
+		block.setup(area, terrain.water_areas.has(area))
 		simulation.add_child(block)
 		obstacles.append(block)
 	navigation.agent_radius = ACTOR_CLEARANCE
@@ -136,7 +138,7 @@ func _ready() -> void:
 	get_window().focus_exited.connect(func():
 		if not growth.choosing: _set_paused(true)
 	)
-	print("Hybrid height v06 ready: automatic XP, clear warnings, slope pull and facing wisps")
+	print("Hybrid court v07 ready: water approaches, height minimap and clear ramps")
 
 func _register_inputs() -> void:
 	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
@@ -238,6 +240,8 @@ func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	_top(st, Rect2(Vector2.ZERO, Terrain.SIZE), func(_p): return 0.0, Color("93afa1"))
+	for water in terrain.water_areas:
+		_top(st, water, func(_p): return 1.0, Color("39858b"))
 	for plateau in terrain.plateaus:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else Color("e7ddbd"))
@@ -249,13 +253,6 @@ func _build_terrain() -> void:
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
 		_top(st, ramp.area, elevation, Color("c9bb91"))
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
-		# Thin transverse bands follow the inclined surface; they are not flat diamonds.
-		var area: Rect2 = ramp.area
-		for i in range(1, 10):
-			var band := area
-			band.position[ramp.axis] += area.size[ramp.axis] * float(i) / 10.0
-			band.size[ramp.axis] = 3
-			_top(st, band, func(p): return terrain.ramp_height(ramp, p) + 0.5, Color("9a957f"))
 	st.generate_normals()
 	terrain_mesh = MeshInstance3D.new()
 	terrain_mesh.mesh = st.commit()
@@ -752,6 +749,11 @@ func _build_ui() -> void:
 	hud.position = Vector2(28, 25)
 	hud.add_theme_font_size_override("font_size", 20)
 	canvas.add_child(hud)
+	minimap = MinimapScript.new()
+	minimap.position = Vector2(1022, 74)
+	minimap.size = Vector2(242, 213)
+	minimap.setup(self)
+	canvas.add_child(minimap)
 	var help := Label.new()
 	help.text = "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지"
 	help.position = Vector2(20, 681)
