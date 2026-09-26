@@ -20,19 +20,26 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	if not is_instance_valid(region):
 		return
-	draw_rect(Rect2(Vector2.ZERO, size), Color("afc8b6"))
-	draw_rect(_map_rect(Rect2(0, 0, 1250, 2160)), Color("9fc4b2"))
-	draw_rect(_map_rect(Rect2(1250, 0, 1250, 2160)), Color("d2cba9"))
-	draw_rect(_map_rect(Rect2(2500, 0, 1340, 2160)), Color("b6cbb6"))
-	_draw_plaza(Vector2(790, 1180), 580.0, 285.0, Color("ead9b2"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("b7cdb8"))
+	_draw_plaza(region.WEST_COURT_CENTER, region.WEST_COURT_HALF.x, region.WEST_COURT_HALF.y, Color("ead9b2"))
+	_draw_plaza(region.WEST_UPPER_LANDING, 200.0, 110.0, Color("e0d0aa"))
+	_draw_plaza(region.WEST_LOWER_LANDING, 200.0, 110.0, Color("e0d0aa"))
 	_draw_plaza(Vector2(1830, 1080), 820.0, 385.0, Color("ebd5a8"))
 	_draw_plaza(Vector2(3130, 1080), 400.0, 280.0, Color("e8d3a3"))
+	_draw_plaza(region.WEST_GATE, 180.0, 80.0, Color("f0e0b5"))
+	_draw_plaza(region.UPPER_TERRACE_CENTER, region.UPPER_TERRACE_HALF.x, region.UPPER_TERRACE_HALF.y, Color("f3eacb"))
+	for patch in region.WET_BANK_AREAS:
+		draw_colored_polygon(_map_points(PackedVector2Array(patch)), Color("8db9ad"))
 	for i in range(region.WATER_AREAS.size()):
 		var world_points: PackedVector2Array = region.rotated_rect_points(region.WATER_AREAS[i], region.WATER_ANGLES[i])
 		draw_colored_polygon(_map_points(world_points), Color("388c94"))
 	for i in range(region.WALL_AREAS.size()):
 		var world_points: PackedVector2Array = region.rotated_rect_points(region.WALL_AREAS[i], region.WALL_ANGLES[i])
 		draw_colored_polygon(_map_points(world_points), Color("526d68"))
+	for prop in region.view_props:
+		if prop is ViewProp:
+			var footprint := _map_point(prop.global_position)
+			draw_rect(Rect2(footprint - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), Color("65716a"))
 	var view_size: Vector2 = Vector2(1280, 720) / region.camera.zoom
 	var view_center: Vector2 = region.camera.get_screen_center_position()
 	var world_view := Rect2(view_center - view_size * 0.5, view_size)

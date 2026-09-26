@@ -15,7 +15,7 @@ position = Vector2(760, 1190)
 y_sort_enabled = true
 
 [node name="FragmentA" parent="Enemies" instance=ExtResource("3_enemy")]
-position = Vector2(1180, 1080)
+position = Vector2(1090, 1180)
 
 [node name="FragmentB" parent="Enemies" instance=ExtResource("3_enemy")]
 position = Vector2(1850, 930)
