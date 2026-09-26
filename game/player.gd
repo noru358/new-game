@@ -60,6 +60,8 @@ var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
 var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
+var input_rotation := 0.0
+var attack_path_filter: Callable
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -93,7 +95,7 @@ func _physics_process(delta: float) -> void:
 	if health <= 0.0:
 		return
 	companion_orbit_time += delta
-	var movement := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var movement := Input.get_vector("move_left", "move_right", "move_up", "move_down").rotated(input_rotation)
 	if movement.length_squared() > 0.0:
 		facing = movement.normalized()
 		if attack_step > 0 and (attack_step != 3 or gathered_enemies.is_empty()):
@@ -254,6 +256,8 @@ func _hit_enemies(attack: Dictionary) -> void:
 			continue
 		var angle_difference := absf(wrapf(offset.angle() - attack_direction.angle(), -PI, PI))
 		if angle_difference > deg_to_rad(attack.angle * 0.5):
+			continue
+		if attack_path_filter.is_valid() and not attack_path_filter.call(global_position, enemy.global_position):
 			continue
 		var push_direction := offset.normalized() if offset.length_squared() > 0.01 else attack_direction
 		var finisher := attack_step == combo_limit()
