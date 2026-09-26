@@ -1,6 +1,6 @@
-# Loop Conquest — 1B View Prototype
+# Loop Conquest — 1C Wisp Prototype
 
-Godot 4.6 project for comparing view scale and ground projection over the same playable combat blockout. The selected view is **2, medium 2:1 diamond**, and opens by default. The other views and G grid toggle remain for 1B comparison. The 1A combat sandbox remains available as `game/main.tscn`.
+Godot 4.6 combat prototype with one automatic wisp companion. The selected view is **2, medium 2:1 diamond**, and opens by default. The other views and G grid toggle remain for comparison. The 1A combat sandbox remains available as `game/main.tscn`.
 
 | Input | Action |
 |---|---|
@@ -21,6 +21,10 @@ The current 1A motion is a temporary feel test: the character sweeps magic with 
 
 The sandbox starts with two combo hits. In the later 1D upgrade system, sequential `U_CHAIN` choices will unlock hits three and four for each run. K previews those hits here. Two tougher enemies have 80 HP each so you can test gathering multiple targets and hitting both with the fourth strike.
 
+The baseline wisp follows the player and fires a magic projectile at the nearest visible enemy within 520 px when a ruin does not block the path. It fires every 1.8 seconds, deals 6.5 damage at the current base attack value, and acts independently of the manual combo. It waits if no valid target is available, and its cooldown pauses with the game. The temporary HUD line shows its cooldown.
+
+Future wisp upgrades include more wisps, orbiting contact damage, fire rate, damage, and attack pattern. The orbiting contact damage will add to the current projectile attack. These cards will unlock after conditions are met and must then be chosen again through level-up in each run. No upgrade or unlock is implemented in 1C; their exact rules belong to 1D.
+
 ## Run from source
 
 Open `project.godot` in Godot **4.6 stable**, then press F6/F5. Or run:
@@ -34,10 +38,11 @@ godot --path .
 ```sh
 godot --headless --path . --script res://tests/verify_1a.gd
 godot --headless --path . --script res://tests/verify_1b.gd
+godot --headless --path . --script res://tests/verify_1c.gd
 ```
 
-The scripts check 1A combat behavior and the 1B default view, 2:1 diamond axes, G grid switching, shared layout, Y-sort configuration, obstacle collision, and near-foreground fade. Screen readability and combat feel require a person to test the running window.
+The scripts check 1A combat behavior, the 1B view and space layout, and 1C wisp target selection, damage, projectile blocking, pause, and manual-combo independence. Screen readability and combat feel require a person to test the running window.
 
 ## Scope
 
-1B has no wisp, XP, skill picks, boss, time-based spawning, campaign, or permanent progression. The blockout is for choosing a view and scale; the temple map is built in 1F.
+1C has no XP, skill picks, boss, time-based spawning, campaign, or permanent progression. The blockout is for testing combat; the temple map is built in 1F.
