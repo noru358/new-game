@@ -11,6 +11,7 @@ const PROP_POINTS := [
 	Vector2(690, 1050), Vector2(1920, 1090), Vector2(1450, 370)
 ]
 
+# Selected 1B baseline. Other modes remain available only for comparison.
 var view_mode := 2
 var diamond_ground := true
 var view_props: Array = []

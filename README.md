@@ -1,6 +1,6 @@
 # Loop Conquest — 1B View Prototype
 
-Godot 4.6 project for comparing view scale and ground projection over the same playable combat blockout. View 2, medium 2:1 diamond, opens by default. The 1A combat sandbox remains available as `game/main.tscn`.
+Godot 4.6 project for comparing view scale and ground projection over the same playable combat blockout. The selected view is **2, medium 2:1 diamond**, and opens by default. The other views and G grid toggle remain for 1B comparison. The 1A combat sandbox remains available as `game/main.tscn`.
 
 | Input | Action |
 |---|---|
@@ -13,7 +13,7 @@ Godot 4.6 project for comparing view scale and ground projection over the same p
 | Esc | Pause or manually resume |
 | R | Reset the sandbox |
 
-Each view keeps the same 2400 × 1400 playfield, nine column/ruin footprints, and six enemies. It changes camera zoom and lead, actor vertical shape, and prop height. Views 2 and 3 start with a real 2:1 diamond ground lattice and matching diamond prop tops; G restores the square ground lattice at the same camera scale for direct comparison. Props sort by their ground position, block movement at their footprints, and fade when they would hide the player. These are 2D projection sketches, not a tilted 3D camera or final art. Compare whether the character, attacks, enemy crowd, and nearby obstacles remain readable; the final view is not selected yet.
+Each view keeps the same 2400 × 1400 playfield, nine column/ruin footprints, and six enemies. It changes camera zoom and lead, actor vertical shape, and prop height. Views 2 and 3 start with a real 2:1 diamond ground lattice and matching diamond prop tops; G restores the square ground lattice at the same camera scale for direct comparison. Props sort by their ground position, block movement at their footprints, and fade when they would hide the player. These are 2D projection sketches, not a tilted 3D camera or final art. View 2 with diamond ground is the camera and projection baseline for subsequent stages; final character and environment art remain open.
 
 The attack points in the movement direction, not at the cursor. Moving during an attack is allowed. The third hit quickly gathers enemies in a forward fan around one nearby point, with space between them so each remains visible. Enemies also keep their spacing while chasing. The fourth hit releases the former wide magic wave. The vertical slam has been removed. Leaving the game window pauses it; returning does not resume automatically.
 
