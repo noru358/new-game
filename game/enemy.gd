@@ -54,6 +54,7 @@ var charge_has_hit := false
 var attacks_started := 0
 var attacks_fired := 0
 var support_boost := false
+var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 
 
 func _ready() -> void:
@@ -99,8 +100,8 @@ func _physics_process(delta: float) -> void:
 					attack_cooldown = BEAST_COOLDOWN
 					break
 	global_position = Vector2(
-		clampf(global_position.x, 24.0, 2376.0),
-		clampf(global_position.y, 24.0, 1376.0)
+		clampf(global_position.x, arena_bounds.position.x + 24.0, arena_bounds.end.x - 24.0),
+		clampf(global_position.y, arena_bounds.position.y + 24.0, arena_bounds.end.y - 24.0)
 	)
 	if gather_contact_grace <= 0.0 and global_position.distance_to(target.global_position) <= RADIUS + 18.0:
 		if role == Role.FRAGMENT:
