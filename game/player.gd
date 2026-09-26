@@ -25,6 +25,7 @@ const ATTACKS := [
 ]
 
 var health := MAX_HEALTH
+var visual_pitch := 0.0
 var facing := Vector2.RIGHT
 var attack_direction := Vector2.RIGHT
 var attack_step := 0
@@ -273,9 +274,24 @@ func _draw() -> void:
 	var body_color := Color("f5f5e8") if hit_flash > 0.0 else Color("f5db9a")
 	if dash_time > 0.0:
 		draw_circle(-dash_direction * 25.0, 19.0, Color(0.30, 0.88, 0.86, 0.28))
-	draw_circle(Vector2(0, 8), 20.0, Color(0.03, 0.10, 0.13, 0.4))
+	if visual_pitch > 0.0:
+		var shadow := PackedVector2Array()
+		for i in range(25):
+			var angle := TAU * float(i) / 24.0
+			shadow.append(Vector2(cos(angle) * 20.0, 8.0 + sin(angle) * 10.0))
+		draw_colored_polygon(shadow, Color(0.03, 0.10, 0.13, 0.4))
+	else:
+		draw_circle(Vector2(0, 8), 20.0, Color(0.03, 0.10, 0.13, 0.4))
 	draw_circle(Vector2.ZERO, 18.0, Color("355b67"))
 	draw_circle(Vector2(0, -4), 13.0, body_color)
+	if visual_pitch > 0.0:
+		var top := -17.0 - visual_pitch * 19.0
+		draw_colored_polygon(PackedVector2Array([
+			Vector2(-12, 6), Vector2(-12, top + 12),
+			Vector2(12, top + 12), Vector2(12, 6)
+		]), Color("355b67"))
+		draw_circle(Vector2(0, top + 8), 12.0, body_color)
+		draw_circle(Vector2(6, top + 7), 2.8, Color("183944"))
 	draw_colored_polygon(PackedVector2Array([
 		facing * 23.0,
 		facing.rotated(2.4) * 12.0,

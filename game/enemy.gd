@@ -12,6 +12,7 @@ const GATHER_DURATION := 0.12
 @export var max_health := MAX_HEALTH
 
 var health := MAX_HEALTH
+var visual_pitch := 0.0
 var target: Node2D
 var knockback := Vector2.ZERO
 var hit_flash := 0.0
@@ -80,7 +81,14 @@ func _draw() -> void:
 	var reinforced := max_health > MAX_HEALTH
 	var stone := Color("edf6e8") if hit_flash > 0.0 else Color("9aa8c7") if reinforced else Color("8bada0")
 	var shade := Color("3c5d61")
-	draw_circle(Vector2(0, 7), 20.0, Color(0.02, 0.09, 0.11, 0.35))
+	if visual_pitch > 0.0:
+		var shadow := PackedVector2Array()
+		for i in range(25):
+			var angle := TAU * float(i) / 24.0
+			shadow.append(Vector2(cos(angle) * 20.0, 7.0 + sin(angle) * 9.0))
+		draw_colored_polygon(shadow, Color(0.02, 0.09, 0.11, 0.35))
+	else:
+		draw_circle(Vector2(0, 7), 20.0, Color(0.02, 0.09, 0.11, 0.35))
 	draw_colored_polygon(PackedVector2Array([
 		Vector2(-17, 9), Vector2(-12, -13), Vector2(0, -21),
 		Vector2(16, -11), Vector2(18, 9), Vector2(3, 18)
@@ -89,8 +97,15 @@ func _draw() -> void:
 		Vector2(-12, 5), Vector2(-8, -12), Vector2(1, -17),
 		Vector2(12, -9), Vector2(13, 6), Vector2(1, 12)
 	]), stone)
+	if visual_pitch > 0.0:
+		var top := -18.0 - visual_pitch * 17.0
+		draw_colored_polygon(PackedVector2Array([
+			Vector2(-12, -1), Vector2(-10, top), Vector2(3, top - 7),
+			Vector2(13, top + 2), Vector2(13, 5), Vector2(1, 12)
+		]), stone)
 	draw_line(Vector2(-7, -4), Vector2(8, 4), Color("295665"), 3.0)
 	draw_circle(Vector2(-4, -2), 2.0, Color("f9c06f") if reinforced else Color("42d9d4"))
 	draw_circle(Vector2(7, 0), 2.0, Color("f9c06f") if reinforced else Color("42d9d4"))
-	draw_rect(Rect2(-18, -32, 36, 4), Color(0.05, 0.16, 0.18, 0.8))
-	draw_rect(Rect2(-18, -32, 36.0 * maxf(health, 0.0) / max_health, 4), Color("f9c06f") if reinforced else Color("8ce2bc"))
+	var health_y := -32.0 - visual_pitch * 18.0
+	draw_rect(Rect2(-18, health_y, 36, 4), Color(0.05, 0.16, 0.18, 0.8))
+	draw_rect(Rect2(-18, health_y, 36.0 * maxf(health, 0.0) / max_health, 4), Color("f9c06f") if reinforced else Color("8ce2bc"))
