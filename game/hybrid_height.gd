@@ -93,6 +93,7 @@ func _ready() -> void:
 	player.arena_bounds = Rect2(Vector2.ZERO, terrain.map_size)
 	player.collision_mask = 4
 	player.input_rotation = -PI / 4.0
+	player.ramp_areas = terrain.ramps
 	player.move_speed_multiplier = 1.12
 	player.dash_distance_multiplier = 1.16
 	player.basic_speed_bonus = 0.18
@@ -171,13 +172,13 @@ func _ready() -> void:
 	print("Hybrid scene ready: ", scene_title)
 
 func _register_inputs() -> void:
-	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE, "moving_slash": KEY_Q}
+	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SHIFT, "moving_slash": KEY_SPACE}
 	for action in keys:
-		if not InputMap.has_action(action):
-			InputMap.add_action(action)
-			var event := InputEventKey.new()
-			event.physical_keycode = keys[action]
-			InputMap.action_add_event(action, event)
+		if not InputMap.has_action(action): InputMap.add_action(action)
+		InputMap.action_erase_events(action)
+		var event := InputEventKey.new()
+		event.physical_keycode = keys[action]
+		InputMap.action_add_event(action, event)
 	var mouse := InputEventMouseButton.new()
 	mouse.button_index = MOUSE_BUTTON_LEFT
 	if not InputMap.action_has_event("attack", mouse):
@@ -266,6 +267,17 @@ func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 		for x in [link_left, link_right]:
 			_quad(st, [Vector3(x, 0, seam), Vector3(x, 0, y1), Vector3(x, h1, y1), Vector3(x, h0, seam)], Color("647970"))
 
+
+func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	var strips: Array[Rect2] = []
+	if int(ramp.axis) == 0:
+		strips = [Rect2(area.position.x, area.position.y, area.size.x, 12.0), Rect2(area.position.x, area.end.y - 12.0, area.size.x, 12.0)]
+	else:
+		strips = [Rect2(area.position.x, area.position.y, 12.0, area.size.y), Rect2(area.end.x - 12.0, area.position.y, 12.0, area.size.y)]
+	for strip in strips:
+		_top(st, strip, func(point): return terrain.ramp_height(ramp, point) + 4.0, ramp_color.darkened(0.32))
+
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -285,7 +297,9 @@ func _build_terrain() -> void:
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
 		_top(st, ramp.area, elevation, ramp_color)
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+		_ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
+		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height
 		_top(st, wall.area, elevation, wall.color)
 		_sides(st, wall.area, elevation, wall.get("base", 0.0), wall.color.darkened(0.25))
@@ -624,7 +638,7 @@ func _update_hud() -> void:
 	if hud == null: return
 	hud.text = "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
 	if moving_slash_status != null:
-		moving_slash_status.text = "Q 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
+		moving_slash_status.text = "Space 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
 
 func _draw_attack() -> void:
 	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)
@@ -942,7 +956,7 @@ func _build_ui() -> void:
 	minimap.setup(self)
 	canvas.add_child(minimap)
 	var help := Label.new()
-	help.text = "WASD 이동   J / 클릭 평타   Q 이동 베기   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls and moving_slash_practice else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Q 이동 베기   Space 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
+	help.text = "WASD 이동   J / 클릭 평타   Space 이동 베기   Shift 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls and moving_slash_practice else "WASD 이동   J / 클릭 평타   Shift 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Space 이동 베기   Shift 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
 	help.position = Vector2(20, 681)
 	help.add_theme_font_size_override("font_size", 17)
 	help.add_theme_color_override("font_shadow_color", Color.BLACK)

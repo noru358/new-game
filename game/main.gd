@@ -183,7 +183,7 @@ func _build_ui() -> void:
 	health_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	health_back.add_child(health_fill)
 	var controls := Label.new()
-	controls.text = "WASD Move  |  J / Left Click Attack (hold)  |  Space Dash  |  K Combo 2/3/4  |  Esc Pause  |  R Reset"
+	controls.text = "WASD Move  |  J / Left Click Attack (hold)  |  Shift Dash  |  K Combo 2/3/4  |  Esc Pause  |  R Reset"
 	controls.position = Vector2(20, 672)
 	controls.add_theme_font_size_override("font_size", 19)
 	controls.add_theme_color_override("font_color", Color("f9f2d8"))
@@ -235,7 +235,7 @@ func _register_inputs() -> void:
 	_add_key_action("move_up", KEY_W)
 	_add_key_action("move_down", KEY_S)
 	_add_key_action("attack", KEY_J)
-	_add_key_action("dash", KEY_SPACE)
+	_add_key_action("dash", KEY_SHIFT)
 	var mouse := InputEventMouseButton.new()
 	mouse.button_index = MOUSE_BUTTON_LEFT
 	InputMap.action_add_event("attack", mouse)

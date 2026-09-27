@@ -24,7 +24,7 @@ func _init() -> void:
 	boss_scene = preload("res://game/jungle_warden.tscn")
 	boss_name = "관문 수호자"
 	first_clear_notice = "관문 통과 · 새 3·4타 장비 선택 가능"
-	scene_title = "Loop Conquest — Jungle Pass v08"
+	scene_title = "Loop Conquest — Jungle Pass v09"
 	scene_hud_title = "정글 절벽 관문"
 	combat_camera_size = 10.0
 	overview_camera_size = 43.0
@@ -126,33 +126,24 @@ func _warden_warning_quad(a: Vector2, b: Vector2, c: Vector2, d: Vector2, elevat
 
 
 func _build_gate_silhouette() -> void:
-	# These large landmarks are temporary massing, keeping the world theme open.
-	for x in [4120.0, 5070.0]:
-		var pillar := MeshInstance3D.new()
-		var block := BoxMesh.new()
-		block.size = Vector3(1.25, 5.4, 1.2)
-		pillar.mesh = block
-		pillar.material_override = _material(Color("677867"), false)
-		pillar.position = terrain.world_point(Vector2(x, 1160.0), 270.0)
-		add_child(pillar)
+	# Columns come from the same terrain records that draw and block them.
+	# The lintel overhangs their outer faces, avoiding coincident mesh surfaces.
+	var first: Vector2 = PassTerrain.GATE_COLUMN_CENTERS[0]
+	var last: Vector2 = PassTerrain.GATE_COLUMN_CENTERS[-1]
+	var column_top: float = terrain.gate_columns[0].height
 	var bridge := MeshInstance3D.new()
+	bridge.name = "GateLintel"
 	var lintel := BoxMesh.new()
-	lintel.size = Vector3(10.75, 1.15, 1.45)
+	lintel.size = Vector3((last.x - first.x + PassTerrain.GATE_COLUMN_SIZE.x + 160.0) * PassTerrain.SCALE, 1.15, 1.45)
 	bridge.mesh = lintel
 	bridge.material_override = _material(Color("788879"), false)
-	bridge.position = terrain.world_point(Vector2(4595.0, 1160.0), 565.0)
+	bridge.position = Vector3((first.x + last.x) * 0.5, column_top + 37.5, (first.y + last.y) * 0.5) * PassTerrain.SCALE
 	add_child(bridge)
 
 
 func _build_jungle_silhouette() -> void:
 	# Decorative canopy massing sits beside the clear navigation routes.
-	for point in [
-		Vector2(350, 470), Vector2(650, 360), Vector2(1090, 350),
-		Vector2(350, 1880), Vector2(820, 2070), Vector2(1250, 1790),
-		Vector2(1820, 600), Vector2(2310, 570), Vector2(3180, 590),
-		Vector2(1810, 1790), Vector2(2500, 1830), Vector2(3410, 1750),
-		Vector2(3980, 640), Vector2(5140, 640), Vector2(4020, 1760), Vector2(5150, 1760)
-	]:
+	for point in PassTerrain.CANOPY_POINTS:
 		var root := terrain.world_point(point)
 		var height := 2.3 + float(int(point.x + point.y) % 5) * 0.28
 		var trunk := MeshInstance3D.new()
