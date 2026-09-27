@@ -14,6 +14,7 @@ const DAMAGE_BONUS_PER_RANK := 0.20
 @export var attack_range := 520.0
 @export var projectile_speed := 620.0
 @export var damage_multiplier := BASE_DAMAGE_MULTIPLIER
+var permanent_damage_bonus := 0.0
 
 var player: SandboxPlayer
 var navigation: ArenaNavigation
@@ -147,7 +148,7 @@ func _fire(target: TrainingEnemy) -> void:
 	shot_direction = direction
 	muzzle_flash = 0.14
 	var projectile: WispProjectile = ProjectileScript.new()
-	projectile.setup(direction, projectile_speed, attack_range, player.ATTACK_DAMAGE * damage_multiplier)
+	projectile.setup(direction, projectile_speed, attack_range, player.ATTACK_DAMAGE * (damage_multiplier + permanent_damage_bonus))
 	projectile.target = target
 	projectile.power_rank = power_rank
 	projectile.chain_jumps = chain_jumps

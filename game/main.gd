@@ -49,7 +49,7 @@ func _process(delta: float) -> void:
 	]
 	if remaining_enemies == 0:
 		status_label.text += "    ARENA CLEAR - R TO RESET"
-	health_fill.size.x = 300.0 * player.health / player.MAX_HEALTH
+	health_fill.size.x = 300.0 * player.health / player.max_health
 	hurt_feedback_time = maxf(0.0, hurt_feedback_time - delta)
 	var edge_color := Color(0.82, 0.13, 0.13, hurt_feedback_time * 1.6)
 	for edge in hurt_edges:

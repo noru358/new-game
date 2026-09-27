@@ -138,19 +138,19 @@ func _refresh_choices() -> void:
 func describe_card(card_id: String, next_rank: int) -> String:
 	var old_rank := next_rank - 1
 	match card_id:
-		"U_EDGE": return "평타 피해 %d%% → %d%%" % [100 + 15 * old_rank, 100 + 15 * next_rank]
+		"U_EDGE": return "평타 피해 %d%% → %d%%" % [roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * old_rank, roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * next_rank]
 		"U_TEMPO": return "평타가 더 빨라집니다\n공격 속도 +%d%% → +%d%%" % [roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
 		"U_REACH": return "평타가 더 멀리 닿습니다\n기본 사거리 %d → %d" % [100 + 15 * old_rank, 100 + 15 * next_rank]
 		"U_CHAIN": return "앞의 적을 모으는 3타 추가" if next_rank == 1 else "모인 적을 터뜨리는 4타 추가"
-		"S_WISP_DAMAGE": return "여우불 한 발이 더 강해집니다\n기본 피해 %d → %d" % [10 + 2 * old_rank, 10 + 2 * next_rank]
+		"S_WISP_DAMAGE": return "여우불 한 발이 더 강해집니다\n기본 피해 %.1f → %.1f" % [10.0 * (1.0 + wisps[0].permanent_damage_bonus) + 2.0 * old_rank, 10.0 * (1.0 + wisps[0].permanent_damage_bonus) + 2.0 * next_rank]
 		"S_WISP_CADENCE": return "여우불이 더 자주 쏩니다\n발사 간격 %.2f초 → %.2f초" % [1.25 * (1.0 - 0.10 * old_rank), 1.25 * (1.0 - 0.10 * next_rank)]
 		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
 		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
 		"S_WISP_CHAIN": return "명중 후 다른 적 1명에게 연쇄" if next_rank == 1 else "연쇄 대상 1명 → 2명"
 		"S_SEAL": return "적 위치에 자동 마력진 추가" if next_rank == 1 else "마력진 범위 %d → %d" % [66 + 10 * (old_rank - 1), 66 + 10 * (next_rank - 1)]
-		"U_STEP": return "대시 재충전 1.20초 → 1.02초" if next_rank == 1 else "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 1.02초 → 0.84초"
+		"U_STEP": return "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 %.2f초 → %.2f초" % [1.2 * (1.0 - (0.15 if old_rank > 0 else 0.0) - player.permanent_dash_cooldown_reduction), 1.2 * (1.0 - (0.30 if next_rank >= 3 else 0.15) - player.permanent_dash_cooldown_reduction)]
 		"U_SLASH_SWEEP": return "이동 베기 폭 %d → %d" % [110 + 40 * old_rank, 110 + 40 * next_rank]
-		"U_SLASH_CADENCE": return "이동 베기 재사용 %.2f초 → %.2f초" % [1.1 * (1.0 - 0.15 * old_rank), 1.1 * (1.0 - 0.15 * next_rank)]
+		"U_SLASH_CADENCE": return "이동 베기 재사용 %.2f초 → %.2f초" % [1.1 * (1.0 - 0.15 * old_rank - player.permanent_slash_cooldown_reduction), 1.1 * (1.0 - 0.15 * next_rank - player.permanent_slash_cooldown_reduction)]
 	return String(CARDS[card_id].detail)
 
 
@@ -280,6 +280,7 @@ func _sync_wisps() -> void:
 		wisp.attack_interval = WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - 0.10 * float(card_ranks.get("S_WISP_CADENCE", 0)))
 		wisp.power_rank = int(card_ranks.get("S_WISP_DAMAGE", 0))
 		wisp.damage_multiplier = WispCompanion.BASE_DAMAGE_MULTIPLIER + WispCompanion.DAMAGE_BONUS_PER_RANK * float(wisp.power_rank)
+		wisp.permanent_damage_bonus = wisps[0].permanent_damage_bonus
 		wisp.orbit_enabled = int(card_ranks.get("S_WISP_ORBIT", 0)) > 0
 		wisp.orbit_damage = 4.0 + 3.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
 		wisp.chain_jumps = int(card_ranks.get("S_WISP_CHAIN", 0))
@@ -298,7 +299,7 @@ func _sync_seal(rank: int) -> void:
 
 
 func _heal(fraction: float) -> void:
-	player.health = minf(player.MAX_HEALTH, player.health + player.MAX_HEALTH * fraction)
+	player.health = minf(player.max_health, player.health + player.max_health * fraction)
 	player.health_changed.emit()
 
 

@@ -434,7 +434,7 @@ func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, fin
 	if player.attack_hitstop_scale <= 0.0:
 		_flash(point, Color("94e9ff") if step == 3 else Color("ffd486"))
 		return
-	var color := Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
+	var color := Color("ffbc69") if player.flow_weave_attack else Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
 	_flash(point, color, 0.27 if finisher else 0.20)
 	if not player.impact_played_this_attack:
 		camera.position -= Vector3(direction.x, 0.0, direction.y) * (0.10 if finisher else 0.055)
@@ -639,7 +639,7 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 	var arc: float = half_angle * 2.0
 	var active_progress: float = clampf((elapsed - windup) / active, 0.0, 1.0)
 	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
-	var base := Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("ffe19a")
+	var base := Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("ffe19a")
 	attack_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	# Keep the swing in one plane at chest height. Sampling the ground height at
 	# every vertex folded the old mesh over stairs and cliffs. The pale blade

@@ -18,7 +18,7 @@ const COMBO_RESET_TIME := 0.75
 const ATTACK_BUFFER_TIME := 0.18
 const ATTACK_DAMAGE := 10.0
 const GATHER_FORWARD_OFFSET := 65.0
-# Practice-only placeholder values. Unlock, resource cost and final tuning are undecided.
+# Moving slash values remain playtest tuning parameters.
 const MOVING_SLASH_DISTANCE := 175.0
 const MOVING_SLASH_DURATION := 0.22
 const MOVING_SLASH_COOLDOWN := 1.1
@@ -35,6 +35,7 @@ const ATTACKS := [
 ]
 
 var health := MAX_HEALTH
+var max_health := MAX_HEALTH
 var visual_pitch := 0.0
 var facing := Vector2.RIGHT
 var attack_direction := Vector2.RIGHT
@@ -64,9 +65,11 @@ var hurt_recoil := Vector2.ZERO
 var impact_played_this_attack := false
 var hit_targets: Dictionary = {}
 var basic_damage_bonus := 0.0
+var permanent_basic_damage_bonus := 0.0
 var basic_speed_bonus := 0.0
 var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
+var permanent_dash_cooldown_reduction := 0.0
 var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var input_rotation := 0.0
@@ -91,6 +94,12 @@ var moving_slash_direction := Vector2.RIGHT
 var moving_slash_targets: Dictionary = {}
 var moving_slash_radius_bonus := 0.0
 var moving_slash_cooldown_reduction := 0.0
+var permanent_slash_cooldown_reduction := 0.0
+var moving_slash_distance_multiplier := 1.0
+var moving_slash_damage_bonus := 0.0
+var flow_weave_enabled := false
+var flow_weave_ready := false
+var flow_weave_attack := false
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -183,7 +192,7 @@ func _physics_process(delta: float) -> void:
 		moving_slash_elapsed += slash_motion_time
 		var after := moving_slash_elapsed / MOVING_SLASH_DURATION
 		moving_slash_time = maxf(0.0, moving_slash_time - delta)
-		var distance := MOVING_SLASH_DISTANCE * (_moving_slash_curve(after) - _moving_slash_curve(before))
+		var distance := MOVING_SLASH_DISTANCE * moving_slash_distance_multiplier * (_moving_slash_curve(after) - _moving_slash_curve(before))
 		velocity = moving_slash_direction * distance / delta
 	else:
 		velocity = movement * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
@@ -241,7 +250,7 @@ func _start_moving_slash(movement: Vector2) -> void:
 	moving_slash_tip = global_position
 	moving_slash_time = MOVING_SLASH_DURATION
 	moving_slash_elapsed = 0.0
-	moving_slash_cooldown = MOVING_SLASH_COOLDOWN * (1.0 - moving_slash_cooldown_reduction)
+	moving_slash_cooldown = MOVING_SLASH_COOLDOWN * (1.0 - moving_slash_cooldown_reduction - permanent_slash_cooldown_reduction)
 	moving_slash_visual_time = MOVING_SLASH_DURATION + 0.09
 	moving_slash_targets.clear()
 	_play_sound("res://game/audio/attack_2.wav", attack_audio)
@@ -267,13 +276,14 @@ func _hit_moving_slash(from: Vector2, to: Vector2) -> void:
 		if enemy.global_position.distance_to(closest) > MOVING_SLASH_RADIUS + moving_slash_radius_bonus + enemy.collision_radius: continue
 		if attack_path_filter.is_valid() and not attack_path_filter.call(closest, enemy.global_position): continue
 		moving_slash_targets[id] = true
-		enemy.take_hit(MOVING_SLASH_DAMAGE, moving_slash_direction, false, 1.1)
+		enemy.take_hit(MOVING_SLASH_DAMAGE * (1.0 + moving_slash_damage_bonus), moving_slash_direction, false, 1.1)
+		if flow_weave_enabled: flow_weave_ready = true
 		moving_slash_landed.emit(enemy.global_position)
 		_play_sound("res://game/audio/hit.wav", impact_audio)
 
 
 func dash_recharge_duration() -> float:
-	return DASH_COOLDOWN * (1.0 - dash_cooldown_reduction)
+	return DASH_COOLDOWN * (1.0 - dash_cooldown_reduction - permanent_dash_cooldown_reduction)
 
 
 func set_dash_upgrade(rank: int) -> void:
@@ -340,6 +350,8 @@ func _update_attack(delta: float) -> void:
 
 func _start_attack() -> void:
 	attack_step = next_combo_step
+	flow_weave_attack = flow_weave_ready
+	flow_weave_ready = false
 	next_combo_step = 1 if attack_step >= combo_limit() else attack_step + 1
 	attack_elapsed = 0.0
 	attack_hitstop_remaining = 0.0
@@ -376,7 +388,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 		hit_targets[id] = true
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
-		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus) * attack.multiplier, push_direction, finisher)
+		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0), push_direction, finisher)
 		if attack_step == 3 and not enemy.is_queued_for_deletion():
 			gathered_enemies.append(enemy)
 			new_gathered = true
