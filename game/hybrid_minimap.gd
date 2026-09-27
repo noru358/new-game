@@ -36,7 +36,7 @@ func _draw() -> void:
 	])
 	draw_colored_polygon(ground_outline, Color("76988a"))
 	for floor in arena.terrain.floor_areas:
-		_draw_world_area(floor.area, func(_p): return 0.7, floor.color)
+		_draw_world_area(floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in arena.terrain.water_areas:
 		_draw_world_area(water, func(_p): return 1.0, Color("34848d"))
 	for plateau in arena.terrain.plateaus:

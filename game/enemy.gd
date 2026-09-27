@@ -11,7 +11,7 @@ const MAX_HEALTH := 22.0
 const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
 const RADIUS := 17.0
-const GATHER_DURATION := 0.18
+const GATHER_DURATION := 0.16
 const GATHER_CONTACT_GRACE := 0.44
 const BEAST_SPEED := 125.0
 const BEAST_CHARGE_SPEED := 620.0
@@ -78,7 +78,8 @@ func _physics_process(delta: float) -> void:
 	if gathering:
 		gather_elapsed = minf(GATHER_DURATION, gather_elapsed + delta)
 		var fraction := gather_elapsed / GATHER_DURATION
-		var eased := fraction * fraction * (3.0 - 2.0 * fraction)
+		# Move decisively from the first frame of the short third-hit pull.
+		var eased := 1.0 - pow(1.0 - fraction, 3.0)
 		global_position = gather_origin.lerp(gather_target, eased)
 		velocity = Vector2.ZERO
 		if gather_elapsed >= GATHER_DURATION:

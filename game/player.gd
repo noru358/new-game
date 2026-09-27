@@ -21,7 +21,7 @@ const GATHER_FORWARD_OFFSET := 65.0
 const ATTACKS := [
 	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 100.0, "angle": 100.0, "multiplier": 1.0},
 	{"windup": 0.06, "active": 0.06, "recovery": 0.17, "radius": 105.0, "angle": 100.0, "multiplier": 1.2},
-	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 130.0, "angle": 125.0, "multiplier": 0.5},
+	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 145.0, "angle": 125.0, "multiplier": 0.5},
 	{"windup": 0.08, "active": 0.08, "recovery": 0.20, "radius": 120.0, "angle": 125.0, "multiplier": 1.5},
 ]
 

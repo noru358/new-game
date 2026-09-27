@@ -22,15 +22,24 @@ func _init() -> void:
 	]
 	floor_areas = [
 		{"area": Rect2(1530, 680, 900, 800), "color": Color("cbbf9e")},
-		{"area": Rect2(2510, 890, 380, 420), "color": Color("b9bdaa")},
-		{"area": Rect2(2940, 650, 700, 800), "color": Color("ddc9a8")}
+		{"area": Rect2(1760, 790, 550, 170), "height": 1.2, "color": Color("ddd0ad")},
+		{"area": Rect2(1760, 1240, 550, 170), "height": 1.2, "color": Color("ddd0ad")},
+		{"area": Rect2(2460, 740, 480, 680), "color": Color("a9b8aa")},
+		{"area": Rect2(2480, 790, 440, 190), "height": 1.2, "color": Color("c1c8ad")},
+		{"area": Rect2(2480, 1160, 440, 210), "height": 1.2, "color": Color("c1c8ad")},
+		{"area": Rect2(2960, 650, 740, 860), "color": Color("ddc9a8")},
+		{"area": Rect2(3040, 750, 590, 170), "height": 1.2, "color": Color("e8dab5")},
+		{"area": Rect2(3040, 1260, 590, 170), "height": 1.2, "color": Color("e8dab5")}
 	]
 	wall_areas = [
 		{"area": Rect2(1620, 700, 260, 36), "height": 78.0, "color": Color("84988a")},
 		{"area": Rect2(1650, 1420, 270, 36), "height": 78.0, "color": Color("84988a")},
-		{"area": Rect2(2540, 900, 36, 230), "height": 95.0, "color": Color("718780")},
-		{"area": Rect2(3150, 760, 330, 40), "height": 100.0, "color": Color("8d9b87")},
-		{"area": Rect2(3150, 1360, 330, 40), "height": 100.0, "color": Color("8d9b87")}
+		{"area": Rect2(1870, 1010, 290, 180), "height": 95.0, "color": Color("89958a")},
+		{"area": Rect2(2510, 1030, 110, 70), "height": 90.0, "color": Color("718780")},
+		{"area": Rect2(2800, 1030, 110, 70), "height": 90.0, "color": Color("718780")},
+		{"area": Rect2(2970, 790, 36, 150), "height": 105.0, "color": Color("8d9b87")},
+		{"area": Rect2(2970, 1220, 36, 150), "height": 105.0, "color": Color("8d9b87")},
+		{"area": Rect2(3160, 950, 300, 280), "height": 130.0, "color": Color("a9a58d")}
 	]
 
 

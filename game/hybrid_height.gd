@@ -16,8 +16,11 @@ var terrain := Terrain.new()
 var start_point := Vector2(930, 1780)
 var enemy_points := ENEMY_POINTS.duplicate()
 var landmark_points := {"남쪽 입구": Vector2(930, 1780), "디딤돌": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
-var scene_title := "Loop Conquest — Hybrid Court v08"
+var scene_title := "Loop Conquest — Hybrid Court v09"
 var scene_hud_title := "높이 비교"
+var combat_camera_size := COMBAT_CAMERA_SIZE
+var overview_camera_size := OVERVIEW_CAMERA_SIZE
+var camera_offset := Vector3(14, 11.431, 14)
 var simulation := Node2D.new()
 var player: SandboxPlayer
 var wisp: WispCompanion
@@ -137,7 +140,7 @@ func _ready() -> void:
 	add_child(seal_visual)
 	spawn_enemies()
 	_build_ui()
-	camera.position = terrain.world_point(player.position) + Vector3(14, 11.431, 14)
+	camera.position = terrain.world_point(player.position) + camera_offset
 	camera.look_at(terrain.world_point(player.position), Vector3.UP)
 	camera.reset_physics_interpolation()
 	get_window().focus_exited.connect(func():
@@ -246,7 +249,7 @@ func _build_terrain() -> void:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, Color("93afa1"))
 	for floor in terrain.floor_areas:
-		_top(st, floor.area, func(_p): return 0.7, floor.color)
+		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in terrain.water_areas:
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
 	for plateau in terrain.plateaus:
@@ -287,7 +290,7 @@ func _build_camera() -> void:
 	sun.light_energy = 0.65
 	add_child(sun)
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.size = COMBAT_CAMERA_SIZE
+	camera.size = combat_camera_size
 	camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	add_child(camera)
 	camera.current = true
@@ -514,8 +517,8 @@ func _process(delta: float) -> void:
 		seal_visual.position = terrain.world_point(seal.global_position, 76.0)
 		seal_visual.scale = Vector3.ONE * (1.7 if seal.burst_time > 0.0 else 1.0 + 0.30 * sin(Time.get_ticks_msec() * 0.018))
 	var focus := terrain.world_point(player_point, 35)
-	if overview: focus = Vector3(12, 0.8, 10)
-	camera.position = camera.position.lerp(focus + Vector3(14, 11.431, 14), 1.0 - exp(-8.0 * delta))
+	if overview: focus = Vector3(terrain.map_size.x * 0.5, 80.0, terrain.map_size.y * 0.5) * Terrain.SCALE
+	camera.position = camera.position.lerp(focus + camera_offset, 1.0 - exp(-8.0 * delta))
 	var attack_elapsed := current_attack_elapsed
 	var attack_direction := current_attack_direction
 	if current_attack_step == previous_attack_step:
@@ -574,7 +577,7 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 		var rim := base.lightened(0.55)
 		rim.a = (0.88 if elapsed >= windup else 0.42) * fade
 		if visible_reach > 8.0:
-			_attack_band(origin, a0, a1, visible_reach - 5.0, visible_reach + 2.0, rim, 72.0)
+			_attack_band(origin, a0, a1, visible_reach - 5.0, visible_reach, rim, 72.0)
 	# A moving broad blade gives the two starter slashes opposite directions.
 	if elapsed >= windup:
 		var sweep_sign := 1.0 if player.attack_step != 2 else -1.0
@@ -585,10 +588,16 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 		for i in range(10):
 			var first := lerpf(tail, head, float(i) / 10.0)
 			var second := lerpf(tail, head, float(i + 1) / 10.0)
-			_attack_band(origin, first, second, reach * 0.48, effective_reach * 0.96, slash_color, 88.0)
+			var blade_reach := minf(_attack_reach_at(origin, first, effective_reach), _attack_reach_at(origin, second, effective_reach))
+			if blade_reach > 8.0:
+				_attack_band(origin, first, second, minf(reach * 0.48, blade_reach * 0.38), blade_reach * 0.96, slash_color, 88.0)
 		var edge_color := Color.WHITE
 		edge_color.a = 0.78 * fade
-		_attack_band(origin, head - sweep_sign * 0.065, head + sweep_sign * 0.065, reach * 0.30, effective_reach, edge_color, 90.0)
+		var edge_start := head - sweep_sign * 0.065
+		var edge_end := head + sweep_sign * 0.065
+		var edge_reach := minf(_attack_reach_at(origin, edge_start, effective_reach), _attack_reach_at(origin, edge_end, effective_reach))
+		if edge_reach > 8.0:
+			_attack_band(origin, edge_start, edge_end, minf(reach * 0.30, edge_reach * 0.38), edge_reach, edge_color, 90.0)
 	attack_mesh.surface_end()
 
 func _attack_reach(angle: float, limit: float) -> float:
@@ -782,7 +791,7 @@ func _build_ui() -> void:
 	roles.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(roles)
 	var row := HBoxContainer.new()
-	row.position = Vector2(590, 20)
+	row.position = Vector2(490 if landmark_points.size() > 5 else 590, 20)
 	canvas.add_child(row)
 	for title in landmark_points:
 		var button := Button.new()
@@ -821,7 +830,7 @@ func teleport(point: Vector2) -> void:
 		wisp_visuals[companion].reset_physics_interpolation()
 	actors[player].position = terrain.world_point(point)
 	actors[player].reset_physics_interpolation()
-	camera.position = terrain.world_point(point, 35) + Vector3(14, 11.431, 14)
+	camera.position = terrain.world_point(point, 35) + camera_offset
 	camera.reset_physics_interpolation()
 	_update_hud()
 
@@ -839,7 +848,7 @@ func _input(event: InputEvent) -> void:
 			return
 		if event.keycode == KEY_TAB:
 			overview = not overview
-			camera.size = OVERVIEW_CAMERA_SIZE if overview else COMBAT_CAMERA_SIZE
+			camera.size = overview_camera_size if overview else combat_camera_size
 		elif event.keycode == KEY_N and not paused:
 			spawn_enemies()
 		elif event.keycode == KEY_R:
