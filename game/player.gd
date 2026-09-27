@@ -5,6 +5,7 @@ signal defeated
 signal health_changed
 signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool)
 signal hurt_received(hit_position: Vector2, direction: Vector2)
+signal moving_slash_landed(hit_position: Vector2)
 
 const MAX_HEALTH := 100.0
 const MOVE_SPEED := 300.0
@@ -17,6 +18,12 @@ const COMBO_RESET_TIME := 0.75
 const ATTACK_BUFFER_TIME := 0.18
 const ATTACK_DAMAGE := 10.0
 const GATHER_FORWARD_OFFSET := 65.0
+# Practice-only placeholder values. Unlock, resource cost and final tuning are undecided.
+const MOVING_SLASH_DISTANCE := 175.0
+const MOVING_SLASH_DURATION := 0.22
+const MOVING_SLASH_COOLDOWN := 1.1
+const MOVING_SLASH_RADIUS := 55.0
+const MOVING_SLASH_DAMAGE := 14.0
 
 const ATTACKS := [
 	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 100.0, "angle": 100.0, "multiplier": 1.0},
@@ -69,6 +76,15 @@ var attack_recovery_multiplier := 1.0
 var attack_hitstop_scale := 0.0
 var attack_hitstop_remaining := 0.0
 var attack_path_filter: Callable
+var moving_slash_enabled := false
+var moving_slash_requested := false
+var moving_slash_time := 0.0
+var moving_slash_cooldown := 0.0
+var moving_slash_visual_time := 0.0
+var moving_slash_origin := Vector2.ZERO
+var moving_slash_tip := Vector2.ZERO
+var moving_slash_direction := Vector2.RIGHT
+var moving_slash_targets: Dictionary = {}
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -96,6 +112,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		attack_buffer_time = ATTACK_BUFFER_TIME
 	if event.is_action_pressed("dash"):
 		dash_requested = true
+	if moving_slash_enabled and event.is_action_pressed("moving_slash"):
+		moving_slash_requested = true
 
 
 func _physics_process(delta: float) -> void:
@@ -130,16 +148,28 @@ func _physics_process(delta: float) -> void:
 	hit_flash = maxf(0.0, hit_flash - delta)
 	hurt_stun_time = maxf(0.0, hurt_stun_time - delta)
 	hurt_recoil = hurt_recoil.move_toward(Vector2.ZERO, 2100.0 * delta)
+	moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - delta)
+	moving_slash_visual_time = maxf(0.0, moving_slash_visual_time - delta)
 
 	if dash_requested and dash_charges > 0:
 		_start_dash(movement)
 	dash_requested = false
+	if moving_slash_requested and moving_slash_enabled and moving_slash_cooldown <= 0.0 and moving_slash_time <= 0.0 and dash_time <= 0.0 and attack_step == 0:
+		_start_moving_slash(movement)
+	moving_slash_requested = false
 
+	var slash_previous := global_position
+	var slash_was_active := moving_slash_time > 0.0
 	if dash_time > 0.0:
 		var dash_motion_time := minf(delta, dash_time)
 		dash_elapsed += dash_motion_time
 		dash_time = maxf(0.0, dash_time - delta)
 		velocity = dash_direction * (DASH_DISTANCE * dash_distance_multiplier / DASH_DURATION) * (dash_motion_time / delta)
+	elif moving_slash_time > 0.0:
+		facing = moving_slash_direction
+		var slash_motion_time := minf(delta, moving_slash_time)
+		moving_slash_time = maxf(0.0, moving_slash_time - delta)
+		velocity = moving_slash_direction * (MOVING_SLASH_DISTANCE / MOVING_SLASH_DURATION) * (slash_motion_time / delta)
 	else:
 		velocity = movement * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
@@ -148,11 +178,20 @@ func _physics_process(delta: float) -> void:
 		clampf(global_position.x, arena_bounds.position.x + 25.0, arena_bounds.end.x - 25.0),
 		clampf(global_position.y, arena_bounds.position.y + 25.0, arena_bounds.end.y - 25.0)
 	)
+	if moving_slash_visual_time > 0.0:
+		if slash_was_active:
+			moving_slash_tip = global_position
+			_hit_moving_slash(slash_previous, global_position)
+		if slash_was_active and get_slide_collision_count() > 0:
+			moving_slash_time = 0.0
+			moving_slash_visual_time = minf(moving_slash_visual_time, 0.09)
 	_maintain_gather_spacing()
 	queue_redraw()
 
 
 func _start_dash(movement: Vector2) -> void:
+	moving_slash_time = 0.0
+	moving_slash_visual_time = 0.0
 	dash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
 	dash_time = DASH_DURATION
 	dash_elapsed = 0.0
@@ -173,6 +212,33 @@ func _start_dash(movement: Vector2) -> void:
 	gather_sources.clear()
 	gathered_enemies.clear()
 	_play_sound("res://game/audio/dash.wav", attack_audio)
+
+
+func _start_moving_slash(movement: Vector2) -> void:
+	moving_slash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
+	moving_slash_origin = global_position
+	moving_slash_tip = global_position
+	moving_slash_time = MOVING_SLASH_DURATION
+	moving_slash_cooldown = MOVING_SLASH_COOLDOWN
+	moving_slash_visual_time = MOVING_SLASH_DURATION + 0.09
+	moving_slash_targets.clear()
+	queued_attack = false
+	attack_buffer_time = 0.0
+	_play_sound("res://game/audio/attack_2.wav", attack_audio)
+
+
+func _hit_moving_slash(from: Vector2, to: Vector2) -> void:
+	for enemy in get_tree().get_nodes_in_group("training_enemies"):
+		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion(): continue
+		var id := enemy.get_instance_id()
+		if moving_slash_targets.has(id): continue
+		var closest := Geometry2D.get_closest_point_to_segment(enemy.global_position, from, to)
+		if enemy.global_position.distance_to(closest) > MOVING_SLASH_RADIUS + enemy.collision_radius: continue
+		if attack_path_filter.is_valid() and not attack_path_filter.call(closest, enemy.global_position): continue
+		moving_slash_targets[id] = true
+		enemy.take_hit(MOVING_SLASH_DAMAGE, moving_slash_direction, false, 1.1)
+		moving_slash_landed.emit(enemy.global_position)
+		_play_sound("res://game/audio/hit.wav", impact_audio)
 
 
 func dash_recharge_duration() -> float:

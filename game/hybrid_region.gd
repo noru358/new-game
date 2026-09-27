@@ -59,6 +59,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	show_practice_controls = practice_mode
+	moving_slash_practice = practice_mode
 	super._ready()
 	player.attack_hitstop_scale = 1.0
 	if practice_mode: return

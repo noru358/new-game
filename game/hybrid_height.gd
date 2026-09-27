@@ -22,6 +22,7 @@ var combat_camera_size := COMBAT_CAMERA_SIZE
 var overview_camera_size := OVERVIEW_CAMERA_SIZE
 var camera_offset := Vector3(14, 11.431, 14)
 var show_practice_controls := true
+var moving_slash_practice := false
 var simulation := Node2D.new()
 var player: SandboxPlayer
 var wisp: WispCompanion
@@ -39,11 +40,14 @@ var wisp_motion: Dictionary = {}
 var growth_save_prefix := "user://loop_conquest_hybrid_lab_unlocks"
 var attack_visual := MeshInstance3D.new()
 var attack_mesh := ImmediateMesh.new()
+var moving_slash_visual := MeshInstance3D.new()
+var moving_slash_mesh := ImmediateMesh.new()
 var warning_visual := MeshInstance3D.new()
 var warning_mesh := ImmediateMesh.new()
 var warning_vertex_count := 0
 var seal_visual: MeshInstance3D
 var hud: Label
+var moving_slash_status: Label
 var minimap: Control
 var pause_label: Label
 var pause_backdrop: ColorRect
@@ -91,11 +95,13 @@ func _ready() -> void:
 	player.attack_active_multiplier = 1.6
 	player.attack_recovery_multiplier = 0.78
 	player.attack_path_filter = clear_attack
+	player.moving_slash_enabled = moving_slash_practice
 	simulation.add_child(player)
 	player.set_dash_upgrade(2)
 	actors[player] = _actor_visual(Color.WHITE)
 	actor_motion[player] = [player.global_position, player.global_position]
 	player.attack_landed.connect(_on_player_attack_landed)
+	player.moving_slash_landed.connect(func(point: Vector2): _flash(point, Color("b7f8ff"), 0.23))
 	wisp = WispCompanion.new()
 	wisp.player = player
 	wisp.facing_formation = true
@@ -131,6 +137,14 @@ func _ready() -> void:
 	attack_visual.material_override = attack_material
 	attack_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	add_child(attack_visual)
+	moving_slash_visual.mesh = moving_slash_mesh
+	var moving_slash_material := _material(Color.WHITE, true)
+	moving_slash_material.vertex_color_use_as_albedo = true
+	moving_slash_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	moving_slash_material.no_depth_test = false
+	moving_slash_visual.material_override = moving_slash_material
+	moving_slash_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	add_child(moving_slash_visual)
 	warning_visual.mesh = warning_mesh
 	var warning_material := _material(Color.WHITE, true)
 	warning_material.vertex_color_use_as_albedo = true
@@ -153,7 +167,7 @@ func _ready() -> void:
 	print("Hybrid scene ready: ", scene_title)
 
 func _register_inputs() -> void:
-	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
+	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE, "moving_slash": KEY_Q}
 	for action in keys:
 		if not InputMap.has_action(action):
 			InputMap.add_action(action)
@@ -585,6 +599,7 @@ func _process(delta: float) -> void:
 		attack_elapsed = lerpf(previous_attack_elapsed, current_attack_elapsed, fraction)
 		attack_direction = Vector2.from_angle(lerp_angle(previous_attack_direction.angle(), current_attack_direction.angle(), fraction))
 	_draw_attack_at(player_point, attack_elapsed, attack_direction)
+	_draw_moving_slash(player_point)
 	_draw_enemy_warnings(fraction)
 
 func _render_position(actor: Node2D, fraction: float) -> Vector2:
@@ -600,6 +615,8 @@ func _shot_world_point(shot: Node2D, point: Vector2) -> Vector3:
 func _update_hud() -> void:
 	if hud == null: return
 	hud.text = "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	if moving_slash_status != null:
+		moving_slash_status.text = "Q 이동 베기 · %s" % ("진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
 
 func _draw_attack() -> void:
 	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)
@@ -661,6 +678,58 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 		if edge_reach > 8.0:
 			_attack_band(origin, edge_start, edge_end, minf(reach * 0.30, edge_reach * 0.38), edge_reach, edge_color, 90.0)
 	attack_mesh.surface_end()
+
+
+func _draw_moving_slash(player_point: Vector2) -> void:
+	moving_slash_mesh.clear_surfaces()
+	if not moving_slash_practice or player.moving_slash_visual_time <= 0.0: return
+	var origin := player.moving_slash_origin
+	var tip: Vector2 = player_point if player.moving_slash_time > 0.0 else player.moving_slash_tip
+	var axis := player.moving_slash_direction
+	var side := axis.orthogonal()
+	var radius := SandboxPlayer.MOVING_SLASH_RADIUS + ACTOR_CLEARANCE
+	var lift := maxf(terrain.height_at(origin), terrain.height_at(tip)) + 83.0
+	var fade := clampf(player.moving_slash_visual_time / 0.09, 0.0, 1.0)
+	var fill := Color(0.25, 0.90, 0.96, 0.20 * fade)
+	var edge := Color(0.77, 1.0, 1.0, 0.80 * fade)
+	moving_slash_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	var count := maxi(1, ceili(origin.distance_to(tip) / 14.0))
+	for i in count:
+		var first := origin.lerp(tip, float(i) / float(count))
+		var second := origin.lerp(tip, float(i + 1) / float(count))
+		var left_a := minf(radius, _attack_reach_at(first, side.angle(), radius))
+		var right_a := minf(radius, _attack_reach_at(first, (-side).angle(), radius))
+		var left_b := minf(radius, _attack_reach_at(second, side.angle(), radius))
+		var right_b := minf(radius, _attack_reach_at(second, (-side).angle(), radius))
+		_moving_slash_quad(first + side * left_a, second + side * left_b, second - side * right_b, first - side * right_a, fill, lift)
+		_moving_slash_quad(first + side * maxf(0.0, left_a - 4.0), second + side * maxf(0.0, left_b - 4.0), second + side * left_b, first + side * left_a, edge, lift + 2.0)
+		_moving_slash_quad(first - side * maxf(0.0, right_a - 4.0), second - side * maxf(0.0, right_b - 4.0), second - side * right_b, first - side * right_a, edge, lift + 2.0)
+	for cap in [origin, tip]:
+		var start := axis.angle() + (PI * 0.5 if cap == origin else -PI * 0.5)
+		for i in 12:
+			var angle_a := start + PI * float(i) / 12.0
+			var angle_b := start + PI * float(i + 1) / 12.0
+			var reach_a := _attack_reach_at(cap, angle_a, radius)
+			var reach_b := _attack_reach_at(cap, angle_b, radius)
+			_moving_slash_triangle(cap, cap + Vector2.from_angle(angle_a) * reach_a, cap + Vector2.from_angle(angle_b) * reach_b, fill, lift)
+			_moving_slash_quad(cap + Vector2.from_angle(angle_a) * maxf(0.0, reach_a - 4.0), cap + Vector2.from_angle(angle_b) * maxf(0.0, reach_b - 4.0), cap + Vector2.from_angle(angle_b) * reach_b, cap + Vector2.from_angle(angle_a) * reach_a, edge, lift + 2.0)
+	if player.moving_slash_time > 0.0:
+		var blade_left := _attack_reach_at(tip, side.angle(), radius)
+		var blade_right := _attack_reach_at(tip, (-side).angle(), radius)
+		var blade := Color(0.92, 1.0, 1.0, 0.96 * fade)
+		_moving_slash_quad(tip + side * blade_left - axis * 4.0, tip - side * blade_right - axis * 4.0, tip - side * blade_right + axis * 4.0, tip + side * blade_left + axis * 4.0, blade, lift + 7.0)
+	moving_slash_mesh.surface_end()
+
+
+func _moving_slash_quad(a: Vector2, b: Vector2, c: Vector2, d: Vector2, color: Color, lift: float) -> void:
+	_moving_slash_triangle(a, b, c, color, lift)
+	_moving_slash_triangle(a, c, d, color, lift)
+
+
+func _moving_slash_triangle(a: Vector2, b: Vector2, c: Vector2, color: Color, lift: float) -> void:
+	for point in [a, b, c]:
+		moving_slash_mesh.surface_set_color(color)
+		moving_slash_mesh.surface_add_vertex(Vector3(point.x, lift, point.y) * Terrain.SCALE)
 
 func _attack_reach(angle: float, limit: float) -> float:
 	return _attack_reach_at(player.global_position, angle, limit)
@@ -839,7 +908,7 @@ func _build_ui() -> void:
 	minimap.setup(self)
 	canvas.add_child(minimap)
 	var help := Label.new()
-	help.text = "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
+	help.text = "WASD 이동   J / 클릭 평타   Q 이동 베기(시험)   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if moving_slash_practice else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
 	help.position = Vector2(20, 681)
 	help.add_theme_font_size_override("font_size", 17)
 	help.add_theme_color_override("font_shadow_color", Color.BLACK)
@@ -854,6 +923,14 @@ func _build_ui() -> void:
 	roles.add_theme_constant_override("shadow_offset_x", 1)
 	roles.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(roles)
+	if moving_slash_practice:
+		moving_slash_status = Label.new()
+		moving_slash_status.position = Vector2(20, 611)
+		moving_slash_status.add_theme_font_size_override("font_size", 18)
+		moving_slash_status.add_theme_color_override("font_shadow_color", Color.BLACK)
+		moving_slash_status.add_theme_constant_override("shadow_offset_x", 1)
+		moving_slash_status.add_theme_constant_override("shadow_offset_y", 1)
+		canvas.add_child(moving_slash_status)
 	var row := HBoxContainer.new()
 	row.position = Vector2(490 if landmark_points.size() > 5 else 590, 20)
 	canvas.add_child(row)
@@ -883,6 +960,9 @@ func teleport(point: Vector2) -> void:
 	actor_motion[player] = [point, point]
 	player.velocity = Vector2.ZERO
 	player.dash_time = 0
+	player.moving_slash_time = 0.0
+	player.moving_slash_visual_time = 0.0
+	player.moving_slash_requested = false
 	player.hurt_recoil = Vector2.ZERO
 	player.reset_physics_interpolation()
 	for companion in wisp_visuals:
