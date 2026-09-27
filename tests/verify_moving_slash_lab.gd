@@ -100,6 +100,23 @@ func _run() -> void:
 	await _frames(4)
 	_check(player.position.is_equal_approx(paused_position) and is_equal_approx(player.moving_slash_time, paused_time), "pause freezes slash travel")
 	scene._set_paused(false)
+	player.moving_slash_time = 0.0
+	player.dash_time = 0.0
+	player.moving_slash_cooldown = 0.0
+	player.attack_lock = 0.0
+	player.set_combo_rank(2)
+	player._start_attack()
+	player.attack_elapsed = player._attack_spec(1).windup + player._attack_spec(1).active + 0.005
+	player.moving_slash_requested = true
+	await _frames(1)
+	_check(player.moving_slash_time > 0.0 and player.attack_step == 0 and player.next_combo_step == 2, "Q links after a hit and preserves the next combo step")
+	player.hurt_immunity = 0.0
+	var safe_health := player.health
+	player.receive_hit(10.0, player.position + Vector2.LEFT)
+	_check(player.health == safe_health, "the first part of Q has brief invulnerability")
+	player.moving_slash_elapsed = SandboxPlayer.MOVING_SLASH_INVULNERABILITY + 0.01
+	player.receive_hit(10.0, player.position + Vector2.LEFT)
+	_check(player.health == safe_health - 10.0, "Q is vulnerable after its brief opening window")
 	scene.queue_free()
 	await _frames(2)
 	var ordinary_player := load("res://game/player.tscn").instantiate() as SandboxPlayer

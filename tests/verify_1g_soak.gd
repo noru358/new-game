@@ -27,7 +27,7 @@ func _run() -> void:
 	var choices := 0
 	var samples := 0
 	Engine.time_scale = 8.0
-	while scene.run_time < 365.0 and Time.get_ticks_msec() - started < 180000:
+	while scene.run_time < 305.0 and Time.get_ticks_msec() - started < 180000:
 		await physics_frame
 		if scene.growth.choosing:
 			scene.growth.choose_index(0)
@@ -36,7 +36,7 @@ func _run() -> void:
 		samples += 1
 		if scene.run_ended: break
 	Engine.time_scale = 1.0
-	_check(scene.run_time >= 365.0 and not scene.run_ended, "accelerated full time axis reaches the boss without an unintended ending")
+	_check(scene.run_time >= 305.0 and not scene.run_ended, "accelerated five-minute time axis reaches the boss without an unintended ending")
 	_check(scene.boss_spawned and is_instance_valid(scene.boss), "boss still appears after live spawning and card choices")
 	_check(max_active <= scene.MAX_ENEMIES and max_active > 0, "enemy cap holds throughout the full time axis")
 	_check(choices > 0 and scene.growth.level > 1 and scene.run_currency > 0, "automatic XP, card choices and currency progress through a full run")

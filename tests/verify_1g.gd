@@ -28,7 +28,20 @@ func _run() -> void:
 	var scene := _new_scene()
 	await _frames(3)
 	_check(scene.actors.size() == 1 and scene.run_time > 0.0 and not scene.show_practice_controls, "main scene begins a live timed run without fixed practice enemies")
-	_check(scene.run_hud.text.contains("문지기까지 06:00"), "the live HUD shows the boss countdown from six minutes")
+	_check(scene.run_hud.text.contains("문지기까지 05:00"), "the live HUD shows the five-minute boss countdown")
+	_check(not scene.player.moving_slash_enabled and scene.player.combo_limit() == 2, "fresh live run starts with two attacks before early permanent move milestones")
+	scene.growth.gain_xp(scene.growth.next_xp())
+	_check(scene.growth.choosing and not scene.growth.current_choices.has("U_CHAIN"), "first level-up offers a card without re-selling the permanent combo")
+	_check(scene.growth.describe_card("S_WISP_CADENCE", 1).contains("→") and scene.growth.describe_card("S_WISP_CADENCE", 1).contains("초"), "numeric cards explain the actual before and after value")
+	var prior_choices: Array[String] = scene.growth.current_choices.duplicate()
+	var rerolled: bool = scene.growth.reroll_choices()
+	_check(rerolled and scene.growth.rerolls_left == 0 and scene.growth.current_choices != prior_choices, "one reroll changes at least one offered card")
+	scene.growth.choose_index(0)
+	_check(scene.player.moving_slash_enabled and scene.player.combo_limit() == 3, "first lifetime level-up opens Q and the third attack")
+	for i in 2:
+		scene.growth.gain_xp(scene.growth.next_xp())
+		scene.growth.choose_index(0)
+	_check(scene.player.moving_slash_enabled and scene.player.combo_limit() == 4 and not scene.growth.roll_choices().has("U_CHAIN"), "three lifetime level-ups permanently open Q and the full combo without a combo card")
 	scene.player.hurt_immunity = 1000.0
 	var spawn_point: Vector2 = scene._choose_spawn_point(false)
 	_check(spawn_point != Vector2.INF and scene.navigation.is_open(spawn_point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(spawn_point, scene.player.position).size() >= 2, "spawn finder chooses reachable clear ground away from player")
@@ -52,15 +65,17 @@ func _run() -> void:
 	await _frames(10)
 	_check(is_equal_approx(scene.run_time, paused_at), "pause freezes run clock")
 	scene._set_paused(false)
-	scene.run_time = 60.0
+	scene.run_time = 45.0
 	scene._update_run_hud()
-	_check(scene.run_hud.text.contains("문지기까지 05:00"), "the countdown follows elapsed play time")
-	_check(is_equal_approx(scene._spawn_rate(), 0.65), "second time band raises the spawn rate")
-	scene.run_time = 150.0
-	_check(is_equal_approx(scene._spawn_rate(), 0.85), "mixed-role time band begins")
-	scene.run_time = 359.99
+	_check(scene.run_hud.text.contains("문지기까지 04:15"), "the countdown follows elapsed play time")
+	_check(is_equal_approx(scene._spawn_rate(), 0.85), "second time band raises the spawn rate")
+	scene.run_time = 120.0
+	_check(is_equal_approx(scene._spawn_rate(), 1.10), "mixed-role time band begins")
+	scene.run_time = 200.0
+	_check(is_equal_approx(scene._spawn_rate(), 1.40), "late wave is denser")
+	scene.run_time = 299.99
 	await _frames(4)
-	_check(scene.boss_announced, "the boss is announced when the six-minute clock is reached")
+	_check(scene.boss_announced, "the boss is announced when the five-minute clock is reached")
 	await _frames(85)
 	_check(scene.boss_spawned and is_instance_valid(scene.boss) and scene.boss.max_health == 900.0, "one boss appears after the warning")
 	_check(scene.actors[scene.boss].has_node("HealthBar"), "the boss has the same world-space health readout")
@@ -101,12 +116,12 @@ func _run() -> void:
 	await process_frame
 	var second := _new_scene()
 	await _frames(3)
-	_check(second.profile.currency == after_success and second.profile.temple_relic, "next run restores permanent first-clear record")
+	_check(second.profile.currency == after_success and second.profile.temple_relic and second.player.combo_limit() == 4 and second.player.moving_slash_enabled, "next run restores first-clear and early permanent combat moves")
 	second.run_currency = 5
 	second.player.hurt_immunity = 0.0
 	second.player.receive_hit(200.0, second.player.position + Vector2.LEFT)
 	second._physics_process(0.0)
-	_check(second.end_result == "DEFEAT" and second.profile.currency == after_success + 5 and not second.profile.last_first_clear, "death banks earned currency without a second relic")
+	_check(second.end_result == "DEFEAT" and second.profile.currency == after_success + 2 and second.profile.last_lost == 3 and not second.profile.last_first_clear, "death banks half of earned currency without a second first-clear reward")
 	second.queue_free()
 	paused = false
 	await process_frame
@@ -117,7 +132,7 @@ func _run() -> void:
 	restart_key.pressed = true
 	restart_key.keycode = KEY_R
 	third._input(restart_key)
-	_check(third.end_result == "RETREAT" and third.profile.currency == after_success + 9 and third.profile.temple_relic, "active restart first retreats and settles currency")
+	_check(third.end_result == "RETREAT" and third.profile.currency == after_success + 5 and third.profile.last_lost == 1 and third.profile.temple_relic, "active restart first retreats and settles after a smaller loss")
 	third.queue_free()
 	paused = false
 	await process_frame

@@ -3,6 +3,8 @@ extends RefCounted
 
 const SUCCESS_BONUS := 20
 const FIRST_CLEAR_BONUS := 30
+const DEFEAT_LOSS_RATE := 0.50
+const RETREAT_LOSS_RATE := 0.20
 
 var save_prefix := "user://loop_conquest_profile"
 var generation := 0
@@ -17,6 +19,7 @@ var last_run_id := ""
 var load_error := false
 var recovered_backup := false
 var last_award := 0
+var last_lost := 0
 var last_first_clear := false
 
 
@@ -29,6 +32,7 @@ func load_state() -> void:
 	load_error = false
 	recovered_backup = false
 	last_award = 0
+	last_lost = 0
 	last_first_clear = false
 	var found_any := false
 	var valid_count := 0
@@ -59,7 +63,9 @@ func settle(run_id: String, result: String, earned: int) -> bool:
 	if load_error or run_id.is_empty() or earned < 0 or not ["SUCCESS", "DEFEAT", "RETREAT"].has(result): return false
 	if last_run_id == run_id: return true
 	var first_clear := result == "SUCCESS" and not temple_owned
-	var award := earned + (SUCCESS_BONUS if result == "SUCCESS" else 0) + (FIRST_CLEAR_BONUS if first_clear else 0)
+	var loss_rate := DEFEAT_LOSS_RATE if result == "DEFEAT" else RETREAT_LOSS_RATE if result == "RETREAT" else 0.0
+	var lost := mini(maxi(0, earned - 1), ceili(float(earned) * loss_rate))
+	var award := earned - lost + (SUCCESS_BONUS if result == "SUCCESS" else 0) + (FIRST_CLEAR_BONUS if first_clear else 0)
 	var next_outposts := owned_outpost_ids.duplicate()
 	var next_relics := acquired_relic_ids.duplicate()
 	if result == "SUCCESS" and not next_outposts.has("O_TEMPLE"): next_outposts.append("O_TEMPLE")
@@ -88,6 +94,7 @@ func settle(run_id: String, result: String, earned: int) -> bool:
 	acquired_relic_ids = next_relics
 	last_run_id = run_id
 	last_award = award
+	last_lost = lost
 	last_first_clear = first_clear
 	return true
 

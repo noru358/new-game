@@ -566,7 +566,11 @@ func _process(delta: float) -> void:
 		var visual: Node3D = actors[actor]
 		visual.position = terrain.world_point(point)
 		if actor == player:
-			visual.get_node("Body").flip_h = player.facing.x - player.facing.y < -0.1
+			var body: Sprite3D = visual.get_node("Body")
+			body.flip_h = player.facing.x - player.facing.y < -0.1
+			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
+			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
+			body.scale = Vector3.ONE * (1.08 if player.attack_step == 4 else 1.0)
 		elif actor is TrainingEnemy:
 			visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
 			_update_health_bar(visual, actor)
@@ -616,7 +620,7 @@ func _update_hud() -> void:
 	if hud == null: return
 	hud.text = "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
 	if moving_slash_status != null:
-		moving_slash_status.text = "Q 이동 베기 · %s" % ("진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
+		moving_slash_status.text = "Q 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
 
 func _draw_attack() -> void:
 	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)
@@ -656,7 +660,7 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 		if visible_reach > 8.0:
 			_attack_band(origin, a0, a1, visible_reach - 5.0, visible_reach, rim, 72.0)
 	# A moving broad blade gives the two starter slashes opposite directions.
-	if elapsed >= windup:
+	if elapsed >= windup and player.attack_step <= 2:
 		var sweep_sign := 1.0 if player.attack_step != 2 else -1.0
 		var head := start + arc * (active_progress if sweep_sign > 0.0 else 1.0 - active_progress)
 		var heavy_second := player.attack_hitstop_scale > 0.0 and player.attack_step == 2
@@ -677,6 +681,26 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 		var edge_reach := minf(_attack_reach_at(origin, edge_start, effective_reach), _attack_reach_at(origin, edge_end, effective_reach))
 		if edge_reach > 8.0:
 			_attack_band(origin, edge_start, edge_end, minf(reach * 0.30, edge_reach * 0.38), edge_reach, edge_color, 90.0)
+	elif elapsed >= windup and player.attack_step == 3:
+		# A visible inward pull replaces the generic blade sweep.
+		var pull_radius := reach * lerpf(0.88, 0.43, active_progress)
+		var pull_color := Color(0.47, 0.91, 1.0, 0.90 * fade)
+		for i in range(24):
+			var a0 := start + arc * float(i) / 24.0
+			var a1 := start + arc * float(i + 1) / 24.0
+			var limit := minf(_attack_reach_at(origin, a0, effective_reach), _attack_reach_at(origin, a1, effective_reach))
+			if limit > pull_radius:
+				_attack_band(origin, a0, a1, maxf(8.0, pull_radius - 12.0), minf(limit, pull_radius), pull_color, 88.0)
+	elif elapsed >= windup and player.attack_step == 4:
+		# The finisher grows out from the player rather than sweeping sideways.
+		var burst_radius := reach * active_progress
+		var burst_color := Color(1.0, 0.91, 0.53, 0.95 * fade)
+		for i in range(24):
+			var a0 := start + arc * float(i) / 24.0
+			var a1 := start + arc * float(i + 1) / 24.0
+			var limit := minf(_attack_reach_at(origin, a0, effective_reach), _attack_reach_at(origin, a1, effective_reach))
+			if limit > burst_radius:
+				_attack_band(origin, a0, a1, maxf(8.0, burst_radius - 18.0), minf(limit, burst_radius), burst_color, 91.0)
 	attack_mesh.surface_end()
 
 
@@ -687,11 +711,11 @@ func _draw_moving_slash(player_point: Vector2) -> void:
 	var tip: Vector2 = player_point if player.moving_slash_time > 0.0 else player.moving_slash_tip
 	var axis := player.moving_slash_direction
 	var side := axis.orthogonal()
-	var radius := SandboxPlayer.MOVING_SLASH_RADIUS + ACTOR_CLEARANCE
+	var radius := SandboxPlayer.MOVING_SLASH_RADIUS + player.moving_slash_radius_bonus + ACTOR_CLEARANCE
 	var lift := maxf(terrain.height_at(origin), terrain.height_at(tip)) + 83.0
 	var fade := clampf(player.moving_slash_visual_time / 0.09, 0.0, 1.0)
-	var fill := Color(0.25, 0.90, 0.96, 0.20 * fade)
-	var edge := Color(0.77, 1.0, 1.0, 0.80 * fade)
+	var fill := Color(0.25, 0.90, 0.96, 0.12 * fade)
+	var edge := Color(0.77, 1.0, 1.0, 0.49 * fade)
 	moving_slash_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	var count := maxi(1, ceili(origin.distance_to(tip) / 14.0))
 	for i in count:
@@ -714,10 +738,15 @@ func _draw_moving_slash(player_point: Vector2) -> void:
 			_moving_slash_triangle(cap, cap + Vector2.from_angle(angle_a) * reach_a, cap + Vector2.from_angle(angle_b) * reach_b, fill, lift)
 			_moving_slash_quad(cap + Vector2.from_angle(angle_a) * maxf(0.0, reach_a - 4.0), cap + Vector2.from_angle(angle_b) * maxf(0.0, reach_b - 4.0), cap + Vector2.from_angle(angle_b) * reach_b, cap + Vector2.from_angle(angle_a) * reach_a, edge, lift + 2.0)
 	if player.moving_slash_time > 0.0:
-		var blade_left := _attack_reach_at(tip, side.angle(), radius)
-		var blade_right := _attack_reach_at(tip, (-side).angle(), radius)
+		var progress := clampf(player.moving_slash_elapsed / SandboxPlayer.MOVING_SLASH_DURATION, 0.0, 1.0)
+		var head := axis.angle() + lerpf(-1.15, 1.15, progress)
 		var blade := Color(0.92, 1.0, 1.0, 0.96 * fade)
-		_moving_slash_quad(tip + side * blade_left - axis * 4.0, tip - side * blade_right - axis * 4.0, tip - side * blade_right + axis * 4.0, tip + side * blade_left + axis * 4.0, blade, lift + 7.0)
+		for i in 12:
+			var a0 := head - 0.47 + 0.47 * float(i) / 12.0
+			var a1 := head - 0.47 + 0.47 * float(i + 1) / 12.0
+			var blade_reach := minf(_attack_reach_at(tip, a0, radius), _attack_reach_at(tip, a1, radius))
+			if blade_reach > 28.0:
+				_moving_slash_quad(tip + Vector2.from_angle(a0) * 27.0, tip + Vector2.from_angle(a1) * 27.0, tip + Vector2.from_angle(a1) * blade_reach, tip + Vector2.from_angle(a0) * blade_reach, blade, lift + 7.0)
 	moving_slash_mesh.surface_end()
 
 
@@ -908,7 +937,7 @@ func _build_ui() -> void:
 	minimap.setup(self)
 	canvas.add_child(minimap)
 	var help := Label.new()
-	help.text = "WASD 이동   J / 클릭 평타   Q 이동 베기(시험)   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if moving_slash_practice else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
+	help.text = "WASD 이동   J / 클릭 평타   Q 이동 베기   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls and moving_slash_practice else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Q 이동 베기   Space 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
 	help.position = Vector2(20, 681)
 	help.add_theme_font_size_override("font_size", 17)
 	help.add_theme_color_override("font_shadow_color", Color.BLACK)
