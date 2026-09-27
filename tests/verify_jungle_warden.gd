@@ -29,12 +29,16 @@ func _run() -> void:
 	var safe_health: float = player.health
 	boss._beast_velocity(1.0)
 	_check(player.health == safe_health and boss.sweep_burst_time > 0.0, "moving out of the sweep's marked forward strip is safe")
+	var sidestep: Vector2 = boss._beast_velocity(0.40)
+	_check(sidestep.length() > 250.0 and absf(sidestep.dot(Vector2.UP)) > 200.0, "sweep is followed by a fast lateral reposition")
 	boss.attack_cooldown = 0.0
 	player.position = Vector2(1400, 1000)
 	boss._beast_velocity(0.01)
 	_check(boss.gust_warning > 0.0, "second pattern warns before its directional gust")
 	boss._beast_velocity(1.0)
 	_check(player.health == safe_health - JungleWarden.GUST_DAMAGE and player.hurt_recoil.length() >= 400.0, "standing in the gust takes damage and is pushed")
+	var follow: Vector2 = boss._beast_velocity(0.40)
+	_check(follow.length() > 250.0 and follow.dot(Vector2.RIGHT) > 200.0, "gust is followed by forward pursuit")
 	boss.take_hit(350.0, Vector2.RIGHT, false)
 	_check(boss.phase == 2 and boss.health > 0.0, "guardian escalates below sixty percent health")
 	boss.attack_cooldown = 0.0

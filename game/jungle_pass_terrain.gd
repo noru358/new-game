@@ -20,14 +20,15 @@ func _init() -> void:
 	# The first approach is open. A high ridge offers a main western ramp,
 	# a northern climb and a southern detour before the raised gate court.
 	plateaus = [
-		{"area": Rect2(1550, 400, 2050, 1600), "height": 240.0, "base": 0.0, "name": "정글 능선", "openings": {"west": [[900.0, 1450.0]], "north": [[2000.0, 2350.0]], "south": [[2700.0, 3050.0]], "east": [[900.0, 1450.0]]}},
-		{"area": Rect2(3900, 500, 1350, 1400), "height": 480.0, "base": 0.0, "name": "관문 상단", "openings": {"west": [[900.0, 1450.0]]}},
+		{"area": Rect2(1550, 400, 2050, 1600), "height": 240.0, "base": 0.0, "name": "정글 능선", "openings": {"west": [[900.0, 1450.0]], "north": [[2000.0, 2350.0]], "south": [[2700.0, 3050.0]], "east": [[900.0, 1450.0], [1550.0, 1850.0]]}},
+		{"area": Rect2(3900, 500, 1350, 1400), "height": 480.0, "base": 0.0, "name": "관문 상단", "openings": {"west": [[900.0, 1450.0], [1550.0, 1850.0]]}},
 	]
 	ramps = [
 		{"area": Rect2(1280, 900, 270, 550), "axis": 0, "from": 0.0, "to": 240.0, "name": "서쪽 상승로"},
 		{"area": Rect2(2000, 130, 350, 270), "axis": 1, "from": 0.0, "to": 240.0, "name": "북쪽 덩굴길"},
 		{"area": Rect2(2700, 2000, 350, 270), "axis": 1, "from": 240.0, "to": 0.0, "name": "남쪽 우회로"},
 		{"area": Rect2(3600, 900, 300, 550), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 오름길"},
+		{"area": Rect2(3600, 1550, 300, 300), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 남쪽 오름길"},
 	]
 	water_areas = []
 	floor_areas = [

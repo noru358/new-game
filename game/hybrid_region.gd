@@ -103,18 +103,18 @@ func _apply_preparation() -> void:
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20
 		player.permanent_slash_cooldown_reduction += 0.10
-		if profile.owned_gear.get("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
-		elif profile.owned_gear.get("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
-		elif profile.owned_gear.get("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
+		if profile.mod_for("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
+		elif profile.mod_for("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
+		elif profile.mod_for("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
 	elif profile.equipped_weapon == "W_ECHO":
 		player.echo_finisher_enabled = true
-		if profile.owned_gear.get("W_ECHO") == "WIDE": player.echo_finisher_radius_bonus = 0.10
-		elif profile.owned_gear.get("W_ECHO") == "HEAVY": player.echo_finisher_damage_bonus = 0.08
-		elif profile.owned_gear.get("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
+		if profile.mod_for("W_ECHO") == "WIDE": player.echo_finisher_radius_bonus = 0.10
+		elif profile.mod_for("W_ECHO") == "HEAVY": player.echo_finisher_damage_bonus = 0.08
+		elif profile.mod_for("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
 	if profile.equipped_accessory == "A_EMBER":
 		wisp.permanent_damage_bonus = 0.15
-		if profile.owned_gear.get("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
-		else: player.max_health += 5.0
+		if profile.mod_for("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
+		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
 	if supply_ready: player.health_changed.connect(_try_use_supply)
@@ -351,9 +351,8 @@ func _show_result() -> void:
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
 		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n" + first_clear_notice if profile.last_first_clear else ""
 	]
-	var offer: Dictionary = profile.pending_affix_offers.get(RunProfile.REGION_GEAR[region_id], {})
-	if not offer.is_empty():
-		result_text.text += "\n보관된 장비 옵션: %s · %s\n야영지에서 기존 옵션과 비교해 선택하세요." % [RunProfile.gear_name(offer.gear_id), RunProfile.affix_description(offer.affix)]
+	if not profile.last_mod_award.is_empty():
+		result_text.text += "\n새 장비 옵션 획득: %s\n야영지 장비창에서 장착할 수 있습니다." % RunProfile.affix_description(profile.last_mod_award)
 
 
 func _retry_settlement() -> void:

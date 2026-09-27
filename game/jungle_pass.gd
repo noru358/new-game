@@ -1,6 +1,7 @@
 extends "res://game/hybrid_region.gd"
 
 const PassTerrain = preload("res://game/jungle_pass_terrain.gd")
+const GATE_BOSS_POINTS := [Vector2(4700, 800), Vector2(4700, 1200), Vector2(4700, 1650)]
 
 
 func _init() -> void:
@@ -24,7 +25,7 @@ func _init() -> void:
 	boss_scene = preload("res://game/jungle_warden.tscn")
 	boss_name = "관문 수호자"
 	first_clear_notice = "관문 통과 · 새 3·4타 장비 선택 가능"
-	scene_title = "Loop Conquest — Jungle Pass v09"
+	scene_title = "Loop Conquest — Jungle Pass v10"
 	scene_hud_title = "정글 절벽 관문"
 	combat_camera_size = 10.0
 	overview_camera_size = 43.0
@@ -38,6 +39,20 @@ func _init() -> void:
 func _ready() -> void:
 	super._ready()
 	_build_gate_silhouette()
+
+
+func _choose_spawn_point(for_boss: bool) -> Vector2:
+	if not for_boss: return super._choose_spawn_point(false)
+	var chosen := Vector2.INF
+	var farthest := 0.0
+	for candidate in GATE_BOSS_POINTS:
+		var point: Vector2 = candidate
+		if not navigation.is_open(point, 48.0): continue
+		var distance: float = point.distance_to(player.global_position)
+		if distance > farthest and navigation.find_path(point, player.global_position).size() >= 2:
+			chosen = point
+			farthest = distance
+	return chosen
 	_build_jungle_silhouette()
 
 
@@ -78,7 +93,12 @@ func _build_boss_figure(visual: Node3D) -> void:
 
 func _update_run_hud() -> void:
 	super._update_run_hud()
-	if run_hud == null or not is_instance_valid(boss) or not boss is JungleWarden: return
+	if run_hud == null: return
+	if run_time >= 270.0 and not boss_spawned:
+		run_hud.text += "\n관문 상단에 수호자 출현 예정"
+	if not is_instance_valid(boss) or not boss is JungleWarden: return
+	if boss.global_position.distance_to(player.global_position) > 850.0:
+		run_hud.text += "\n관문 상단으로 이동"
 	if boss.sweep_warning > 0.0: run_hud.text += "  ·  횡쓸기! 옆/뒤로 피하기"
 	elif boss.gust_warning > 0.0: run_hud.text += "  ·  강풍! 부채꼴 밖으로 피하기"
 

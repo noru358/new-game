@@ -12,9 +12,9 @@ var camera: Camera3D
 var preparation: Control
 var prompt: Label
 var stations := [
-	{"name": "지역 지도", "position": Vector3(-3.5, 0.0, -1.5), "tab": 0, "color": Color("72d3c7")},
-	{"name": "장비와 성장", "position": Vector3(3.4, 0.0, -1.4), "tab": 1, "color": Color("e4bc79")},
-	{"name": "출정 준비", "position": Vector3(0.0, 0.0, 3.3), "tab": 2, "color": Color("b7a8e5")},
+	{"name": "출정", "position": Vector3(-3.5, 0.0, -1.5), "tab": 0, "color": Color("72d3c7")},
+	{"name": "장비", "position": Vector3(3.4, 0.0, -1.4), "tab": 1, "color": Color("e4bc79")},
+	{"name": "성장", "position": Vector3(0.0, 0.0, 3.3), "tab": 2, "color": Color("b7a8e5")},
 ]
 
 
