@@ -798,7 +798,7 @@ func _draw_enemy_warnings(fraction: float) -> void:
 		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.warning_time <= 0.0: continue
 		if actor.role != TrainingEnemy.Role.BEAST and actor.role != TrainingEnemy.Role.LAMP: continue
 		var source: Vector2 = _render_position(actor, fraction)
-		var length := TrainingEnemy.BEAST_CHARGE_SPEED * TrainingEnemy.BEAST_CHARGE_DURATION if actor.role == TrainingEnemy.Role.BEAST else EnemyBolt.MAXIMUM_DISTANCE
+		var length: float = actor.charge_reach() if actor is GateBoss else TrainingEnemy.BEAST_CHARGE_SPEED * TrainingEnemy.BEAST_CHARGE_DURATION if actor.role == TrainingEnemy.Role.BEAST else EnemyBolt.MAXIMUM_DISTANCE
 		var limit := _attack_reach_at(source, actor.locked_direction.angle(), length)
 		var color := Color(1.0, 0.30, 0.20, 0.92) if actor.role == TrainingEnemy.Role.BEAST else Color(1.0, 0.89, 0.42, 0.95)
 		var outline := Color(0.38, 0.07, 0.06, 0.78) if actor.role == TrainingEnemy.Role.BEAST else Color(0.40, 0.18, 0.04, 0.82)
