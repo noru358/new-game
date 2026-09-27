@@ -239,6 +239,14 @@ func _ramp_guided_direction(direction: Vector2) -> Vector2:
 		var area: Rect2 = ramp.area
 		var horizontal: bool = int(ramp.axis) == 0
 		var side := Vector2.DOWN if horizontal else Vector2.RIGHT
+		var forward := Vector2.RIGHT if horizontal else Vector2.DOWN
+		# On an isometric ramp, a single screen-axis key points partly into its
+		# side rail. Keep the full requested speed along the traversable axis.
+		if area.grow(-collision_radius).has_point(global_position):
+			var along := direction.dot(forward)
+			var across := direction.dot(side)
+			if absf(along) >= 0.5 * direction.length() and absf(along) >= absf(across) * 0.95:
+				return forward * signf(along) * direction.length()
 		var low: float = area.position.y if horizontal else area.position.x
 		var high: float = area.end.y if horizontal else area.end.x
 		var lateral: float = global_position.dot(side)
@@ -264,7 +272,7 @@ func _start_dash(movement: Vector2) -> void:
 	moving_slash_time = 0.0
 	moving_slash_visual_time = 0.0
 	moving_slash_buffer = 0.0
-	dash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
+	dash_direction = _ramp_guided_direction(movement).normalized() if movement.length_squared() > 0.0 else facing
 	dash_time = DASH_DURATION
 	dash_elapsed = 0.0
 	if dash_charges == dash_max_charges:
@@ -292,7 +300,7 @@ func _start_moving_slash(movement: Vector2) -> void:
 	attack_step = 0
 	attack_hitstop_remaining = 0.0
 	combo_wait = 0.0
-	moving_slash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
+	moving_slash_direction = _ramp_guided_direction(movement).normalized() if movement.length_squared() > 0.0 else facing
 	moving_slash_origin = global_position
 	moving_slash_tip = global_position
 	moving_slash_time = MOVING_SLASH_DURATION

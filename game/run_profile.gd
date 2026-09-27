@@ -54,6 +54,12 @@ static func gear_name(id: String) -> String:
 	return "기본 마력장"
 
 
+static func gear_for_affix(affix: String) -> String:
+	for gear_id in GEAR_AFFIXES:
+		if GEAR_AFFIXES[gear_id].has(affix): return gear_id
+	return ""
+
+
 static func affix_description(affix: String) -> String:
 	match affix:
 		"RIPPLE": return "강화 평타 적중 → 주변에 작은 파동"

@@ -282,9 +282,9 @@ func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
 func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
 	_top(st, area, func(point): return terrain.ramp_height(ramp, point), ramp_color.darkened(0.24))
-	for step in 9:
-		var x0: float = area.position.x + area.size.x * float(step) / 9.0
-		var width: float = area.size.x / 9.0
+	for step in 12:
+		var x0: float = area.position.x + area.size.x * float(step) / 12.0
+		var width: float = area.size.x / 12.0
 		var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
 		_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
 		_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
@@ -299,6 +299,17 @@ func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
 		var south_margin: float = [30.0, 13.0, 24.0][slab]
 		var stone := Rect2(x0 + 4.0, area.position.y + north_margin, area.size.x / 3.0 - 8.0, area.size.y - north_margin - south_margin)
 		_rough_slab(st, stone, func(point): return terrain.ramp_height(ramp, point), 3.5, Color("a5ad98") if slab == 1 else Color("83978b"))
+	_ramp_edge_markers(st, ramp)
+
+func _broken_bridge(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("40544f"))
+	for slab in 4:
+		var x0: float = area.position.x + area.size.x * float(slab) / 4.0
+		var north_margin: float = [10.0, 26.0, 14.0, 31.0][slab]
+		var south_margin: float = [29.0, 12.0, 26.0, 10.0][slab]
+		var stone := Rect2(x0 + 3.0, area.position.y + north_margin, area.size.x / 4.0 - 6.0, area.size.y - north_margin - south_margin)
+		_rough_slab(st, stone, func(point): return terrain.ramp_height(ramp, point), 4.0, Color("a3ae9f") if slab % 2 == 0 else Color("8b9e94"))
 	_ramp_edge_markers(st, ramp)
 
 
@@ -331,13 +342,23 @@ func _build_terrain() -> void:
 		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in terrain.water_areas:
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
+	for chasm in terrain.chasm_areas:
+		_top(st, chasm, func(_p): return 1.5, Color("263e3d"))
 	for plateau in terrain.plateaus:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
 		_sides(st, plateau.area, elevation, plateau.base, cliff_color, plateau.openings)
+		for edge in terrain.plateau_edge_spans(plateau):
+			var lip: Rect2
+			match edge.side:
+				"north": lip = Rect2(edge.start, edge.fixed, edge.end - edge.start, 12.0)
+				"south": lip = Rect2(edge.start, edge.fixed - 12.0, edge.end - edge.start, 12.0)
+				"west": lip = Rect2(edge.fixed, edge.start, 12.0, edge.end - edge.start)
+				_: lip = Rect2(edge.fixed - 12.0, edge.start, 12.0, edge.end - edge.start)
+			_top(st, lip, func(_point): return float(plateau.height) + 4.0, cliff_color.lightened(0.16))
 	if terrain is JunglePassTerrain:
 		for i in terrain.rock_ledge_areas.size():
-			_rough_slab(st, terrain.rock_ledge_areas[i], func(_p): return 240.0, 5.0, Color("8b9d91") if i % 2 == 0 else Color("a7ae9a"))
+			_rough_slab(st, terrain.rock_ledge_areas[i], func(point): return terrain.height_at(point), 5.0, Color("8b9d91") if i % 2 == 0 else Color("a7ae9a"))
 	for ramp in terrain.ramps:
 		if ramp.get("kind", "") == "stepping_stones":
 			_stepping_stones(st, ramp)
@@ -346,9 +367,10 @@ func _build_terrain() -> void:
 		match ramp.get("kind", ""):
 			"gate_stairs": _gate_stairs(st, ramp)
 			"rock_path": _rock_path(st, ramp)
+			"broken_bridge": _broken_bridge(st, ramp)
 			_: _top(st, ramp.area, elevation, ramp_color)
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
-		if ramp.get("kind", "") not in ["gate_stairs", "rock_path"]: _ramp_edge_markers(st, ramp)
+		if ramp.get("kind", "") not in ["gate_stairs", "rock_path", "broken_bridge"]: _ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
 		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height

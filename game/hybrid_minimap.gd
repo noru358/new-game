@@ -39,6 +39,8 @@ func _draw() -> void:
 		_draw_world_area(floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in arena.terrain.water_areas:
 		_draw_world_area(water, func(_p): return 1.0, Color("34848d"))
+	for chasm in arena.terrain.chasm_areas:
+		_draw_world_area(chasm, func(_p): return 1.5, Color("263e3d"))
 	for plateau in arena.terrain.plateaus:
 		_draw_world_area(plateau.area, func(_p): return plateau.height, _height_color(plateau.height))
 	for ramp in arena.terrain.ramps:

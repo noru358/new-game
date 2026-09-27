@@ -11,6 +11,7 @@ const STONE_BEVEL := 0.42
 var map_size := SIZE
 var floor_areas: Array = []
 var wall_areas: Array = []
+var chasm_areas: Array[Rect2] = []
 
 # One surface per ground position. Geometry, height and blocked edges share these records.
 var plateaus := [
@@ -65,29 +66,35 @@ func surface_name(point: Vector2) -> String:
 func world_point(point: Vector2, lift: float = 0.0) -> Vector3:
 	return Vector3(point.x, height_at(point) + lift, point.y) * SCALE
 
+func plateau_edge_spans(plateau: Dictionary) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var area: Rect2 = plateau.area
+	for side in ["north", "south", "west", "east"]:
+		var horizontal: bool = side == "north" or side == "south"
+		var start: float = area.position.x if horizontal else area.position.y
+		var end: float = area.end.x if horizontal else area.end.y
+		var fixed: float = (area.position.y if side == "north" else area.end.y) if horizontal else (area.position.x if side == "west" else area.end.x)
+		var cursor := start
+		for opening in plateau.openings.get(side, []):
+			if opening[0] > cursor:
+				result.append({"side": side, "start": cursor, "end": opening[0], "fixed": fixed})
+			cursor = maxf(cursor, opening[1])
+		if cursor < end:
+			result.append({"side": side, "start": cursor, "end": end, "fixed": fixed})
+	return result
+
 func barriers() -> Array[Rect2]:
 	var result: Array[Rect2] = []
 	for water in water_areas:
 		result.append(water)
+	for chasm in chasm_areas:
+		result.append(chasm)
 	for wall in wall_areas:
 		result.append(wall.area)
 	for plateau in plateaus:
-		var a: Rect2 = plateau.area
-		for side in ["north", "south", "west", "east"]:
-			var horizontal: bool = side == "north" or side == "south"
-			var start: float = a.position.x if horizontal else a.position.y
-			var end: float = a.end.x if horizontal else a.end.y
-			var fixed: float = (a.position.y if side == "north" else a.end.y) if horizontal else (a.position.x if side == "west" else a.end.x)
-			var spans: Array = []
-			var cursor := start
-			for opening in plateau.openings.get(side, []):
-				if opening[0] > cursor:
-					spans.append([cursor, opening[0]])
-				cursor = opening[1]
-			if cursor < end:
-				spans.append([cursor, end])
-			for span in spans:
-				result.append(Rect2(span[0], fixed - 5, span[1] - span[0], 10) if horizontal else Rect2(fixed - 5, span[0], 10, span[1] - span[0]))
+		for edge in plateau_edge_spans(plateau):
+			var horizontal: bool = edge.side == "north" or edge.side == "south"
+			result.append(Rect2(edge.start, edge.fixed - 5, edge.end - edge.start, 10) if horizontal else Rect2(edge.fixed - 5, edge.start, 10, edge.end - edge.start))
 	for ramp in ramps:
 		var a: Rect2 = ramp.area
 		if ramp.axis == 0:

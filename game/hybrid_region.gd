@@ -377,7 +377,8 @@ func _show_result() -> void:
 		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n" + first_clear_notice if profile.last_first_clear else ""
 	]
 	if not profile.last_mod_award.is_empty():
-		result_text.text += "\n새 장비 옵션 획득: %s\n야영지 장비창에서 장착할 수 있습니다." % RunProfile.affix_description(profile.last_mod_award)
+		var option_gear := RunProfile.gear_for_affix(profile.last_mod_award)
+		result_text.text += "\n%s 옵션 획득: %s\n야영지 장비창에서 장착할 수 있습니다." % [RunProfile.gear_name(option_gear), RunProfile.affix_description(profile.last_mod_award)]
 
 
 func _retry_settlement() -> void:

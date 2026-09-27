@@ -22,23 +22,23 @@ func _run() -> void:
 	await physics_frame
 	await physics_frame
 	_check(scene.terrain.map_size == Vector2(5600, 2400) and scene.region_id == RunProfile.JUNGLE_REGION, "second region uses its own map and progress ID")
-	for point in [Vector2(1410, 1180), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2870, 1970), Vector2(4520, 1160)]:
+	for point in [Vector2(1410, 1180), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2180, 2120), Vector2(3010, 1850), Vector2(3410, 1790), Vector2(4520, 1160)]:
 		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(scene.player.position, point).size() >= 2, "ridge, detours and gate remain reachable from the entry")
-	_check(scene.navigation.is_open(Vector2(3750, 1700), scene.ACTOR_CLEARANCE) and scene.navigation.find_path(Vector2(3420, 1700), Vector2(4700, 1700)).size() >= 2, "southern gate ramp gives a second reachable entrance")
-	_check(scene.terrain.ramps[3].kind == "gate_stairs" and scene.terrain.ramps[4].kind == "rock_path", "gate entrances have distinct authored surfaces")
+	_check(scene.navigation.is_open(Vector2(3750, 1760), scene.ACTOR_CLEARANCE) and scene.navigation.find_path(Vector2(3410, 1790), Vector2(4700, 1700)).size() >= 2, "lower canyon bridge reaches a separate gate entrance")
+	_check(scene.terrain.ramps[3].kind == "gate_stairs" and scene.terrain.ramps[4].kind == "rock_path" and scene.terrain.ramps[6].kind == "broken_bridge", "causeway and canyon have distinct terrain and ascent")
 	_check(scene.terrain.rock_ledge_areas.size() == 3 and scene.terrain.gate_routes.stairs.entry.position.x < 2700.0 and scene.terrain.gate_routes.rocks.entry.position.x < 2700.0, "the fork begins on the ridge and the cliff path has three broad rock ledges")
-	var cross_path: PackedVector2Array = scene.navigation.find_path(Vector2(3200, 1200), Vector2(3200, 1800))
+	var cross_path: PackedVector2Array = scene.navigation.find_path(Vector2(3100, 1200), Vector2(3100, 1850))
 	var cross_distance := 0.0
 	for i in range(cross_path.size() - 1): cross_distance += cross_path[i].distance_to(cross_path[i + 1])
-	_check(cross_distance > 1600.0, "a continuous ridge wall prevents switching between routes just before the gate")
-	_check(scene.terrain.height_at(Vector2(2640, 1120)) == 240.0 and scene.terrain.height_at(Vector2(4520, 1160)) == 480.0, "the cliff and gate are visibly elevated")
+	_check(cross_distance > 1500.0, "the gorge prevents switching between upper and lower routes near the gate")
+	_check(scene.terrain.height_at(Vector2(2640, 1120)) == 240.0 and scene.terrain.height_at(Vector2(3010, 1850)) == 80.0 and scene.terrain.height_at(Vector2(4520, 1160)) == 480.0, "the two approaches actually use different walking elevations")
 	scene.teleport(Vector2(2590, 1130))
 	await physics_frame
 	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 2, "main stair route starts with its own two-sentry encounter")
-	scene.teleport(Vector2(3410, 1130))
+	scene.teleport(Vector2(3240, 1130))
 	await physics_frame
 	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "the main ascent adds a distinct gate-top encounter")
-	scene.teleport(Vector2(2590, 1690))
+	scene.teleport(Vector2(2590, 1770))
 	await physics_frame
 	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 4, "the other approach does not stack another route's encounters in one run")
 	scene.run_time = 270.0

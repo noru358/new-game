@@ -13,7 +13,7 @@ func _init() -> void:
 	start_point = Vector2(430, 1210)
 	enemy_points = [
 		Vector2(500, 1120), Vector2(970, 820), Vector2(1110, 1750),
-		Vector2(1860, 1120), Vector2(2530, 830), Vector2(3300, 1440),
+		Vector2(1860, 1120), Vector2(2530, 830), Vector2(3300, 1210),
 		Vector2(4210, 1100), Vector2(5080, 1150)
 	]
 	landmark_points = {
@@ -22,8 +22,9 @@ func _init() -> void:
 		"북쪽 덩굴길": Vector2(2180, 420),
 		"정글 능선": Vector2(2640, 1120),
 		"석계단 정면길": Vector2(3070, 1110),
-		"절벽 발판길": Vector2(3070, 1840),
-		"남쪽 우회로": Vector2(2870, 1970),
+		"하층 협곡": Vector2(3010, 1850),
+		"끊어진 바위 다리": Vector2(3410, 1790),
+		"남쪽 우회로": Vector2(2180, 2120),
 		"관문 상단": Vector2(4520, 1160),
 	}
 	region_id = RunProfile.JUNGLE_REGION
@@ -68,7 +69,7 @@ func _spawn_route_sentries(route: String, at_crest: bool) -> void:
 	if route == "stairs":
 		sentries = [[Vector2(3970, 1010), TrainingEnemy.Role.BEAST], [Vector2(4020, 1330), TrainingEnemy.Role.LAMP]] if at_crest else [[Vector2(2890, 1050), TrainingEnemy.Role.BEAST], [Vector2(3080, 1250), TrainingEnemy.Role.LAMP]]
 	else:
-		sentries = [[Vector2(3970, 1610), TrainingEnemy.Role.ZONE], [Vector2(4060, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2810, 1660), TrainingEnemy.Role.ZONE], [Vector2(3160, 1830), TrainingEnemy.Role.BEAST]]
+		sentries = [[Vector2(4140, 1560), TrainingEnemy.Role.ZONE], [Vector2(4060, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2830, 1770), TrainingEnemy.Role.ZONE], [Vector2(3130, 1840), TrainingEnemy.Role.BEAST]]
 	for entry in sentries:
 		var spawn_point: Vector2 = entry[0]
 		if navigation.is_open(spawn_point, ACTOR_CLEARANCE + 6.0) and navigation.find_path(spawn_point, player.global_position).size() >= 2:
@@ -227,25 +228,9 @@ func _build_jungle_silhouette() -> void:
 func _build_gate_approaches() -> void:
 	var stairs: Dictionary = terrain.ramps[3]
 	var rocks: Dictionary = terrain.ramps[4]
-	for wall in terrain.wall_areas:
-		if wall.get("kind", "") != "split_ridge": continue
-		var area: Rect2 = wall.area
-		for i in 2:
-			var shoulder := MeshInstance3D.new()
-			shoulder.name = "RidgeShoulder"
-			var rock := SphereMesh.new()
-			rock.radius = 1.0
-			rock.height = 1.0
-			rock.radial_segments = 7
-			rock.rings = 3
-			shoulder.mesh = rock
-			shoulder.scale = Vector3(area.size.x * PassTerrain.SCALE * 0.22, float(wall.rise) * PassTerrain.SCALE * (0.42 if i == 0 else 0.32), area.size.y * PassTerrain.SCALE * 0.75)
-			shoulder.position = Vector3((area.position.x + area.size.x * (0.28 if i == 0 else 0.72)) * PassTerrain.SCALE, (float(wall.height) - float(wall.rise) * 0.07) * PassTerrain.SCALE, area.get_center().y * PassTerrain.SCALE)
-			shoulder.material_override = _material(Color("60766a") if i == 0 else Color("536a60"))
-			add_child(shoulder)
 	for side_y in [stairs.area.position.y + 15.0, stairs.area.end.y - 15.0]:
-		for step in [0, 3, 6, 9]:
-			var x: float = stairs.area.position.x + stairs.area.size.x * float(step) / 9.0
+		for step in [0, 4, 8, 12]:
+			var x: float = stairs.area.position.x + stairs.area.size.x * float(step) / 12.0
 			var height: float = terrain.ramp_height(stairs, Vector2(x, side_y))
 			var post := MeshInstance3D.new()
 			post.name = "StairPost"

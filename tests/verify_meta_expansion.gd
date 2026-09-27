@@ -26,6 +26,7 @@ func _run() -> void:
 	_check(reloaded.settle("first-jungle", "SUCCESS", 0, RunProfile.JUNGLE_REGION) and reloaded.jungle_owned, "second region first clear unlocks the combo weapon")
 	_check(reloaded.settle("repeat-jungle", "SUCCESS", 0, RunProfile.JUNGLE_REGION) and RunProfile.REGION_MODS[RunProfile.JUNGLE_REGION].has(reloaded.last_mod_award), "jungle repeat grants a region option even when its weapon is unpurchased")
 	var jungle_mod: String = reloaded.last_mod_award
+	_check(not RunProfile.gear_for_affix(first_mod).is_empty() and not RunProfile.gear_for_affix(jungle_mod).is_empty(), "every awarded option identifies its equipment")
 	_check(reloaded.settle("another-temple", "SUCCESS", 0) and reloaded.last_mod_award != first_mod, "further clears grant unowned options before duplicates")
 	var both_saved := RunProfile.new()
 	both_saved.save_prefix = PREFIX
@@ -72,6 +73,10 @@ func _run() -> void:
 	scene.player.attack_path_filter = Callable()
 	scene.player._hit_enemies(scene.player._attack_spec(4))
 	_check(target.health < 1000.0 and scene.player._attack_spec(4).angle == 360.0, "new fourth hit damages a side target around the third-hit gathering point")
+	scene.profile.last_mod_award = jungle_mod
+	scene.end_result = "SUCCESS"
+	scene._show_result()
+	_check(scene.result_text.text.contains(RunProfile.gear_name(RunProfile.gear_for_affix(jungle_mod))) and scene.result_text.text.contains(RunProfile.affix_description(jungle_mod)), "result screen names the exact gear and its option")
 	target.queue_free()
 	scene.queue_free()
 	await process_frame
