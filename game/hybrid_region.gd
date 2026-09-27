@@ -21,6 +21,7 @@ var death_pending := false
 var run_ended := false
 var end_result := ""
 var settlement_pending := false
+var supply_ready := false
 var boss: GateBoss
 var pending_spawns: Array[Dictionary] = []
 var rng := RandomNumberGenerator.new()
@@ -48,7 +49,7 @@ func _init() -> void:
 		"회랑": Vector2(3410, 900),
 		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — 1G Combat Feedback v05"
+	scene_title = "Loop Conquest — Preparation v06"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	overview_camera_size = 40.0
@@ -71,6 +72,9 @@ func _ready() -> void:
 	profile = ProfileScript.new()
 	profile.save_prefix = profile_save_prefix
 	profile.load_state()
+	if not profile.load_error and not profile.begin_run(run_id): profile.load_error = true
+	if not profile.load_error:
+		_apply_preparation()
 	player.defeated.connect(func(): death_pending = true)
 	_build_run_ui()
 	if profile.load_error:
@@ -83,6 +87,34 @@ func _ready() -> void:
 		result_overlay.show()
 	else:
 		_update_run_hud()
+
+
+func _apply_preparation() -> void:
+	var ranks: Dictionary = profile.growth_ranks
+	player.permanent_basic_damage_bonus = 0.05 * int(ranks.POWER)
+	player.max_health += 10.0 * int(ranks.VITALITY)
+	player.permanent_dash_cooldown_reduction = 0.04 * int(ranks.MOBILITY)
+	if profile.equipped_weapon == "W_FLOW":
+		player.flow_weave_enabled = true
+		player.moving_slash_distance_multiplier = 1.20
+		player.permanent_slash_cooldown_reduction = 0.10
+		if profile.owned_gear.get("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
+		else: player.permanent_slash_cooldown_reduction += 0.04
+	if profile.equipped_accessory == "A_EMBER":
+		wisp.permanent_damage_bonus = 0.15
+		if profile.owned_gear.get("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
+		else: player.max_health += 5.0
+	player.health = player.max_health
+	supply_ready = profile.last_launch_supply_used
+	if supply_ready: player.health_changed.connect(_try_use_supply)
+
+
+func _try_use_supply() -> void:
+	if not supply_ready or player.health <= 0.0 or player.health > player.max_health * 0.35: return
+	supply_ready = false
+	player.health = minf(player.max_health, player.health + 30.0)
+	player.health_changed.emit()
+	if run_hud != null: run_hud.text += "\n회복 부적 발동 · HP +30"
 
 
 func spawn_enemies() -> void:
@@ -260,9 +292,9 @@ func _show_result() -> void:
 	if settlement_pending:
 		result_text.text = "%s\n정산 저장에 실패했습니다. 저장을 재시도하세요.\n종료하면 미저장 화폐가 사라집니다.\n현재 획득 화폐 %d" % [heading, run_currency]
 		return
-	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n새 런은 레벨 1부터 시작합니다." % [
+	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n준비 화면에서 다시 출정할 수 있습니다." % [
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
-		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n첫 정복: 사원 유물 획득" if profile.last_first_clear else ""
+		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n첫 지역 완료 · 새 장비 선택 가능" if profile.last_first_clear else ""
 	]
 
 
@@ -340,10 +372,10 @@ func _build_run_ui() -> void:
 	result_text.add_theme_font_size_override("font_size", 28)
 	result_overlay.add_child(result_text)
 	replay_button = Button.new()
-	replay_button.text = "새 런 시작  [R]"
+	replay_button.text = "준비 화면으로  [R]"
 	replay_button.position = Vector2(475, 465)
 	replay_button.size = Vector2(330, 54)
-	replay_button.pressed.connect(_restart_run)
+	replay_button.pressed.connect(_return_to_hub)
 	result_overlay.add_child(replay_button)
 	retry_button = Button.new()
 	retry_button.text = "저장 재시도"
@@ -360,11 +392,11 @@ func _build_run_ui() -> void:
 	result_overlay.hide()
 
 
-func _restart_run() -> void:
+func _return_to_hub() -> void:
 	if settlement_pending or profile.load_error: return
 	get_tree().paused = false
 	paused = false
-	get_tree().reload_current_scene()
+	get_tree().change_scene_to_file("res://game/hub.tscn")
 
 
 func _input(event: InputEvent) -> void:
@@ -373,7 +405,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if run_ended:
-			if event.keycode == KEY_R: _restart_run()
+			if event.keycode == KEY_R: _return_to_hub()
 			return
 		if event.keycode == KEY_R and not growth.choosing:
 			_finish_run("RETREAT")
