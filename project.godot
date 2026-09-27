@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Loop Conquest - Boss Feedback v07"
+config/name="Loop Conquest - Travel Camp v08"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"
-run/main_scene="res://game/hub.tscn"
+run/main_scene="res://game/travel_camp.tscn"
 run/main_scene.hybrid_height="res://game/hybrid_height.tscn"
 run/main_scene.moving_slash_lab="res://game/moving_slash_lab.tscn"
 config/name.hybrid_height="Loop Conquest - Hybrid Court v09"

@@ -17,7 +17,7 @@ func _run() -> void:
 		enemy.set_physics_process(false)
 		_check(scene.arena_navigation.is_open(enemy.global_position, TrainingEnemy.RADIUS), "%s starts outside solid terrain" % enemy.name)
 	scene.wisp.set_physics_process(false)
-	_check(ProjectSettings.get_setting("application/run/main_scene") == "res://game/hub.tscn", "the preparation screen launches the accepted hybrid region; this 2D region remains available for comparison")
+	_check(ProjectSettings.get_setting("application/run/main_scene") == "res://game/travel_camp.tscn", "the walkable preparation camp is the main scene; this 2D region remains available for comparison")
 	_check(scene.REGION_SIZE == Vector2(3840, 2160) and player.arena_bounds.size == scene.REGION_SIZE, "scrolling region uses expanded actor bounds")
 	_check(scene.camera.limit_right == 3840 and scene.camera.limit_bottom == 2160, "camera follows the expanded region")
 	_check(scene.arena_navigation.grid_size == Vector2i(120, 68), "navigation covers the full region")

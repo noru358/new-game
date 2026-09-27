@@ -1,12 +1,15 @@
 extends "res://game/hybrid_height.gd"
 
 const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
-const BossScene = preload("res://game/gate_boss.tscn")
 const ProfileScript = preload("res://game/run_profile.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 48
 
 var practice_mode := false
+var region_id := RunProfile.TEMPLE_REGION
+var boss_name := "문지기"
+var first_clear_notice := "첫 지역 완료 · 새 장비 선택 가능"
+var boss_scene: PackedScene = preload("res://game/gate_boss.tscn")
 var profile_save_prefix := "user://loop_conquest_profile"
 var profile: RunProfile
 var run_id := ""
@@ -94,12 +97,20 @@ func _apply_preparation() -> void:
 	player.permanent_basic_damage_bonus = 0.05 * int(ranks.POWER)
 	player.max_health += 10.0 * int(ranks.VITALITY)
 	player.permanent_dash_cooldown_reduction = 0.04 * int(ranks.MOBILITY)
+	player.permanent_slash_cooldown_reduction = 0.03 * int(ranks.SLASH)
+	player.permanent_finisher_reach_bonus = 0.05 * int(ranks.FINISH)
 	if profile.equipped_weapon == "W_FLOW":
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20
-		player.permanent_slash_cooldown_reduction = 0.10
+		player.permanent_slash_cooldown_reduction += 0.10
 		if profile.owned_gear.get("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
-		else: player.permanent_slash_cooldown_reduction += 0.04
+		elif profile.owned_gear.get("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
+		elif profile.owned_gear.get("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
+	elif profile.equipped_weapon == "W_ECHO":
+		player.echo_finisher_enabled = true
+		if profile.owned_gear.get("W_ECHO") == "WIDE": player.echo_finisher_radius_bonus = 0.10
+		elif profile.owned_gear.get("W_ECHO") == "HEAVY": player.echo_finisher_damage_bonus = 0.08
+		elif profile.owned_gear.get("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
 	if profile.equipped_accessory == "A_EMBER":
 		wisp.permanent_damage_bonus = 0.15
 		if profile.owned_gear.get("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
@@ -240,7 +251,7 @@ func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> voi
 		var health: float = [22.0, 45.0, 30.0, 32.0, 36.0][int(role)]
 		_spawn_enemy_at(point, role, health)
 		return
-	boss = BossScene.instantiate()
+	boss = boss_scene.instantiate()
 	boss.position = point
 	boss.collision_radius = 38.0
 	boss.contact_margin = 3.0
@@ -324,7 +335,7 @@ func _finish_run(result: String) -> void:
 	get_tree().paused = true
 	for entry in pending_spawns: (entry.marker as Node3D).queue_free()
 	pending_spawns.clear()
-	settlement_pending = not profile.settle(run_id, result, run_currency)
+	settlement_pending = not profile.settle(run_id, result, run_currency, region_id)
 	_show_result()
 
 
@@ -332,29 +343,32 @@ func _show_result() -> void:
 	result_overlay.show()
 	replay_button.disabled = settlement_pending
 	retry_button.visible = settlement_pending
-	var heading := "문지기 격파 · 성공" if end_result == "SUCCESS" else "런 종료 · 사망" if end_result == "DEFEAT" else "런 종료 · 귀환"
+	var heading := boss_name + " 격파 · 성공" if end_result == "SUCCESS" else "런 종료 · 사망" if end_result == "DEFEAT" else "런 종료 · 귀환"
 	if settlement_pending:
 		result_text.text = "%s\n정산 저장에 실패했습니다. 저장을 재시도하세요.\n종료하면 미저장 화폐가 사라집니다.\n현재 획득 화폐 %d" % [heading, run_currency]
 		return
-	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n준비 화면에서 다시 출정할 수 있습니다." % [
+	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다." % [
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
-		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n첫 지역 완료 · 새 장비 선택 가능" if profile.last_first_clear else ""
+		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n" + first_clear_notice if profile.last_first_clear else ""
 	]
+	var offer: Dictionary = profile.pending_affix_offers.get(RunProfile.REGION_GEAR[region_id], {})
+	if not offer.is_empty():
+		result_text.text += "\n보관된 장비 옵션: %s · %s\n야영지에서 기존 옵션과 비교해 선택하세요." % [RunProfile.gear_name(offer.gear_id), RunProfile.affix_description(offer.affix)]
 
 
 func _retry_settlement() -> void:
 	if not settlement_pending: return
-	settlement_pending = not profile.settle(run_id, end_result, run_currency)
+	settlement_pending = not profile.settle(run_id, end_result, run_currency, region_id)
 	_show_result()
 
 
 func _update_run_hud() -> void:
 	if run_hud == null: return
 	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
-	run_hud.text = "경과 %02d:%02d  ·  문지기까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
-	if boss_announced and not boss_spawned: run_hud.text += "\n문지기 등장 예고"
+	run_hud.text = "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
+	if boss_announced and not boss_spawned: run_hud.text += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
-		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n문지기 %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss.phase, ceili(boss.health), ceili(boss.max_health)]
+		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
 		if boss.warning_time > 0.0: run_hud.text += "  ·  붉은 띠 밖으로 회피!"
 		elif boss.shock_warning > 0.0: run_hud.text += "  ·  주황 원 밖으로 회피!"
 		elif boss.ring_warning > 0.0: run_hud.text += "  ·  바깥 고리 회피! 안쪽이 안전"
@@ -435,13 +449,13 @@ func _build_run_ui() -> void:
 	result_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	canvas.add_child(result_overlay)
 	result_text = Label.new()
-	result_text.position = Vector2(350, 205)
-	result_text.size = Vector2(580, 220)
+	result_text.position = Vector2(300, 160)
+	result_text.size = Vector2(680, 285)
 	result_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	result_text.add_theme_font_size_override("font_size", 28)
+	result_text.add_theme_font_size_override("font_size", 24)
 	result_overlay.add_child(result_text)
 	replay_button = Button.new()
-	replay_button.text = "준비 화면으로  [R]"
+	replay_button.text = "야영지로  [R]"
 	replay_button.position = Vector2(475, 465)
 	replay_button.size = Vector2(330, 54)
 	replay_button.pressed.connect(_return_to_hub)
@@ -465,7 +479,7 @@ func _return_to_hub() -> void:
 	if settlement_pending or profile.load_error: return
 	get_tree().paused = false
 	paused = false
-	get_tree().change_scene_to_file("res://game/hub.tscn")
+	get_tree().change_scene_to_file("res://game/travel_camp.tscn")
 
 
 func _input(event: InputEvent) -> void:

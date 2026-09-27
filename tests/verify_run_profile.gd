@@ -17,6 +17,7 @@ func _run() -> void:
 	profile.save_prefix = PREFIX
 	profile.load_state()
 	_check(not profile.load_error and profile.currency == 0, "fresh profile begins empty")
+	_check(not profile.region_available(RunProfile.JUNGLE_REGION) and not profile.settle("too-early", "SUCCESS", 0, RunProfile.JUNGLE_REGION), "second region cannot clear before the first")
 	var first_saved := profile.settle("run-a", "DEFEAT", 7)
 	_check(first_saved and profile.currency == 3 and profile.last_lost == 4 and not profile.temple_owned, "defeat loses half the earned currency, rounding the loss up")
 	var single := RunProfile.new()
@@ -25,6 +26,7 @@ func _run() -> void:
 	_check(not single.recovered_backup and single.currency == 3, "one normal save slot does not claim a backup recovery")
 	_check(profile.settle("run-a", "DEFEAT", 100) and profile.currency == 3, "same run cannot settle twice")
 	_check(profile.settle("run-b", "SUCCESS", 9) and profile.currency == 62 and profile.temple_owned and profile.temple_relic and profile.last_first_clear, "first clear grants all earned currency, success bonus and one first-clear record")
+	_check(profile.region_available(RunProfile.JUNGLE_REGION) and not profile.jungle_owned, "first clear opens the second region without marking it complete")
 	_check(profile.settle("run-c", "SUCCESS", 3) and profile.currency == 85 and not profile.last_first_clear, "repeat clear does not repeat first-clear reward")
 	var reloaded := RunProfile.new()
 	reloaded.save_prefix = PREFIX
@@ -38,6 +40,11 @@ func _run() -> void:
 	restored.save_prefix = PREFIX
 	restored.load_state()
 	_check(restored.recovered_backup and not restored.load_error and restored.currency == 62, "corrupt latest slot restores preceding valid settlement")
+	_check(reloaded.settle("run-jungle", "SUCCESS", 0, RunProfile.JUNGLE_REGION) and reloaded.jungle_owned and reloaded.currency == 135, "second region has an independent first-clear record and reward")
+	var jungle_reloaded := RunProfile.new()
+	jungle_reloaded.save_prefix = PREFIX
+	jungle_reloaded.load_state()
+	_check(jungle_reloaded.jungle_owned and jungle_reloaded.temple_owned and jungle_reloaded.temple_relic, "both region records survive reload without requiring a new save format")
 	for suffix in ["_a.json", "_b.json"]: DirAccess.remove_absolute(ProjectSettings.globalize_path(PREFIX + suffix))
 	var broken := FileAccess.open(PREFIX + "_a.json", FileAccess.WRITE)
 	broken.store_string("broken")
