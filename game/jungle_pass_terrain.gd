@@ -1,7 +1,7 @@
 class_name JunglePassTerrain
 extends "res://game/hybrid_terrain.gd"
 
-const GATE_COLUMN_TOP := 1010.0
+const GATE_COLUMN_RISE := 530.0
 const GATE_COLUMN_SIZE := Vector2(125.0, 120.0)
 const GATE_COLUMN_CENTERS := [Vector2(4120, 1160), Vector2(5070, 1160)]
 const CANOPY_POINTS := [
@@ -39,20 +39,24 @@ func _init() -> void:
 		{"area": Rect2(4100, 800, 1030, 720), "height": 482.4, "color": Color("bcb08a")},
 	]
 	wall_areas = [
-		{"area": Rect2(600, 500, 180, 250), "height": 165.0, "color": Color("3d6149")},
-		{"area": Rect2(930, 1640, 190, 260), "height": 175.0, "color": Color("426b52")},
-		{"area": Rect2(1850, 620, 230, 290), "base": 240.0, "height": 425.0, "color": Color("4c6752")},
-		{"area": Rect2(3000, 1510, 290, 230), "base": 240.0, "height": 435.0, "color": Color("52644f")},
-		{"area": Rect2(4380, 590, 210, 300), "base": 480.0, "height": 750.0, "color": Color("727a65")},
-		{"area": Rect2(4380, 1510, 210, 300), "base": 480.0, "height": 750.0, "color": Color("727a65")},
+		{"area": Rect2(600, 500, 180, 250), "rise": 165.0, "color": Color("3d6149")},
+		{"area": Rect2(930, 1640, 190, 260), "rise": 175.0, "color": Color("426b52")},
+		{"area": Rect2(1850, 620, 230, 290), "rise": 185.0, "color": Color("4c6752")},
+		{"area": Rect2(3000, 1510, 290, 230), "rise": 195.0, "color": Color("52644f")},
+		{"area": Rect2(4380, 590, 210, 300), "rise": 270.0, "color": Color("727a65")},
+		{"area": Rect2(4380, 1510, 210, 300), "rise": 270.0, "color": Color("727a65")},
 	]
 	for center in GATE_COLUMN_CENTERS:
-		var column := {"area": Rect2(center - GATE_COLUMN_SIZE * 0.5, GATE_COLUMN_SIZE), "base": 480.0, "height": GATE_COLUMN_TOP, "color": Color("677867")}
+		var column := {"area": Rect2(center - GATE_COLUMN_SIZE * 0.5, GATE_COLUMN_SIZE), "rise": GATE_COLUMN_RISE, "color": Color("677867")}
 		gate_columns.append(column)
 		wall_areas.append(column)
 	for point in CANOPY_POINTS:
 		# The trunk silhouette and its small walkability footprint share one record.
-		wall_areas.append({"area": Rect2(point - Vector2.ONE * 23.0, Vector2.ONE * 46.0), "base": height_at(point), "height": height_at(point) + 230.0, "color": Color("486d57"), "visual": false})
+		wall_areas.append({"area": Rect2(point - Vector2.ONE * 23.0, Vector2.ONE * 46.0), "rise": 230.0, "color": Color("486d57"), "visual": false})
+	for wall in wall_areas:
+		var base: float = height_at(wall.area.get_center())
+		wall["base"] = base
+		wall["height"] = base + float(wall.rise)
 
 
 func height_at(point: Vector2) -> float:

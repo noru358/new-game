@@ -35,7 +35,7 @@ func _run() -> void:
 	var lintel: MeshInstance3D = scene.get_node("GateLintel")
 	var lintel_mesh: BoxMesh = lintel.mesh
 	var column_left: float = (JunglePassTerrain.GATE_COLUMN_CENTERS[0].x - JunglePassTerrain.GATE_COLUMN_SIZE.x * 0.5) * JunglePassTerrain.SCALE
-	var column_top: float = JunglePassTerrain.GATE_COLUMN_TOP * JunglePassTerrain.SCALE
+	var column_top: float = scene.terrain.gate_columns[0].height * JunglePassTerrain.SCALE
 	_check(lintel.position.x - lintel_mesh.size.x * 0.5 < column_left - 0.1 and lintel.position.y - lintel_mesh.size.y * 0.5 < column_top - 0.1, "lintel overlaps columns without coincident outer faces")
 	var player: SandboxPlayer = scene.player
 	var guided := player._ramp_guided_direction(Vector2(1, 1).normalized())

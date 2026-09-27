@@ -130,13 +130,14 @@ func _build_gate_silhouette() -> void:
 	# The lintel overhangs their outer faces, avoiding coincident mesh surfaces.
 	var first: Vector2 = PassTerrain.GATE_COLUMN_CENTERS[0]
 	var last: Vector2 = PassTerrain.GATE_COLUMN_CENTERS[-1]
+	var column_top: float = terrain.gate_columns[0].height
 	var bridge := MeshInstance3D.new()
 	bridge.name = "GateLintel"
 	var lintel := BoxMesh.new()
 	lintel.size = Vector3((last.x - first.x + PassTerrain.GATE_COLUMN_SIZE.x + 160.0) * PassTerrain.SCALE, 1.15, 1.45)
 	bridge.mesh = lintel
 	bridge.material_override = _material(Color("788879"), false)
-	bridge.position = Vector3((first.x + last.x) * 0.5, PassTerrain.GATE_COLUMN_TOP + 37.5, (first.y + last.y) * 0.5) * PassTerrain.SCALE
+	bridge.position = Vector3((first.x + last.x) * 0.5, column_top + 37.5, (first.y + last.y) * 0.5) * PassTerrain.SCALE
 	add_child(bridge)
 
 
