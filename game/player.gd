@@ -40,6 +40,7 @@ var visual_pitch := 0.0
 var facing := Vector2.RIGHT
 var attack_direction := Vector2.RIGHT
 var attack_step := 0
+var attack_sequence := 0
 var next_combo_step := 1
 var combo_rank := 0
 var attack_elapsed := 0.0
@@ -74,6 +75,7 @@ var permanent_dash_cooldown_reduction := 0.0
 var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var input_rotation := 0.0
+var ramp_areas: Array = []
 var collision_radius := 18.0
 var move_speed_multiplier := 1.0
 var dash_distance_multiplier := 1.0
@@ -201,10 +203,12 @@ func _physics_process(delta: float) -> void:
 		var after := moving_slash_elapsed / MOVING_SLASH_DURATION
 		moving_slash_time = maxf(0.0, moving_slash_time - delta)
 		var distance := MOVING_SLASH_DISTANCE * moving_slash_distance_multiplier * (_moving_slash_curve(after) - _moving_slash_curve(before))
-		velocity = moving_slash_direction * distance / delta
+		velocity = _ramp_guided_direction(moving_slash_direction) * distance / delta
 	else:
-		velocity = movement * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
+		velocity = _ramp_guided_direction(movement) * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
+	var requested_motion := velocity * delta
+	var before_motion := global_position
 	move_and_slide()
 	global_position = Vector2(
 		clampf(global_position.x, arena_bounds.position.x + 25.0, arena_bounds.end.x - 25.0),
@@ -214,11 +218,38 @@ func _physics_process(delta: float) -> void:
 		if slash_was_active:
 			moving_slash_tip = global_position
 			_hit_moving_slash(slash_previous, global_position)
-		if slash_was_active and get_slide_collision_count() > 0:
+		if slash_was_active and get_slide_collision_count() > 0 and (global_position - before_motion).dot(requested_motion.normalized()) < requested_motion.length() * 0.3:
 			moving_slash_time = 0.0
 			moving_slash_visual_time = minf(moving_slash_visual_time, 0.09)
 	_maintain_gather_spacing()
 	queue_redraw()
+
+
+func _ramp_guided_direction(direction: Vector2) -> Vector2:
+	if direction.length_squared() < 0.01: return direction
+	for ramp in ramp_areas:
+		var area: Rect2 = ramp.area
+		var horizontal: bool = int(ramp.axis) == 0
+		var side := Vector2.DOWN if horizontal else Vector2.RIGHT
+		var low: float = area.position.y if horizontal else area.position.x
+		var high: float = area.end.y if horizontal else area.end.x
+		var lateral: float = global_position.dot(side)
+		if lateral < low - 40.0 or lateral > high + 40.0: continue
+		for start in [true, false]:
+			var into := (Vector2.RIGHT if start else Vector2.LEFT) if horizontal else (Vector2.DOWN if start else Vector2.UP)
+			if direction.dot(into) < 0.45: continue
+			var mouth: Vector2 = Vector2(area.position.x if start else area.end.x, (low + high) * 0.5) if horizontal else Vector2((low + high) * 0.5, area.position.y if start else area.end.y)
+			var approach := (mouth - global_position).dot(into)
+			if approach < -12.0 or approach > 100.0: continue
+			var safe_low := low + collision_radius + 12.0
+			var safe_high := high - collision_radius - 12.0
+			var correction := clampf(lateral, safe_low, safe_high) - lateral
+			if absf(correction) < 1.0: continue
+			var lateral_component := direction.dot(side)
+			if signf(correction) * lateral_component >= 0.35: continue
+			var guided := direction - side * lateral_component + side * signf(correction) * maxf(0.35, absf(lateral_component))
+			return guided.normalized() * direction.length()
+	return direction
 
 
 func _start_dash(movement: Vector2) -> void:
@@ -248,7 +279,7 @@ func _start_dash(movement: Vector2) -> void:
 
 
 func _start_moving_slash(movement: Vector2) -> void:
-	# The hit has already happened; Q replaces the remaining recovery and keeps
+	# The hit has already happened; the slash replaces remaining recovery and keeps
 	# the next combo step so held attack resumes after the sweep.
 	attack_step = 0
 	attack_hitstop_remaining = 0.0
@@ -362,6 +393,7 @@ func _update_attack(delta: float) -> void:
 
 
 func _start_attack() -> void:
+	attack_sequence += 1
 	attack_step = next_combo_step
 	flow_weave_attack = flow_weave_ready
 	flow_weave_ready = false

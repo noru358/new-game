@@ -23,9 +23,9 @@ func _run() -> void:
 	_check(absf(player.global_position.y - start.y) < 1.0, "move direction")
 
 	start = player.global_position
-	_send_key(KEY_SPACE, true)
+	_send_key(KEY_SHIFT, true)
 	await _frames(1)
-	_send_key(KEY_SPACE, false)
+	_send_key(KEY_SHIFT, false)
 	await _frames(9)
 	_check(player.global_position.distance_to(start) > 115.0, "dash distance")
 	_check(player.global_position.distance_to(start) < 145.0, "dash upper bound")
@@ -168,7 +168,7 @@ func _send_key(key: Key, pressed: bool) -> void:
 	event.keycode = key
 	event.physical_keycode = key
 	event.pressed = pressed
-	if key == KEY_J or key == KEY_SPACE:
+	if key == KEY_J or key == KEY_SHIFT:
 		var action := "attack" if key == KEY_J else "dash"
 		if pressed:
 			Input.action_press(action)

@@ -1,6 +1,19 @@
 class_name JunglePassTerrain
 extends "res://game/hybrid_terrain.gd"
 
+const GATE_COLUMN_TOP := 1010.0
+const GATE_COLUMN_SIZE := Vector2(125.0, 120.0)
+const GATE_COLUMN_CENTERS := [Vector2(4120, 1160), Vector2(5070, 1160)]
+const CANOPY_POINTS := [
+	Vector2(350, 470), Vector2(650, 360), Vector2(1090, 350),
+	Vector2(350, 1880), Vector2(820, 2070), Vector2(1250, 1790),
+	Vector2(1820, 600), Vector2(2310, 570), Vector2(3180, 590),
+	Vector2(1810, 1790), Vector2(2500, 1830), Vector2(3410, 1750),
+	Vector2(3980, 640), Vector2(5140, 640), Vector2(4020, 1760), Vector2(5150, 1760),
+]
+
+var gate_columns: Array[Dictionary] = []
+
 
 func _init() -> void:
 	map_size = Vector2(5600, 2400)
@@ -28,12 +41,18 @@ func _init() -> void:
 	wall_areas = [
 		{"area": Rect2(600, 500, 180, 250), "height": 165.0, "color": Color("3d6149")},
 		{"area": Rect2(930, 1640, 190, 260), "height": 175.0, "color": Color("426b52")},
-		{"area": Rect2(1850, 620, 230, 290), "height": 185.0, "color": Color("4c6752")},
-		{"area": Rect2(3000, 1510, 290, 230), "height": 195.0, "color": Color("52644f")},
-		{"area": Rect2(4380, 590, 210, 300), "height": 270.0, "color": Color("727a65")},
-		{"area": Rect2(4380, 1510, 210, 300), "height": 270.0, "color": Color("727a65")},
-		{"area": Rect2(4870, 940, 135, 520), "height": 340.0, "color": Color("6c7363")},
+		{"area": Rect2(1850, 620, 230, 290), "base": 240.0, "height": 425.0, "color": Color("4c6752")},
+		{"area": Rect2(3000, 1510, 290, 230), "base": 240.0, "height": 435.0, "color": Color("52644f")},
+		{"area": Rect2(4380, 590, 210, 300), "base": 480.0, "height": 750.0, "color": Color("727a65")},
+		{"area": Rect2(4380, 1510, 210, 300), "base": 480.0, "height": 750.0, "color": Color("727a65")},
 	]
+	for center in GATE_COLUMN_CENTERS:
+		var column := {"area": Rect2(center - GATE_COLUMN_SIZE * 0.5, GATE_COLUMN_SIZE), "base": 480.0, "height": GATE_COLUMN_TOP, "color": Color("677867")}
+		gate_columns.append(column)
+		wall_areas.append(column)
+	for point in CANOPY_POINTS:
+		# The trunk silhouette and its small walkability footprint share one record.
+		wall_areas.append({"area": Rect2(point - Vector2.ONE * 23.0, Vector2.ONE * 46.0), "base": height_at(point), "height": height_at(point) + 230.0, "color": Color("486d57"), "visual": false})
 
 
 func height_at(point: Vector2) -> float:

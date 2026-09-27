@@ -37,7 +37,7 @@ func _run() -> void:
 	player.facing = Vector2.RIGHT
 	var start := player.position
 	var q := InputEventKey.new()
-	q.physical_keycode = KEY_Q
+	q.physical_keycode = KEY_SPACE
 	q.pressed = true
 	Input.parse_input_event(q)
 	var started := false

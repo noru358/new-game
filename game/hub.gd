@@ -192,6 +192,7 @@ func _label(value: String, font_size: int, color: Color = Color("d6e7dc")) -> La
 func _button(parent: VBoxContainer, value: String, action: Callable) -> Button:
 	var button := Button.new()
 	button.text = value
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.custom_minimum_size.y = 42
 	button.add_theme_font_size_override("font_size", 17)
 	button.add_theme_color_override("font_disabled_color", Color("a6b8af"))
@@ -208,13 +209,13 @@ func _button(parent: VBoxContainer, value: String, action: Callable) -> Button:
 
 func _refresh() -> void:
 	currency_label.text = "재화  %d" % profile.currency
-	temple_region_button.text = "청록 폐사원 · %s%s\n수변·회랑 · 문지기 · 첫 완료 시 Q 장비 개방" % ["완료" if profile.temple_owned else "도전 가능", " · 선택 중" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
+	temple_region_button.text = "청록 폐사원 · %s%s\n수변·회랑 · 문지기 · 첫 완료 시 이동 베기 장비 개방" % ["완료" if profile.temple_owned else "도전 가능", " · 선택 중" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
 	jungle_region_button.text = "정글 절벽 관문 · %s%s\n능선 우회로·높은 관문 · 횡쓸기/강풍 수호자" % ["완료" if profile.jungle_owned else "도전 가능" if profile.temple_owned else "첫 지역 완료 후 개방", " · 선택 중" if selected_region_id == RunProfile.JUNGLE_REGION else ""]
 	jungle_region_button.disabled = profile.load_error or not profile.region_available(RunProfile.JUNGLE_REGION)
 	progress_label.text = "완료: 청록 폐사원 %s · 정글 절벽 관문 %s\n재도전 성공 시 해당 지역 주공격 장비의 세부 옵션을 제안합니다." % ["✓" if profile.temple_owned else "—", "✓" if profile.jungle_owned else "—"]
 	start_button.text = "%s 출정" % ("정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원")
 	var weapon_owned := profile.owned_gear.has("W_FLOW")
-	weapon_button.text = "흐름의 마력장 · %s\nQ 명중→다음 평타 +25%% · 적중 시 Q 0.22초 환급\nQ 거리 +20%% · 재사용 -10%%\n%s" % ["기본으로 변경" if profile.equipped_weapon == "W_FLOW" else "장착" if weapon_owned else "구매 35", _affix_text(profile.owned_gear.get("W_FLOW", "")) if weapon_owned else "첫 지역 완료 후 개방 · 옵션 무작위"]
+	weapon_button.text = "흐름의 마력장 · %s\n이동 베기 명중 → 다음 평타 +25%%\n강화 평타 적중 → 재사용 0.22초 환급\n이동 베기 거리 +20%% · 재사용 -10%%\n%s" % ["기본으로 변경" if profile.equipped_weapon == "W_FLOW" else "장착" if weapon_owned else "구매 35", _affix_text(profile.owned_gear.get("W_FLOW", "")) if weapon_owned else "첫 지역 완료 후 개방 · 옵션 무작위"]
 	weapon_button.disabled = profile.load_error or (not weapon_owned and (not profile.temple_owned or profile.currency < 35))
 	var echo_owned := profile.owned_gear.has("W_ECHO")
 	echo_weapon_button.text = "집결의 마력장 · %s\n3타 집결 지점에서 4타가 원형으로 폭발 · 반경 155\n%s" % ["기본으로 변경" if profile.equipped_weapon == "W_ECHO" else "장착" if echo_owned else "구매 45", _affix_text(profile.owned_gear.get("W_ECHO", "")) if echo_owned else "정글 절벽 관문 완료 후 개방 · 옵션 무작위"]
@@ -222,7 +223,7 @@ func _refresh() -> void:
 	var accessory_owned := profile.owned_gear.has("A_EMBER")
 	accessory_button.text = "여우불 장신구 · %s\n여우불 피해 계수 +0.15\n%s" % ["해제" if profile.equipped_accessory == "A_EMBER" else "장착" if accessory_owned else "구매 24", _affix_text(profile.owned_gear.get("A_EMBER", "")) if accessory_owned else "세부 옵션 무작위"]
 	accessory_button.disabled = profile.load_error or (not accessory_owned and profile.currency < 24)
-	var growth_names := {"POWER": "평타 피해", "VITALITY": "최대 HP", "MOBILITY": "대시 충전 시간", "SLASH": "Q 재사용 시간", "FINISH": "3·4타 사거리"}
+	var growth_names := {"POWER": "평타 피해", "VITALITY": "최대 HP", "MOBILITY": "대시 충전 시간", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리"}
 	for id in growth_buttons:
 		var rank := int(profile.growth_ranks[id])
 		var cost := int(RunProfile.GROWTH_COST[rank]) if rank < 2 else 0
@@ -238,14 +239,14 @@ func _refresh() -> void:
 	supply_buy_button.disabled = profile.load_error or profile.currency < 12 or profile.supply_count >= 3
 	supply_toggle_button.text = "다음 출정에 사용: %s" % ("예" if profile.supply_selected and profile.supply_count > 0 else "아니요")
 	supply_toggle_button.disabled = profile.load_error or profile.supply_count <= 0
-	info_label.text = "선택 지역: %s\n주공격: %s\n장신구: %s\n영구 성장: 평타 %d · HP %d · 대시 %d · Q %d · 3/4타 %d\n회복 부적: %s" % [
+	info_label.text = "선택 지역: %s\n주공격: %s\n장신구: %s\n영구 성장: 평타 %d · HP %d · 대시 %d · 이동 베기 %d · 3/4타 %d\n회복 부적: %s" % [
 		"정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원",
 		RunProfile.gear_name(profile.equipped_weapon),
 		"여우불 장신구" if profile.equipped_accessory == "A_EMBER" else "없음",
 		profile.growth_ranks.POWER, profile.growth_ranks.VITALITY, profile.growth_ranks.MOBILITY, profile.growth_ranks.SLASH, profile.growth_ranks.FINISH,
 		"출정 시 소모" if profile.supply_selected and profile.supply_count > 0 else "사용 안 함"
 	]
-	comparison_label.text = "현재: %s\n기본 평타 피해 %d%% · Q 재사용 %d%%\n3·4타 사거리 %d%%\n\n기본 마력장\n4타 전방 충격 · 거리 120 · 각도 125°\n\n흐름의 마력장\nQ 이동 거리 120%% · 재사용 -10%%\nQ 적중 뒤 다음 평타 +25%%\n그 평타가 적중하면 Q 0.22초 환급\n\n집결의 마력장\n3타가 모은 위치에서 4타 원형 폭발\n기본 반경 155 · 모든 방향\n\n장신구: %s · 피해 계수 +%.2f" % [
+	comparison_label.text = "현재: %s\n기본 평타 피해 %d%% · 이동 베기 재사용 %d%%\n3·4타 사거리 %d%%\n\n기본 마력장\n4타 전방 충격 · 거리 120 · 각도 125°\n\n흐름의 마력장\n이동 베기 거리 120%% · 재사용 -10%%\n이동 베기 적중 뒤 다음 평타 +25%%\n그 평타가 적중하면 재사용 0.22초 환급\n\n집결의 마력장\n3타가 모은 위치에서 4타 원형 폭발\n기본 반경 155 · 모든 방향\n\n장신구: %s · 피해 계수 +%.2f" % [
 		RunProfile.gear_name(profile.equipped_weapon),
 		100 + int(profile.growth_ranks.POWER) * 5,
 		100 - int(profile.growth_ranks.SLASH) * 3 - (10 if profile.equipped_weapon == "W_FLOW" else 0) - (4 if profile.equipped_weapon == "W_FLOW" and profile.owned_gear.get("W_FLOW") == "SWIFT" else 0),

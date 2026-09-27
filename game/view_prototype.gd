@@ -192,7 +192,7 @@ func _build_view_ui() -> void:
 		if child is CanvasLayer and child != canvas:
 			for control in child.get_children():
 				if control is Label and control.text.begins_with("WASD Move"):
-					control.text = "WASD Move  |  J / Click Attack  |  Space Dash  |  N Next Wave  |  Esc Pause  |  R Reset"
+					control.text = "WASD Move  |  J / Click Attack  |  Shift Dash  |  N Next Wave  |  Esc Pause  |  R Reset"
 
 
 func _draw() -> void:

@@ -16,6 +16,8 @@ const CARDS := {
 	"S_WISP_COUNT": {"name": "여우불 분화", "detail": "여우불 +1, 최대 3개", "max": 2, "group": "AUTO"},
 	"S_WISP_ORBIT": {"name": "회전 불꽃", "detail": "마탄을 유지하며 회전 접촉 피해", "max": 2, "group": "AUTO"},
 	"S_WISP_CHAIN": {"name": "연쇄 불꽃", "detail": "마탄 명중 후 가까운 적에게 연쇄", "max": 2, "group": "AUTO"},
+	"S_WISP_FOLLOWUP": {"name": "베기 뒤 불꽃", "detail": "평타 적중 후 여우불 발사 대기 단축", "max": 2, "group": "AUTO"},
+	"S_WISP_REPLY": {"name": "불꽃의 응답", "detail": "여우불 적중 후 이동 베기 재사용 단축", "max": 2, "group": "AUTO"},
 	"S_SEAL": {"name": "자동 마력진", "detail": "가까운 적에게 예고 후 범위 공격", "max": 3, "group": "AUTO"},
 	"U_STEP": {"name": "민첩한 대시", "detail": "대시 충전 강화", "max": 3, "group": "DASH"},
 	"U_SLASH_SWEEP": {"name": "넓은 이동 베기", "detail": "이동 베기가 더 넓게 적을 쓸어냅니다", "max": 2, "group": "BASIC"},
@@ -44,6 +46,7 @@ var unlock_notice := ""
 var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
 var permanent_combo_progression := false
+var last_followup_attack := -1
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -57,6 +60,10 @@ func _ready() -> void:
 	rng.randomize()
 	unlocks.load_progress()
 	_build_ui()
+	if is_instance_valid(player):
+		player.attack_landed.connect(_on_player_attack_landed)
+	for wisp in wisps:
+		_connect_wisp(wisp)
 	_update_hud()
 
 
@@ -147,6 +154,8 @@ func describe_card(card_id: String, next_rank: int) -> String:
 		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
 		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
 		"S_WISP_CHAIN": return "명중 후 다른 적 1명에게 연쇄" if next_rank == 1 else "연쇄 대상 1명 → 2명"
+		"S_WISP_FOLLOWUP": return "평타 적중 한 동작당\n여우불 발사 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
+		"S_WISP_REPLY": return "여우불 적중마다\n이동 베기 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
 		"S_SEAL": return "적 위치에 자동 마력진 추가" if next_rank == 1 else "마력진 범위 %d → %d" % [66 + 10 * (old_rank - 1), 66 + 10 * (next_rank - 1)]
 		"U_STEP": return "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 %.2f초 → %.2f초" % [1.2 * (1.0 - (0.15 if old_rank > 0 else 0.0) - player.permanent_dash_cooldown_reduction), 1.2 * (1.0 - (0.30 if next_rank >= 3 else 0.15) - player.permanent_dash_cooldown_reduction)]
 		"U_SLASH_SWEEP": return "이동 베기 폭 %d → %d" % [110 + 40 * old_rank, 110 + 40 * next_rank]
@@ -158,6 +167,7 @@ func _available_card_count() -> int:
 	var count := 0
 	for card_id in CARDS:
 		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
+		if card_id == "S_WISP_REPLY" and not player.moving_slash_enabled: continue
 		if card_id == "U_CHAIN" and permanent_combo_progression: continue
 		if int(card_ranks.get(card_id, 0)) < int(CARDS[card_id].max) and unlocks.is_unlocked(card_id): count += 1
 	return count
@@ -181,16 +191,19 @@ func reroll_choices() -> bool:
 
 func roll_choices() -> Array[String]:
 	var basic: Array[String] = []
-	var automatic: Array[String] = []
+	var wisp_cards: Array[String] = []
 	var others: Array[String] = []
 	for card_id in CARDS:
 		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
+		if card_id == "S_WISP_REPLY" and not player.moving_slash_enabled: continue
 		if card_id == "U_CHAIN" and permanent_combo_progression: continue
 		if int(card_ranks.get(card_id, 0)) >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
 			continue
 		match CARDS[card_id].group:
 			"BASIC": basic.append(card_id)
-			"AUTO": automatic.append(card_id)
+			"AUTO":
+				if card_id.begins_with("S_WISP_"): wisp_cards.append(card_id)
+				else: others.append(card_id)
 			_: others.append(card_id)
 	var result: Array[String] = []
 	if basic.has("U_CHAIN"):
@@ -198,11 +211,11 @@ func roll_choices() -> Array[String]:
 		result.append("U_CHAIN")
 	elif not basic.is_empty():
 		result.append(_take_random(basic))
-	if not automatic.is_empty():
-		result.append(_take_random(automatic))
+	if not wisp_cards.is_empty():
+		result.append(_take_random(wisp_cards))
 	var remaining: Array[String] = []
 	remaining.append_array(basic)
-	remaining.append_array(automatic)
+	remaining.append_array(wisp_cards)
 	remaining.append_array(others)
 	while result.size() < 3 and not remaining.is_empty():
 		result.append(_take_random(remaining))
@@ -268,8 +281,10 @@ func _sync_wisps() -> void:
 		companion.facing_formation = wisps[0].facing_formation
 		companion.formation_index = wisps.size()
 		companion.formation_count = count
+		companion.fire_cooldown = WispCompanion.BASE_ATTACK_INTERVAL * float(wisps.size()) / float(count)
 		companion.process_mode = Node.PROCESS_MODE_PAUSABLE
 		arena.add_child(companion)
+		_connect_wisp(companion)
 		wisps.append(companion)
 	for i in range(wisps.size()):
 		var wisp := wisps[i]
@@ -284,8 +299,25 @@ func _sync_wisps() -> void:
 		wisp.orbit_enabled = int(card_ranks.get("S_WISP_ORBIT", 0)) > 0
 		wisp.orbit_damage = 4.0 + 3.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
 		wisp.chain_jumps = int(card_ranks.get("S_WISP_CHAIN", 0))
-		if i > 0:
-			wisp.fire_cooldown = wisp.attack_interval * float(i) / float(wisps.size())
+
+
+func _connect_wisp(wisp: WispCompanion) -> void:
+	if not wisp.enemy_hit.is_connected(_on_wisp_enemy_hit):
+		wisp.enemy_hit.connect(_on_wisp_enemy_hit)
+
+
+func _on_player_attack_landed(_point: Vector2, _direction: Vector2, _step: int, _finisher: bool) -> void:
+	var rank := int(card_ranks.get("S_WISP_FOLLOWUP", 0))
+	if rank <= 0 or last_followup_attack == player.attack_sequence: return
+	last_followup_attack = player.attack_sequence
+	for wisp in wisps:
+		wisp.fire_cooldown = maxf(0.0, wisp.fire_cooldown - 0.08 * rank)
+
+
+func _on_wisp_enemy_hit(_enemy: TrainingEnemy) -> void:
+	var rank := int(card_ranks.get("S_WISP_REPLY", 0))
+	if rank > 0:
+		player.moving_slash_cooldown = maxf(0.0, player.moving_slash_cooldown - 0.06 * rank)
 
 
 func _sync_seal(rank: int) -> void:
@@ -350,6 +382,7 @@ func _build_ui() -> void:
 		var button := Button.new()
 		button.position = Vector2(140 + i * 335, 250)
 		button.size = Vector2(310, 245)
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		button.add_theme_font_size_override("font_size", 21)
 		button.pressed.connect(choose_index.bind(i))
 		overlay.add_child(button)

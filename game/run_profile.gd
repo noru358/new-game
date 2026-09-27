@@ -53,9 +53,9 @@ static func gear_name(id: String) -> String:
 
 static func affix_description(affix: String) -> String:
 	match affix:
-		"KEEN": return "Q 피해 +4%"
-		"SWIFT": return "Q 재사용 -4%p"
-		"WEAVE": return "강화 평타 적중 시 Q 추가 환급 0.10초"
+		"KEEN": return "이동 베기 피해 +4%"
+		"SWIFT": return "이동 베기 재사용 -4%p"
+		"WEAVE": return "강화 평타 적중 시 이동 베기 추가 환급 0.10초"
 		"WIDE": return "4타 폭발 범위 +10%"
 		"HEAVY": return "4타 폭발 피해 +8%"
 		"DRAW": return "3타 사거리 +8%"
