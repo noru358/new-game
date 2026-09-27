@@ -48,7 +48,7 @@ func _init() -> void:
 		"회랑": Vector2(3410, 900),
 		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — 1G Complete Run v02"
+	scene_title = "Loop Conquest — 1G Complete Run v03"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	overview_camera_size = 40.0
@@ -60,6 +60,7 @@ func _init() -> void:
 func _ready() -> void:
 	show_practice_controls = practice_mode
 	super._ready()
+	player.attack_hitstop_scale = 1.0
 	if practice_mode: return
 	rng.randomize()
 	run_id = "%d-%d-%d" % [Time.get_unix_time_from_system(), Time.get_ticks_usec(), rng.randi()]

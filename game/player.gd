@@ -66,6 +66,8 @@ var move_speed_multiplier := 1.0
 var dash_distance_multiplier := 1.0
 var attack_active_multiplier := 1.0
 var attack_recovery_multiplier := 1.0
+var attack_hitstop_scale := 0.0
+var attack_hitstop_remaining := 0.0
 var attack_path_filter: Callable
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -162,6 +164,7 @@ func _start_dash(movement: Vector2) -> void:
 		var remaining: float = attack.windup + attack.active + attack.recovery - attack_elapsed
 		attack_lock = maxf(attack_lock, remaining)
 	attack_step = 0
+	attack_hitstop_remaining = 0.0
 	next_combo_step = 1
 	combo_wait = 0.0
 	queued_attack = false
@@ -205,6 +208,7 @@ func _attack_spec(step: int) -> Dictionary:
 func set_combo_rank(rank: int) -> void:
 	combo_rank = clampi(rank, 0, 2)
 	attack_step = 0
+	attack_hitstop_remaining = 0.0
 	next_combo_step = 1
 	queued_attack = false
 	attack_buffer_time = 0.0
@@ -215,6 +219,11 @@ func set_combo_rank(rank: int) -> void:
 
 
 func _update_attack(delta: float) -> void:
+	if attack_hitstop_remaining > 0.0:
+		var frozen := minf(delta, attack_hitstop_remaining)
+		attack_hitstop_remaining -= frozen
+		delta -= frozen
+		if delta <= 0.0: return
 	if attack_step > 0:
 		attack_elapsed += delta
 		var attack := _attack_spec(attack_step)
@@ -236,6 +245,7 @@ func _start_attack() -> void:
 	attack_step = next_combo_step
 	next_combo_step = 1 if attack_step >= combo_limit() else attack_step + 1
 	attack_elapsed = 0.0
+	attack_hitstop_remaining = 0.0
 	attack_direction = facing
 	if attack_step == 3:
 		gather_target_global = global_position + attack_direction * GATHER_FORWARD_OFFSET
@@ -277,6 +287,8 @@ func _hit_enemies(attack: Dictionary) -> void:
 		attack_landed.emit(enemy.global_position, effect_direction, attack_step, finisher)
 		if not impact_played_this_attack:
 			impact_played_this_attack = true
+			if attack_step <= 2:
+				attack_hitstop_remaining = (0.025 if attack_step == 1 else 0.040) * attack_hitstop_scale
 			impact_audio.pitch_scale = 1.22 if attack_step == 3 else 0.82 if finisher else 1.13 if attack_step == 1 else 0.98
 			_play_sound("res://game/audio/hit.wav", impact_audio)
 	if new_gathered:

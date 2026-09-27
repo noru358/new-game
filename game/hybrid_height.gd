@@ -416,8 +416,14 @@ func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 	kills += 1
 	growth.on_enemy_defeated(enemy)
 
-func _on_player_attack_landed(point: Vector2, _direction: Vector2, step: int, _finisher: bool) -> void:
-	_flash(point, Color("94e9ff") if step == 3 else Color("ffd486"))
+func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, finisher: bool) -> void:
+	if player.attack_hitstop_scale <= 0.0:
+		_flash(point, Color("94e9ff") if step == 3 else Color("ffd486"))
+		return
+	var color := Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
+	_flash(point, color, 0.27 if finisher else 0.20)
+	if not player.impact_played_this_attack:
+		camera.position -= Vector3(direction.x, 0.0, direction.y) * (0.10 if finisher else 0.055)
 
 func _enemy_color(role: TrainingEnemy.Role) -> Color:
 	match role:
@@ -636,19 +642,21 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 	if elapsed >= windup:
 		var sweep_sign := 1.0 if player.attack_step != 2 else -1.0
 		var head := start + arc * (active_progress if sweep_sign > 0.0 else 1.0 - active_progress)
-		var tail := head - sweep_sign * minf(0.64, arc * 0.45)
+		var heavy_second := player.attack_hitstop_scale > 0.0 and player.attack_step == 2
+		var tail := head - sweep_sign * minf(0.82 if heavy_second else 0.64, arc * 0.45)
 		var slash_color := base.lightened(0.48)
-		slash_color.a = 0.93 * fade
+		slash_color.a = (1.0 if heavy_second else 0.93) * fade
 		for i in range(10):
 			var first := lerpf(tail, head, float(i) / 10.0)
 			var second := lerpf(tail, head, float(i + 1) / 10.0)
 			var blade_reach := minf(_attack_reach_at(origin, first, effective_reach), _attack_reach_at(origin, second, effective_reach))
 			if blade_reach > 8.0:
-				_attack_band(origin, first, second, minf(reach * 0.48, blade_reach * 0.38), blade_reach * 0.96, slash_color, 88.0)
+				_attack_band(origin, first, second, minf(reach * (0.40 if heavy_second else 0.48), blade_reach * 0.38), blade_reach * 0.96, slash_color, 88.0)
 		var edge_color := Color.WHITE
 		edge_color.a = 0.78 * fade
-		var edge_start := head - sweep_sign * 0.065
-		var edge_end := head + sweep_sign * 0.065
+		var edge_width := 0.085 if heavy_second else 0.065
+		var edge_start := head - sweep_sign * edge_width
+		var edge_end := head + sweep_sign * edge_width
 		var edge_reach := minf(_attack_reach_at(origin, edge_start, effective_reach), _attack_reach_at(origin, edge_end, effective_reach))
 		if edge_reach > 8.0:
 			_attack_band(origin, edge_start, edge_end, minf(reach * 0.30, edge_reach * 0.38), edge_reach, edge_color, 90.0)
@@ -803,8 +811,8 @@ func _warning_quad(points: Array, color: Color, lift: float = 9.0, ground_height
 		warning_mesh.surface_add_vertex(terrain.world_point(point, lift) if ground_height <= -9999.0 else Vector3(point.x, ground_height + lift, point.y) * Terrain.SCALE)
 		warning_vertex_count += 1
 
-func _flash(point: Vector2, color: Color) -> void:
-	var flash := _sphere(0.22, color)
+func _flash(point: Vector2, color: Color, radius: float = 0.22) -> void:
+	var flash := _sphere(radius, color)
 	add_child(flash)
 	flash.position = terrain.world_point(point, 45)
 	var tween := create_tween()
