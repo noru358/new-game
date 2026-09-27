@@ -13,8 +13,8 @@ const SUPPLY_LIMIT := 3
 const TEMPLE_REGION := "O_TEMPLE"
 const JUNGLE_REGION := "O_JUNGLE_PASS"
 const REGION_GEAR := {"O_TEMPLE": "W_FLOW", "O_JUNGLE_PASS": "W_ECHO"}
-const GEAR_AFFIXES := {"W_FLOW": ["KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["WIDE", "HEAVY", "DRAW"], "A_EMBER": ["BRIGHT", "STEADY"]}
-const REGION_MODS := {"O_TEMPLE": ["KEEN", "SWIFT", "WEAVE", "BRIGHT"], "O_JUNGLE_PASS": ["WIDE", "HEAVY", "DRAW", "STEADY"]}
+const GEAR_AFFIXES := {"W_FLOW": ["RIPPLE", "KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW"], "A_EMBER": ["EMBER_STRIKE", "BRIGHT", "STEADY"]}
+const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"]}
 
 var save_prefix := "user://loop_conquest_profile"
 var generation := 0
@@ -56,6 +56,9 @@ static func gear_name(id: String) -> String:
 
 static func affix_description(affix: String) -> String:
 	match affix:
+		"RIPPLE": return "강화 평타 적중 → 주변에 작은 파동"
+		"ECHO_WISP": return "4타 적중 → 여우불 1발 추가"
+		"EMBER_STRIKE": return "여우불 적중 → 1.5초 안의 다음 평타가 넓어짐"
 		"KEEN": return "이동 베기 피해 +4%"
 		"SWIFT": return "이동 베기 재사용 -4%p"
 		"WEAVE": return "강화 평타 적중 시 이동 베기 추가 환급 0.10초"
@@ -65,6 +68,10 @@ static func affix_description(affix: String) -> String:
 		"BRIGHT": return "여우불 피해 계수 +0.05"
 		"STEADY": return "최대 HP +5"
 	return ""
+
+
+static func affix_kind(affix: String) -> String:
+	return "behavior" if affix in ["RIPPLE", "ECHO_WISP", "EMBER_STRIKE"] else "numeric"
 
 
 func load_state() -> void:

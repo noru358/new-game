@@ -77,7 +77,7 @@ func _update_prompt() -> void:
 		return
 	prompt.show()
 	var station := _nearest_station()
-	prompt.text = "WASD 이동  ·  E 상호작용\n%s%s" % ["E · " if station.distance <= INTERACT_RANGE else "가까이 가기 · ", station.name]
+	prompt.text = "E · %s" % station.name if station.distance <= INTERACT_RANGE else "WASD 이동 · 시설에 접근"
 
 
 func _build_camp() -> void:
@@ -195,7 +195,7 @@ func _build_overlay() -> void:
 	add_child(canvas)
 	prompt = Label.new()
 	prompt.position = Vector2(24, 20)
-	prompt.add_theme_font_size_override("font_size", 24)
+	prompt.add_theme_font_size_override("font_size", 20)
 	prompt.add_theme_color_override("font_color", Color("fff0ca"))
 	prompt.add_theme_color_override("font_shadow_color", Color.BLACK)
 	canvas.add_child(prompt)

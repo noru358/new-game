@@ -25,7 +25,14 @@ func _run() -> void:
 	for point in [Vector2(1410, 1180), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2870, 1970), Vector2(4520, 1160)]:
 		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(scene.player.position, point).size() >= 2, "ridge, detours and gate remain reachable from the entry")
 	_check(scene.navigation.is_open(Vector2(3750, 1700), scene.ACTOR_CLEARANCE) and scene.navigation.find_path(Vector2(3420, 1700), Vector2(4700, 1700)).size() >= 2, "southern gate ramp gives a second reachable entrance")
+	_check(scene.terrain.ramps[3].kind == "gate_stairs" and scene.terrain.ramps[4].kind == "rock_path", "gate entrances have distinct authored surfaces")
 	_check(scene.terrain.height_at(Vector2(2640, 1120)) == 240.0 and scene.terrain.height_at(Vector2(4520, 1160)) == 480.0, "the cliff and gate are visibly elevated")
+	scene.teleport(Vector2(3330, 1130))
+	await physics_frame
+	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 2, "main stair approach calls its two sentries from the upper landing")
+	scene.teleport(Vector2(3330, 1690))
+	await physics_frame
+	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 2, "the other approach does not stack a second encounter in one run")
 	scene.run_time = 270.0
 	scene._update_run_hud()
 	_check(scene.run_hud.text.contains("관문 상단에 수호자 출현 예정"), "gate boss location is announced thirty seconds early")

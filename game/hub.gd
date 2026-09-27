@@ -22,6 +22,8 @@ var gear_action_button: Button
 var mod_buttons: Dictionary = {}
 var mod_clear_button: Button
 var mod_info_label: Label
+var mod_behavior_label: Label
+var mod_numeric_label: Label
 var growth_buttons: Dictionary = {}
 var reset_button: Button
 var supply_buy_button: Button
@@ -78,21 +80,28 @@ func _build_ui() -> void:
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	root_box.add_child(tabs)
 	var region := _tab_page("출정")
-	region.add_child(_label("지역", 24, Color("f6e7bf")))
-	temple_region_button = _button(region, "", _select_region.bind(RunProfile.TEMPLE_REGION))
-	jungle_region_button = _button(region, "", _select_region.bind(RunProfile.JUNGLE_REGION))
+	region.add_child(_label("지역 선택", 22, Color("f6e7bf")))
+	var region_choices := HBoxContainer.new()
+	region_choices.add_theme_constant_override("separation", 12)
+	region.add_child(region_choices)
+	temple_region_button = _button(region_choices, "", _select_region.bind(RunProfile.TEMPLE_REGION))
+	jungle_region_button = _button(region_choices, "", _select_region.bind(RunProfile.JUNGLE_REGION))
+	temple_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	jungle_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	progress_label = _label("", 17, Color("efca8d"))
 	region.add_child(progress_label)
-	region.add_child(HSeparator.new())
 	info_label = _label("", 18, Color("bed9d1"))
 	region.add_child(info_label)
-	region.add_child(HSeparator.new())
-	region.add_child(_label("물자", 21, Color("f6e7bf")))
-	supply_buy_button = _button(region, "", _buy_supply)
-	supply_toggle_button = _button(region, "", _toggle_supply)
-	region.add_spacer(false)
-	start_button = _button(region, "청록 폐사원 출정", _depart)
+	var supplies := HBoxContainer.new()
+	supplies.add_theme_constant_override("separation", 12)
+	region.add_child(supplies)
+	supply_buy_button = _button(supplies, "", _buy_supply)
+	supply_toggle_button = _button(supplies, "", _toggle_supply)
+	supply_buy_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	supply_toggle_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	start_button = _button(root_box, "청록 폐사원 출정", _depart)
 	start_button.custom_minimum_size.y = 54
+	tabs.tab_changed.connect(func(index: int): start_button.visible = index == 0)
 	var gear := _tab_page("장비")
 	var gear_columns := HBoxContainer.new()
 	gear_columns.add_theme_constant_override("separation", 20)
@@ -101,22 +110,33 @@ func _build_ui() -> void:
 	gear_choices.custom_minimum_size.x = 530
 	gear_choices.add_theme_constant_override("separation", 10)
 	gear_columns.add_child(gear_choices)
-	gear_choices.add_child(_label("장착 장비", 22, Color("f6e7bf")))
+	gear_choices.add_child(_label("주공격", 22, Color("f6e7bf")))
 	base_weapon_button = _button(gear_choices, "", func(): _select_gear("W_START"))
 	weapon_button = _button(gear_choices, "", func(): _select_gear("W_FLOW"))
 	echo_weapon_button = _button(gear_choices, "", func(): _select_gear("W_ECHO"))
+	gear_choices.add_child(_label("장신구", 22, Color("f6e7bf")))
 	accessory_button = _button(gear_choices, "", func(): _select_gear("A_EMBER"))
 	gear_action_button = _button(gear_choices, "", _gear_action)
 	var mods := VBoxContainer.new()
 	mods.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gear_columns.add_child(mods)
-	mods.add_child(_label("옵션 · 구매 장비마다 1칸", 22, Color("f6e7bf")))
+	mods.add_child(_label("선택 장비", 22, Color("f6e7bf")))
 	mod_info_label = _label("", 17, Color("c5ded6"))
 	mods.add_child(mod_info_label)
-	mod_clear_button = _button(mods, "옵션 장착 해제 · 보관함 유지", func(): _slot_mod(""))
+	mod_behavior_label = _label("행동 변화", 18, Color("f6e7bf"))
+	mods.add_child(mod_behavior_label)
+	var behavior_options := VBoxContainer.new()
+	mods.add_child(behavior_options)
+	mod_numeric_label = _label("수치 조정", 18, Color("f6e7bf"))
+	mods.add_child(mod_numeric_label)
+	var numeric_options := VBoxContainer.new()
+	mods.add_child(numeric_options)
 	for gear_id in RunProfile.GEAR_AFFIXES:
 		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
-			mod_buttons[mod_id] = _button(mods, "", _slot_mod.bind(mod_id))
+			mod_buttons[mod_id] = _button(behavior_options if RunProfile.affix_kind(mod_id) == "behavior" else numeric_options, "", _slot_mod.bind(mod_id))
+	mod_clear_button = _button(mods, "옵션 해제", func(): _slot_mod(""))
+	mod_clear_button.custom_minimum_size.y = 34
+	mod_clear_button.add_theme_font_size_override("font_size", 15)
 	var growth := _tab_page("성장")
 	growth.add_child(_label("영구 성장", 22, Color("f6e7bf")))
 	for id in RunProfile.GROWTH_IDS:
@@ -171,7 +191,7 @@ func _label(value: String, font_size: int, color: Color = Color("d6e7dc")) -> La
 	return label
 
 
-func _button(parent: VBoxContainer, value: String, action: Callable) -> Button:
+func _button(parent: Container, value: String, action: Callable) -> Button:
 	var button := Button.new()
 	button.text = value
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -204,21 +224,21 @@ func _button_style(highlighted: bool) -> StyleBoxFlat:
 
 func _refresh() -> void:
 	currency_label.text = "재화 %d" % profile.currency
-	temple_region_button.text = "청록 폐사원  ·  %s%s\n수변·회랑 / 문지기" % ["완료" if profile.temple_owned else "도전 가능", "  ✓" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
-	jungle_region_button.text = "정글 절벽 관문  ·  %s%s\n능선·관문 / 수호자" % ["완료" if profile.jungle_owned else "도전 가능" if profile.temple_owned else "잠김", "  ✓" if selected_region_id == RunProfile.JUNGLE_REGION else ""]
+	temple_region_button.text = "청록 폐사원  ·  %s%s\n문지기" % ["완료" if profile.temple_owned else "도전 가능", "  ✓" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
+	jungle_region_button.text = "정글 절벽 관문  ·  %s%s\n수호자" % ["완료" if profile.jungle_owned else "도전 가능" if profile.temple_owned else "잠김", "  ✓" if selected_region_id == RunProfile.JUNGLE_REGION else ""]
 	jungle_region_button.disabled = profile.load_error or not profile.region_available(RunProfile.JUNGLE_REGION)
 	var region_name := "정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원"
 	var unlocked := profile.jungle_owned if selected_region_id == RunProfile.JUNGLE_REGION else profile.temple_owned
-	progress_label.text = "첫 성공: 주공격 장비 개방" if not unlocked else "재도전 성공: 아직 없는 지역 옵션 1개 획득"
-	info_label.text = "주공격  %s  ·  옵션 %s\n장신구  %s  ·  옵션 %s" % [
+	progress_label.text = "첫 성공 → 장비 개방" if not unlocked else "재도전 성공 → 새 지역 옵션 1개"
+	info_label.text = "주공격  %s  ·  %s\n장신구  %s  ·  %s" % [
 		RunProfile.gear_name(profile.equipped_weapon),
 		_mod_summary(profile.equipped_weapon),
 		"여우불 장신구" if profile.equipped_accessory == "A_EMBER" else "없음",
 		_mod_summary("A_EMBER") if profile.equipped_accessory == "A_EMBER" else "없음"
 	]
-	supply_buy_button.text = "회복 부적 구매 12  ·  보유 %d/3" % profile.supply_count
+	supply_buy_button.text = "회복 부적 구매 12  ·  %d/3" % profile.supply_count
 	supply_buy_button.disabled = profile.load_error or profile.currency < 12 or profile.supply_count >= 3
-	supply_toggle_button.text = "출정 시 회복 부적 사용  %s" % ("켜짐" if profile.supply_selected and profile.supply_count > 0 else "꺼짐")
+	supply_toggle_button.text = "이번 출정에 사용  %s" % ("켜짐" if profile.supply_selected and profile.supply_count > 0 else "꺼짐")
 	supply_toggle_button.disabled = profile.load_error or profile.supply_count <= 0
 	start_button.text = "%s 출정" % region_name
 	start_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -237,20 +257,26 @@ func _refresh() -> void:
 	elif not selected_owned:
 		gear_action_button.text = "선택 장비 구매  %d" % int(RunProfile.GEAR_COST[selected_gear_id])
 	elif (selected_gear_id == profile.equipped_weapon or selected_gear_id == profile.equipped_accessory):
-		gear_action_button.text = "장신구 해제" if selected_gear_id == "A_EMBER" else "기본 마력장 장착"
+		gear_action_button.text = "장신구 해제" if selected_gear_id == "A_EMBER" else "주공격 해제 · 기본 장비로"
 	else:
 		gear_action_button.text = "선택 장비 장착"
 	gear_action_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	gear_action_button.disabled = profile.load_error or (selected_gear_id == "W_START" and profile.equipped_weapon == "W_START") or (not selected_owned and (profile.currency < int(RunProfile.GEAR_COST[selected_gear_id]) or selected_gear_id == "W_FLOW" and not profile.temple_owned or selected_gear_id == "W_ECHO" and not profile.jungle_owned))
-	mod_info_label.text = "선택: %s\n현재: %s" % [RunProfile.gear_name(selected_gear_id), _mod_summary(selected_gear_id)]
-	mod_clear_button.visible = selected_gear_id != "W_START"
+	mod_info_label.text = "기본 마력장 · 4타 전방 충격\n교체 옵션 없음" if selected_gear_id == "W_START" else "%s  ·  옵션 1칸\n장착 옵션: %s" % [RunProfile.gear_name(selected_gear_id), _mod_summary(selected_gear_id)]
+	mod_clear_button.visible = selected_gear_id != "W_START" and not profile.mod_for(selected_gear_id).is_empty()
 	mod_clear_button.disabled = profile.load_error or profile.mod_for(selected_gear_id).is_empty()
+	var has_behavior := false
+	var has_numeric := false
 	for mod_id in mod_buttons:
 		var button: Button = mod_buttons[mod_id]
 		button.visible = selected_gear_id != "W_START" and RunProfile.GEAR_AFFIXES[selected_gear_id].has(mod_id)
+		if button.visible and RunProfile.affix_kind(mod_id) == "behavior": has_behavior = true
+		elif button.visible: has_numeric = true
 		button.text = "%s  %s" % ["●" if profile.mod_for(selected_gear_id) == mod_id else "○", RunProfile.affix_description(mod_id)]
 		if not profile.owned_mods.has(mod_id): button.text += "  ·  미획득"
 		button.disabled = profile.load_error or not selected_owned or not profile.owned_mods.has(mod_id) or profile.mod_for(selected_gear_id) == mod_id
+	mod_behavior_label.visible = has_behavior
+	mod_numeric_label.visible = has_numeric
 	var growth_names := {"POWER": "평타 피해", "VITALITY": "최대 HP", "MOBILITY": "대시 충전 시간", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리"}
 	for id in growth_buttons:
 		var rank := int(profile.growth_ranks[id])

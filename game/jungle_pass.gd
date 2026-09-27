@@ -2,6 +2,8 @@ extends "res://game/hybrid_region.gd"
 
 const PassTerrain = preload("res://game/jungle_pass_terrain.gd")
 const GATE_BOSS_POINTS := [Vector2(4700, 800), Vector2(4700, 1200), Vector2(4700, 1650)]
+var canopy_visuals: Dictionary = {}
+var gate_route_encounter := ""
 
 
 func _init() -> void:
@@ -25,7 +27,7 @@ func _init() -> void:
 	boss_scene = preload("res://game/jungle_warden.tscn")
 	boss_name = "관문 수호자"
 	first_clear_notice = "관문 통과 · 새 3·4타 장비 선택 가능"
-	scene_title = "Loop Conquest — Jungle Pass v10"
+	scene_title = "Loop Conquest — 정글 절벽 관문"
 	scene_hud_title = "정글 절벽 관문"
 	combat_camera_size = 10.0
 	overview_camera_size = 43.0
@@ -39,6 +41,28 @@ func _init() -> void:
 func _ready() -> void:
 	super._ready()
 	_build_gate_silhouette()
+	_build_jungle_silhouette()
+	_build_gate_approaches()
+
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if run_ended or practice_mode or paused or growth.choosing or get_tree().paused or not gate_route_encounter.is_empty() or _active_enemy_count() > MAX_ENEMIES - 2: return
+	var point: Vector2 = player.global_position
+	var route := ""
+	var sentries: Array = []
+	if Rect2(3270, 950, 170, 450).has_point(point):
+		route = "stairs"
+		sentries = [[Vector2(3970, 1010), TrainingEnemy.Role.BEAST], [Vector2(4020, 1330), TrainingEnemy.Role.LAMP]]
+	elif Rect2(3270, 1570, 170, 260).has_point(point):
+		route = "rocks"
+		sentries = [[Vector2(3970, 1610), TrainingEnemy.Role.ZONE], [Vector2(4060, 1840), TrainingEnemy.Role.BEAST]]
+	if route.is_empty(): return
+	for entry in sentries:
+		var spawn_point: Vector2 = entry[0]
+		if navigation.is_open(spawn_point, ACTOR_CLEARANCE + 6.0) and navigation.find_path(spawn_point, point).size() >= 2:
+			_schedule_spawn(spawn_point, entry[1], false)
+	gate_route_encounter = route
 
 
 func _choose_spawn_point(for_boss: bool) -> Vector2:
@@ -53,7 +77,6 @@ func _choose_spawn_point(for_boss: bool) -> Vector2:
 			chosen = point
 			farthest = distance
 	return chosen
-	_build_jungle_silhouette()
 
 
 func _process(delta: float) -> void:
@@ -163,10 +186,12 @@ func _build_gate_silhouette() -> void:
 
 func _build_jungle_silhouette() -> void:
 	# Decorative canopy massing sits beside the clear navigation routes.
-	for point in PassTerrain.CANOPY_POINTS:
+	for i in PassTerrain.CANOPY_POINTS.size():
+		var point: Vector2 = PassTerrain.CANOPY_POINTS[i]
 		var root := terrain.world_point(point)
-		var height := 2.3 + float(int(point.x + point.y) % 5) * 0.28
+		var height := 2.9 + float(int(point.x + point.y) % 5) * 0.32
 		var trunk := MeshInstance3D.new()
+		trunk.name = "CanopyTrunk%d" % i
 		var stem := CylinderMesh.new()
 		stem.top_radius = 0.14
 		stem.bottom_radius = 0.23
@@ -175,12 +200,47 @@ func _build_jungle_silhouette() -> void:
 		trunk.position = root + Vector3(0, height * 0.5, 0)
 		trunk.material_override = _material(Color("5c5344"))
 		add_child(trunk)
-		for branch in [Vector3(0, height, 0), Vector3(-0.45, height * 0.80, 0.12), Vector3(0.38, height * 0.89, -0.18)]:
+		canopy_visuals[point] = trunk
+		for branch in [Vector3(0, height, 0), Vector3(-0.62, height * 0.82, 0.12), Vector3(0.50, height * 0.90, -0.18)]:
 			var leaves := MeshInstance3D.new()
 			var crown := SphereMesh.new()
-			crown.radius = 0.72 if branch.x == 0.0 else 0.55
-			crown.height = 1.1 if branch.x == 0.0 else 0.85
+			crown.radius = 0.93 if branch.x == 0.0 else 0.67
+			crown.height = 0.72 if branch.x == 0.0 else 0.58
+			crown.radial_segments = 8
+			crown.rings = 4
 			leaves.mesh = crown
 			leaves.position = root + branch
 			leaves.material_override = _material(Color("486d57") if int(point.x) % 3 == 0 else Color("657e5a"))
 			add_child(leaves)
+
+
+func _build_gate_approaches() -> void:
+	var stairs: Dictionary = terrain.ramps[3]
+	var rocks: Dictionary = terrain.ramps[4]
+	for side_y in [stairs.area.position.y + 15.0, stairs.area.end.y - 15.0]:
+		for step in [0, 3, 6, 9]:
+			var x: float = stairs.area.position.x + stairs.area.size.x * float(step) / 9.0
+			var height: float = terrain.ramp_height(stairs, Vector2(x, side_y))
+			var post := MeshInstance3D.new()
+			post.name = "StairPost"
+			var shape := BoxMesh.new()
+			shape.size = Vector3(0.24, 0.62, 0.30)
+			post.mesh = shape
+			post.material_override = _material(Color("797d6c"))
+			post.position = Vector3(x * PassTerrain.SCALE, (height + 31.0) * PassTerrain.SCALE, side_y * PassTerrain.SCALE)
+			add_child(post)
+	for side in [-1.0, 1.0]:
+		for step in 5:
+			var x: float = rocks.area.position.x + 30.0 + float(step) * 58.0
+			var y: float = rocks.area.position.y - 24.0 if side < 0.0 else rocks.area.end.y + 24.0
+			var height: float = terrain.ramp_height(rocks, Vector2(x, y))
+			var shard := MeshInstance3D.new()
+			shard.name = "RockEdge"
+			var shape := BoxMesh.new()
+			shape.size = Vector3(0.38, 0.44 + float(step % 3) * 0.17, 0.52)
+			shard.mesh = shape
+			shard.material_override = _material(Color("586c65") if step % 2 == 0 else Color("748379"))
+			shard.position = Vector3(x * PassTerrain.SCALE, (height + shape.size.y * 50.0) * PassTerrain.SCALE, y * PassTerrain.SCALE)
+			shard.rotation.y = float(step + 1) * 0.17 * side
+			shard.rotation.z = (0.12 + float(step % 2) * 0.08) * side
+			add_child(shard)

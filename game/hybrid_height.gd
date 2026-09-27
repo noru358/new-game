@@ -106,6 +106,7 @@ func _ready() -> void:
 	actors[player] = _actor_visual(Color.WHITE)
 	actor_motion[player] = [player.global_position, player.global_position]
 	player.attack_landed.connect(_on_player_attack_landed)
+	player.flow_wave_triggered.connect(_on_flow_wave)
 	player.moving_slash_landed.connect(func(point: Vector2): _flash(point, Color("b7f8ff"), 0.23))
 	wisp = WispCompanion.new()
 	wisp.player = player
@@ -278,6 +279,29 @@ func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
 	for strip in strips:
 		_top(st, strip, func(point): return terrain.ramp_height(ramp, point) + 4.0, ramp_color.darkened(0.32))
 
+func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), ramp_color.darkened(0.24))
+	for step in 9:
+		var x0: float = area.position.x + area.size.x * float(step) / 9.0
+		var width: float = area.size.x / 9.0
+		var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
+		_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
+		_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
+	_ramp_edge_markers(st, ramp)
+
+func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("596c63"))
+	for slab in 7:
+		var x0: float = area.position.x + area.size.x * float(slab) / 7.0
+		var width: float = area.size.x / 7.0
+		var north_margin: float = 13.0 + float((slab * 11) % 18)
+		var south_margin: float = 15.0 + float((slab * 17) % 22)
+		var stone := Rect2(x0 + 3.0, area.position.y + north_margin, width - 6.0, area.size.y - north_margin - south_margin)
+		_top(st, stone, func(point): return terrain.ramp_height(ramp, point) + 2.0, Color("94a08c") if slab % 2 == 0 else Color("7f907f"))
+	_ramp_edge_markers(st, ramp)
+
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -295,9 +319,12 @@ func _build_terrain() -> void:
 			_stepping_stones(st, ramp)
 			continue
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
-		_top(st, ramp.area, elevation, ramp_color)
+		match ramp.get("kind", ""):
+			"gate_stairs": _gate_stairs(st, ramp)
+			"rock_path": _rock_path(st, ramp)
+			_: _top(st, ramp.area, elevation, ramp_color)
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
-		_ramp_edge_markers(st, ramp)
+		if ramp.get("kind", "") not in ["gate_stairs", "rock_path"]: _ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
 		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height
@@ -452,10 +479,20 @@ func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, fin
 	if player.attack_hitstop_scale <= 0.0:
 		_flash(point, Color("94e9ff") if step == 3 else Color("ffd486"))
 		return
-	var color := Color("ffbc69") if player.flow_weave_attack else Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
+	var color := Color("ff9b60") if player.ember_followup_attack else Color("ffbc69") if player.flow_weave_attack else Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
 	_flash(point, color, 0.27 if finisher else 0.20)
 	if not player.impact_played_this_attack:
 		camera.position -= Vector3(direction.x, 0.0, direction.y) * (0.10 if finisher else 0.055)
+
+func _on_flow_wave(point: Vector2) -> void:
+	var pulse := _sphere(0.18, Color("ffbd70"))
+	pulse.transparency = 0.48
+	add_child(pulse)
+	pulse.position = terrain.world_point(point, 55.0)
+	var tween := create_tween()
+	tween.tween_property(pulse, "scale", Vector3.ONE * 4.0, 0.18)
+	tween.parallel().tween_property(pulse, "transparency", 1.0, 0.18)
+	tween.tween_callback(pulse.queue_free)
 
 func _enemy_color(role: TrainingEnemy.Role) -> Color:
 	match role:
@@ -585,6 +622,7 @@ func _process(delta: float) -> void:
 		visual.position = terrain.world_point(point)
 		if actor == player:
 			var body: Sprite3D = visual.get_node("Body")
+			body.modulate = Color("ffd0a0") if player.ember_followup_timer > 0.0 or player.ember_followup_attack else Color.WHITE
 			body.flip_h = player.facing.x - player.facing.y < -0.1
 			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
@@ -658,7 +696,7 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 	var arc: float = half_angle * 2.0
 	var active_progress: float = clampf((elapsed - windup) / active, 0.0, 1.0)
 	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
-	var base := Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("84f5cf") if player.echo_finisher_enabled else Color("ffe19a")
+	var base := Color("ff9b60") if player.ember_followup_attack else Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("84f5cf") if player.echo_finisher_enabled else Color("ffe19a")
 	attack_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	# Keep the swing in one plane at chest height. Sampling the ground height at
 	# every vertex folded the old mesh over stairs and cliffs. The pale blade

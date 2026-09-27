@@ -34,6 +34,9 @@ var result_text: Label
 var replay_button: Button
 var retry_button: Button
 var boss_warning_mesh := ImmediateMesh.new()
+var echo_wisp_mod_enabled := false
+var ember_strike_mod_enabled := false
+var echo_wisp_fired_sequence := -1
 
 
 func _init() -> void:
@@ -52,7 +55,7 @@ func _init() -> void:
 		"회랑": Vector2(3410, 900),
 		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — Boss Feedback v07"
+	scene_title = "Loop Conquest — 청록 폐사원"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	overview_camera_size = 40.0
@@ -106,18 +109,36 @@ func _apply_preparation() -> void:
 		if profile.mod_for("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
 		elif profile.mod_for("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
 		elif profile.mod_for("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
+		elif profile.mod_for("W_FLOW") == "RIPPLE": player.flow_wave_enabled = true
 	elif profile.equipped_weapon == "W_ECHO":
 		player.echo_finisher_enabled = true
 		if profile.mod_for("W_ECHO") == "WIDE": player.echo_finisher_radius_bonus = 0.10
 		elif profile.mod_for("W_ECHO") == "HEAVY": player.echo_finisher_damage_bonus = 0.08
 		elif profile.mod_for("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
+		elif profile.mod_for("W_ECHO") == "ECHO_WISP": echo_wisp_mod_enabled = true
 	if profile.equipped_accessory == "A_EMBER":
 		wisp.permanent_damage_bonus = 0.15
 		if profile.mod_for("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
 		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
+		elif profile.mod_for("A_EMBER") == "EMBER_STRIKE": ember_strike_mod_enabled = true
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
 	if supply_ready: player.health_changed.connect(_try_use_supply)
+
+
+func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, finisher: bool) -> void:
+	super._on_player_attack_landed(point, direction, step, finisher)
+	if not echo_wisp_mod_enabled or step != 4 or echo_wisp_fired_sequence == player.attack_sequence: return
+	for companion in growth.wisps:
+		var target := companion.find_target()
+		if target != null and companion.fire_bonus_shot(target):
+			echo_wisp_fired_sequence = player.attack_sequence
+			break
+
+
+func _on_wisp_hit(enemy: TrainingEnemy) -> void:
+	super._on_wisp_hit(enemy)
+	if ember_strike_mod_enabled and is_instance_valid(player): player.grant_ember_followup()
 
 
 func _try_use_supply() -> void:

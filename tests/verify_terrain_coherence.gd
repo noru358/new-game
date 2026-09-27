@@ -32,6 +32,15 @@ func _run() -> void:
 	for column in scene.terrain.gate_columns:
 		_check(not scene.navigation.is_open(column.area.get_center(), scene.ACTOR_CLEARANCE), "visible column blocks its own footprint")
 	_check(not scene.navigation.is_open(JunglePassTerrain.CANOPY_POINTS[0], scene.ACTOR_CLEARANCE), "tree silhouette and small trunk footprint agree")
+	_check(scene.canopy_visuals.size() == JunglePassTerrain.CANOPY_POINTS.size(), "every blocking canopy trunk has a visible tree")
+	for point in JunglePassTerrain.CANOPY_POINTS:
+		var trunk: MeshInstance3D = scene.canopy_visuals.get(point)
+		_check(trunk != null and trunk.visible and Vector2(trunk.position.x, trunk.position.z).distance_to(point * JunglePassTerrain.SCALE) < 0.01, "canopy visual sits on its collision footprint: %s" % point)
+	_check(scene._attack_reach_at(Vector2(2400, 860), Vector2.DOWN.angle(), 130.0) >= 129.0, "same-height colored floor boundary does not trim the slash")
+	_check(scene._attack_reach_at(Vector2(2210, 570), Vector2.RIGHT.angle(), 130.0) < 100.0, "slash trims only at the now-visible canopy trunk")
+	scene.teleport(Vector2(3330, 1690))
+	await physics_frame
+	_check(scene.gate_route_encounter == "rocks" and scene._active_enemy_count() == 2, "southern rock approach uses its own upper-landing ambush: %s / %d" % [scene.gate_route_encounter, scene._active_enemy_count()])
 	var lintel: MeshInstance3D = scene.get_node("GateLintel")
 	var lintel_mesh: BoxMesh = lintel.mesh
 	var column_left: float = (JunglePassTerrain.GATE_COLUMN_CENTERS[0].x - JunglePassTerrain.GATE_COLUMN_SIZE.x * 0.5) * JunglePassTerrain.SCALE

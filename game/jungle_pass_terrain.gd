@@ -27,8 +27,8 @@ func _init() -> void:
 		{"area": Rect2(1280, 900, 270, 550), "axis": 0, "from": 0.0, "to": 240.0, "name": "서쪽 상승로"},
 		{"area": Rect2(2000, 130, 350, 270), "axis": 1, "from": 0.0, "to": 240.0, "name": "북쪽 덩굴길"},
 		{"area": Rect2(2700, 2000, 350, 270), "axis": 1, "from": 240.0, "to": 0.0, "name": "남쪽 우회로"},
-		{"area": Rect2(3600, 900, 300, 550), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 오름길"},
-		{"area": Rect2(3600, 1550, 300, 300), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 남쪽 오름길"},
+		{"area": Rect2(3600, 900, 300, 550), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 석계단", "kind": "gate_stairs"},
+		{"area": Rect2(3600, 1550, 300, 300), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 바위길", "kind": "rock_path"},
 	]
 	water_areas = []
 	floor_areas = [
@@ -36,8 +36,12 @@ func _init() -> void:
 		{"area": Rect2(390, 780, 1160, 720), "height": 1.2, "color": Color("9b9b70")},
 		{"area": Rect2(1640, 540, 1820, 1320), "height": 241.2, "color": Color("788b6d")},
 		{"area": Rect2(1930, 910, 1660, 520), "height": 242.4, "color": Color("b3aa83")},
+		{"area": Rect2(3290, 940, 310, 470), "height": 243.6, "color": Color("b8ad87")},
+		{"area": Rect2(3290, 1570, 310, 270), "height": 243.6, "color": Color("677768")},
 		{"area": Rect2(3920, 540, 1270, 1320), "height": 481.2, "color": Color("9f9b7f")},
 		{"area": Rect2(4100, 800, 1030, 720), "height": 482.4, "color": Color("bcb08a")},
+		{"area": Rect2(3900, 940, 240, 470), "height": 483.6, "color": Color("b8ad87")},
+		{"area": Rect2(3900, 1570, 260, 270), "height": 482.5, "color": Color("788376")},
 	]
 	wall_areas = [
 		{"area": Rect2(600, 500, 180, 250), "rise": 165.0, "color": Color("3d6149")},
@@ -46,6 +50,8 @@ func _init() -> void:
 		{"area": Rect2(3000, 1510, 290, 230), "rise": 195.0, "color": Color("52644f")},
 		{"area": Rect2(4380, 590, 210, 300), "rise": 270.0, "color": Color("727a65")},
 		{"area": Rect2(4380, 1510, 210, 300), "rise": 270.0, "color": Color("727a65")},
+		{"area": Rect2(3370, 1810, 70, 75), "rise": 110.0, "color": Color("586b63")},
+		{"area": Rect2(4120, 1660, 90, 100), "rise": 115.0, "color": Color("67776b")},
 	]
 	for center in GATE_COLUMN_CENTERS:
 		var column := {"area": Rect2(center - GATE_COLUMN_SIZE * 0.5, GATE_COLUMN_SIZE), "rise": GATE_COLUMN_RISE, "color": Color("677867")}
