@@ -21,6 +21,10 @@ var scene_hud_title := "높이 비교"
 var combat_camera_size := COMBAT_CAMERA_SIZE
 var overview_camera_size := OVERVIEW_CAMERA_SIZE
 var camera_offset := Vector3(14, 11.431, 14)
+var ground_color := Color("93afa1")
+var plateau_color := Color("e7ddbd")
+var cliff_color := Color("798e80")
+var ramp_color := Color("c9bb91")
 var show_practice_controls := true
 var moving_slash_practice := false
 var simulation := Node2D.new()
@@ -265,21 +269,21 @@ func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, Color("93afa1"))
+	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, ground_color)
 	for floor in terrain.floor_areas:
 		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in terrain.water_areas:
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
 	for plateau in terrain.plateaus:
 		var elevation := func(_p): return plateau.height
-		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else Color("e7ddbd"))
-		_sides(st, plateau.area, elevation, plateau.base, Color("798e80"), plateau.openings)
+		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
+		_sides(st, plateau.area, elevation, plateau.base, cliff_color, plateau.openings)
 	for ramp in terrain.ramps:
 		if ramp.get("kind", "") == "stepping_stones":
 			_stepping_stones(st, ramp)
 			continue
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
-		_top(st, ramp.area, elevation, Color("c9bb91"))
+		_top(st, ramp.area, elevation, ramp_color)
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
 	for wall in terrain.wall_areas:
 		var elevation := func(_p): return wall.height
@@ -628,6 +632,7 @@ func _draw_attack() -> void:
 func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> void:
 	attack_mesh.clear_surfaces()
 	if player.attack_step == 0: return
+	if player.attack_step == 4 and player.echo_finisher_enabled: origin = player.echo_finisher_center
 	var spec: Dictionary = player._attack_spec(player.attack_step)
 	var windup: float = spec.windup
 	var active: float = spec.active
@@ -639,7 +644,7 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 	var arc: float = half_angle * 2.0
 	var active_progress: float = clampf((elapsed - windup) / active, 0.0, 1.0)
 	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
-	var base := Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("ffe19a")
+	var base := Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("84f5cf") if player.echo_finisher_enabled else Color("ffe19a")
 	attack_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	# Keep the swing in one plane at chest height. Sampling the ground height at
 	# every vertex folded the old mesh over stairs and cliffs. The pale blade

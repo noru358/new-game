@@ -66,6 +66,7 @@ var impact_played_this_attack := false
 var hit_targets: Dictionary = {}
 var basic_damage_bonus := 0.0
 var permanent_basic_damage_bonus := 0.0
+var permanent_finisher_reach_bonus := 0.0
 var basic_speed_bonus := 0.0
 var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
@@ -100,6 +101,13 @@ var moving_slash_damage_bonus := 0.0
 var flow_weave_enabled := false
 var flow_weave_ready := false
 var flow_weave_attack := false
+var flow_weave_refund_bonus := 0.0
+var flow_weave_refund_used := false
+var echo_finisher_enabled := false
+var echo_finisher_center := Vector2.ZERO
+var echo_finisher_radius_bonus := 0.0
+var echo_finisher_damage_bonus := 0.0
+var echo_gather_reach_bonus := 0.0
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -304,11 +312,16 @@ func combo_limit() -> int:
 
 func _attack_spec(step: int) -> Dictionary:
 	var attack: Dictionary = ATTACKS[step - 1].duplicate()
+	if echo_finisher_enabled and step == 4:
+		attack.radius = 155.0 * (1.0 + echo_finisher_radius_bonus)
+		attack.angle = 360.0
 	var speed_scale := 1.0 + basic_speed_bonus
 	attack.windup /= speed_scale
 	attack.active = attack.active * attack_active_multiplier / speed_scale
 	attack.recovery = attack.recovery * attack_recovery_multiplier / speed_scale
 	attack.radius *= 1.0 + basic_reach_bonus
+	if step >= 3: attack.radius *= 1.0 + permanent_finisher_reach_bonus
+	if step == 3: attack.radius *= 1.0 + echo_gather_reach_bonus
 	return attack
 
 
@@ -352,12 +365,15 @@ func _start_attack() -> void:
 	attack_step = next_combo_step
 	flow_weave_attack = flow_weave_ready
 	flow_weave_ready = false
+	flow_weave_refund_used = false
 	next_combo_step = 1 if attack_step >= combo_limit() else attack_step + 1
 	attack_elapsed = 0.0
 	attack_hitstop_remaining = 0.0
 	attack_direction = facing
 	if attack_step == 3:
 		gather_target_global = global_position + attack_direction * GATHER_FORWARD_OFFSET
+	if attack_step == 4 and echo_finisher_enabled:
+		echo_finisher_center = gather_target_global if not attack_path_filter.is_valid() or attack_path_filter.call(global_position, gather_target_global) else global_position
 	queued_attack = false
 	attack_buffer_time = 0.0
 	hit_targets.clear()
@@ -375,20 +391,24 @@ func _hit_enemies(attack: Dictionary) -> void:
 		var id := enemy.get_instance_id()
 		if hit_targets.has(id):
 			continue
-		var offset: Vector2 = enemy.global_position - global_position
+		var hit_origin: Vector2 = echo_finisher_center if echo_finisher_enabled and attack_step == 4 else global_position
+		var offset: Vector2 = enemy.global_position - hit_origin
 		if offset.length() > attack.radius + enemy.collision_radius:
 			continue
 		var angle_difference := absf(wrapf(offset.angle() - attack_direction.angle(), -PI, PI))
 		if angle_difference > deg_to_rad(attack.angle * 0.5):
 			continue
-		if attack_path_filter.is_valid() and not attack_path_filter.call(global_position, enemy.global_position):
+		if attack_path_filter.is_valid() and not attack_path_filter.call(hit_origin, enemy.global_position):
 			continue
 		var push_direction := offset.normalized() if offset.length_squared() > 0.01 else attack_direction
 		var finisher := attack_step == combo_limit()
 		hit_targets[id] = true
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
-		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0), push_direction, finisher)
+		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0) * (1.0 + echo_finisher_damage_bonus if echo_finisher_enabled and attack_step == 4 else 1.0), push_direction, finisher)
+		if flow_weave_attack and not flow_weave_refund_used:
+			moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - 0.22 - flow_weave_refund_bonus)
+			flow_weave_refund_used = true
 		if attack_step == 3 and not enemy.is_queued_for_deletion():
 			gathered_enemies.append(enemy)
 			new_gathered = true

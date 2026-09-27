@@ -71,10 +71,12 @@ func _run() -> void:
 	scene.player._hit_moving_slash(scene.player.position, target.position)
 	_check(scene.player.flow_weave_ready, "Q hit prepares the weapon's next-hit weave")
 	var after_slash: float = target.health
+	scene.player.moving_slash_cooldown = 0.50
 	scene.player.facing = Vector2.RIGHT
 	scene.player._start_attack()
 	scene.player._hit_enemies(scene.player._attack_spec(1))
 	_check(is_equal_approx(target.health, after_slash - 13.125) and scene.player.flow_weave_attack and not scene.player.flow_weave_ready, "Q into basic attack gives one 25 percent empowered hit")
+	_check(is_equal_approx(scene.player.moving_slash_cooldown, 0.28), "the empowered hit restores part of Q cooldown once")
 	scene.player._start_attack()
 	_check(not scene.player.flow_weave_attack, "weave does not persist to another attack")
 	target.queue_free()
