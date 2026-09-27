@@ -77,8 +77,9 @@ func _run() -> void:
 	await _frames(4)
 	_check(scene.boss_announced, "the boss is announced when the five-minute clock is reached")
 	await _frames(85)
-	_check(scene.boss_spawned and is_instance_valid(scene.boss) and scene.boss.max_health == 900.0, "one boss appears after the warning")
+	_check(scene.boss_spawned and is_instance_valid(scene.boss) and scene.boss.max_health == GateBoss.BOSS_HEALTH, "one boss appears after the warning")
 	_check(scene.actors[scene.boss].has_node("HealthBar"), "the boss has the same world-space health readout")
+	_check(scene.actors[scene.boss].has_node("BossFigure/BossCore") and not scene.actors[scene.boss].get_node("Body").visible, "the boss has a distinct stone sentinel silhouette")
 	for actor in scene.actors:
 		if actor is TrainingEnemy: actor.set_physics_process(false)
 	scene.paused = true
@@ -105,6 +106,11 @@ func _run() -> void:
 	var before: float = scene.player.health
 	scene.boss._beast_velocity(0.8)
 	_check(scene.player.health == before - GateBoss.SHOCK_DAMAGE, "boss shock deals its displayed radius damage")
+	scene.boss.take_hit(300.0, Vector2.RIGHT, false)
+	scene.boss.ring_warning = GateBoss.RING_WARNING
+	scene._draw_boss_warning()
+	scene._update_run_hud()
+	_check(scene.boss.phase == 2 and scene.boss_warning_mesh.get_surface_count() > 0 and scene.run_hud.text.contains("안쪽이 안전"), "second phase shows a separate outer-ring dodge")
 	scene.player.health = 0.0
 	scene.death_pending = true
 	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)

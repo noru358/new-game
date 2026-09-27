@@ -49,7 +49,7 @@ func _init() -> void:
 		"회랑": Vector2(3410, 900),
 		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — Preparation v06"
+	scene_title = "Loop Conquest — Boss Feedback v07"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	overview_camera_size = 40.0
@@ -157,7 +157,10 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	if practice_mode: return
 	if is_instance_valid(boss) and actors.has(boss):
-		actors[boss].get_node("Body").modulate = Color.WHITE if boss.hit_flash > 0.0 else Color("f2b66f")
+		var visual: Node3D = actors[boss]
+		var core: MeshInstance3D = visual.get_node("BossFigure/BossCore")
+		(core.material_override as StandardMaterial3D).albedo_color = Color.WHITE if boss.hit_flash > 0.0 else Color("e78363") if boss.phase == 2 else Color("b99975")
+		visual.get_node("BossFigure").rotation.z = -0.15 if boss.charge_time > 0.0 else 0.10 * sin(Time.get_ticks_msec() * 0.008) if boss.warning_time > 0.0 or boss.shock_warning > 0.0 or boss.ring_warning > 0.0 else 0.0
 	_draw_boss_warning()
 
 
@@ -249,15 +252,56 @@ func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> voi
 	boss.zone_path_filter = clear_attack
 	simulation.add_child(boss)
 	var visual := _actor_visual(Color("f2b66f"))
-	visual.scale = Vector3.ONE * 1.6
+	_build_boss_figure(visual)
 	_add_health_bar(visual, boss)
-	var crown := _sphere(0.18, Color("ffe2a2"))
-	crown.position.y = 0.93
-	visual.add_child(crown)
+	visual.get_node("HealthBar").position.y = 2.30
 	actors[boss] = visual
 	actor_motion[boss] = [boss.global_position, boss.global_position]
 	boss.defeated.connect(_on_enemy_defeated.bind(boss))
 	boss_spawned = true
+
+
+func _build_boss_figure(visual: Node3D) -> void:
+	visual.get_node("Body").hide()
+	var shadow: MeshInstance3D = visual.get_node("Shadow")
+	(shadow.mesh as CylinderMesh).top_radius = 0.52
+	(shadow.mesh as CylinderMesh).bottom_radius = 0.52
+	var figure := Node3D.new()
+	figure.name = "BossFigure"
+	visual.add_child(figure)
+	var torso := CylinderMesh.new()
+	torso.top_radius = 0.29
+	torso.bottom_radius = 0.43
+	torso.height = 1.0
+	torso.radial_segments = 8
+	var core := MeshInstance3D.new()
+	core.name = "BossCore"
+	core.mesh = torso
+	core.position.y = 0.85
+	core.material_override = _material(Color("b99975"), true)
+	figure.add_child(core)
+	_boss_box(figure, Vector3(0.25, 0.52, 0.30), Vector3(-0.19, 0.26, 0.0), Color("625d55"))
+	_boss_box(figure, Vector3(0.25, 0.52, 0.30), Vector3(0.19, 0.26, 0.0), Color("625d55"))
+	for side in [-1.0, 1.0]:
+		_boss_box(figure, Vector3(0.31, 0.35, 0.33), Vector3(side * 0.40, 1.25, 0.0), Color("8f7866"))
+		_boss_box(figure, Vector3(0.25, 0.60, 0.27), Vector3(side * 0.49, 0.88, 0.0), Color("70645b"))
+		_boss_box(figure, Vector3(0.12, 0.34, 0.13), Vector3(side * 0.18, 1.93, 0.0), Color("e6b775"))
+	var head := _sphere(0.28, Color("d9bd94"))
+	head.position.y = 1.60
+	figure.add_child(head)
+	var heart := _sphere(0.14, Color("ffb765"))
+	heart.position = Vector3(0.0, 0.94, 0.40)
+	figure.add_child(heart)
+
+
+func _boss_box(parent: Node3D, dimensions: Vector3, at: Vector3, color: Color) -> void:
+	var block := MeshInstance3D.new()
+	var mesh := BoxMesh.new()
+	mesh.size = dimensions
+	block.mesh = mesh
+	block.position = at
+	block.material_override = _material(color, true)
+	parent.add_child(block)
 
 
 func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
@@ -310,33 +354,58 @@ func _update_run_hud() -> void:
 	run_hud.text = "경과 %02d:%02d  ·  문지기까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
 	if boss_announced and not boss_spawned: run_hud.text += "\n문지기 등장 예고"
 	if is_instance_valid(boss) and boss.health > 0.0:
-		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n문지기 HP %d / 900" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, ceili(boss.health)]
+		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n문지기 %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss.phase, ceili(boss.health), ceili(boss.max_health)]
 		if boss.warning_time > 0.0: run_hud.text += "  ·  붉은 띠 밖으로 회피!"
 		elif boss.shock_warning > 0.0: run_hud.text += "  ·  주황 원 밖으로 회피!"
+		elif boss.ring_warning > 0.0: run_hud.text += "  ·  바깥 고리 회피! 안쪽이 안전"
 	if profile != null and profile.recovered_backup: run_hud.text += "\n이전 정상 기록을 복구했습니다."
 
 
 func _draw_boss_warning() -> void:
 	boss_warning_mesh.clear_surfaces()
-	if not is_instance_valid(boss) or boss.shock_warning <= 0.0: return
+	if not is_instance_valid(boss) or (boss.shock_warning <= 0.0 and boss.ring_warning <= 0.0): return
 	var center := boss.global_position
 	var elevation := terrain.height_at(center) + 65.0
 	boss_warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	if boss.shock_warning > 0.0:
+		_draw_boss_area(center, elevation, 0.0, GateBoss.SHOCK_RADIUS, Color(1.0, 0.38, 0.14, 0.11))
+		_draw_boss_ring(center, elevation, GateBoss.SHOCK_RADIUS, 18.0, Color(0.43, 0.08, 0.04, 0.80))
+		_draw_boss_ring(center, elevation + 2.0, GateBoss.SHOCK_RADIUS, 7.0, Color(1.0, 0.55, 0.23, 0.98))
+	else:
+		_draw_boss_area(center, elevation, GateBoss.RING_INNER_RADIUS, GateBoss.RING_OUTER_RADIUS, Color(1.0, 0.19, 0.12, 0.15))
+		_draw_boss_ring(center, elevation, GateBoss.RING_INNER_RADIUS, 15.0, Color(0.40, 0.08, 0.04, 0.80))
+		_draw_boss_ring(center, elevation + 2.0, GateBoss.RING_INNER_RADIUS, 6.0, Color(1.0, 0.76, 0.32, 0.98))
+		_draw_boss_ring(center, elevation, GateBoss.RING_OUTER_RADIUS, 18.0, Color(0.40, 0.08, 0.04, 0.80))
+		_draw_boss_ring(center, elevation + 2.0, GateBoss.RING_OUTER_RADIUS, 7.0, Color(1.0, 0.40, 0.20, 0.98))
+	boss_warning_mesh.surface_end()
+
+
+func _draw_boss_area(center: Vector2, elevation: float, inner_radius: float, outer_radius: float, color: Color) -> void:
 	for i in 48:
 		var a0 := TAU * float(i) / 48.0
 		var a1 := TAU * float(i + 1) / 48.0
-		if not _ring_segment_clear(center, a0, a1, GateBoss.SHOCK_RADIUS): continue
-		for stripe_index in 2:
-			var width: float = 17.0 if stripe_index == 0 else 7.0
-			var inner0 := center + Vector2.from_angle(a0) * (GateBoss.SHOCK_RADIUS - width)
-			var inner1 := center + Vector2.from_angle(a1) * (GateBoss.SHOCK_RADIUS - width)
-			var outer0 := center + Vector2.from_angle(a0) * GateBoss.SHOCK_RADIUS
-			var outer1 := center + Vector2.from_angle(a1) * GateBoss.SHOCK_RADIUS
-			var color := Color(0.48, 0.10, 0.04, 0.78) if width > 10.0 else Color(1.0, 0.48, 0.19, 0.98)
-			for point in [inner0, outer0, outer1, inner0, outer1, inner1]:
-				boss_warning_mesh.surface_set_color(color)
-				boss_warning_mesh.surface_add_vertex(Vector3(point.x, elevation + (2.0 if width < 10.0 else 0.0), point.y) * RegionTerrain.SCALE)
-	boss_warning_mesh.surface_end()
+		if not _ring_segment_clear(center, a0, a1, outer_radius): continue
+		var inner0 := center + Vector2.from_angle(a0) * inner_radius
+		var inner1 := center + Vector2.from_angle(a1) * inner_radius
+		var outer0 := center + Vector2.from_angle(a0) * outer_radius
+		var outer1 := center + Vector2.from_angle(a1) * outer_radius
+		for point in [inner0, outer0, outer1, inner0, outer1, inner1]:
+			boss_warning_mesh.surface_set_color(color)
+			boss_warning_mesh.surface_add_vertex(Vector3(point.x, elevation - 1.0, point.y) * RegionTerrain.SCALE)
+
+
+func _draw_boss_ring(center: Vector2, elevation: float, radius: float, width: float, color: Color) -> void:
+	for i in 48:
+		var a0 := TAU * float(i) / 48.0
+		var a1 := TAU * float(i + 1) / 48.0
+		if not _ring_segment_clear(center, a0, a1, radius): continue
+		var inner0 := center + Vector2.from_angle(a0) * (radius - width)
+		var inner1 := center + Vector2.from_angle(a1) * (radius - width)
+		var outer0 := center + Vector2.from_angle(a0) * radius
+		var outer1 := center + Vector2.from_angle(a1) * radius
+		for point in [inner0, outer0, outer1, inner0, outer1, inner1]:
+			boss_warning_mesh.surface_set_color(color)
+			boss_warning_mesh.surface_add_vertex(Vector3(point.x, elevation, point.y) * RegionTerrain.SCALE)
 
 
 func _build_run_ui() -> void:
