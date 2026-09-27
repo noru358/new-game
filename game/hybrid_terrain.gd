@@ -8,6 +8,10 @@ const TERRACE := Rect2(1150, 800, 450, 400)
 const STONE_COUNT := 6
 const STONE_BEVEL := 0.42
 
+var map_size := SIZE
+var floor_areas: Array = []
+var wall_areas: Array = []
+
 # One surface per ground position. Geometry, height and blocked edges share these records.
 var plateaus := [
 	{"area": COURT, "height": 160.0, "base": 0.0, "name": "중정", "openings": {"north": [[800.0, 1060.0]], "south": [[800.0, 1060.0], [1210.0, 1370.0]], "east": [[1050.0, 1310.0]]}},
@@ -65,6 +69,8 @@ func barriers() -> Array[Rect2]:
 	var result: Array[Rect2] = []
 	for water in water_areas:
 		result.append(water)
+	for wall in wall_areas:
+		result.append(wall.area)
 	for plateau in plateaus:
 		var a: Rect2 = plateau.area
 		for side in ["north", "south", "west", "east"]:
@@ -90,6 +96,6 @@ func barriers() -> Array[Rect2]:
 		else:
 			result.append(Rect2(a.position.x - 5, a.position.y, 10, a.size.y))
 			result.append(Rect2(a.end.x - 5, a.position.y, 10, a.size.y))
-	for a in [Rect2(0, 0, 2400, 12), Rect2(0, 1988, 2400, 12), Rect2(0, 0, 12, 2000), Rect2(2388, 0, 12, 2000)]:
+	for a in [Rect2(0, 0, map_size.x, 12), Rect2(0, map_size.y - 12, map_size.x, 12), Rect2(0, 0, 12, map_size.y), Rect2(map_size.x - 12, 0, 12, map_size.y)]:
 		result.append(a)
 	return result

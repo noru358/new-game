@@ -40,8 +40,15 @@ func _run() -> void:
 			enemies.append(actor)
 	scene.player.hurt_immunity = 1000.0
 	_check(scene.minimap is HybridMinimap and scene.minimap._map_point(Vector2.ZERO).x > 0.0, "height lab includes a terrain-based minimap")
+	var map_origin: Vector2 = scene.minimap._map_point_at(Vector2(200, 200), 0.0)
+	var map_east: Vector2 = scene.minimap._map_point_at(Vector2(500, 200), 0.0)
+	var map_south: Vector2 = scene.minimap._map_point_at(Vector2(200, 500), 0.0)
+	_check(map_east.x > map_origin.x and map_south.x < map_origin.x and map_east.y > map_origin.y and map_south.y > map_origin.y, "minimap ground axes form the same oblique diamond as the gameplay camera")
 	var first_view: PackedVector2Array = scene.minimap.camera_ground_footprint()
 	_check(first_view.size() == 4 and first_view[0].distance_to(first_view[2]) > 100.0, "minimap derives the visible ground footprint from the actual 3D camera")
+	var view_top_left: Vector2 = scene.minimap._map_point_at(first_view[0], scene.terrain.height_at(scene.player.position))
+	var view_top_right: Vector2 = scene.minimap._map_point_at(first_view[1], scene.terrain.height_at(scene.player.position))
+	_check(absf(view_top_left.y - view_top_right.y) < 0.1, "minimap camera outline is aligned with the visible screen")
 	var first_center: Vector2 = (first_view[0] + first_view[2]) * 0.5
 	scene.teleport(Vector2(2080, 1180))
 	await _frames(2)

@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Loop Conquest - 1F Temple Region Prototype"
-run/main_scene="res://game/temple_region.tscn"
+config/name="Loop Conquest - 1F Hybrid Region v08"
+run/main_scene="res://game/hybrid_region.tscn"
 run/main_scene.hybrid_height="res://game/hybrid_height.tscn"
-config/name.hybrid_height="Loop Conquest - Hybrid Court v07"
+config/name.hybrid_height="Loop Conquest - Hybrid Court v08"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [display]

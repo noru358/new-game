@@ -13,6 +13,11 @@ const ENEMY_POINTS := [Vector2(390, 1660), Vector2(720, 680), Vector2(1430, 1000
 const ENEMY_ROLES := [TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.ZONE, TrainingEnemy.Role.SUPPORT]
 const ENEMY_HEALTH := [22.0, 22.0, 22.0, 45.0, 30.0, 30.0, 32.0, 36.0]
 var terrain := Terrain.new()
+var start_point := Vector2(930, 1780)
+var enemy_points := ENEMY_POINTS.duplicate()
+var landmark_points := {"남쪽 입구": Vector2(930, 1780), "디딤돌": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
+var scene_title := "Loop Conquest — Hybrid Court v08"
+var scene_hud_title := "높이 비교"
 var simulation := Node2D.new()
 var player: SandboxPlayer
 var wisp: WispCompanion
@@ -50,7 +55,7 @@ var previous_attack_direction := Vector2.RIGHT
 var current_attack_direction := Vector2.RIGHT
 
 func _ready() -> void:
-	get_window().title = "Loop Conquest — Hybrid Court v07"
+	get_window().title = scene_title
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_physics_priority = 100
 	_register_inputs()
@@ -68,12 +73,12 @@ func _ready() -> void:
 		obstacles.append(block)
 	navigation.agent_radius = ACTOR_CLEARANCE
 	navigation.strict_contact_escape = true
-	navigation.setup(obstacles, Terrain.SIZE)
+	navigation.setup(obstacles, terrain.map_size)
 	player = PlayerScene.instantiate()
 	_set_actor_radius(player, ACTOR_CLEARANCE)
 	player.get_node("Camera2D").enabled = false
-	player.position = Vector2(930, 1780)
-	player.arena_bounds = Rect2(Vector2.ZERO, Terrain.SIZE)
+	player.position = start_point
+	player.arena_bounds = Rect2(Vector2.ZERO, terrain.map_size)
 	player.collision_mask = 4
 	player.input_rotation = -PI / 4.0
 	player.move_speed_multiplier = 1.12
@@ -138,7 +143,7 @@ func _ready() -> void:
 	get_window().focus_exited.connect(func():
 		if not growth.choosing: _set_paused(true)
 	)
-	print("Hybrid court v07 ready: water approaches, height minimap and clear ramps")
+	print("Hybrid scene ready: ", scene_title)
 
 func _register_inputs() -> void:
 	var keys := {"move_left": KEY_A, "move_right": KEY_D, "move_up": KEY_W, "move_down": KEY_S, "attack": KEY_J, "dash": KEY_SPACE}
@@ -239,7 +244,9 @@ func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	_top(st, Rect2(Vector2.ZERO, Terrain.SIZE), func(_p): return 0.0, Color("93afa1"))
+	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, Color("93afa1"))
+	for floor in terrain.floor_areas:
+		_top(st, floor.area, func(_p): return 0.7, floor.color)
 	for water in terrain.water_areas:
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
 	for plateau in terrain.plateaus:
@@ -253,6 +260,10 @@ func _build_terrain() -> void:
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
 		_top(st, ramp.area, elevation, Color("c9bb91"))
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+	for wall in terrain.wall_areas:
+		var elevation := func(_p): return wall.height
+		_top(st, wall.area, elevation, wall.color)
+		_sides(st, wall.area, elevation, wall.get("base", 0.0), wall.color.darkened(0.25))
 	st.generate_normals()
 	terrain_mesh = MeshInstance3D.new()
 	terrain_mesh.mesh = st.commit()
@@ -335,15 +346,15 @@ func spawn_enemies() -> void:
 			actors[actor].queue_free()
 			actors.erase(actor)
 			actor_motion.erase(actor)
-	for i in ENEMY_POINTS.size():
+	for i in enemy_points.size():
 		var enemy: TrainingEnemy = EnemyScene.instantiate()
 		_set_actor_radius(enemy, ACTOR_CLEARANCE)
 		enemy.contact_margin = 3.0
-		enemy.position = ENEMY_POINTS[i]
+		enemy.position = enemy_points[i]
 		enemy.role = ENEMY_ROLES[i]
 		enemy.max_health = ENEMY_HEALTH[i]
 		enemy.target = player
-		enemy.arena_bounds = Rect2(Vector2.ZERO, Terrain.SIZE)
+		enemy.arena_bounds = Rect2(Vector2.ZERO, terrain.map_size)
 		enemy.collision_mask = 6
 		enemy.navigation = navigation
 		enemy.projectile_parent = simulation
@@ -525,7 +536,7 @@ func _shot_world_point(shot: Node2D, point: Vector2) -> Vector3:
 
 func _update_hud() -> void:
 	if hud == null: return
-	hud.text = "높이 비교  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	hud.text = "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
 
 func _draw_attack() -> void:
 	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)
@@ -770,16 +781,15 @@ func _build_ui() -> void:
 	roles.add_theme_constant_override("shadow_offset_x", 1)
 	roles.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(roles)
-	var places := {"남쪽 입구": Vector2(930, 1780), "디딤돌": Vector2(1290, 1840), "북쪽 입구": Vector2(930, 220), "측면 입구": Vector2(2080, 1180), "테라스": Vector2(1390, 1000)}
 	var row := HBoxContainer.new()
 	row.position = Vector2(590, 20)
 	canvas.add_child(row)
-	for title in places:
+	for title in landmark_points:
 		var button := Button.new()
 		button.text = title
 		button.custom_minimum_size = Vector2(125, 42)
 		button.focus_mode = Control.FOCUS_NONE
-		button.pressed.connect(func(): teleport(places[title]))
+		button.pressed.connect(func(): teleport(landmark_points[title]))
 		row.add_child(button)
 	pause_backdrop = ColorRect.new()
 	pause_backdrop.position = Vector2(450, 303)
