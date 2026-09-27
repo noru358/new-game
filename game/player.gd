@@ -24,6 +24,8 @@ const MOVING_SLASH_DURATION := 0.22
 const MOVING_SLASH_COOLDOWN := 1.1
 const MOVING_SLASH_RADIUS := 55.0
 const MOVING_SLASH_DAMAGE := 14.0
+const MOVING_SLASH_INVULNERABILITY := 0.09
+const MOVING_SLASH_BUFFER_TIME := 0.22
 
 const ATTACKS := [
 	{"windup": 0.06, "active": 0.06, "recovery": 0.16, "radius": 100.0, "angle": 100.0, "multiplier": 1.0},
@@ -78,13 +80,17 @@ var attack_hitstop_remaining := 0.0
 var attack_path_filter: Callable
 var moving_slash_enabled := false
 var moving_slash_requested := false
+var moving_slash_buffer := 0.0
 var moving_slash_time := 0.0
+var moving_slash_elapsed := 0.0
 var moving_slash_cooldown := 0.0
 var moving_slash_visual_time := 0.0
 var moving_slash_origin := Vector2.ZERO
 var moving_slash_tip := Vector2.ZERO
 var moving_slash_direction := Vector2.RIGHT
 var moving_slash_targets: Dictionary = {}
+var moving_slash_radius_bonus := 0.0
+var moving_slash_cooldown_reduction := 0.0
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -114,6 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		dash_requested = true
 	if moving_slash_enabled and event.is_action_pressed("moving_slash"):
 		moving_slash_requested = true
+		moving_slash_buffer = MOVING_SLASH_BUFFER_TIME
 
 
 func _physics_process(delta: float) -> void:
@@ -150,12 +157,16 @@ func _physics_process(delta: float) -> void:
 	hurt_recoil = hurt_recoil.move_toward(Vector2.ZERO, 2100.0 * delta)
 	moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - delta)
 	moving_slash_visual_time = maxf(0.0, moving_slash_visual_time - delta)
+	if moving_slash_requested:
+		moving_slash_buffer = MOVING_SLASH_BUFFER_TIME
+	moving_slash_buffer = maxf(0.0, moving_slash_buffer - delta)
 
 	if dash_requested and dash_charges > 0:
 		_start_dash(movement)
 	dash_requested = false
-	if moving_slash_requested and moving_slash_enabled and moving_slash_cooldown <= 0.0 and moving_slash_time <= 0.0 and dash_time <= 0.0 and attack_step == 0:
+	if moving_slash_buffer > 0.0 and moving_slash_enabled and moving_slash_cooldown <= 0.0 and moving_slash_time <= 0.0 and dash_time <= 0.0 and _can_link_moving_slash():
 		_start_moving_slash(movement)
+		moving_slash_buffer = 0.0
 	moving_slash_requested = false
 
 	var slash_previous := global_position
@@ -168,8 +179,12 @@ func _physics_process(delta: float) -> void:
 	elif moving_slash_time > 0.0:
 		facing = moving_slash_direction
 		var slash_motion_time := minf(delta, moving_slash_time)
+		var before := moving_slash_elapsed / MOVING_SLASH_DURATION
+		moving_slash_elapsed += slash_motion_time
+		var after := moving_slash_elapsed / MOVING_SLASH_DURATION
 		moving_slash_time = maxf(0.0, moving_slash_time - delta)
-		velocity = moving_slash_direction * (MOVING_SLASH_DISTANCE / MOVING_SLASH_DURATION) * (slash_motion_time / delta)
+		var distance := MOVING_SLASH_DISTANCE * (_moving_slash_curve(after) - _moving_slash_curve(before))
+		velocity = moving_slash_direction * distance / delta
 	else:
 		velocity = movement * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
@@ -192,6 +207,7 @@ func _physics_process(delta: float) -> void:
 func _start_dash(movement: Vector2) -> void:
 	moving_slash_time = 0.0
 	moving_slash_visual_time = 0.0
+	moving_slash_buffer = 0.0
 	dash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
 	dash_time = DASH_DURATION
 	dash_elapsed = 0.0
@@ -215,16 +231,31 @@ func _start_dash(movement: Vector2) -> void:
 
 
 func _start_moving_slash(movement: Vector2) -> void:
+	# The hit has already happened; Q replaces the remaining recovery and keeps
+	# the next combo step so held attack resumes after the sweep.
+	attack_step = 0
+	attack_hitstop_remaining = 0.0
+	combo_wait = 0.0
 	moving_slash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
 	moving_slash_origin = global_position
 	moving_slash_tip = global_position
 	moving_slash_time = MOVING_SLASH_DURATION
-	moving_slash_cooldown = MOVING_SLASH_COOLDOWN
+	moving_slash_elapsed = 0.0
+	moving_slash_cooldown = MOVING_SLASH_COOLDOWN * (1.0 - moving_slash_cooldown_reduction)
 	moving_slash_visual_time = MOVING_SLASH_DURATION + 0.09
 	moving_slash_targets.clear()
-	queued_attack = false
-	attack_buffer_time = 0.0
 	_play_sound("res://game/audio/attack_2.wav", attack_audio)
+
+
+func _can_link_moving_slash() -> bool:
+	if attack_step == 0: return true
+	var attack := _attack_spec(attack_step)
+	return attack_elapsed >= attack.windup + attack.active
+
+
+func _moving_slash_curve(progress: float) -> float:
+	var t := clampf(progress, 0.0, 1.0)
+	return t - sin(TAU * t) / TAU * 0.25
 
 
 func _hit_moving_slash(from: Vector2, to: Vector2) -> void:
@@ -233,7 +264,7 @@ func _hit_moving_slash(from: Vector2, to: Vector2) -> void:
 		var id := enemy.get_instance_id()
 		if moving_slash_targets.has(id): continue
 		var closest := Geometry2D.get_closest_point_to_segment(enemy.global_position, from, to)
-		if enemy.global_position.distance_to(closest) > MOVING_SLASH_RADIUS + enemy.collision_radius: continue
+		if enemy.global_position.distance_to(closest) > MOVING_SLASH_RADIUS + moving_slash_radius_bonus + enemy.collision_radius: continue
 		if attack_path_filter.is_valid() and not attack_path_filter.call(closest, enemy.global_position): continue
 		moving_slash_targets[id] = true
 		enemy.take_hit(MOVING_SLASH_DAMAGE, moving_slash_direction, false, 1.1)
@@ -432,6 +463,8 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 	if health <= 0.0 or hurt_immunity > 0.0:
 		return
 	if dash_time > 0.0 and dash_elapsed <= DASH_INVULNERABILITY:
+		return
+	if moving_slash_time > 0.0 and moving_slash_elapsed <= MOVING_SLASH_INVULNERABILITY:
 		return
 	health = maxf(0.0, health - damage)
 	hurt_immunity = HURT_INVULNERABILITY

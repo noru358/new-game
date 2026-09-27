@@ -18,6 +18,8 @@ const CARDS := {
 	"S_WISP_CHAIN": {"name": "연쇄 불꽃", "detail": "마탄 명중 후 가까운 적에게 연쇄", "max": 2, "group": "AUTO"},
 	"S_SEAL": {"name": "자동 마력진", "detail": "가까운 적에게 예고 후 범위 공격", "max": 3, "group": "AUTO"},
 	"U_STEP": {"name": "민첩한 대시", "detail": "대시 충전 강화", "max": 3, "group": "DASH"},
+	"U_SLASH_SWEEP": {"name": "넓은 이동 베기", "detail": "이동 베기가 더 넓게 적을 쓸어냅니다", "max": 2, "group": "BASIC"},
+	"U_SLASH_CADENCE": {"name": "이어지는 이동 베기", "detail": "이동 베기를 더 자주 사용합니다", "max": 2, "group": "BASIC"},
 }
 
 var arena: Node2D
@@ -36,9 +38,12 @@ var hud: Label
 var overlay: ColorRect
 var choice_title: Label
 var choice_buttons: Array[Button] = []
+var reroll_button: Button
+var rerolls_left := 0
 var unlock_notice := ""
 var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
+var permanent_combo_progression := false
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -83,10 +88,18 @@ func gain_xp(amount: int) -> void:
 		_start_choice()
 
 
+func _sync_permanent_moves() -> void:
+	var lifetime := unlocks.lifetime_levelups
+	var desired_rank := 2 if lifetime >= 3 else 1 if lifetime >= 1 else 0
+	if player.combo_rank != desired_rank: player.set_combo_rank(desired_rank)
+	player.moving_slash_enabled = lifetime >= 1
+
+
 func _start_choice() -> void:
 	if pending_choices <= 0:
 		return
 	current_choices = roll_choices()
+	rerolls_left = 1
 	if current_choices.is_empty():
 		_heal(0.20)
 		pending_choices -= 1
@@ -99,6 +112,10 @@ func _start_choice() -> void:
 	choosing = true
 	get_tree().paused = true
 	overlay.show()
+	_refresh_choices()
+
+
+func _refresh_choices() -> void:
 	choice_title.text = "레벨 %d  ·  강화 선택" % level
 	for i in range(choice_buttons.size()):
 		var button := choice_buttons[i]
@@ -108,13 +125,58 @@ func _start_choice() -> void:
 		var card_id := current_choices[i]
 		var data: Dictionary = CARDS[card_id]
 		var next_rank := int(card_ranks.get(card_id, 0)) + 1
-		var detail: String = data.detail
-		if card_id == "U_STEP":
-			detail = ["재충전 15% 단축", "최대 충전 2회", "재충전 총 30% 단축"][next_rank - 1]
+		var detail := describe_card(card_id, next_rank)
 		button.text = "%d  %s\n\n%s\n\n등급 %d / %d" % [
 			i + 1, data.name, detail, next_rank, data.max
 		]
 		button.show()
+	if reroll_button != null:
+		reroll_button.disabled = rerolls_left == 0 or current_choices.size() >= _available_card_count()
+		reroll_button.text = "다른 카드 보기 · 남은 횟수 %d" % rerolls_left
+
+
+func describe_card(card_id: String, next_rank: int) -> String:
+	var old_rank := next_rank - 1
+	match card_id:
+		"U_EDGE": return "평타 피해 %d%% → %d%%" % [100 + 15 * old_rank, 100 + 15 * next_rank]
+		"U_TEMPO": return "평타가 더 빨라집니다\n공격 속도 +%d%% → +%d%%" % [roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
+		"U_REACH": return "평타가 더 멀리 닿습니다\n기본 사거리 %d → %d" % [100 + 15 * old_rank, 100 + 15 * next_rank]
+		"U_CHAIN": return "앞의 적을 모으는 3타 추가" if next_rank == 1 else "모인 적을 터뜨리는 4타 추가"
+		"S_WISP_DAMAGE": return "여우불 한 발이 더 강해집니다\n기본 피해 %d → %d" % [10 + 2 * old_rank, 10 + 2 * next_rank]
+		"S_WISP_CADENCE": return "여우불이 더 자주 쏩니다\n발사 간격 %.2f초 → %.2f초" % [1.25 * (1.0 - 0.10 * old_rank), 1.25 * (1.0 - 0.10 * next_rank)]
+		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
+		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
+		"S_WISP_CHAIN": return "명중 후 다른 적 1명에게 연쇄" if next_rank == 1 else "연쇄 대상 1명 → 2명"
+		"S_SEAL": return "적 위치에 자동 마력진 추가" if next_rank == 1 else "마력진 범위 %d → %d" % [66 + 10 * (old_rank - 1), 66 + 10 * (next_rank - 1)]
+		"U_STEP": return "대시 재충전 1.20초 → 1.02초" if next_rank == 1 else "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 1.02초 → 0.84초"
+		"U_SLASH_SWEEP": return "이동 베기 폭 %d → %d" % [110 + 40 * old_rank, 110 + 40 * next_rank]
+		"U_SLASH_CADENCE": return "이동 베기 재사용 %.2f초 → %.2f초" % [1.1 * (1.0 - 0.15 * old_rank), 1.1 * (1.0 - 0.15 * next_rank)]
+	return String(CARDS[card_id].detail)
+
+
+func _available_card_count() -> int:
+	var count := 0
+	for card_id in CARDS:
+		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
+		if card_id == "U_CHAIN" and permanent_combo_progression: continue
+		if int(card_ranks.get(card_id, 0)) < int(CARDS[card_id].max) and unlocks.is_unlocked(card_id): count += 1
+	return count
+
+
+func reroll_choices() -> bool:
+	if not choosing or rerolls_left <= 0 or current_choices.size() >= _available_card_count(): return false
+	var before := current_choices.duplicate()
+	for attempt in 8:
+		var after := roll_choices()
+		var has_new_card := false
+		for card_id in after:
+			if not before.has(card_id): has_new_card = true
+		if has_new_card:
+			current_choices = after
+			rerolls_left -= 1
+			_refresh_choices()
+			return true
+	return false
 
 
 func roll_choices() -> Array[String]:
@@ -122,6 +184,8 @@ func roll_choices() -> Array[String]:
 	var automatic: Array[String] = []
 	var others: Array[String] = []
 	for card_id in CARDS:
+		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
+		if card_id == "U_CHAIN" and permanent_combo_progression: continue
 		if int(card_ranks.get(card_id, 0)) >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
 			continue
 		match CARDS[card_id].group:
@@ -157,6 +221,7 @@ func choose_index(index: int) -> bool:
 		return false
 	var card_id := current_choices[index]
 	apply_card(card_id)
+	if permanent_combo_progression: _sync_permanent_moves()
 	pending_choices -= 1
 	_heal(0.20)
 	choosing = false
@@ -185,6 +250,8 @@ func apply_card(card_id: String) -> void:
 		"U_REACH": player.basic_reach_bonus = 0.15 * rank
 		"U_CHAIN": player.set_combo_rank(rank)
 		"U_STEP": player.set_dash_upgrade(rank)
+		"U_SLASH_SWEEP": player.moving_slash_radius_bonus = 20.0 * rank
+		"U_SLASH_CADENCE": player.moving_slash_cooldown_reduction = 0.15 * rank
 		"S_SEAL": _sync_seal(rank)
 		_: _sync_wisps()
 	card_applied.emit(card_id)
@@ -286,4 +353,10 @@ func _build_ui() -> void:
 		button.pressed.connect(choose_index.bind(i))
 		overlay.add_child(button)
 		choice_buttons.append(button)
+	reroll_button = Button.new()
+	reroll_button.position = Vector2(456, 535)
+	reroll_button.size = Vector2(368, 48)
+	reroll_button.add_theme_font_size_override("font_size", 19)
+	reroll_button.pressed.connect(reroll_choices)
+	overlay.add_child(reroll_button)
 	overlay.hide()

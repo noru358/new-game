@@ -3,7 +3,7 @@ extends "res://game/hybrid_height.gd"
 const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
 const BossScene = preload("res://game/gate_boss.tscn")
 const ProfileScript = preload("res://game/run_profile.gd")
-const BOSS_TIME := 360.0
+const BOSS_TIME := 300.0
 const MAX_ENEMIES := 48
 
 var practice_mode := false
@@ -48,7 +48,7 @@ func _init() -> void:
 		"회랑": Vector2(3410, 900),
 		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — 1G Complete Run v03"
+	scene_title = "Loop Conquest — 1G Combat Feedback v05"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	overview_camera_size = 40.0
@@ -59,10 +59,13 @@ func _init() -> void:
 
 func _ready() -> void:
 	show_practice_controls = practice_mode
-	moving_slash_practice = practice_mode
+	# Keep the new move available in the live run while its final unlock is designed.
+	moving_slash_practice = true
 	super._ready()
 	player.attack_hitstop_scale = 1.0
 	if practice_mode: return
+	growth.permanent_combo_progression = true
+	growth._sync_permanent_moves()
 	rng.randomize()
 	run_id = "%d-%d-%d" % [Time.get_unix_time_from_system(), Time.get_ticks_usec(), rng.randi()]
 	profile = ProfileScript.new()
@@ -128,16 +131,16 @@ func _process(delta: float) -> void:
 
 func _spawn_rate() -> float:
 	if boss_spawned: return 0.25
-	if run_time < 60.0: return 0.45
-	if run_time < 150.0: return 0.65
-	if run_time < 240.0: return 0.85
-	return 1.10
+	if run_time < 45.0: return 0.60
+	if run_time < 120.0: return 0.85
+	if run_time < 200.0: return 1.10
+	return 1.40
 
 
 func _roll_role() -> TrainingEnemy.Role:
-	if boss_spawned or run_time < 60.0: return TrainingEnemy.Role.FRAGMENT
+	if boss_spawned or run_time < 45.0: return TrainingEnemy.Role.FRAGMENT
 	var roll := rng.randf() * 100.0
-	var weights := [70.0, 20.0, 0.0, 10.0, 0.0] if run_time < 150.0 else [55.0, 20.0, 10.0, 10.0, 5.0] if run_time < 240.0 else [45.0, 20.0, 15.0, 10.0, 10.0]
+	var weights := [70.0, 20.0, 0.0, 10.0, 0.0] if run_time < 120.0 else [55.0, 20.0, 10.0, 10.0, 5.0] if run_time < 200.0 else [45.0, 20.0, 15.0, 10.0, 10.0]
 	for role in 5:
 		roll -= weights[role]
 		if roll < 0.0: return role as TrainingEnemy.Role
@@ -257,9 +260,9 @@ func _show_result() -> void:
 	if settlement_pending:
 		result_text.text = "%s\n정산 저장에 실패했습니다. 저장을 재시도하세요.\n종료하면 미저장 화폐가 사라집니다.\n현재 획득 화폐 %d" % [heading, run_currency]
 		return
-	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n이번 판 화폐 +%d  ·  누적 %d%s\n\n새 런은 레벨 1부터 시작합니다." % [
+	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n새 런은 레벨 1부터 시작합니다." % [
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
-		profile.last_award, profile.currency, "\n첫 정복: 사원 유물 획득" if profile.last_first_clear else ""
+		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n첫 정복: 사원 유물 획득" if profile.last_first_clear else ""
 	]
 
 

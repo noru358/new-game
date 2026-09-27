@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Loop Conquest - 1G Complete Run v03"
+config/name="Loop Conquest - 1G Combat Feedback v05"
 run/main_scene="res://game/hybrid_region.tscn"
 run/main_scene.hybrid_height="res://game/hybrid_height.tscn"
 run/main_scene.moving_slash_lab="res://game/moving_slash_lab.tscn"
