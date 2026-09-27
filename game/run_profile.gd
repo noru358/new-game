@@ -7,7 +7,7 @@ const DEFEAT_LOSS_RATE := 0.50
 const RETREAT_LOSS_RATE := 0.20
 const GEAR_COST := {"W_FLOW": 35, "W_ECHO": 45, "A_EMBER": 24}
 const GROWTH_COST := [20, 35]
-const GROWTH_IDS := ["POWER", "VITALITY", "MOBILITY", "SLASH", "FINISH"]
+const GROWTH_IDS := ["POWER", "WISP", "SLASH", "FINISH", "VITALITY", "GUARD", "MOBILITY", "SPEED"]
 const SUPPLY_COST := 12
 const SUPPLY_LIMIT := 3
 const TEMPLE_REGION := "O_TEMPLE"
@@ -38,7 +38,7 @@ var owned_mods: Array[String] = []
 var slotted_mods: Dictionary = {}
 var equipped_weapon := "W_START"
 var equipped_accessory := ""
-var growth_ranks := {"POWER": 0, "VITALITY": 0, "MOBILITY": 0, "SLASH": 0, "FINISH": 0}
+var growth_ranks := {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 var supply_count := 0
 var supply_selected := false
 var last_launch_id := ""
@@ -90,7 +90,7 @@ func load_state() -> void:
 	slotted_mods = {}
 	equipped_weapon = "W_START"
 	equipped_accessory = ""
-	growth_ranks = {"POWER": 0, "VITALITY": 0, "MOBILITY": 0, "SLASH": 0, "FINISH": 0}
+	growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 	supply_count = 0
 	supply_selected = false
 	last_launch_id = ""
@@ -210,7 +210,7 @@ func reset_growth() -> bool:
 	if refund == 0: return true
 	var candidate := _snapshot()
 	candidate.currency = currency + refund
-	candidate.growth_ranks = {"POWER": 0, "VITALITY": 0, "MOBILITY": 0, "SLASH": 0, "FINISH": 0}
+	candidate.growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 	return _commit(candidate)
 
 
@@ -346,8 +346,8 @@ func _read(path: String) -> Dictionary:
 		if not ["", "A_EMBER"].has(data.equipped_accessory) or (data.equipped_accessory == "A_EMBER" and not data.owned_gear.has("A_EMBER")): return {}
 		for id in ["POWER", "VITALITY", "MOBILITY"]:
 			if not data.growth_ranks.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
-		for id in ["SLASH", "FINISH"]:
-			if data.growth_ranks.has(id) and (not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2): return {}
+		for id in data.growth_ranks:
+			if not GROWTH_IDS.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
 		if int(data.supply_count) < 0 or int(data.supply_count) > SUPPLY_LIMIT: return {}
 		if int(data.version) == 3:
 			if not data.get("owned_mods") is Array or not data.get("slotted_mods") is Dictionary: return {}

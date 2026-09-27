@@ -102,6 +102,9 @@ func _apply_preparation() -> void:
 	player.permanent_dash_cooldown_reduction = 0.04 * int(ranks.MOBILITY)
 	player.permanent_slash_cooldown_reduction = 0.03 * int(ranks.SLASH)
 	player.permanent_finisher_reach_bonus = 0.05 * int(ranks.FINISH)
+	player.permanent_damage_reduction = 0.05 * int(ranks.GUARD)
+	player.permanent_move_speed_bonus = 0.04 * int(ranks.SPEED)
+	growth.permanent_wisp_cadence_reduction = 0.04 * int(ranks.WISP)
 	if profile.equipped_weapon == "W_FLOW":
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20
@@ -121,6 +124,7 @@ func _apply_preparation() -> void:
 		if profile.mod_for("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
 		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
 		elif profile.mod_for("A_EMBER") == "EMBER_STRIKE": ember_strike_mod_enabled = true
+	growth._sync_wisps()
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
 	if supply_ready: player.health_changed.connect(_try_use_supply)

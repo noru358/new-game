@@ -69,6 +69,8 @@ var hit_targets: Dictionary = {}
 var basic_damage_bonus := 0.0
 var permanent_basic_damage_bonus := 0.0
 var permanent_finisher_reach_bonus := 0.0
+var permanent_damage_reduction := 0.0
+var permanent_move_speed_bonus := 0.0
 var basic_speed_bonus := 0.0
 var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
@@ -211,7 +213,7 @@ func _physics_process(delta: float) -> void:
 		var distance := MOVING_SLASH_DISTANCE * moving_slash_distance_multiplier * (_moving_slash_curve(after) - _moving_slash_curve(before))
 		velocity = _ramp_guided_direction(moving_slash_direction) * distance / delta
 	else:
-		velocity = _ramp_guided_direction(movement) * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
+		velocity = _ramp_guided_direction(movement) * MOVE_SPEED * move_speed_multiplier * (1.0 + permanent_move_speed_bonus) * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
 	var requested_motion := velocity * delta
 	var before_motion := global_position
@@ -567,7 +569,7 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 		return
 	if moving_slash_time > 0.0 and moving_slash_elapsed <= MOVING_SLASH_INVULNERABILITY:
 		return
-	health = maxf(0.0, health - damage)
+	health = maxf(0.0, health - damage * (1.0 - permanent_damage_reduction))
 	hurt_immunity = HURT_INVULNERABILITY
 	hit_flash = 0.25
 	hurt_stun_time = 0.11

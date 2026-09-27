@@ -38,9 +38,12 @@ func _run() -> void:
 		_check(trunk != null and trunk.visible and Vector2(trunk.position.x, trunk.position.z).distance_to(point * JunglePassTerrain.SCALE) < 0.01, "canopy visual sits on its collision footprint: %s" % point)
 	_check(scene._attack_reach_at(Vector2(2400, 860), Vector2.DOWN.angle(), 130.0) >= 129.0, "same-height colored floor boundary does not trim the slash")
 	_check(scene._attack_reach_at(Vector2(2210, 570), Vector2.RIGHT.angle(), 130.0) < 100.0, "slash trims only at the now-visible canopy trunk")
-	scene.teleport(Vector2(3330, 1690))
+	scene.teleport(Vector2(2590, 1690))
 	await physics_frame
-	_check(scene.gate_route_encounter == "rocks" and scene._active_enemy_count() == 2, "southern rock approach uses its own upper-landing ambush: %s / %d" % [scene.gate_route_encounter, scene._active_enemy_count()])
+	_check(scene.gate_route_encounter == "rocks" and scene._active_enemy_count() == 2, "southern cliff approach starts with a separate ledge encounter: %s / %d" % [scene.gate_route_encounter, scene._active_enemy_count()])
+	scene.teleport(Vector2(3420, 1700))
+	await physics_frame
+	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "southern cliff route adds a second encounter before the gate")
 	var lintel: MeshInstance3D = scene.get_node("GateLintel")
 	var lintel_mesh: BoxMesh = lintel.mesh
 	var column_left: float = (JunglePassTerrain.GATE_COLUMN_CENTERS[0].x - JunglePassTerrain.GATE_COLUMN_SIZE.x * 0.5) * JunglePassTerrain.SCALE

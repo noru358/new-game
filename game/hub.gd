@@ -30,6 +30,8 @@ var supply_buy_button: Button
 var supply_toggle_button: Button
 var info_label: Label
 var tabs: TabContainer
+var gear_list_scroll: ScrollContainer
+var gear_detail_scroll: ScrollContainer
 var embedded_in_camp := false
 var selected_region_id := RunProfile.TEMPLE_REGION
 var selected_gear_id := "W_FLOW"
@@ -102,14 +104,18 @@ func _build_ui() -> void:
 	start_button = _button(root_box, "청록 폐사원 출정", _depart)
 	start_button.custom_minimum_size.y = 54
 	tabs.tab_changed.connect(func(index: int): start_button.visible = index == 0)
-	var gear := _tab_page("장비")
 	var gear_columns := HBoxContainer.new()
-	gear_columns.add_theme_constant_override("separation", 20)
-	gear.add_child(gear_columns)
-	var gear_choices := VBoxContainer.new()
-	gear_choices.custom_minimum_size.x = 530
+	gear_columns.name = "장비"
+	gear_columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	gear_columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	gear_columns.add_theme_constant_override("separation", 12)
+	tabs.add_child(gear_columns)
+	gear_list_scroll = ScrollContainer.new()
+	gear_list_scroll.custom_minimum_size.x = 530
+	gear_list_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	gear_columns.add_child(gear_list_scroll)
+	var gear_choices := _scroll_panel_box(gear_list_scroll)
 	gear_choices.add_theme_constant_override("separation", 10)
-	gear_columns.add_child(gear_choices)
 	gear_choices.add_child(_label("주공격", 22, Color("f6e7bf")))
 	base_weapon_button = _button(gear_choices, "", func(): _select_gear("W_START"))
 	weapon_button = _button(gear_choices, "", func(): _select_gear("W_FLOW"))
@@ -117,9 +123,11 @@ func _build_ui() -> void:
 	gear_choices.add_child(_label("장신구", 22, Color("f6e7bf")))
 	accessory_button = _button(gear_choices, "", func(): _select_gear("A_EMBER"))
 	gear_action_button = _button(gear_choices, "", _gear_action)
-	var mods := VBoxContainer.new()
-	mods.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gear_columns.add_child(mods)
+	gear_detail_scroll = ScrollContainer.new()
+	gear_detail_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	gear_detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	gear_columns.add_child(gear_detail_scroll)
+	var mods := _scroll_panel_box(gear_detail_scroll)
 	mods.add_child(_label("선택 장비", 22, Color("f6e7bf")))
 	mod_info_label = _label("", 17, Color("c5ded6"))
 	mods.add_child(mod_info_label)
@@ -138,9 +146,14 @@ func _build_ui() -> void:
 	mod_clear_button.custom_minimum_size.y = 34
 	mod_clear_button.add_theme_font_size_override("font_size", 15)
 	var growth := _tab_page("성장")
-	growth.add_child(_label("영구 성장", 22, Color("f6e7bf")))
-	for id in RunProfile.GROWTH_IDS:
-		growth_buttons[id] = _button(growth, "", _buy_growth.bind(id))
+	for group in [
+		{"title": "공격", "ids": ["POWER", "WISP", "SLASH", "FINISH"]},
+		{"title": "방어", "ids": ["VITALITY", "GUARD"]},
+		{"title": "기동·편의", "ids": ["MOBILITY", "SPEED"]},
+	]:
+		growth.add_child(_label(group.title, 22, Color("f6e7bf")))
+		for id in group.ids:
+			growth_buttons[id] = _button(growth, "", _buy_growth.bind(id))
 	reset_button = _button(growth, "성장 초기화 · 쓴 재화 전액 반환", _reset_growth)
 	status_label = _label("", 15, Color("f6c58e"))
 	root_box.add_child(status_label)
@@ -155,6 +168,10 @@ func _tab_page(name: String) -> VBoxContainer:
 	scrolling.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scrolling.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	tabs.add_child(scrolling)
+	return _scroll_panel_box(scrolling)
+
+
+func _scroll_panel_box(scrolling: ScrollContainer) -> VBoxContainer:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var style := StyleBoxFlat.new()
@@ -204,8 +221,9 @@ func _button(parent: Container, value: String, action: Callable) -> Button:
 	var locked_style := StyleBoxFlat.new()
 	locked_style.bg_color = Color("193439")
 	locked_style.border_color = Color("345457")
-	locked_style.set_border_width_all(1)
-	locked_style.set_content_margin_all(5)
+	locked_style.set_border_width_all(2)
+	locked_style.set_corner_radius_all(5)
+	locked_style.set_content_margin_all(12)
 	button.add_theme_stylebox_override("disabled", locked_style)
 	button.pressed.connect(action)
 	parent.add_child(button)
@@ -216,7 +234,7 @@ func _button_style(highlighted: bool) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("1d4042") if highlighted else Color("102b31")
 	style.border_color = Color("e4bc79") if highlighted else Color("32545a")
-	style.set_border_width_all(2 if highlighted else 1)
+	style.set_border_width_all(2)
 	style.set_corner_radius_all(5)
 	style.set_content_margin_all(12)
 	return style
@@ -277,7 +295,7 @@ func _refresh() -> void:
 		button.disabled = profile.load_error or not selected_owned or not profile.owned_mods.has(mod_id) or profile.mod_for(selected_gear_id) == mod_id
 	mod_behavior_label.visible = has_behavior
 	mod_numeric_label.visible = has_numeric
-	var growth_names := {"POWER": "평타 피해", "VITALITY": "최대 HP", "MOBILITY": "대시 충전 시간", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리"}
+	var growth_names := {"POWER": "평타 피해", "WISP": "여우불 발사 간격", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리", "VITALITY": "최대 HP", "GUARD": "받는 피해", "MOBILITY": "대시 충전 시간", "SPEED": "기본 이동속도"}
 	for id in growth_buttons:
 		var rank := int(profile.growth_ranks[id])
 		var cost := int(RunProfile.GROWTH_COST[rank]) if rank < 2 else 0
@@ -307,8 +325,11 @@ func _mod_summary(id: String) -> String:
 func _growth_value(id: String, rank: int) -> String:
 	match id:
 		"POWER": return "%d%%" % (100 + rank * 5)
+		"WISP": return "%.2f초" % (WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - rank * 0.04))
 		"VITALITY": return "%d" % (100 + rank * 10)
+		"GUARD": return "%d%%" % (100 - rank * 5)
 		"MOBILITY": return "%d%%" % (100 - rank * 4)
+		"SPEED": return "%d%%" % (100 + rank * 4)
 		"SLASH": return "%d%%" % (100 - rank * 3)
 		"FINISH": return "%d%%" % (100 + rank * 5)
 	return ""
@@ -317,6 +338,7 @@ func _growth_value(id: String, rank: int) -> String:
 func _select_gear(id: String) -> void:
 	selected_gear_id = id
 	_refresh()
+	gear_detail_scroll.scroll_vertical = 0
 
 
 func _gear_action() -> void:

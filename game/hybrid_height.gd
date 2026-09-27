@@ -292,15 +292,36 @@ func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
 
 func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
-	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("596c63"))
-	for slab in 7:
-		var x0: float = area.position.x + area.size.x * float(slab) / 7.0
-		var width: float = area.size.x / 7.0
-		var north_margin: float = 13.0 + float((slab * 11) % 18)
-		var south_margin: float = 15.0 + float((slab * 17) % 22)
-		var stone := Rect2(x0 + 3.0, area.position.y + north_margin, width - 6.0, area.size.y - north_margin - south_margin)
-		_top(st, stone, func(point): return terrain.ramp_height(ramp, point) + 2.0, Color("94a08c") if slab % 2 == 0 else Color("7f907f"))
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("465d57"))
+	for slab in 3:
+		var x0: float = area.position.x + area.size.x * float(slab) / 3.0
+		var north_margin: float = [13.0, 29.0, 19.0][slab]
+		var south_margin: float = [30.0, 13.0, 24.0][slab]
+		var stone := Rect2(x0 + 4.0, area.position.y + north_margin, area.size.x / 3.0 - 8.0, area.size.y - north_margin - south_margin)
+		_rough_slab(st, stone, func(point): return terrain.ramp_height(ramp, point), 3.5, Color("a5ad98") if slab == 1 else Color("83978b"))
 	_ramp_edge_markers(st, ramp)
+
+
+func _rough_slab(st: SurfaceTool, area: Rect2, elevation: Callable, lift: float, color: Color) -> void:
+	var p := area.position
+	var e := area.end
+	var outline: Array[Vector2] = [
+		Vector2(p.x + 18.0, p.y), Vector2(e.x - 24.0, p.y + 9.0),
+		Vector2(e.x, p.y + 26.0), Vector2(e.x - 8.0, e.y - 17.0),
+		Vector2(e.x - 26.0, e.y), Vector2(p.x + 10.0, e.y - 5.0),
+		Vector2(p.x, e.y - 25.0), Vector2(p.x + 6.0, p.y + 22.0),
+	]
+	var center := area.get_center()
+	for i in outline.size():
+		var a: Vector2 = outline[i]
+		var b: Vector2 = outline[(i + 1) % outline.size()]
+		for point in [center, a, b]:
+			st.set_color(color.lightened(0.04) if i % 2 == 0 else color)
+			st.add_vertex(Vector3(point.x, elevation.call(point) + lift, point.y) * Terrain.SCALE)
+		_quad(st, [
+			Vector3(a.x, elevation.call(a), a.y), Vector3(b.x, elevation.call(b), b.y),
+			Vector3(b.x, elevation.call(b) + lift, b.y), Vector3(a.x, elevation.call(a) + lift, a.y),
+		], color.darkened(0.25))
 
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
@@ -314,6 +335,9 @@ func _build_terrain() -> void:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
 		_sides(st, plateau.area, elevation, plateau.base, cliff_color, plateau.openings)
+	if terrain is JunglePassTerrain:
+		for i in terrain.rock_ledge_areas.size():
+			_rough_slab(st, terrain.rock_ledge_areas[i], func(_p): return 240.0, 5.0, Color("8b9d91") if i % 2 == 0 else Color("a7ae9a"))
 	for ramp in terrain.ramps:
 		if ramp.get("kind", "") == "stepping_stones":
 			_stepping_stones(st, ramp)

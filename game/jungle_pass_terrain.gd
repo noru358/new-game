@@ -8,11 +8,20 @@ const CANOPY_POINTS := [
 	Vector2(350, 470), Vector2(650, 360), Vector2(1090, 350),
 	Vector2(350, 1880), Vector2(820, 2070), Vector2(1250, 1790),
 	Vector2(1820, 600), Vector2(2310, 570), Vector2(3180, 590),
-	Vector2(1810, 1790), Vector2(2500, 1830), Vector2(3410, 1750),
+	Vector2(1810, 1790), Vector2(2500, 1830), Vector2(3470, 1950),
 	Vector2(3980, 640), Vector2(5140, 640), Vector2(4020, 1760), Vector2(5150, 1760),
 ]
 
 var gate_columns: Array[Dictionary] = []
+var rock_ledge_areas: Array[Rect2] = [
+	Rect2(2560, 1620, 240, 230),
+	Rect2(2870, 1750, 300, 200),
+	Rect2(3250, 1610, 270, 230),
+]
+var gate_routes: Dictionary = {
+	"stairs": {"entry": Rect2(2480, 400, 220, 990), "crest": Rect2(3360, 400, 220, 990)},
+	"rocks": {"entry": Rect2(2480, 1550, 220, 450), "crest": Rect2(3360, 1550, 220, 450)},
+}
 
 
 func _init() -> void:
@@ -36,8 +45,8 @@ func _init() -> void:
 		{"area": Rect2(390, 780, 1160, 720), "height": 1.2, "color": Color("9b9b70")},
 		{"area": Rect2(1640, 540, 1820, 1320), "height": 241.2, "color": Color("788b6d")},
 		{"area": Rect2(1930, 910, 1660, 520), "height": 242.4, "color": Color("b3aa83")},
-		{"area": Rect2(3290, 940, 310, 470), "height": 243.6, "color": Color("b8ad87")},
-		{"area": Rect2(3290, 1570, 310, 270), "height": 243.6, "color": Color("677768")},
+		{"area": Rect2(2480, 970, 1120, 390), "height": 243.6, "color": Color("b8ad87")},
+		{"area": Rect2(2480, 1590, 1120, 330), "height": 243.6, "color": Color("536d65")},
 		{"area": Rect2(3920, 540, 1270, 1320), "height": 481.2, "color": Color("9f9b7f")},
 		{"area": Rect2(4100, 800, 1030, 720), "height": 482.4, "color": Color("bcb08a")},
 		{"area": Rect2(3900, 940, 240, 470), "height": 483.6, "color": Color("b8ad87")},
@@ -47,7 +56,12 @@ func _init() -> void:
 		{"area": Rect2(600, 500, 180, 250), "rise": 165.0, "color": Color("3d6149")},
 		{"area": Rect2(930, 1640, 190, 260), "rise": 175.0, "color": Color("426b52")},
 		{"area": Rect2(1850, 620, 230, 290), "rise": 185.0, "color": Color("4c6752")},
+		{"area": Rect2(2520, 1400, 340, 140), "rise": 180.0, "color": Color("4a6057"), "kind": "split_ridge"},
+		{"area": Rect2(2860, 1370, 380, 180), "rise": 230.0, "color": Color("435a54"), "kind": "split_ridge"},
+		{"area": Rect2(3240, 1410, 360, 140), "rise": 200.0, "color": Color("50665c"), "kind": "split_ridge"},
 		{"area": Rect2(3000, 1510, 290, 230), "rise": 195.0, "color": Color("52644f")},
+		{"area": Rect2(2730, 1850, 110, 110), "rise": 85.0, "color": Color("61746a")},
+		{"area": Rect2(3300, 1850, 110, 110), "rise": 100.0, "color": Color("596c63")},
 		{"area": Rect2(4380, 590, 210, 300), "rise": 270.0, "color": Color("727a65")},
 		{"area": Rect2(4380, 1510, 210, 300), "rise": 270.0, "color": Color("727a65")},
 		{"area": Rect2(3370, 1810, 70, 75), "rise": 110.0, "color": Color("586b63")},
@@ -78,5 +92,7 @@ func surface_name(point: Vector2) -> String:
 	for ramp in ramps:
 		if ramp.area.has_point(point): return ramp.name
 	if plateaus[1].area.has_point(point): return "관문 상단"
+	if point.x >= 2480.0 and point.x < 3600.0 and point.y >= 1570.0 and point.y < 2000.0: return "절벽 발판길"
+	if point.x >= 2480.0 and point.x < 3600.0 and point.y >= 900.0 and point.y < 1400.0: return "석계단 정면길"
 	if plateaus[0].area.has_point(point): return "정글 능선"
 	return "정글 진입로" if point.x < 1550.0 else "절벽 아랫길"
