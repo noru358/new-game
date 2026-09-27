@@ -32,6 +32,7 @@ func _walk(direction: Vector2, count: int, actor: SandboxPlayer) -> void:
 
 func _run() -> void:
 	var scene = load("res://game/hybrid_region.tscn").instantiate()
+	scene.practice_mode = true
 	scene.growth_save_prefix = "user://verify_hybrid_region_temp"
 	root.add_child(scene)
 	await _frames(4)

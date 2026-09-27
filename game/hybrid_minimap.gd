@@ -76,7 +76,7 @@ func _draw() -> void:
 		for i in 4:
 			draw_line(_map_point_at(footprint[i], plane_height), _map_point_at(footprint[(i + 1) % 4], plane_height), Color(1.0, 1.0, 1.0, 0.9), 1.4)
 	for actor in arena.actors:
-		if not actor is TrainingEnemy or not is_instance_valid(actor) or actor.is_queued_for_deletion() or actor.health <= 0.0:
+		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.is_queued_for_deletion() or actor.health <= 0.0:
 			continue
 		var color := Color("e89681") if actor.role == TrainingEnemy.Role.BEAST else Color("f2ce71") if actor.role == TrainingEnemy.Role.LAMP else Color("71dcd3") if actor.role == TrainingEnemy.Role.ZONE else Color("c59adf") if actor.role == TrainingEnemy.Role.SUPPORT else Color("dce4d7")
 		draw_circle(_map_point(actor.global_position), 2.7, color)

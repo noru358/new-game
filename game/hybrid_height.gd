@@ -21,6 +21,7 @@ var scene_hud_title := "높이 비교"
 var combat_camera_size := COMBAT_CAMERA_SIZE
 var overview_camera_size := OVERVIEW_CAMERA_SIZE
 var camera_offset := Vector3(14, 11.431, 14)
+var show_practice_controls := true
 var simulation := Node2D.new()
 var player: SandboxPlayer
 var wisp: WispCompanion
@@ -350,27 +351,31 @@ func spawn_enemies() -> void:
 			actors.erase(actor)
 			actor_motion.erase(actor)
 	for i in enemy_points.size():
-		var enemy: TrainingEnemy = EnemyScene.instantiate()
-		_set_actor_radius(enemy, ACTOR_CLEARANCE)
-		enemy.contact_margin = 3.0
-		enemy.position = enemy_points[i]
-		enemy.role = ENEMY_ROLES[i]
-		enemy.max_health = ENEMY_HEALTH[i]
-		enemy.target = player
-		enemy.arena_bounds = Rect2(Vector2.ZERO, terrain.map_size)
-		enemy.collision_mask = 6
-		enemy.navigation = navigation
-		enemy.projectile_parent = simulation
-		enemy.zone_path_filter = clear_attack
-		simulation.add_child(enemy)
-		var visual := _actor_visual(_enemy_color(enemy.role))
-		if enemy.role != TrainingEnemy.Role.FRAGMENT:
-			var marker := _sphere(0.14 if enemy.role == TrainingEnemy.Role.BEAST else 0.11, _enemy_color(enemy.role).lightened(0.25))
-			marker.position.y = 0.86
-			visual.add_child(marker)
-		actors[enemy] = visual
-		actor_motion[enemy] = [enemy.global_position, enemy.global_position]
-		enemy.defeated.connect(_on_enemy_defeated.bind(enemy))
+		_spawn_enemy_at(enemy_points[i], ENEMY_ROLES[i], ENEMY_HEALTH[i])
+
+func _spawn_enemy_at(point: Vector2, role: TrainingEnemy.Role, health: float) -> TrainingEnemy:
+	var enemy: TrainingEnemy = EnemyScene.instantiate()
+	_set_actor_radius(enemy, ACTOR_CLEARANCE)
+	enemy.contact_margin = 3.0
+	enemy.position = point
+	enemy.role = role
+	enemy.max_health = health
+	enemy.target = player
+	enemy.arena_bounds = Rect2(Vector2.ZERO, terrain.map_size)
+	enemy.collision_mask = 6
+	enemy.navigation = navigation
+	enemy.projectile_parent = simulation
+	enemy.zone_path_filter = clear_attack
+	simulation.add_child(enemy)
+	var visual := _actor_visual(_enemy_color(enemy.role))
+	if enemy.role != TrainingEnemy.Role.FRAGMENT:
+		var marker := _sphere(0.14 if enemy.role == TrainingEnemy.Role.BEAST else 0.11, _enemy_color(enemy.role).lightened(0.25))
+		marker.position.y = 0.86
+		visual.add_child(marker)
+	actors[enemy] = visual
+	actor_motion[enemy] = [enemy.global_position, enemy.global_position]
+	enemy.defeated.connect(_on_enemy_defeated.bind(enemy))
+	return enemy
 
 func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 	kills += 1
@@ -624,7 +629,7 @@ func _draw_enemy_warnings(fraction: float) -> void:
 	warning_mesh.clear_surfaces()
 	var showing := false
 	for actor in actors:
-		if actor is TrainingEnemy and is_instance_valid(actor) and actor.warning_time > 0.0 and (actor.role == TrainingEnemy.Role.BEAST or actor.role == TrainingEnemy.Role.LAMP):
+		if is_instance_valid(actor) and actor is TrainingEnemy and actor.warning_time > 0.0 and (actor.role == TrainingEnemy.Role.BEAST or actor.role == TrainingEnemy.Role.LAMP):
 			showing = true
 			break
 	if not get_tree().get_nodes_in_group("enemy_zones").is_empty(): showing = true
@@ -635,7 +640,7 @@ func _draw_enemy_warnings(fraction: float) -> void:
 	warning_vertex_count = 0
 	warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	for actor in actors:
-		if not actor is TrainingEnemy or not is_instance_valid(actor) or actor.warning_time <= 0.0: continue
+		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.warning_time <= 0.0: continue
 		if actor.role != TrainingEnemy.Role.BEAST and actor.role != TrainingEnemy.Role.LAMP: continue
 		var source: Vector2 = _render_position(actor, fraction)
 		var length := TrainingEnemy.BEAST_CHARGE_SPEED * TrainingEnemy.BEAST_CHARGE_DURATION if actor.role == TrainingEnemy.Role.BEAST else EnemyBolt.MAXIMUM_DISTANCE
@@ -775,7 +780,7 @@ func _build_ui() -> void:
 	minimap.setup(self)
 	canvas.add_child(minimap)
 	var help := Label.new()
-	help.text = "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지"
+	help.text = "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Space 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
 	help.position = Vector2(20, 681)
 	help.add_theme_font_size_override("font_size", 17)
 	help.add_theme_color_override("font_shadow_color", Color.BLACK)
@@ -793,7 +798,7 @@ func _build_ui() -> void:
 	var row := HBoxContainer.new()
 	row.position = Vector2(490 if landmark_points.size() > 5 else 590, 20)
 	canvas.add_child(row)
-	for title in landmark_points:
+	for title in landmark_points if show_practice_controls else []:
 		var button := Button.new()
 		button.text = title
 		button.custom_minimum_size = Vector2(125, 42)
@@ -849,7 +854,7 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_TAB:
 			overview = not overview
 			camera.size = overview_camera_size if overview else combat_camera_size
-		elif event.keycode == KEY_N and not paused:
+		elif event.keycode == KEY_N and show_practice_controls and not paused:
 			spawn_enemies()
 		elif event.keycode == KEY_R:
 			_set_paused(false)

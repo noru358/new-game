@@ -34,6 +34,7 @@ const SUPPORT_COOLDOWN_MULTIPLIER := 1.3
 var health := MAX_HEALTH
 var collision_radius := RADIUS
 var contact_margin := 0.0
+var charge_damage := 15.0
 var visual_pitch := 0.0
 var target: Node2D
 var knockback := Vector2.ZERO
@@ -48,6 +49,9 @@ var navigation: ArenaNavigation
 var navigation_path := PackedVector2Array()
 var navigation_goal := Vector2.ZERO
 var navigation_repath_time := 0.0
+var steering_time := 0.0
+var steering_goal := Vector2.ZERO
+var steering_direction := Vector2.ZERO
 var attack_cooldown := 0.0
 var warning_time := 0.0
 var charge_time := 0.0
@@ -115,7 +119,7 @@ func _physics_process(delta: float) -> void:
 			target.receive_hit(7.0, global_position)
 		elif role == Role.BEAST and charging_this_frame and not charge_has_hit:
 			charge_has_hit = true
-			target.receive_hit(15.0, global_position)
+			target.receive_hit(charge_damage, global_position)
 	queue_redraw()
 
 
@@ -230,18 +234,27 @@ func _fire_bolt() -> void:
 
 func _chase_direction(delta: float) -> Vector2:
 	var goal := target.global_position
-	if navigation == null or navigation.has_clear_path(global_position, goal):
-		navigation_path.clear()
-		return global_position.direction_to(goal)
+	if navigation == null: return global_position.direction_to(goal)
 	navigation_repath_time -= delta
+	steering_time -= delta
+	if steering_time > 0.0 and steering_goal.distance_to(goal) <= 20.0:
+		return steering_direction
+	steering_goal = goal
+	steering_time = 0.05 + float(get_instance_id() % 3) * 0.01
+	if navigation.has_clear_path(global_position, goal):
+		navigation_path.clear()
+		steering_direction = global_position.direction_to(goal)
+		return steering_direction
 	if navigation_repath_time <= 0.0 or navigation_path.is_empty() or navigation_goal.distance_to(goal) > 42.0:
 		navigation_path = navigation.find_path(global_position, goal)
 		navigation_goal = goal
 		navigation_repath_time = 0.28
 	for i in range(navigation_path.size() - 1, -1, -1):
 		if navigation.has_clear_path(global_position, navigation_path[i]):
-			return global_position.direction_to(navigation_path[i])
-	return Vector2.ZERO
+			steering_direction = global_position.direction_to(navigation_path[i])
+			return steering_direction
+	steering_direction = Vector2.ZERO
+	return steering_direction
 
 
 func take_hit(damage: float, push_direction: Vector2, is_finisher: bool, impact_scale: float = 1.0) -> void:

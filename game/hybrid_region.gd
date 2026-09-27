@@ -1,6 +1,35 @@
 extends "res://game/hybrid_height.gd"
 
 const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
+const BossScene = preload("res://game/gate_boss.tscn")
+const ProfileScript = preload("res://game/run_profile.gd")
+const BOSS_TIME := 360.0
+const MAX_ENEMIES := 48
+
+var practice_mode := false
+var profile_save_prefix := "user://loop_conquest_profile"
+var profile: RunProfile
+var run_id := ""
+var run_time := 0.0
+var run_currency := 0
+var spawn_credit := 0.0
+var boss_retry := 0.0
+var boss_announced := false
+var boss_spawned := false
+var boss_defeated := false
+var death_pending := false
+var run_ended := false
+var end_result := ""
+var settlement_pending := false
+var boss: GateBoss
+var pending_spawns: Array[Dictionary] = []
+var rng := RandomNumberGenerator.new()
+var run_hud: Label
+var result_overlay: ColorRect
+var result_text: Label
+var replay_button: Button
+var retry_button: Button
+var boss_warning_mesh := ImmediateMesh.new()
 
 
 func _init() -> void:
@@ -19,9 +48,321 @@ func _init() -> void:
 		"회랑": Vector2(2700, 900),
 		"성소": Vector2(3600, 1100)
 	}
-	scene_title = "Loop Conquest — 1F Hybrid Region v09"
+	scene_title = "Loop Conquest — 1G Complete Run v01"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	camera_offset = Vector3(14, 13.864, 14)
 	# Continue the original 1F cumulative card-unlock record in the main scene.
 	growth_save_prefix = "user://loop_conquest_1d_unlocks"
+
+
+func _ready() -> void:
+	show_practice_controls = practice_mode
+	super._ready()
+	if practice_mode: return
+	rng.randomize()
+	run_id = "%d-%d-%d" % [Time.get_unix_time_from_system(), Time.get_ticks_usec(), rng.randi()]
+	profile = ProfileScript.new()
+	profile.save_prefix = profile_save_prefix
+	profile.load_state()
+	player.defeated.connect(func(): death_pending = true)
+	_build_run_ui()
+	if profile.load_error:
+		run_ended = true
+		paused = true
+		get_tree().paused = true
+		result_text.text = "저장 기록을 읽을 수 없습니다.\n기존 기록을 덮어쓰지 않았습니다."
+		replay_button.disabled = true
+		retry_button.hide()
+		result_overlay.show()
+	else:
+		_update_run_hud()
+
+
+func spawn_enemies() -> void:
+	if practice_mode: super.spawn_enemies()
+
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if practice_mode or run_ended: return
+	if boss_defeated:
+		_finish_run("SUCCESS")
+		return
+	if death_pending or player.health <= 0.0:
+		_finish_run("DEFEAT")
+		return
+	if paused or growth.choosing or get_tree().paused: return
+	run_time += delta
+	_tick_pending(delta)
+	spawn_credit += _spawn_rate() * delta
+	while spawn_credit >= 1.0:
+		spawn_credit -= 1.0
+		if _active_enemy_count() < MAX_ENEMIES:
+			var point := _choose_spawn_point(false)
+			if point != Vector2.INF:
+				_schedule_spawn(point, _roll_role(), false)
+	if run_time >= BOSS_TIME and not boss_announced and not boss_spawned:
+		boss_retry -= delta
+		if boss_retry <= 0.0:
+			boss_retry = 1.0
+			var point := _choose_spawn_point(true)
+			if point != Vector2.INF:
+				boss_announced = true
+				_schedule_spawn(point, TrainingEnemy.Role.BEAST, true)
+			else:
+				push_warning("No safe boss spawn point; retrying")
+	_update_run_hud()
+
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if practice_mode: return
+	if is_instance_valid(boss) and actors.has(boss):
+		actors[boss].get_node("Body").modulate = Color.WHITE if boss.hit_flash > 0.0 else Color("f2b66f")
+	_draw_boss_warning()
+
+
+func _spawn_rate() -> float:
+	if boss_spawned: return 0.25
+	if run_time < 60.0: return 0.45
+	if run_time < 150.0: return 0.65
+	if run_time < 240.0: return 0.85
+	return 1.10
+
+
+func _roll_role() -> TrainingEnemy.Role:
+	if boss_spawned or run_time < 60.0: return TrainingEnemy.Role.FRAGMENT
+	var roll := rng.randf() * 100.0
+	var weights := [70.0, 20.0, 0.0, 10.0, 0.0] if run_time < 150.0 else [55.0, 20.0, 10.0, 10.0, 5.0] if run_time < 240.0 else [45.0, 20.0, 15.0, 10.0, 10.0]
+	for role in 5:
+		roll -= weights[role]
+		if roll < 0.0: return role as TrainingEnemy.Role
+	return TrainingEnemy.Role.FRAGMENT
+
+
+func _active_enemy_count() -> int:
+	var count := 0
+	for actor in actors:
+		if is_instance_valid(actor) and actor is TrainingEnemy and not actor is GateBoss and not actor.is_queued_for_deletion(): count += 1
+	for entry in pending_spawns:
+		if not entry.boss: count += 1
+	return count
+
+
+func _choose_spawn_point(for_boss: bool) -> Vector2:
+	var visible_candidate := Vector2.INF
+	for attempt in 60:
+		var radius := rng.randf_range(500.0, 850.0)
+		var point := player.global_position + Vector2.from_angle(rng.randf_range(0.0, TAU)) * radius
+		if point.x < 60.0 or point.y < 60.0 or point.x > terrain.map_size.x - 60.0 or point.y > terrain.map_size.y - 60.0: continue
+		if point.distance_to(player.global_position) < (450.0 if for_boss else 380.0): continue
+		if not navigation.is_open(point, 48.0 if for_boss else ACTOR_CLEARANCE + 6.0): continue
+		if navigation.find_path(point, player.global_position).size() < 2: continue
+		if not _point_on_screen(point): return point
+		if visible_candidate == Vector2.INF: visible_candidate = point
+	return visible_candidate
+
+
+func _point_on_screen(point: Vector2) -> bool:
+	var world := terrain.world_point(point, 60.0)
+	return not camera.is_position_behind(world) and get_viewport().get_visible_rect().grow(-45.0).has_point(camera.unproject_position(world))
+
+
+func _schedule_spawn(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> void:
+	var delay := 1.2 if for_boss else 0.8 if _point_on_screen(point) else 0.0
+	if delay <= 0.0:
+		_spawn_now(point, role, for_boss)
+		return
+	var marker := _sphere(0.28 if for_boss else 0.18, Color("ff9c68") if for_boss else Color("f7e6a2"))
+	marker.position = terrain.world_point(point, 18.0)
+	add_child(marker)
+	pending_spawns.append({"point": point, "role": role, "boss": for_boss, "delay": delay, "marker": marker})
+
+
+func _tick_pending(delta: float) -> void:
+	for i in range(pending_spawns.size() - 1, -1, -1):
+		var entry := pending_spawns[i]
+		entry.delay = float(entry.delay) - delta
+		if entry.delay > 0.0: continue
+		(entry.marker as Node3D).queue_free()
+		pending_spawns.remove_at(i)
+		var point: Vector2 = entry.point
+		if point.distance_to(player.global_position) >= (350.0 if entry.boss else 260.0) and navigation.is_open(point, 48.0 if entry.boss else ACTOR_CLEARANCE + 6.0) and navigation.find_path(point, player.global_position).size() >= 2:
+			_spawn_now(point, entry.role, entry.boss)
+		elif entry.boss:
+			boss_announced = false
+
+
+func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> void:
+	if not for_boss:
+		var health: float = [22.0, 45.0, 30.0, 32.0, 36.0][int(role)]
+		_spawn_enemy_at(point, role, health)
+		return
+	boss = BossScene.instantiate()
+	boss.position = point
+	boss.collision_radius = 38.0
+	boss.contact_margin = 3.0
+	boss.target = player
+	boss.arena_bounds = Rect2(Vector2.ZERO, terrain.map_size)
+	boss.collision_mask = 6
+	boss.navigation = navigation
+	boss.projectile_parent = simulation
+	boss.zone_path_filter = clear_attack
+	simulation.add_child(boss)
+	var visual := _actor_visual(Color("f2b66f"))
+	visual.scale = Vector3.ONE * 1.6
+	var crown := _sphere(0.18, Color("ffe2a2"))
+	crown.position.y = 0.93
+	visual.add_child(crown)
+	actors[boss] = visual
+	actor_motion[boss] = [boss.global_position, boss.global_position]
+	boss.defeated.connect(_on_enemy_defeated.bind(boss))
+	boss_spawned = true
+
+
+func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
+	if practice_mode:
+		super._on_enemy_defeated(enemy)
+		return
+	if run_ended: return
+	if enemy is GateBoss:
+		boss_defeated = true
+		return
+	super._on_enemy_defeated(enemy)
+	run_currency += 1 if enemy.role == TrainingEnemy.Role.FRAGMENT else 2
+
+
+func _finish_run(result: String) -> void:
+	if run_ended: return
+	run_ended = true
+	end_result = result
+	paused = true
+	get_tree().paused = true
+	for entry in pending_spawns: (entry.marker as Node3D).queue_free()
+	pending_spawns.clear()
+	settlement_pending = not profile.settle(run_id, result, run_currency)
+	_show_result()
+
+
+func _show_result() -> void:
+	result_overlay.show()
+	replay_button.disabled = settlement_pending
+	retry_button.visible = settlement_pending
+	var heading := "문지기 격파 · 성공" if end_result == "SUCCESS" else "런 종료 · 사망" if end_result == "DEFEAT" else "런 종료 · 귀환"
+	if settlement_pending:
+		result_text.text = "%s\n정산 저장에 실패했습니다. 저장을 재시도하세요.\n종료하면 미저장 화폐가 사라집니다.\n현재 획득 화폐 %d" % [heading, run_currency]
+		return
+	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n이번 판 화폐 +%d  ·  누적 %d%s\n\n새 런은 레벨 1부터 시작합니다." % [
+		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
+		profile.last_award, profile.currency, "\n첫 정복: 사원 유물 획득" if profile.last_first_clear else ""
+	]
+
+
+func _retry_settlement() -> void:
+	if not settlement_pending: return
+	settlement_pending = not profile.settle(run_id, end_result, run_currency)
+	_show_result()
+
+
+func _update_run_hud() -> void:
+	if run_hud == null: return
+	run_hud.text = "시간 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES]
+	if boss_announced and not boss_spawned: run_hud.text += "  ·  문지기 등장 예고"
+	if is_instance_valid(boss) and boss.health > 0.0: run_hud.text += "\n문지기 HP %d / 900" % ceili(boss.health)
+	if profile != null and profile.recovered_backup: run_hud.text += "\n이전 정상 기록을 복구했습니다."
+
+
+func _draw_boss_warning() -> void:
+	boss_warning_mesh.clear_surfaces()
+	if not is_instance_valid(boss) or boss.shock_warning <= 0.0: return
+	var center := boss.global_position
+	var elevation := terrain.height_at(center) + 65.0
+	boss_warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in 48:
+		var a0 := TAU * float(i) / 48.0
+		var a1 := TAU * float(i + 1) / 48.0
+		if not _ring_segment_clear(center, a0, a1, GateBoss.SHOCK_RADIUS): continue
+		var inner0 := center + Vector2.from_angle(a0) * (GateBoss.SHOCK_RADIUS - 9.0)
+		var inner1 := center + Vector2.from_angle(a1) * (GateBoss.SHOCK_RADIUS - 9.0)
+		var outer0 := center + Vector2.from_angle(a0) * GateBoss.SHOCK_RADIUS
+		var outer1 := center + Vector2.from_angle(a1) * GateBoss.SHOCK_RADIUS
+		for point in [center, outer0, outer1, inner0, outer0, outer1, inner0, outer1, inner1]:
+			boss_warning_mesh.surface_set_color(Color(1.0, 0.28, 0.12, 0.2) if point == center else Color(1.0, 0.46, 0.18, 0.88))
+			boss_warning_mesh.surface_add_vertex(Vector3(point.x, elevation, point.y) * RegionTerrain.SCALE)
+	boss_warning_mesh.surface_end()
+
+
+func _build_run_ui() -> void:
+	var visual := MeshInstance3D.new()
+	visual.mesh = boss_warning_mesh
+	var material := _material(Color.WHITE, true)
+	material.vertex_color_use_as_albedo = true
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	visual.material_override = material
+	add_child(visual)
+	var canvas := CanvasLayer.new()
+	canvas.layer = 25
+	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(canvas)
+	run_hud = Label.new()
+	run_hud.position = Vector2(28, 204)
+	run_hud.add_theme_font_size_override("font_size", 18)
+	run_hud.add_theme_color_override("font_color", Color("fff2c9"))
+	run_hud.add_theme_color_override("font_shadow_color", Color.BLACK)
+	canvas.add_child(run_hud)
+	result_overlay = ColorRect.new()
+	result_overlay.position = Vector2.ZERO
+	result_overlay.size = Vector2(1280, 720)
+	result_overlay.color = Color(0.02, 0.04, 0.05, 0.9)
+	result_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	canvas.add_child(result_overlay)
+	result_text = Label.new()
+	result_text.position = Vector2(350, 205)
+	result_text.size = Vector2(580, 220)
+	result_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	result_text.add_theme_font_size_override("font_size", 28)
+	result_overlay.add_child(result_text)
+	replay_button = Button.new()
+	replay_button.text = "새 런 시작  [R]"
+	replay_button.position = Vector2(475, 465)
+	replay_button.size = Vector2(330, 54)
+	replay_button.pressed.connect(_restart_run)
+	result_overlay.add_child(replay_button)
+	retry_button = Button.new()
+	retry_button.text = "저장 재시도"
+	retry_button.position = Vector2(475, 530)
+	retry_button.size = Vector2(330, 54)
+	retry_button.pressed.connect(_retry_settlement)
+	result_overlay.add_child(retry_button)
+	var quit_button := Button.new()
+	quit_button.text = "게임 종료"
+	quit_button.position = Vector2(475, 595)
+	quit_button.size = Vector2(330, 54)
+	quit_button.pressed.connect(func(): get_tree().quit())
+	result_overlay.add_child(quit_button)
+	result_overlay.hide()
+
+
+func _restart_run() -> void:
+	if settlement_pending or profile.load_error: return
+	get_tree().paused = false
+	paused = false
+	get_tree().reload_current_scene()
+
+
+func _input(event: InputEvent) -> void:
+	if practice_mode:
+		super._input(event)
+		return
+	if event is InputEventKey and event.pressed and not event.echo:
+		if run_ended:
+			if event.keycode == KEY_R: _restart_run()
+			return
+		if event.keycode == KEY_R and not growth.choosing:
+			_finish_run("RETREAT")
+			return
+		if event.keycode == KEY_G and not paused and not growth.choosing:
+			_finish_run("RETREAT")
+			return
+	super._input(event)
