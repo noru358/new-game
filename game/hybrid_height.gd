@@ -267,6 +267,17 @@ func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 		for x in [link_left, link_right]:
 			_quad(st, [Vector3(x, 0, seam), Vector3(x, 0, y1), Vector3(x, h1, y1), Vector3(x, h0, seam)], Color("647970"))
 
+
+func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	var strips: Array[Rect2] = []
+	if int(ramp.axis) == 0:
+		strips = [Rect2(area.position.x, area.position.y, area.size.x, 12.0), Rect2(area.position.x, area.end.y - 12.0, area.size.x, 12.0)]
+	else:
+		strips = [Rect2(area.position.x, area.position.y, 12.0, area.size.y), Rect2(area.end.x - 12.0, area.position.y, 12.0, area.size.y)]
+	for strip in strips:
+		_top(st, strip, func(point): return terrain.ramp_height(ramp, point) + 4.0, ramp_color.darkened(0.32))
+
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -286,6 +297,7 @@ func _build_terrain() -> void:
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
 		_top(st, ramp.area, elevation, ramp_color)
 		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+		_ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
 		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height
