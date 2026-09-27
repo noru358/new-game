@@ -99,6 +99,9 @@ func _ready() -> void:
 	wisp = WispCompanion.new()
 	wisp.player = player
 	wisp.facing_formation = true
+	# A faster core gives the curved projectile a firmer launch without changing
+	# the accepted attack interval or its homing rule.
+	wisp.projectile_speed = 740.0
 	wisp.navigation = navigation
 	wisp.target_visibility_filter = _on_screen
 	wisp.follow_position_filter = _constrain_wisp
@@ -336,6 +339,37 @@ func _actor_visual(color: Color) -> Node3D:
 	add_child(root)
 	return root
 
+func _add_health_bar(visual: Node3D, enemy: TrainingEnemy) -> void:
+	var bar := Sprite3D.new()
+	bar.name = "HealthBar"
+	bar.pixel_size = 0.012
+	bar.position.y = 1.10
+	bar.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	bar.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
+	bar.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	var ratio := clampf(enemy.health / enemy.max_health, 0.0, 1.0)
+	bar.texture = ImageTexture.create_from_image(_health_bar_image(enemy, ratio))
+	bar.set_meta("shown_ratio", ratio)
+	visual.add_child(bar)
+
+func _update_health_bar(visual: Node3D, enemy: TrainingEnemy) -> void:
+	var bar: Sprite3D = visual.get_node_or_null("HealthBar")
+	if bar == null: return
+	var ratio := clampf(enemy.health / enemy.max_health, 0.0, 1.0)
+	if is_equal_approx(float(bar.get_meta("shown_ratio", -1.0)), ratio): return
+	bar.set_meta("shown_ratio", ratio)
+	(bar.texture as ImageTexture).update(_health_bar_image(enemy, ratio))
+
+func _health_bar_image(enemy: TrainingEnemy, ratio: float) -> Image:
+	var image := Image.create(48, 7, false, Image.FORMAT_RGBA8)
+	var fill_color := Color("f6b76c") if enemy.role == TrainingEnemy.Role.LAMP else Color("ee836e") if enemy.role == TrainingEnemy.Role.BEAST else Color("80e7d8") if enemy.role == TrainingEnemy.Role.ZONE else Color("c7a6f6") if enemy.role == TrainingEnemy.Role.SUPPORT else Color("98dfad")
+	if enemy.max_health >= 500.0: fill_color = Color("ffbb70")
+	for y in 7:
+		for x in 48:
+			var inside := x > 0 and x < 47 and y > 0 and y < 6
+			image.set_pixel(x, y, fill_color if inside and x <= ceili(46.0 * ratio) else Color("1a3435") if inside else Color("071c20"))
+	return image
+
 func _set_actor_radius(actor: CharacterBody2D, radius: float) -> void:
 	var collision: CollisionShape2D = actor.get_node("CollisionShape2D")
 	var shape: CircleShape2D = collision.shape.duplicate()
@@ -368,6 +402,7 @@ func _spawn_enemy_at(point: Vector2, role: TrainingEnemy.Role, health: float) ->
 	enemy.zone_path_filter = clear_attack
 	simulation.add_child(enemy)
 	var visual := _actor_visual(_enemy_color(enemy.role))
+	_add_health_bar(visual, enemy)
 	if enemy.role != TrainingEnemy.Role.FRAGMENT:
 		var marker := _sphere(0.14 if enemy.role == TrainingEnemy.Role.BEAST else 0.11, _enemy_color(enemy.role).lightened(0.25))
 		marker.position.y = 0.86
@@ -439,6 +474,13 @@ func _sync_wisp_visuals() -> void:
 
 func _on_wisp_hit(enemy: TrainingEnemy) -> void:
 	_flash(enemy.global_position, Color("66efff"))
+	var pulse := _sphere(0.13, Color("bafaff"))
+	add_child(pulse)
+	pulse.position = terrain.world_point(enemy.global_position, 55.0)
+	var tween := create_tween()
+	tween.tween_property(pulse, "scale", Vector3.ONE * 2.8, 0.15)
+	tween.parallel().tween_property(pulse, "transparency", 1.0, 0.15)
+	tween.tween_callback(pulse.queue_free)
 
 func _physics_process(delta: float) -> void:
 	if paused or not is_instance_valid(player): return
@@ -473,6 +515,10 @@ func _physics_process(delta: float) -> void:
 				var visual := _sphere(0.075 + 0.015 * float(rank) if powered else 0.095, Color("96f4ff").lerp(Color.WHITE, float(rank) / 3.0) if powered else Color("ffe18c"))
 				visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 				add_child(visual)
+				if powered:
+					var tail := _sphere(0.055 + 0.008 * float(rank), Color("42c8f2"))
+					tail.name = "Tail"
+					visual.add_child(tail)
 				shots[shot] = visual
 				shot_motion[shot] = [shot.global_position, shot.global_position]
 				var launch: Vector2 = shot.visual_origin if shot.visual_origin != Vector2.ZERO else shot.global_position
@@ -481,6 +527,8 @@ func _physics_process(delta: float) -> void:
 			var samples: Array = shot_motion[shot]
 			shot_motion[shot] = [samples[1], shot.global_position]
 			shots[shot].position = _shot_world_point(shot, shot.global_position)
+			if shots[shot].has_node("Tail"):
+				shots[shot].get_node("Tail").position = Vector3(-shot.direction.x, 0.0, -shot.direction.y) * 0.15
 	for shot in shots.keys():
 		if not is_instance_valid(shot):
 			shots[shot].queue_free()
@@ -501,6 +549,7 @@ func _process(delta: float) -> void:
 			visual.get_node("Body").flip_h = player.facing.x - player.facing.y < -0.1
 		elif actor is TrainingEnemy:
 			visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
+			_update_health_bar(visual, actor)
 		var dx: float = (terrain.height_at(point + Vector2(1, 0)) - terrain.height_at(point - Vector2(1, 0))) * 0.5
 		var dz: float = (terrain.height_at(point + Vector2(0, 1)) - terrain.height_at(point - Vector2(0, 1))) * 0.5
 		visual.get_node("Shadow").quaternion = Quaternion(Vector3.UP, Vector3(-dx, 1, -dz).normalized())
@@ -647,13 +696,15 @@ func _draw_enemy_warnings(fraction: float) -> void:
 		var limit := _attack_reach_at(source, actor.locked_direction.angle(), length)
 		var color := Color(1.0, 0.30, 0.20, 0.92) if actor.role == TrainingEnemy.Role.BEAST else Color(1.0, 0.89, 0.42, 0.95)
 		var outline := Color(0.38, 0.07, 0.06, 0.78) if actor.role == TrainingEnemy.Role.BEAST else Color(0.40, 0.18, 0.04, 0.82)
-		var width := 9.0 if actor.role == TrainingEnemy.Role.BEAST else 6.0
+		var is_boss := actor is GateBoss
+		var width: float = actor.collision_radius * 2.0 + player.collision_radius * 2.0 + actor.contact_margin * 2.0 if is_boss else 9.0 if actor.role == TrainingEnemy.Role.BEAST else 6.0
 		if limit > ACTOR_CLEARANCE:
 			for i in 8:
 				var first: Vector2 = source + actor.locked_direction * lerpf(ACTOR_CLEARANCE, limit, float(i) / 8.0)
 				var second: Vector2 = source + actor.locked_direction * lerpf(ACTOR_CLEARANCE, limit, float(i + 1) / 8.0)
 				_warning_strip(first, second, width + 7.0, outline, 62.0, terrain.height_at(source))
-				_warning_strip(first, second, width, color, 65.0, terrain.height_at(source))
+				_warning_strip(first, second, width, Color(color.r, color.g, color.b, 0.32) if is_boss else color, 65.0, terrain.height_at(source))
+				if is_boss: _warning_strip(first, second, 7.0, color, 68.0, terrain.height_at(source))
 	for zone in get_tree().get_nodes_in_group("enemy_zones"):
 		if not is_instance_valid(zone) or zone.is_queued_for_deletion(): continue
 		var center: Vector2 = zone.global_position

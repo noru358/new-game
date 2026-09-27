@@ -37,20 +37,21 @@ func _init() -> void:
 	start_point = Vector2(650, 1870)
 	enemy_points = [
 		Vector2(120, 1850), Vector2(650, 920), Vector2(960, 1100),
-		Vector2(1760, 1050), Vector2(2280, 900), Vector2(2830, 1220),
-		Vector2(3130, 850), Vector2(3400, 1380)
+		Vector2(1910, 1050), Vector2(2690, 900), Vector2(3390, 1220),
+		Vector2(4170, 850), Vector2(4680, 1380)
 	]
 	landmark_points = {
 		"수변 남쪽": Vector2(650, 1870),
 		"중정": Vector2(660, 1120),
 		"테라스": Vector2(1000, 1100),
-		"사원 뜰": Vector2(1780, 900),
-		"회랑": Vector2(2700, 900),
-		"성소": Vector2(3600, 1100)
+		"사원 뜰": Vector2(1950, 900),
+		"회랑": Vector2(3410, 900),
+		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — 1G Complete Run v01"
+	scene_title = "Loop Conquest — 1G Complete Run v02"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
+	overview_camera_size = 40.0
 	camera_offset = Vector3(14, 13.864, 14)
 	# Continue the original 1F cumulative card-unlock record in the main scene.
 	growth_save_prefix = "user://loop_conquest_1d_unlocks"
@@ -212,6 +213,7 @@ func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> voi
 	simulation.add_child(boss)
 	var visual := _actor_visual(Color("f2b66f"))
 	visual.scale = Vector3.ONE * 1.6
+	_add_health_bar(visual, boss)
 	var crown := _sphere(0.18, Color("ffe2a2"))
 	crown.position.y = 0.93
 	visual.add_child(crown)
@@ -267,9 +269,13 @@ func _retry_settlement() -> void:
 
 func _update_run_hud() -> void:
 	if run_hud == null: return
-	run_hud.text = "시간 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES]
-	if boss_announced and not boss_spawned: run_hud.text += "  ·  문지기 등장 예고"
-	if is_instance_valid(boss) and boss.health > 0.0: run_hud.text += "\n문지기 HP %d / 900" % ceili(boss.health)
+	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
+	run_hud.text = "경과 %02d:%02d  ·  문지기까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
+	if boss_announced and not boss_spawned: run_hud.text += "\n문지기 등장 예고"
+	if is_instance_valid(boss) and boss.health > 0.0:
+		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n문지기 HP %d / 900" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, ceili(boss.health)]
+		if boss.warning_time > 0.0: run_hud.text += "  ·  붉은 띠 밖으로 회피!"
+		elif boss.shock_warning > 0.0: run_hud.text += "  ·  주황 원 밖으로 회피!"
 	if profile != null and profile.recovered_backup: run_hud.text += "\n이전 정상 기록을 복구했습니다."
 
 
@@ -283,13 +289,16 @@ func _draw_boss_warning() -> void:
 		var a0 := TAU * float(i) / 48.0
 		var a1 := TAU * float(i + 1) / 48.0
 		if not _ring_segment_clear(center, a0, a1, GateBoss.SHOCK_RADIUS): continue
-		var inner0 := center + Vector2.from_angle(a0) * (GateBoss.SHOCK_RADIUS - 9.0)
-		var inner1 := center + Vector2.from_angle(a1) * (GateBoss.SHOCK_RADIUS - 9.0)
-		var outer0 := center + Vector2.from_angle(a0) * GateBoss.SHOCK_RADIUS
-		var outer1 := center + Vector2.from_angle(a1) * GateBoss.SHOCK_RADIUS
-		for point in [center, outer0, outer1, inner0, outer0, outer1, inner0, outer1, inner1]:
-			boss_warning_mesh.surface_set_color(Color(1.0, 0.28, 0.12, 0.2) if point == center else Color(1.0, 0.46, 0.18, 0.88))
-			boss_warning_mesh.surface_add_vertex(Vector3(point.x, elevation, point.y) * RegionTerrain.SCALE)
+		for stripe_index in 2:
+			var width: float = 17.0 if stripe_index == 0 else 7.0
+			var inner0 := center + Vector2.from_angle(a0) * (GateBoss.SHOCK_RADIUS - width)
+			var inner1 := center + Vector2.from_angle(a1) * (GateBoss.SHOCK_RADIUS - width)
+			var outer0 := center + Vector2.from_angle(a0) * GateBoss.SHOCK_RADIUS
+			var outer1 := center + Vector2.from_angle(a1) * GateBoss.SHOCK_RADIUS
+			var color := Color(0.48, 0.10, 0.04, 0.78) if width > 10.0 else Color(1.0, 0.48, 0.19, 0.98)
+			for point in [inner0, outer0, outer1, inner0, outer1, inner1]:
+				boss_warning_mesh.surface_set_color(color)
+				boss_warning_mesh.surface_add_vertex(Vector3(point.x, elevation + (2.0 if width < 10.0 else 0.0), point.y) * RegionTerrain.SCALE)
 	boss_warning_mesh.surface_end()
 
 
@@ -310,6 +319,8 @@ func _build_run_ui() -> void:
 	run_hud.add_theme_font_size_override("font_size", 18)
 	run_hud.add_theme_color_override("font_color", Color("fff2c9"))
 	run_hud.add_theme_color_override("font_shadow_color", Color.BLACK)
+	run_hud.add_theme_constant_override("shadow_offset_x", 2)
+	run_hud.add_theme_constant_override("shadow_offset_y", 2)
 	canvas.add_child(run_hud)
 	result_overlay = ColorRect.new()
 	result_overlay.position = Vector2.ZERO

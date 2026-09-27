@@ -40,7 +40,7 @@ func _run() -> void:
 	for actor in scene.actors:
 		if actor is TrainingEnemy: actor.set_physics_process(false)
 	for companion in scene.growth.wisps: companion.set_physics_process(false)
-	_check(scene.terrain.map_size == Vector2(3840, 2160) and scene.player.position.distance_to(Vector2(650, 1870)) < 10.0, "the actual 1F region opens in the hybrid first-court slice")
+	_check(scene.terrain.map_size == Vector2(5100, 2160) and scene.player.position.distance_to(Vector2(650, 1870)) < 10.0, "the wider 1G region opens in the hybrid first-court slice")
 	_check(scene.terrain.height_at(Vector2(500, 1200)) == 160.0 and scene.terrain.height_at(Vector2(980, 1100)) == 320.0 and scene.terrain.height_at(Vector2(1950, 1100)) == 0.0, "first-court levels join three flat later spaces")
 	var actors_ok := true
 	var enemy_count := 0
@@ -61,7 +61,7 @@ func _run() -> void:
 	scene.camera.size = scene.overview_camera_size
 	scene._process(1.0)
 	var full_overview := true
-	for corner in [Vector2.ZERO, Vector2(3840, 0), Vector2(3840, 2160), Vector2(0, 2160)]:
+	for corner in [Vector2.ZERO, Vector2(5100, 0), Vector2(5100, 2160), Vector2(0, 2160)]:
 		var pixel: Vector2 = scene.camera.unproject_position(Vector3(corner.x, 0.0, corner.y) * HybridTerrain.SCALE)
 		if not Rect2(Vector2.ZERO, Vector2(1280, 720)).has_point(pixel): full_overview = false
 	_check(full_overview, "Tab overview centers the entire integrated region")
@@ -98,10 +98,10 @@ func _run() -> void:
 	var east_map: Vector2 = scene.minimap._map_point_at(Vector2(500, 200), 0.0)
 	var south_map: Vector2 = scene.minimap._map_point_at(Vector2(200, 500), 0.0)
 	_check(east_map.x > start_map.x and south_map.x < start_map.x, "the full-region minimap uses the gameplay camera diamond")
-	_check(not scene.navigation.has_clear_path(Vector2(1800, 1100), Vector2(2270, 1100)) and scene.navigation.has_clear_path(Vector2(1800, 850), Vector2(2270, 850)) and scene.navigation.has_clear_path(Vector2(1800, 1350), Vector2(2270, 1350)), "temple grounds split around a central ruin into two broad combat routes")
-	_check(not scene.navigation.has_clear_path(Vector2(2560, 900), Vector2(2560, 1260)) and scene.navigation.has_clear_path(Vector2(2700, 900), Vector2(2700, 1260)), "gallery has two lanes with a cross passage")
-	_check(not scene.navigation.has_clear_path(Vector2(3300, 850), Vector2(3300, 1370)) and scene.navigation.find_path(Vector2(3300, 850), Vector2(3300, 1370)).size() > 2, "sanctuary loops around its closed altar")
-	var distant_path: PackedVector2Array = scene.navigation.find_path(Vector2(3600, 1100), Vector2(650, 1200))
+	_check(not scene.navigation.has_clear_path(Vector2(1900, 1100), Vector2(2660, 1100)) and scene.navigation.has_clear_path(Vector2(1900, 850), Vector2(2660, 850)) and scene.navigation.has_clear_path(Vector2(1900, 1350), Vector2(2660, 1350)), "expanded temple grounds keep two broad combat routes")
+	_check(not scene.navigation.has_clear_path(Vector2(3180, 900), Vector2(3180, 1260)) and scene.navigation.has_clear_path(Vector2(3400, 900), Vector2(3400, 1260)), "wider gallery keeps two lanes with a cross passage")
+	_check(not scene.navigation.has_clear_path(Vector2(4450, 850), Vector2(4450, 1390)) and scene.navigation.find_path(Vector2(4450, 850), Vector2(4450, 1390)).size() > 2, "wider sanctuary loops around its closed altar")
+	var distant_path: PackedVector2Array = scene.navigation.find_path(Vector2(4750, 1100), Vector2(650, 1200))
 	_check(distant_path.size() > 2, "one 2D navigation graph connects the first court to the sanctuary")
 	var pull_target: TrainingEnemy = scene.actors.keys().filter(func(actor): return actor is TrainingEnemy)[0]
 	scene.teleport(Vector2(1650, 1000))
@@ -140,18 +140,18 @@ func _run() -> void:
 	chaser.set_physics_process(true)
 	await _frames(420)
 	_check(chaser.position.x < 1200.0 and scene.terrain.height_at(chaser.position) >= 160.0, "a distant enemy follows the east connector up into the court: %s" % chaser.position)
-	scene.teleport(Vector2(3300, 1370))
-	chaser.position = Vector2(3300, 850)
+	scene.teleport(Vector2(4450, 1390))
+	chaser.position = Vector2(4450, 850)
 	chaser.velocity = Vector2.ZERO
 	chaser.knockback = Vector2.ZERO
 	chaser.navigation_path.clear()
 	chaser.navigation_repath_time = 0.0
 	await _frames(200)
-	_check(absf(chaser.position.x - 3300.0) > 100.0, "a sanctuary pursuer commits to a side route around the altar instead of pressing into it: %s" % chaser.position)
+	_check(absf(chaser.position.x - 4450.0) > 100.0, "a sanctuary pursuer commits to a side route around the altar instead of pressing into it: %s" % chaser.position)
 	scene.queue_free()
 	await _frames(3)
 	for suffix in ["_a.json", "_b.json"]:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path("user://verify_hybrid_region_temp" + suffix))
 	if failures == 0:
-		print("Hybrid region verification passed: 3840x2160 terrain, diamond map, enemy spawns, water, routes and height links")
+		print("Hybrid region verification passed: 5100x2160 terrain, diamond map, enemy spawns, water, routes and height links")
 	quit(1 if failures else 0)
