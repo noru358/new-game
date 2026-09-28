@@ -41,7 +41,7 @@ func _run() -> void:
 		if actor is TrainingEnemy: actor.set_physics_process(false)
 	for companion in scene.growth.wisps: companion.set_physics_process(false)
 	_check(scene.terrain.map_size == Vector2(5100, 2160) and scene.player.position.distance_to(Vector2(650, 1870)) < 10.0, "the wider 1G region opens in the hybrid first-court slice")
-	_check(scene.terrain.height_at(Vector2(500, 1200)) == 160.0 and scene.terrain.height_at(Vector2(980, 1100)) == 320.0 and scene.terrain.height_at(Vector2(1950, 1100)) == 0.0, "first-court levels join three flat later spaces")
+	_check(scene.terrain.height_at(Vector2(250, 1200)) == 160.0 and scene.terrain.height_at(Vector2(980, 1100)) == 320.0 and scene.terrain.height_at(Vector2(1950, 1100)) == 0.0, "first-court levels join three flat later spaces")
 	var actors_ok := true
 	var enemy_count := 0
 	for actor in scene.actors:

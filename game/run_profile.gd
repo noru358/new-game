@@ -76,6 +76,22 @@ static func affix_description(affix: String) -> String:
 	return ""
 
 
+static func affix_title(affix: String) -> String:
+	match affix:
+		"RIPPLE": return "강화 평타 파동"
+		"ECHO_WISP": return "4타 여우불 추가"
+		"EMBER_STRIKE": return "여우불·평타 연계"
+		"KEEN": return "이동 베기 피해 +4%"
+		"SWIFT": return "이동 베기 재사용 -4%p"
+		"WEAVE": return "강화 평타 Q 환급 +0.10초"
+		"WIDE": return "4타 폭발 범위 +10%"
+		"HEAVY": return "4타 폭발 피해 +8%"
+		"DRAW": return "3타 사거리 +8%"
+		"BRIGHT": return "여우불 피해 +0.05"
+		"STEADY": return "최대 HP +5"
+	return ""
+
+
 static func affix_kind(affix: String) -> String:
 	return "behavior" if affix in ["RIPPLE", "ECHO_WISP", "EMBER_STRIKE"] else "numeric"
 

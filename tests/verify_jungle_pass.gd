@@ -22,7 +22,7 @@ func _run() -> void:
 	await physics_frame
 	await physics_frame
 	_check(scene.terrain.map_size == Vector2(5600, 2400) and scene.region_id == RunProfile.JUNGLE_REGION, "second region uses its own map and progress ID")
-	for point in [Vector2(1410, 1180), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2180, 2120), Vector2(3010, 1850), Vector2(3410, 1790), Vector2(4520, 1160)]:
+	for point in [Vector2(1410, 1180), Vector2(1640, 265), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2180, 2120), Vector2(3010, 1850), Vector2(3410, 1790), Vector2(4520, 1160)]:
 		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(scene.player.position, point).size() >= 2, "ridge, detours and gate remain reachable from the entry")
 	_check(scene.navigation.is_open(Vector2(3750, 1760), scene.ACTOR_CLEARANCE) and scene.navigation.find_path(Vector2(3410, 1790), Vector2(4700, 1700)).size() >= 2, "lower canyon bridge reaches a separate gate entrance")
 	_check(scene.terrain.ramps[3].kind == "gate_stairs" and scene.terrain.ramps[4].kind == "rock_path" and scene.terrain.ramps[6].kind == "broken_bridge", "causeway and canyon have distinct terrain and ascent")
@@ -35,7 +35,7 @@ func _run() -> void:
 	scene.teleport(Vector2(2590, 1130))
 	await physics_frame
 	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 2, "main stair route starts with its own two-sentry encounter")
-	scene.teleport(Vector2(3240, 1130))
+	scene.teleport(Vector2(3840, 1130))
 	await physics_frame
 	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "the main ascent adds a distinct gate-top encounter")
 	scene.teleport(Vector2(2590, 1770))

@@ -9,7 +9,7 @@ const CANOPY_POINTS := [
 	Vector2(350, 1880), Vector2(820, 2070), Vector2(1250, 1790),
 	Vector2(1820, 600), Vector2(2310, 570), Vector2(3180, 590),
 	Vector2(1810, 1790), Vector2(2450, 2160), Vector2(3470, 2200),
-	Vector2(3980, 640), Vector2(5140, 640), Vector2(4020, 1760), Vector2(5150, 1760),
+	Vector2(3980, 640), Vector2(5140, 640), Vector2(4060, 1390), Vector2(5150, 1760),
 ]
 
 var gate_columns: Array[Dictionary] = []
@@ -19,8 +19,8 @@ var rock_ledge_areas: Array[Rect2] = [
 	Rect2(3070, 1680, 130, 230),
 ]
 var gate_routes: Dictionary = {
-	"stairs": {"entry": Rect2(2510, 620, 250, 830), "crest": Rect2(3150, 620, 200, 830)},
-	"rocks": {"entry": Rect2(2520, 1660, 260, 260), "crest": Rect2(3330, 1680, 250, 220)},
+	"stairs": {"entry": Rect2(2510, 620, 250, 830), "crest": Rect2(3760, 900, 240, 550)},
+	"rocks": {"entry": Rect2(2520, 1660, 260, 260), "crest": Rect2(4100, 1550, 260, 450)},
 }
 
 
@@ -31,24 +31,25 @@ func _init() -> void:
 	plateaus = [
 		{"area": Rect2(1550, 400, 950, 1600), "height": 240.0, "base": 0.0, "name": "정글 능선", "openings": {"west": [[900.0, 1450.0]], "north": [[2000.0, 2350.0]], "south": [[2000.0, 2350.0]], "east": [[760.0, 1320.0], [1660.0, 1920.0]]}},
 		{"area": Rect2(2500, 620, 850, 830), "height": 240.0, "base": 0.0, "name": "관문 제방", "openings": {"west": [[760.0, 1320.0]], "east": [[900.0, 1450.0]]}},
-		{"area": Rect2(2760, 1620, 460, 380), "height": 80.0, "base": 0.0, "name": "하층 협곡", "openings": {"west": [[1660.0, 1920.0]], "east": [[1680.0, 1900.0]]}},
-		{"area": Rect2(3900, 500, 1350, 1400), "height": 480.0, "base": 0.0, "name": "관문 상단", "openings": {"west": [[900.0, 1450.0], [1650.0, 1900.0]]}},
+		{"area": Rect2(2760, 1550, 460, 450), "height": 80.0, "base": 0.0, "name": "하층 협곡", "openings": {"west": [[1660.0, 1920.0]], "east": [[1550.0, 2000.0]]}},
+		{"area": Rect2(3900, 500, 1350, 1050), "height": 480.0, "base": 0.0, "name": "관문 상단", "openings": {"west": [[900.0, 1450.0]], "south": [[4360.0, 5250.0]]}},
+		{"area": Rect2(4360, 1550, 890, 450), "height": 480.0, "base": 0.0, "name": "남쪽 관문 상단", "openings": {"west": [[1550.0, 2000.0]], "north": [[4360.0, 5250.0]]}},
+		{"area": Rect2(2000, 130, 350, 270), "height": 240.0, "base": 0.0, "name": "북쪽 덩굴길 쉼터", "openings": {"west": [[130.0, 400.0]], "south": [[2000.0, 2350.0]]}},
 	]
 	ramps = [
-		{"area": Rect2(1280, 900, 270, 550), "axis": 0, "from": 0.0, "to": 240.0, "name": "서쪽 상승로"},
-		{"area": Rect2(2000, 130, 350, 270), "axis": 1, "from": 0.0, "to": 240.0, "name": "북쪽 덩굴길"},
+		{"area": Rect2(800, 900, 750, 550), "axis": 0, "from": 0.0, "to": 240.0, "name": "서쪽 상승로"},
+		{"area": Rect2(1250, 130, 750, 270), "axis": 0, "from": 0.0, "to": 240.0, "name": "북쪽 덩굴길"},
 		{"area": Rect2(2000, 2000, 350, 270), "axis": 1, "from": 240.0, "to": 0.0, "name": "남쪽 우회로"},
-		{"area": Rect2(3350, 900, 550, 550), "axis": 0, "from": 240.0, "to": 480.0, "base": 0.0, "name": "관문 석계단", "kind": "gate_stairs"},
-		{"area": Rect2(3600, 1650, 300, 250), "axis": 0, "from": 240.0, "to": 480.0, "base": 0.0, "name": "관문 바위길", "kind": "rock_path"},
+		{"area": Rect2(3150, 900, 750, 550), "axis": 0, "from": 240.0, "to": 480.0, "base": 0.0, "name": "관문 석계단", "kind": "gate_stairs"},
+		{"area": Rect2(3600, 1550, 760, 450), "axis": 0, "from": 240.0, "to": 480.0, "base": 0.0, "name": "관문 바위길", "kind": "rock_path"},
 		{"area": Rect2(2500, 1660, 260, 260), "axis": 0, "from": 240.0, "to": 80.0, "base": 0.0, "name": "협곡 하강로", "kind": "rock_path"},
-		{"area": Rect2(3220, 1680, 380, 220), "axis": 0, "from": 80.0, "to": 240.0, "base": 0.0, "name": "끊어진 바위 다리", "kind": "broken_bridge"},
+		{"area": Rect2(3100, 1550, 500, 450), "axis": 0, "from": 80.0, "to": 240.0, "base": 0.0, "name": "끊어진 바위 다리", "kind": "broken_bridge"},
 	]
 	water_areas = []
 	chasm_areas = [
-		Rect2(2500, 1450, 1100, 170),
+		Rect2(2500, 1450, 1100, 100),
 		Rect2(2500, 1620, 260, 40),
-		Rect2(3220, 1620, 380, 60),
-		Rect2(3220, 1900, 380, 230),
+		Rect2(3220, 2000, 380, 130),
 	]
 	floor_areas = [
 		{"area": Rect2(100, 370, 1260, 1670), "color": Color("6b8664")},
@@ -57,10 +58,10 @@ func _init() -> void:
 		{"area": Rect2(1930, 910, 570, 520), "height": 242.4, "color": Color("b3aa83")},
 		{"area": Rect2(2530, 700, 770, 670), "height": 241.2, "color": Color("b8ad87")},
 		{"area": Rect2(2760, 1630, 450, 350), "height": 81.2, "color": Color("536d65")},
-		{"area": Rect2(3920, 540, 1270, 1320), "height": 481.2, "color": Color("9f9b7f")},
+		{"area": Rect2(3920, 540, 1270, 1010), "height": 481.2, "color": Color("9f9b7f")},
+		{"area": Rect2(4360, 1550, 830, 360), "height": 481.2, "color": Color("9f9b7f")},
 		{"area": Rect2(4100, 800, 1030, 720), "height": 482.4, "color": Color("bcb08a")},
 		{"area": Rect2(3900, 940, 240, 470), "height": 483.6, "color": Color("b8ad87")},
-		{"area": Rect2(3900, 1660, 260, 230), "height": 482.5, "color": Color("788376")},
 	]
 	wall_areas = [
 		{"area": Rect2(600, 500, 180, 250), "rise": 165.0, "color": Color("3d6149")},
@@ -70,9 +71,9 @@ func _init() -> void:
 		{"area": Rect2(2700, 1460, 110, 110), "rise": 185.0, "color": Color("40564e"), "collidable": false},
 		{"area": Rect2(3350, 1480, 120, 110), "rise": 210.0, "color": Color("50665c"), "collidable": false},
 		{"area": Rect2(4380, 590, 210, 300), "rise": 270.0, "color": Color("727a65")},
-		{"area": Rect2(4380, 1510, 210, 300), "rise": 270.0, "color": Color("727a65")},
-		{"area": Rect2(3330, 1970, 70, 75), "rise": 110.0, "color": Color("586b63"), "collidable": false},
-		{"area": Rect2(4120, 1660, 90, 100), "rise": 115.0, "color": Color("67776b")},
+		{"area": Rect2(4380, 1250, 210, 220), "rise": 270.0, "color": Color("727a65")},
+		{"area": Rect2(3330, 2050, 70, 75), "rise": 110.0, "color": Color("586b63"), "collidable": false},
+		{"area": Rect2(4490, 1690, 90, 100), "rise": 115.0, "color": Color("67776b")},
 	]
 	for center in GATE_COLUMN_CENTERS:
 		var column := {"area": Rect2(center - GATE_COLUMN_SIZE * 0.5, GATE_COLUMN_SIZE), "rise": GATE_COLUMN_RISE, "color": Color("677867")}
@@ -98,7 +99,8 @@ func height_at(point: Vector2) -> float:
 func surface_name(point: Vector2) -> String:
 	for ramp in ramps:
 		if ramp.area.has_point(point): return ramp.name
-	if plateaus[3].area.has_point(point): return "관문 상단"
+	if plateaus[3].area.has_point(point) or plateaus[4].area.has_point(point): return "관문 상단"
+	if plateaus[5].area.has_point(point): return "북쪽 덩굴길 쉼터"
 	if plateaus[2].area.has_point(point): return "하층 협곡"
 	if plateaus[1].area.has_point(point): return "석계단 제방"
 	if plateaus[0].area.has_point(point): return "정글 능선"

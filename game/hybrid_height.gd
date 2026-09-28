@@ -95,6 +95,7 @@ func _ready() -> void:
 	player.collision_mask = 4
 	player.input_rotation = -PI / 4.0
 	player.ramp_areas = terrain.ramps
+	player.ramp_speed_resolver = _ramp_screen_speed_scale
 	player.move_speed_multiplier = 1.12
 	player.dash_distance_multiplier = 1.16
 	player.basic_speed_bonus = 0.18
@@ -186,6 +187,26 @@ func _register_inputs() -> void:
 	mouse.button_index = MOUSE_BUTTON_LEFT
 	if not InputMap.action_has_event("attack", mouse):
 		InputMap.action_add_event("attack", mouse)
+
+
+func _ramp_screen_speed_scale(point: Vector2, direction: Vector2) -> float:
+	if direction.length_squared() < 0.01: return 1.0
+	var unit := direction.normalized()
+	for ramp in terrain.ramps:
+		if not (ramp.area as Rect2).has_point(point): continue
+		# The camera projects climbing height against screen Up/Down. Compare
+		# progress along the requested screen direction with flat-ground progress;
+		# only the scalar changes, so the input's world direction is preserved.
+		var rise: float = (float(ramp.to) - float(ramp.from)) / float(ramp.area.size[int(ramp.axis)]) * unit[int(ramp.axis)]
+		var planar := Vector3(unit.x, 0.0, unit.y)
+		var slope := Vector3(unit.x, rise, unit.y)
+		var right := camera.global_transform.basis.x
+		var up := camera.global_transform.basis.y
+		var flat_screen := Vector2(planar.dot(right), -planar.dot(up))
+		var slope_screen := Vector2(slope.dot(right), -slope.dot(up))
+		var progress := slope_screen.dot(flat_screen.normalized())
+		return flat_screen.length() / progress if progress > 0.001 else 1.0
+	return 1.0
 
 func _material(color: Color, unshaded: bool = false) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
@@ -302,11 +323,14 @@ func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
 func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
 	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("465d57"))
-	for slab in 3:
-		var x0: float = area.position.x + area.size.x * float(slab) / 3.0
-		var north_margin: float = [13.0, 29.0, 19.0][slab]
-		var south_margin: float = [30.0, 13.0, 24.0][slab]
-		var stone := Rect2(x0 + 4.0, area.position.y + north_margin, area.size.x / 3.0 - 8.0, area.size.y - north_margin - south_margin)
+	var slab_count := maxi(3, ceili(area.size.x / 135.0))
+	var north_margins := [13.0, 29.0, 19.0, 35.0, 17.0, 27.0]
+	var south_margins := [30.0, 13.0, 24.0, 15.0, 34.0, 20.0]
+	for slab in slab_count:
+		var x0: float = area.position.x + area.size.x * float(slab) / float(slab_count)
+		var north_margin: float = north_margins[slab % north_margins.size()]
+		var south_margin: float = south_margins[slab % south_margins.size()]
+		var stone := Rect2(x0 + 4.0, area.position.y + north_margin, area.size.x / float(slab_count) - 8.0, area.size.y - north_margin - south_margin)
 		_rough_slab(st, stone, func(point): return terrain.ramp_height(ramp, point), 3.5, Color("a5ad98") if slab == 1 else Color("83978b"))
 	_ramp_edge_markers(st, ramp)
 

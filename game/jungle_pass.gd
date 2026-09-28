@@ -19,7 +19,7 @@ func _init() -> void:
 	landmark_points = {
 		"정글 입구": Vector2(430, 1210),
 		"서쪽 상승로": Vector2(1410, 1180),
-		"북쪽 덩굴길": Vector2(2180, 420),
+		"북쪽 덩굴길": Vector2(1640, 265),
 		"정글 능선": Vector2(2640, 1120),
 		"석계단 정면길": Vector2(3070, 1110),
 		"하층 협곡": Vector2(3010, 1850),
@@ -69,7 +69,7 @@ func _spawn_route_sentries(route: String, at_crest: bool) -> void:
 	if route == "stairs":
 		sentries = [[Vector2(3970, 1010), TrainingEnemy.Role.BEAST], [Vector2(4020, 1330), TrainingEnemy.Role.LAMP]] if at_crest else [[Vector2(2890, 1050), TrainingEnemy.Role.BEAST], [Vector2(3080, 1250), TrainingEnemy.Role.LAMP]]
 	else:
-		sentries = [[Vector2(4140, 1560), TrainingEnemy.Role.ZONE], [Vector2(4060, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2830, 1770), TrainingEnemy.Role.ZONE], [Vector2(3130, 1840), TrainingEnemy.Role.BEAST]]
+		sentries = [[Vector2(4450, 1760), TrainingEnemy.Role.ZONE], [Vector2(4620, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2830, 1770), TrainingEnemy.Role.ZONE], [Vector2(3130, 1840), TrainingEnemy.Role.BEAST]]
 	for entry in sentries:
 		var spawn_point: Vector2 = entry[0]
 		if navigation.is_open(spawn_point, ACTOR_CLEARANCE + 6.0) and navigation.find_path(spawn_point, player.global_position).size() >= 2:
@@ -242,7 +242,7 @@ func _build_gate_approaches() -> void:
 			add_child(post)
 	for side in [-1.0, 1.0]:
 		for step in 5:
-			var x: float = rocks.area.position.x + 30.0 + float(step) * 58.0
+			var x: float = rocks.area.position.x + rocks.area.size.x * (float(step) + 0.5) / 5.0
 			var y: float = rocks.area.position.y - 24.0 if side < 0.0 else rocks.area.end.y + 24.0
 			var height: float = terrain.ramp_height(rocks, Vector2(x, y))
 			var shard := MeshInstance3D.new()

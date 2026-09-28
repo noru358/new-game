@@ -15,6 +15,19 @@ func _check(ok: bool, message: String) -> void:
 		printerr("FAIL: ", message)
 
 
+func _sample_screen_y(scene: Node3D, point: Vector2, action: String) -> float:
+	var player: SandboxPlayer = scene.player
+	player.global_position = point
+	player.velocity = Vector2.ZERO
+	await physics_frame
+	var before: Vector3 = scene.terrain.world_point(player.global_position)
+	Input.action_press(action)
+	for i in 30: await physics_frame
+	Input.action_release(action)
+	var after: Vector3 = scene.terrain.world_point(player.global_position)
+	return -(after - before).dot(scene.camera.global_transform.basis.y)
+
+
 func _run() -> void:
 	var scene: Node3D = load("res://game/jungle_pass.tscn").instantiate()
 	scene.profile_save_prefix = PREFIX
@@ -52,9 +65,9 @@ func _run() -> void:
 	scene.teleport(Vector2(2590, 1770))
 	await physics_frame
 	_check(scene.gate_route_encounter == "rocks" and scene._active_enemy_count() == 2, "lower canyon starts with a separate ledge encounter: %s / %d" % [scene.gate_route_encounter, scene._active_enemy_count()])
-	scene.teleport(Vector2(3420, 1780))
+	scene.teleport(Vector2(4210, 1780))
 	await physics_frame
-	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "canyon bridge adds a second encounter before the gate")
+	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "canyon ascent adds a second encounter before the gate")
 	var lintel: MeshInstance3D = scene.get_node("GateLintel")
 	var lintel_mesh: BoxMesh = lintel.mesh
 	var column_left: float = (JunglePassTerrain.GATE_COLUMN_CENTERS[0].x - JunglePassTerrain.GATE_COLUMN_SIZE.x * 0.5) * JunglePassTerrain.SCALE
@@ -62,42 +75,39 @@ func _run() -> void:
 	_check(lintel.position.x - lintel_mesh.size.x * 0.5 < column_left - 0.1 and lintel.position.y - lintel_mesh.size.y * 0.5 < column_top - 0.1, "lintel overlaps columns without coincident outer faces")
 	var player: SandboxPlayer = scene.player
 	var guided := player._ramp_guided_direction(Vector2(1, 1).normalized())
-	player.global_position = Vector2(3270, 1460)
+	player.global_position = Vector2(3070, 1460)
 	guided = player._ramp_guided_direction(Vector2(1, 1).normalized())
 	_check(guided.x > 0.0 and guided.y < 0.0, "off-center approach guides inward toward ramp mouth")
-	player.global_position = Vector2(3270, 1580)
+	player.global_position = Vector2(3070, 1580)
 	_check(player._ramp_guided_direction(Vector2(1, 1).normalized()).is_equal_approx(Vector2(1, 1).normalized()), "no assist away from ramp mouth")
 	player.moving_slash_enabled = true
-	player.global_position = Vector2(3270, 1400)
+	player.global_position = Vector2(3070, 1420)
 	player._start_moving_slash(Vector2(1, 1))
 	for i in 22: await physics_frame
-	_check(player.global_position.x > 3350.0 and player.global_position.y < 1450.0, "moving slash enters the gate ramp from its corner")
+	_check(player.global_position.x > 3150.0 and player.global_position.y < 1450.0, "moving slash enters the gate ramp from its corner")
 	player.moving_slash_time = 0.0
-	player.global_position = Vector2(3270, 1400)
+	player.global_position = Vector2(3070, 1420)
 	Input.action_press("move_down")
 	for i in 32: await physics_frame
 	Input.action_release("move_down")
-	_check(player.global_position.x > 3350.0 and player.global_position.y < 1450.0, "diagonal walking also enters the gate ramp")
-	player.global_position = Vector2(3420, 1120)
-	Input.action_press("move_down")
-	for i in 30: await physics_frame
-	Input.action_release("move_down")
-	var single_key_distance: float = player.global_position.x - 3420.0
-	player.global_position = Vector2(3420, 1120)
-	Input.action_press("move_down")
-	Input.action_press("move_right")
-	for i in 30: await physics_frame
-	Input.action_release("move_down")
-	Input.action_release("move_right")
-	var diagonal_key_distance: float = player.global_position.x - 3420.0
-	_check(single_key_distance > diagonal_key_distance * 0.9, "screen-axis travel keeps full ramp speed: %.1f / %.1f" % [single_key_distance, diagonal_key_distance])
+	_check(player.global_position.x > 3150.0 and player.global_position.y < 1450.0, "screen-down walking also enters the gate ramp")
+	player.hurt_immunity = 1000.0
+	for action in ["move_up", "move_down"]:
+		var flat_screen: float = await _sample_screen_y(scene, Vector2(430, 1210), action)
+		for point in [Vector2(3420, 1120), Vector2(3350, 1770), Vector2(3890, 1770)]:
+			var slope_screen: float = await _sample_screen_y(scene, point, action)
+			_check(signf(slope_screen) == signf(flat_screen) and absf(slope_screen) >= absf(flat_screen) * 0.9, "screen %s keeps flat-ground vertical progress on %s: %.1f / %.1f" % [action, scene.terrain.surface_name(point), slope_screen, flat_screen])
 	for region in [scene.terrain, TempleHybridTerrain.new(), HybridTerrain.new()]:
 		player.ramp_areas = region.ramps
 		for ramp in region.ramps:
 			player.global_position = ramp.area.get_center()
 			var input_direction := Vector2(1, 1).normalized()
 			var corrected: Vector2 = player._ramp_guided_direction(Vector2(1, 1).normalized())
-			_check(corrected.is_equal_approx(input_direction) and player._ramp_speed_scale(input_direction) > 1.35, "single-key input keeps its direction while gaining slope speed on %s" % ramp.name)
+			_check(corrected.is_equal_approx(input_direction), "single-key input preserves its direction on %s" % ramp.name)
+			if region is TempleHybridTerrain or region is JunglePassTerrain:
+				if float(ramp.to) > float(ramp.from):
+					var grade: float = (float(ramp.to) - float(ramp.from)) / float(ramp.area.size[int(ramp.axis)])
+					_check(grade <= 0.33, "rising %s grade leaves enough screen-vertical travel" % ramp.name)
 	player.ramp_areas = scene.terrain.ramps
 	var dash_events := InputMap.action_get_events("dash")
 	var slash_events := InputMap.action_get_events("moving_slash")

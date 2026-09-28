@@ -79,6 +79,7 @@ var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var input_rotation := 0.0
 var ramp_areas: Array = []
+var ramp_speed_resolver: Callable
 var collision_radius := 18.0
 var move_speed_multiplier := 1.0
 var dash_distance_multiplier := 1.0
@@ -261,16 +262,7 @@ func _ramp_guided_direction(direction: Vector2) -> Vector2:
 
 
 func _ramp_speed_scale(direction: Vector2) -> float:
-	if direction.length_squared() < 0.01: return 1.0
-	for ramp in ramp_areas:
-		if not (ramp.area as Rect2).grow(-collision_radius).has_point(global_position): continue
-		var forward := Vector2.RIGHT if int(ramp.axis) == 0 else Vector2.DOWN
-		var along := absf(direction.normalized().dot(forward))
-		# Preserve the screen-axis input and compensate only its smaller
-		# component along the slope. Physics still handles the side rail.
-		if along >= 0.5 and along < 0.85:
-			return minf(1.45, 1.0 / along)
-	return 1.0
+	return float(ramp_speed_resolver.call(global_position, direction)) if ramp_speed_resolver.is_valid() else 1.0
 
 
 func _start_dash(movement: Vector2) -> void:

@@ -22,6 +22,7 @@ var gear_action_button: Button
 var mod_buttons: Dictionary = {}
 var mod_clear_button: Button
 var mod_info_label: Label
+var mod_preview_label: Label
 var mod_behavior_label: Label
 var mod_numeric_label: Label
 var growth_buttons: Dictionary = {}
@@ -35,6 +36,7 @@ var gear_detail_scroll: ScrollContainer
 var embedded_in_camp := false
 var selected_region_id := RunProfile.TEMPLE_REGION
 var selected_gear_id := "W_FLOW"
+var previewed_mod_id := ""
 
 
 func _ready() -> void:
@@ -123,17 +125,25 @@ func _build_ui() -> void:
 	gear_choices.add_child(_label("장신구", 22, Color("f6e7bf")))
 	accessory_button = _button(gear_choices, "", func(): _select_gear("A_EMBER"))
 	gear_action_button = _button(gear_choices, "", _gear_action)
+	var gear_detail_column := VBoxContainer.new()
+	gear_detail_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	gear_detail_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	gear_detail_column.add_theme_constant_override("separation", 6)
+	gear_columns.add_child(gear_detail_column)
+	var detail_heading := HBoxContainer.new()
+	detail_heading.add_theme_constant_override("separation", 6)
+	gear_detail_column.add_child(detail_heading)
+	mod_info_label = _label("", 15, Color("c5ded6"))
+	mod_info_label.custom_minimum_size.y = 46
+	mod_info_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	detail_heading.add_child(mod_info_label)
+	mod_clear_button = _button(detail_heading, "옵션 해제", func(): _slot_mod(""))
+	mod_clear_button.custom_minimum_size = Vector2(92, 34)
+	mod_clear_button.add_theme_font_size_override("font_size", 14)
 	gear_detail_scroll = ScrollContainer.new()
-	gear_detail_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gear_detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	gear_columns.add_child(gear_detail_scroll)
-	var mods := _scroll_panel_box(gear_detail_scroll)
-	mods.add_child(_label("선택 장비", 22, Color("f6e7bf")))
-	mod_info_label = _label("", 17, Color("c5ded6"))
-	# Slot descriptions change after equipping. Reserve their full three-line
-	# height so the controls below never jump between layouts.
-	mod_info_label.custom_minimum_size.y = 84
-	mods.add_child(mod_info_label)
+	gear_detail_column.add_child(gear_detail_scroll)
+	var mods := _scroll_panel_box(gear_detail_scroll, true)
 	mod_behavior_label = _label("행동 변화", 18, Color("f6e7bf"))
 	mods.add_child(mod_behavior_label)
 	var behavior_options := VBoxContainer.new()
@@ -144,13 +154,16 @@ func _build_ui() -> void:
 	mods.add_child(numeric_options)
 	for gear_id in RunProfile.GEAR_AFFIXES:
 		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
-			mod_buttons[mod_id] = _button(behavior_options if RunProfile.affix_kind(mod_id) == "behavior" else numeric_options, "", _slot_mod.bind(mod_id))
-			# Long behavior names wrap at compact window sizes. All option rows
-			# must occupy the same space when switching equipment or slotting.
-			mod_buttons[mod_id].custom_minimum_size.y = 86
-	mod_clear_button = _button(mods, "옵션 해제", func(): _slot_mod(""))
-	mod_clear_button.custom_minimum_size.y = 34
-	mod_clear_button.add_theme_font_size_override("font_size", 15)
+			mod_buttons[mod_id] = _button(behavior_options if RunProfile.affix_kind(mod_id) == "behavior" else numeric_options, "", _select_mod.bind(mod_id))
+			var option_button: Button = mod_buttons[mod_id]
+			option_button.custom_minimum_size.y = 38
+			option_button.add_theme_font_size_override("font_size", 15)
+			_apply_button_styles(option_button, 7)
+			option_button.mouse_entered.connect(_preview_mod.bind(mod_id))
+			option_button.focus_entered.connect(_preview_mod.bind(mod_id))
+	mod_preview_label = _label("", 15, Color("d6e7dc"))
+	mod_preview_label.custom_minimum_size.y = 44
+	gear_detail_column.add_child(mod_preview_label)
 	var growth := _tab_page("성장")
 	for group in [
 		{"title": "공격", "ids": ["POWER", "WISP", "SLASH", "FINISH"]},
@@ -177,7 +190,7 @@ func _tab_page(name: String) -> VBoxContainer:
 	return _scroll_panel_box(scrolling)
 
 
-func _scroll_panel_box(scrolling: ScrollContainer) -> VBoxContainer:
+func _scroll_panel_box(scrolling: ScrollContainer, compact: bool = false) -> VBoxContainer:
 	var panel := PanelContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var style := StyleBoxFlat.new()
@@ -185,11 +198,11 @@ func _scroll_panel_box(scrolling: ScrollContainer) -> VBoxContainer:
 	style.border_color = Color("35605f")
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(10)
-	style.set_content_margin_all(19)
+	style.set_content_margin_all(10 if compact else 19)
 	panel.add_theme_stylebox_override("panel", style)
 	scrolling.add_child(panel)
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 12)
+	box.add_theme_constant_override("separation", 5 if compact else 12)
 	panel.add_child(box)
 	return box
 
@@ -222,27 +235,40 @@ func _button(parent: Container, value: String, action: Callable) -> Button:
 	button.custom_minimum_size.y = 42
 	button.add_theme_font_size_override("font_size", 17)
 	button.add_theme_color_override("font_disabled_color", Color("a6b8af"))
-	button.add_theme_stylebox_override("normal", _button_style(false))
-	button.add_theme_stylebox_override("hover", _button_style(true))
-	var locked_style := StyleBoxFlat.new()
-	locked_style.bg_color = Color("193439")
-	locked_style.border_color = Color("345457")
-	locked_style.set_border_width_all(2)
-	locked_style.set_corner_radius_all(5)
-	locked_style.set_content_margin_all(12)
-	button.add_theme_stylebox_override("disabled", locked_style)
+	_apply_button_styles(button, 12)
 	button.pressed.connect(action)
 	parent.add_child(button)
 	return button
 
 
-func _button_style(highlighted: bool) -> StyleBoxFlat:
+func _apply_button_styles(button: Button, inset: int) -> void:
+	button.add_theme_stylebox_override("normal", _button_style(false, inset))
+	button.add_theme_stylebox_override("hover", _button_style(true, inset))
+	button.add_theme_stylebox_override("pressed", _button_style(true, inset, true))
+	button.add_theme_stylebox_override("hover_pressed", _button_style(true, inset, true))
+	var locked_style := StyleBoxFlat.new()
+	locked_style.bg_color = Color("193439")
+	locked_style.border_color = Color("345457")
+	locked_style.set_border_width_all(2)
+	locked_style.set_corner_radius_all(5)
+	locked_style.set_content_margin_all(inset)
+	button.add_theme_stylebox_override("disabled", locked_style)
+	var focus_style := StyleBoxFlat.new()
+	focus_style.bg_color = Color.TRANSPARENT
+	focus_style.border_color = Color("e4bc79")
+	focus_style.set_border_width_all(2)
+	focus_style.set_corner_radius_all(5)
+	focus_style.set_content_margin_all(inset)
+	button.add_theme_stylebox_override("focus", focus_style)
+
+
+func _button_style(highlighted: bool, inset: int = 12, pressed: bool = false) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("1d4042") if highlighted else Color("102b31")
-	style.border_color = Color("e4bc79") if highlighted else Color("32545a")
+	style.border_color = Color("fff0b6") if pressed else Color("e4bc79") if highlighted else Color("32545a")
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(5)
-	style.set_content_margin_all(12)
+	style.set_content_margin_all(inset)
 	return style
 
 
@@ -286,8 +312,10 @@ func _refresh() -> void:
 		gear_action_button.text = "선택 장비 장착"
 	gear_action_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	gear_action_button.disabled = profile.load_error or (selected_gear_id == "W_START" and profile.equipped_weapon == "W_START") or (not selected_owned and (profile.currency < int(RunProfile.GEAR_COST[selected_gear_id]) or selected_gear_id == "W_FLOW" and not profile.temple_owned or selected_gear_id == "W_ECHO" and not profile.jungle_owned))
-	mod_info_label.text = "기본 마력장 · 4타 전방 충격\n교체 옵션 없음" if selected_gear_id == "W_START" else "%s  ·  옵션 1칸\n장착 옵션: %s" % [RunProfile.gear_name(selected_gear_id), _mod_summary(selected_gear_id)]
-	mod_clear_button.visible = selected_gear_id != "W_START" and not profile.mod_for(selected_gear_id).is_empty()
+	if selected_gear_id != "W_START" and not RunProfile.GEAR_AFFIXES[selected_gear_id].has(previewed_mod_id):
+		previewed_mod_id = RunProfile.GEAR_AFFIXES[selected_gear_id][0]
+	mod_info_label.text = "기본 마력장\n교체 옵션 없음" if selected_gear_id == "W_START" else "%s\n장착: %s" % [RunProfile.gear_name(selected_gear_id), RunProfile.affix_title(profile.mod_for(selected_gear_id)) if not profile.mod_for(selected_gear_id).is_empty() else "없음"]
+	mod_clear_button.visible = selected_gear_id != "W_START"
 	mod_clear_button.disabled = profile.load_error or profile.mod_for(selected_gear_id).is_empty()
 	var has_behavior := false
 	var has_numeric := false
@@ -296,11 +324,14 @@ func _refresh() -> void:
 		button.visible = selected_gear_id != "W_START" and RunProfile.GEAR_AFFIXES[selected_gear_id].has(mod_id)
 		if button.visible and RunProfile.affix_kind(mod_id) == "behavior": has_behavior = true
 		elif button.visible: has_numeric = true
-		button.text = "%s  %s" % ["●" if profile.mod_for(selected_gear_id) == mod_id else "○", RunProfile.affix_description(mod_id)]
-		if not profile.owned_mods.has(mod_id): button.text += "  ·  미획득"
-		button.disabled = profile.load_error or not selected_owned or not profile.owned_mods.has(mod_id) or profile.mod_for(selected_gear_id) == mod_id
+		var mod_state := "장착 중" if profile.mod_for(selected_gear_id) == mod_id else "보유" if profile.owned_mods.has(mod_id) else "미획득"
+		button.text = "%s  %s  ·  %s" % ["●" if mod_state == "장착 중" else "○", RunProfile.affix_title(mod_id), mod_state]
+		button.tooltip_text = RunProfile.affix_description(mod_id)
+		button.disabled = profile.load_error
+		button.modulate = Color.WHITE if profile.owned_mods.has(mod_id) else Color(0.68, 0.75, 0.72)
 	mod_behavior_label.visible = has_behavior
 	mod_numeric_label.visible = has_numeric
+	_update_mod_preview()
 	var growth_names := {"POWER": "평타 피해", "WISP": "여우불 발사 간격", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리", "VITALITY": "최대 HP", "GUARD": "받는 피해", "MOBILITY": "대시 충전 시간", "SPEED": "기본 이동속도"}
 	for id in growth_buttons:
 		var rank := int(profile.growth_ranks[id])
@@ -343,8 +374,30 @@ func _growth_value(id: String, rank: int) -> String:
 
 func _select_gear(id: String) -> void:
 	selected_gear_id = id
+	previewed_mod_id = profile.mod_for(id) if id != "W_START" and not profile.mod_for(id).is_empty() else RunProfile.GEAR_AFFIXES[id][0] if id != "W_START" else ""
 	_refresh()
 	gear_detail_scroll.scroll_vertical = 0
+
+
+func _preview_mod(mod_id: String) -> void:
+	if selected_gear_id == "W_START" or not RunProfile.GEAR_AFFIXES[selected_gear_id].has(mod_id): return
+	previewed_mod_id = mod_id
+	_update_mod_preview()
+
+
+func _select_mod(mod_id: String) -> void:
+	_preview_mod(mod_id)
+	if (selected_gear_id == "W_START" or not profile.owned_gear.has(selected_gear_id)
+			or not profile.owned_mods.has(mod_id) or profile.mod_for(selected_gear_id) == mod_id):
+		return
+	_slot_mod(mod_id)
+
+
+func _update_mod_preview() -> void:
+	mod_preview_label.text = "옵션을 장착할 수 없습니다." if selected_gear_id == "W_START" else RunProfile.affix_description(previewed_mod_id)
+	for mod_id in mod_buttons:
+		var button: Button = mod_buttons[mod_id]
+		button.add_theme_stylebox_override("normal", _button_style(mod_id == previewed_mod_id, 7))
 
 
 func _gear_action() -> void:
@@ -361,7 +414,9 @@ func _gear_action() -> void:
 
 
 func _slot_mod(mod_id: String) -> void:
-	if profile.slot_mod(selected_gear_id, mod_id): _refresh()
+	if profile.slot_mod(selected_gear_id, mod_id):
+		if not mod_id.is_empty(): previewed_mod_id = mod_id
+		_refresh()
 	else: status_label.text = "옵션 장착을 저장하지 못했습니다."
 
 
