@@ -39,9 +39,15 @@ func _run() -> void:
 	hub.profile.owned_gear["W_ECHO"] = true
 	hub.profile.owned_mods.append("ECHO_WISP")
 	hub._refresh()
+	hub.gear_detail_scroll.scroll_vertical = 100
+	await process_frame
+	var detail_offset: int = hub.gear_detail_scroll.scroll_vertical
+	hub.mod_buttons["ECHO_WISP"].grab_focus()
 	hub._slot_mod("ECHO_WISP")
 	await process_frame
-	_check(absf(hub.mod_behavior_label.global_position.y - behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - numeric_y) < 0.5, "equipping a behavior option preserves category positions")
+	_check(hub.gear_detail_scroll.scroll_vertical == detail_offset and absf(hub.mod_behavior_label.global_position.y - (behavior_y - detail_offset)) < 0.5 and absf(hub.mod_numeric_label.global_position.y - (numeric_y - detail_offset)) < 0.5, "equipping a behavior option preserves the scrolled detail position")
+	hub.gear_detail_scroll.scroll_vertical = 0
+	await process_frame
 	for gear_id in RunProfile.GEAR_AFFIXES:
 		hub._select_gear(gear_id)
 		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
