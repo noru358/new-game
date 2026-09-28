@@ -59,6 +59,10 @@ var overview := false
 var kills := 0
 var paused := false
 var terrain_mesh: MeshInstance3D
+var vertical_face_candidates: Array[Dictionary] = []
+var resolved_vertical_faces: Array[Dictionary] = []
+var lip_candidates: Array[Dictionary] = []
+var resolved_lips: Array[Dictionary] = []
 var previous_attack_step := 0
 var current_attack_step := 0
 var previous_attack_elapsed := 0.0
@@ -233,7 +237,12 @@ func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> vo
 				vertices.append(Vector3(point.x, elevation.call(point), point.y))
 			_quad(st, vertices, color.lightened(0.035) if (x / 100 + z / 100) % 2 == 0 else color)
 
-func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, color: Color, openings: Dictionary = {}, skip_sides: Array = []) -> void:
+func _queue_vertical_face(varying_axis: int, fixed: float, start: float, end: float, bottom: float, top_start: float, top_end: float, color: Color) -> void:
+	if end <= start or maxf(top_start, top_end) <= bottom: return
+	vertical_face_candidates.append({"axis": varying_axis, "fixed": fixed, "start": start, "end": end, "bottom": bottom, "top_start": top_start, "top_end": top_end, "color": color})
+
+
+func _queue_sides(area: Rect2, elevation: Callable, bottom: float, color: Color, openings: Dictionary = {}, skip_sides: Array = []) -> void:
 	var corners := [area.position, Vector2(area.end.x, area.position.y), area.end, Vector2(area.position.x, area.end.y)]
 	for i in range(4):
 		var side: String = ["north", "east", "south", "west"][i]
@@ -255,14 +264,97 @@ func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, co
 			var p1 := b
 			p0[axis] = span[0]
 			p1[axis] = span[1]
-			_quad(st, [Vector3(p0.x, bottom, p0.y), Vector3(p1.x, bottom, p1.y), Vector3(p1.x, elevation.call(p1), p1.y), Vector3(p0.x, elevation.call(p0), p0.y)], color)
+			_queue_vertical_face(axis, p0[1 - axis], span[0], span[1], bottom, elevation.call(p0), elevation.call(p1), color)
 
 
-func _plateau_face(st: SurfaceTool, edge: Dictionary, height: float, bottom: float, color: Color) -> void:
+func _queue_plateau_face(edge: Dictionary, height: float, bottom: float, color: Color) -> void:
 	var horizontal: bool = edge.side == "north" or edge.side == "south"
-	var a := Vector2(edge.start, edge.fixed) if horizontal else Vector2(edge.fixed, edge.start)
-	var b := Vector2(edge.end, edge.fixed) if horizontal else Vector2(edge.fixed, edge.end)
-	_quad(st, [Vector3(a.x, bottom, a.y), Vector3(b.x, bottom, b.y), Vector3(b.x, height, b.y), Vector3(a.x, height, a.y)], color)
+	_queue_vertical_face(0 if horizontal else 1, edge.fixed, edge.start, edge.end, bottom, height, height, color)
+
+
+func _face_top(face: Dictionary, at: float) -> float:
+	return lerpf(face.top_start, face.top_end, (at - face.start) / (face.end - face.start))
+
+
+func _emit_vertical_faces(st: SurfaceTool) -> void:
+	# Plateaus and ramps may describe the same solid boundary. Rendering each
+	# wall independently puts differently lit polygons on one depth plane.
+	# Resolve each line into one outer silhouette before building the mesh.
+	resolved_vertical_faces.clear()
+	var lanes := {}
+	for face in vertical_face_candidates:
+		var key := "%d:%.3f" % [face.axis, face.fixed]
+		if not lanes.has(key): lanes[key] = []
+		lanes[key].append(face)
+	for lane in lanes.values():
+		var stops: Array[float] = []
+		for face in lane:
+			stops.append(face.start)
+			stops.append(face.end)
+		for i in lane.size():
+			for j in range(i + 1, lane.size()):
+				var left: float = maxf(lane[i].start, lane[j].start)
+				var right: float = minf(lane[i].end, lane[j].end)
+				if right - left <= 0.001: continue
+				var first_difference: float = _face_top(lane[i], left) - _face_top(lane[j], left)
+				var last_difference: float = _face_top(lane[i], right) - _face_top(lane[j], right)
+				if first_difference * last_difference < 0.0:
+					stops.append(left + (right - left) * absf(first_difference) / (absf(first_difference) + absf(last_difference)))
+		stops.sort()
+		var previous := -INF
+		for stop in stops:
+			if stop - previous <= 0.001: continue
+			if previous != -INF:
+				var middle: float = (previous + stop) * 0.5
+				var owner: Dictionary = {}
+				var highest := -INF
+				var lowest := INF
+				for face in lane:
+					if face.start > middle or face.end < middle: continue
+					lowest = minf(lowest, face.bottom)
+					var top: float = _face_top(face, middle)
+					if top > highest:
+						highest = top
+						owner = face
+				if not owner.is_empty():
+					var a := Vector3(previous, lowest, owner.fixed) if owner.axis == 0 else Vector3(owner.fixed, lowest, previous)
+					var b := Vector3(stop, lowest, owner.fixed) if owner.axis == 0 else Vector3(owner.fixed, lowest, stop)
+					var c := Vector3(b.x, _face_top(owner, stop), b.z)
+					var d := Vector3(a.x, _face_top(owner, previous), a.z)
+					_quad(st, [a, b, c, d], owner.color)
+					resolved_vertical_faces.append({"axis": owner.axis, "fixed": owner.fixed, "start": previous, "end": stop, "bottom": lowest, "top_start": d.y, "top_end": c.y, "color": owner.color})
+			previous = stop
+
+
+func _subtract_lip_overlap(area: Rect2, covered: Rect2) -> Array[Rect2]:
+	var overlap := area.intersection(covered)
+	if overlap.size.x <= 0.001 or overlap.size.y <= 0.001: return [area]
+	var pieces: Array[Rect2] = []
+	if area.position.x < overlap.position.x:
+		pieces.append(Rect2(area.position, Vector2(overlap.position.x - area.position.x, area.size.y)))
+	if overlap.end.x < area.end.x:
+		pieces.append(Rect2(Vector2(overlap.end.x, area.position.y), Vector2(area.end.x - overlap.end.x, area.size.y)))
+	if area.position.y < overlap.position.y:
+		pieces.append(Rect2(Vector2(overlap.position.x, area.position.y), Vector2(overlap.size.x, overlap.position.y - area.position.y)))
+	if overlap.end.y < area.end.y:
+		pieces.append(Rect2(Vector2(overlap.position.x, overlap.end.y), Vector2(overlap.size.x, area.end.y - overlap.end.y)))
+	return pieces
+
+
+func _emit_lips(st: SurfaceTool) -> void:
+	resolved_lips.clear()
+	for lip in lip_candidates:
+		var uncovered: Array[Rect2] = [lip.area]
+		for earlier in resolved_lips:
+			if not is_equal_approx(float(lip.height), float(earlier.height)): continue
+			var remainder: Array[Rect2] = []
+			for piece in uncovered:
+				remainder.append_array(_subtract_lip_overlap(piece, earlier.area))
+			uncovered = remainder
+			if uncovered.is_empty(): break
+		for piece in uncovered:
+			resolved_lips.append({"area": piece, "height": lip.height, "color": lip.color})
+			_top(st, piece, func(_point): return float(lip.height), lip.color)
 
 func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
@@ -370,6 +462,8 @@ func _rough_slab(st: SurfaceTool, area: Rect2, elevation: Callable, lift: float,
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	vertical_face_candidates.clear()
+	lip_candidates.clear()
 	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, ground_color)
 	for floor in terrain.floor_areas:
 		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
@@ -381,14 +475,15 @@ func _build_terrain() -> void:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
 		for edge in terrain.plateau_edge_spans(plateau):
-			_plateau_face(st, edge, plateau.height, plateau.base, cliff_color)
+			_queue_plateau_face(edge, plateau.height, plateau.base, cliff_color)
 			var lip: Rect2
 			match edge.side:
 				"north": lip = Rect2(edge.start, edge.fixed, edge.end - edge.start, 12.0)
 				"south": lip = Rect2(edge.start, edge.fixed - 12.0, edge.end - edge.start, 12.0)
 				"west": lip = Rect2(edge.fixed, edge.start, 12.0, edge.end - edge.start)
 				_: lip = Rect2(edge.fixed - 12.0, edge.start, 12.0, edge.end - edge.start)
-			_top(st, lip, func(_point): return float(plateau.height) + 4.0, cliff_color.lightened(0.16))
+			lip_candidates.append({"area": lip, "height": float(plateau.height) + 4.0, "color": cliff_color.lightened(0.16)})
+	_emit_lips(st)
 	if terrain is JunglePassTerrain:
 		for i in terrain.rock_ledge_areas.size():
 			_rough_slab(st, terrain.rock_ledge_areas[i], func(point): return terrain.height_at(point), 5.0, Color("8b9d91") if i % 2 == 0 else Color("a7ae9a"))
@@ -402,13 +497,14 @@ func _build_terrain() -> void:
 			"rock_path": _rock_path(st, ramp)
 			"broken_bridge": _broken_bridge(st, ramp)
 			_: _top(st, ramp.area, elevation, ramp_color)
-		_sides(st, ramp.area, elevation, ramp.get("base", minf(ramp.from, ramp.to)), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+		_queue_sides(ramp.area, elevation, ramp.get("base", minf(ramp.from, ramp.to)), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
 		if ramp.get("kind", "") not in ["gate_stairs", "rock_path", "broken_bridge"]: _ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
 		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height
 		_top(st, wall.area, elevation, wall.color)
-		_sides(st, wall.area, elevation, wall.get("base", 0.0), wall.color.darkened(0.25))
+		_queue_sides(wall.area, elevation, wall.get("base", 0.0), wall.color.darkened(0.25))
+	_emit_vertical_faces(st)
 	st.generate_normals()
 	terrain_mesh = MeshInstance3D.new()
 	terrain_mesh.mesh = st.commit()
