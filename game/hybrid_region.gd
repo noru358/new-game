@@ -389,15 +389,21 @@ func _retry_settlement() -> void:
 
 func _update_run_hud() -> void:
 	if run_hud == null: return
+	var next_hud := _run_hud_text()
+	if run_hud.text != next_hud: run_hud.text = next_hud
+
+
+func _run_hud_text() -> String:
 	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
-	run_hud.text = "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
-	if boss_announced and not boss_spawned: run_hud.text += "\n%s 등장 예고" % boss_name
+	var result := "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
+	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
-		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
-		if boss.warning_time > 0.0: run_hud.text += "  ·  붉은 띠 밖으로 회피!"
-		elif boss.shock_warning > 0.0: run_hud.text += "  ·  주황 원 밖으로 회피!"
-		elif boss.ring_warning > 0.0: run_hud.text += "  ·  바깥 고리 회피! 안쪽이 안전"
-	if profile != null and profile.recovered_backup: run_hud.text += "\n이전 정상 기록을 복구했습니다."
+		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
+		if boss.warning_time > 0.0: result += "  ·  붉은 띠 밖으로 회피!"
+		elif boss.shock_warning > 0.0: result += "  ·  주황 원 밖으로 회피!"
+		elif boss.ring_warning > 0.0: result += "  ·  바깥 고리 회피! 안쪽이 안전"
+	if profile != null and profile.recovered_backup: result += "\n이전 정상 기록을 복구했습니다."
+	return result
 
 
 func _draw_boss_warning() -> void:

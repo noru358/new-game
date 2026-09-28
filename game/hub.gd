@@ -130,6 +130,9 @@ func _build_ui() -> void:
 	var mods := _scroll_panel_box(gear_detail_scroll)
 	mods.add_child(_label("선택 장비", 22, Color("f6e7bf")))
 	mod_info_label = _label("", 17, Color("c5ded6"))
+	# Slot descriptions change after equipping. Reserve their full three-line
+	# height so the controls below never jump between layouts.
+	mod_info_label.custom_minimum_size.y = 84
 	mods.add_child(mod_info_label)
 	mod_behavior_label = _label("행동 변화", 18, Color("f6e7bf"))
 	mods.add_child(mod_behavior_label)
@@ -142,6 +145,9 @@ func _build_ui() -> void:
 	for gear_id in RunProfile.GEAR_AFFIXES:
 		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
 			mod_buttons[mod_id] = _button(behavior_options if RunProfile.affix_kind(mod_id) == "behavior" else numeric_options, "", _slot_mod.bind(mod_id))
+			# Long behavior names wrap at compact window sizes. All option rows
+			# must occupy the same space when switching equipment or slotting.
+			mod_buttons[mod_id].custom_minimum_size.y = 86
 	mod_clear_button = _button(mods, "옵션 해제", func(): _slot_mod(""))
 	mod_clear_button.custom_minimum_size.y = 34
 	mod_clear_button.add_theme_font_size_override("font_size", 15)

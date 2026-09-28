@@ -43,6 +43,12 @@ func _run() -> void:
 	_check(scene._attack_reach_at(Vector2(2210, 570), Vector2.RIGHT.angle(), 130.0) < 100.0, "slash trims only at the now-visible canopy trunk")
 	for chasm in scene.terrain.chasm_areas:
 		_check(not scene.navigation.is_open(chasm.get_center(), scene.ACTOR_CLEARANCE), "visible canyon void blocks its own footprint")
+	for ramp in scene.terrain.ramps:
+		if ramp.get("kind", "") in ["gate_stairs", "rock_path", "broken_bridge"]:
+			_check(is_equal_approx(float(ramp.get("base", -1.0)), 0.0), "canyon ramp side face reaches the visible valley floor: %s" % ramp.name)
+	for wall in scene.terrain.wall_areas:
+		if not wall.get("collidable", true):
+			_check(not scene.terrain.barriers().has(wall.area), "decorative canyon rock does not add a hidden blocking footprint")
 	scene.teleport(Vector2(2590, 1770))
 	await physics_frame
 	_check(scene.gate_route_encounter == "rocks" and scene._active_enemy_count() == 2, "lower canyon starts with a separate ledge encounter: %s / %d" % [scene.gate_route_encounter, scene._active_enemy_count()])
@@ -89,9 +95,9 @@ func _run() -> void:
 		player.ramp_areas = region.ramps
 		for ramp in region.ramps:
 			player.global_position = ramp.area.get_center()
-			var along := Vector2.RIGHT if ramp.axis == 0 else Vector2.DOWN
+			var input_direction := Vector2(1, 1).normalized()
 			var corrected: Vector2 = player._ramp_guided_direction(Vector2(1, 1).normalized())
-			_check(absf(corrected.dot(along)) > 0.99 and is_equal_approx(corrected.length(), 1.0), "single-key input maintains full speed on %s" % ramp.name)
+			_check(corrected.is_equal_approx(input_direction) and player._ramp_speed_scale(input_direction) > 1.35, "single-key input keeps its direction while gaining slope speed on %s" % ramp.name)
 	player.ramp_areas = scene.terrain.ramps
 	var dash_events := InputMap.action_get_events("dash")
 	var slash_events := InputMap.action_get_events("moving_slash")

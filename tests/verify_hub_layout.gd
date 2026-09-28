@@ -28,6 +28,28 @@ func _run() -> void:
 		button.pressed.emit()
 		await process_frame
 		_check(hub.gear_list_scroll.scroll_vertical == list_offset and absf(hub.weapon_button.global_position.y - first_y) < 0.5, "selecting gear preserves the list position at a compact window size")
+	hub._select_gear("W_ECHO")
+	await process_frame
+	var behavior_y: float = hub.mod_behavior_label.global_position.y
+	var numeric_y: float = hub.mod_numeric_label.global_position.y
+	for id in ["W_FLOW", "W_ECHO", "W_FLOW", "W_ECHO"]:
+		hub._select_gear(id)
+		await process_frame
+		_check(absf(hub.mod_behavior_label.global_position.y - behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - numeric_y) < 0.5, "switching attack gear preserves both option category positions")
+	hub.profile.owned_gear["W_ECHO"] = true
+	hub.profile.owned_mods.append("ECHO_WISP")
+	hub._refresh()
+	hub._slot_mod("ECHO_WISP")
+	await process_frame
+	_check(absf(hub.mod_behavior_label.global_position.y - behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - numeric_y) < 0.5, "equipping a behavior option preserves category positions")
+	for gear_id in RunProfile.GEAR_AFFIXES:
+		hub._select_gear(gear_id)
+		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
+			hub.profile.slotted_mods[gear_id] = mod_id
+			hub._refresh()
+			await process_frame
+			_check(absf(hub.mod_behavior_label.global_position.y - behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - numeric_y) < 0.5, "long option descriptions preserve equipment detail layout: %s" % mod_id)
+	hub.profile.slotted_mods = {"W_ECHO": "ECHO_WISP"}
 	_check(hub.growth_buttons.size() == 8, "attack, defense and mobility growth choices appear in the preparation screen")
 	hub.tabs.current_tab = 2
 	hub.profile.currency = 100

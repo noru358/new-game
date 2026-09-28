@@ -202,7 +202,7 @@ func _physics_process(delta: float) -> void:
 		var dash_motion_time := minf(delta, dash_time)
 		dash_elapsed += dash_motion_time
 		dash_time = maxf(0.0, dash_time - delta)
-		velocity = dash_direction * (DASH_DISTANCE * dash_distance_multiplier / DASH_DURATION) * (dash_motion_time / delta)
+		velocity = dash_direction * (DASH_DISTANCE * dash_distance_multiplier / DASH_DURATION) * (dash_motion_time / delta) * _ramp_speed_scale(dash_direction)
 	elif moving_slash_time > 0.0:
 		facing = moving_slash_direction
 		var slash_motion_time := minf(delta, moving_slash_time)
@@ -211,9 +211,9 @@ func _physics_process(delta: float) -> void:
 		var after := moving_slash_elapsed / MOVING_SLASH_DURATION
 		moving_slash_time = maxf(0.0, moving_slash_time - delta)
 		var distance := MOVING_SLASH_DISTANCE * moving_slash_distance_multiplier * (_moving_slash_curve(after) - _moving_slash_curve(before))
-		velocity = _ramp_guided_direction(moving_slash_direction) * distance / delta
+		velocity = _ramp_guided_direction(moving_slash_direction) * distance / delta * _ramp_speed_scale(moving_slash_direction)
 	else:
-		velocity = _ramp_guided_direction(movement) * MOVE_SPEED * move_speed_multiplier * (1.0 + permanent_move_speed_bonus) * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
+		velocity = _ramp_guided_direction(movement) * _ramp_speed_scale(movement) * MOVE_SPEED * move_speed_multiplier * (1.0 + permanent_move_speed_bonus) * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
 	var requested_motion := velocity * delta
 	var before_motion := global_position
@@ -239,14 +239,6 @@ func _ramp_guided_direction(direction: Vector2) -> Vector2:
 		var area: Rect2 = ramp.area
 		var horizontal: bool = int(ramp.axis) == 0
 		var side := Vector2.DOWN if horizontal else Vector2.RIGHT
-		var forward := Vector2.RIGHT if horizontal else Vector2.DOWN
-		# On an isometric ramp, a single screen-axis key points partly into its
-		# side rail. Keep the full requested speed along the traversable axis.
-		if area.grow(-collision_radius).has_point(global_position):
-			var along := direction.dot(forward)
-			var across := direction.dot(side)
-			if absf(along) >= 0.5 * direction.length() and absf(along) >= absf(across) * 0.95:
-				return forward * signf(along) * direction.length()
 		var low: float = area.position.y if horizontal else area.position.x
 		var high: float = area.end.y if horizontal else area.end.x
 		var lateral: float = global_position.dot(side)
@@ -266,6 +258,19 @@ func _ramp_guided_direction(direction: Vector2) -> Vector2:
 			var guided := direction - side * lateral_component + side * signf(correction) * maxf(0.35, absf(lateral_component))
 			return guided.normalized() * direction.length()
 	return direction
+
+
+func _ramp_speed_scale(direction: Vector2) -> float:
+	if direction.length_squared() < 0.01: return 1.0
+	for ramp in ramp_areas:
+		if not (ramp.area as Rect2).grow(-collision_radius).has_point(global_position): continue
+		var forward := Vector2.RIGHT if int(ramp.axis) == 0 else Vector2.DOWN
+		var along := absf(direction.normalized().dot(forward))
+		# Preserve the screen-axis input and compensate only its smaller
+		# component along the slope. Physics still handles the side rail.
+		if along >= 0.5 and along < 0.85:
+			return minf(1.45, 1.0 / along)
+	return 1.0
 
 
 func _start_dash(movement: Vector2) -> void:

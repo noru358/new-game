@@ -90,7 +90,7 @@ func barriers() -> Array[Rect2]:
 	for chasm in chasm_areas:
 		result.append(chasm)
 	for wall in wall_areas:
-		result.append(wall.area)
+		if wall.get("collidable", true): result.append(wall.area)
 	for plateau in plateaus:
 		for edge in plateau_edge_spans(plateau):
 			var horizontal: bool = edge.side == "north" or edge.side == "south"

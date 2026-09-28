@@ -38,10 +38,10 @@ func _init() -> void:
 		{"area": Rect2(1280, 900, 270, 550), "axis": 0, "from": 0.0, "to": 240.0, "name": "서쪽 상승로"},
 		{"area": Rect2(2000, 130, 350, 270), "axis": 1, "from": 0.0, "to": 240.0, "name": "북쪽 덩굴길"},
 		{"area": Rect2(2000, 2000, 350, 270), "axis": 1, "from": 240.0, "to": 0.0, "name": "남쪽 우회로"},
-		{"area": Rect2(3350, 900, 550, 550), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 석계단", "kind": "gate_stairs"},
-		{"area": Rect2(3600, 1650, 300, 250), "axis": 0, "from": 240.0, "to": 480.0, "name": "관문 바위길", "kind": "rock_path"},
-		{"area": Rect2(2500, 1660, 260, 260), "axis": 0, "from": 240.0, "to": 80.0, "name": "협곡 하강로", "kind": "rock_path"},
-		{"area": Rect2(3220, 1680, 380, 220), "axis": 0, "from": 80.0, "to": 240.0, "name": "끊어진 바위 다리", "kind": "broken_bridge"},
+		{"area": Rect2(3350, 900, 550, 550), "axis": 0, "from": 240.0, "to": 480.0, "base": 0.0, "name": "관문 석계단", "kind": "gate_stairs"},
+		{"area": Rect2(3600, 1650, 300, 250), "axis": 0, "from": 240.0, "to": 480.0, "base": 0.0, "name": "관문 바위길", "kind": "rock_path"},
+		{"area": Rect2(2500, 1660, 260, 260), "axis": 0, "from": 240.0, "to": 80.0, "base": 0.0, "name": "협곡 하강로", "kind": "rock_path"},
+		{"area": Rect2(3220, 1680, 380, 220), "axis": 0, "from": 80.0, "to": 240.0, "base": 0.0, "name": "끊어진 바위 다리", "kind": "broken_bridge"},
 	]
 	water_areas = []
 	chasm_areas = [
@@ -67,11 +67,11 @@ func _init() -> void:
 		{"area": Rect2(930, 1640, 190, 260), "rise": 175.0, "color": Color("426b52")},
 		{"area": Rect2(1850, 620, 230, 290), "rise": 185.0, "color": Color("4c6752")},
 		{"area": Rect2(2860, 710, 160, 160), "rise": 145.0, "color": Color("52644f")},
-		{"area": Rect2(2700, 1460, 110, 110), "rise": 185.0, "color": Color("40564e")},
-		{"area": Rect2(3350, 1480, 120, 110), "rise": 210.0, "color": Color("50665c")},
+		{"area": Rect2(2700, 1460, 110, 110), "rise": 185.0, "color": Color("40564e"), "collidable": false},
+		{"area": Rect2(3350, 1480, 120, 110), "rise": 210.0, "color": Color("50665c"), "collidable": false},
 		{"area": Rect2(4380, 590, 210, 300), "rise": 270.0, "color": Color("727a65")},
 		{"area": Rect2(4380, 1510, 210, 300), "rise": 270.0, "color": Color("727a65")},
-		{"area": Rect2(3330, 1970, 70, 75), "rise": 110.0, "color": Color("586b63")},
+		{"area": Rect2(3330, 1970, 70, 75), "rise": 110.0, "color": Color("586b63"), "collidable": false},
 		{"area": Rect2(4120, 1660, 90, 100), "rise": 115.0, "color": Color("67776b")},
 	]
 	for center in GATE_COLUMN_CENTERS:

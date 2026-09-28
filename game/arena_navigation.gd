@@ -26,7 +26,13 @@ func setup(props: Array, arena_size: Vector2 = DEFAULT_ARENA_SIZE) -> void:
 		if prop is ViewProp:
 			obstacles.append(Vector3(prop.global_position.x, prop.global_position.y, prop.footprint_radius))
 		elif prop is TempleBlock:
-			rectangular_obstacles.append(prop.navigation_obstacle())
+			var obstacle: Dictionary = prop.navigation_obstacle()
+			var half: Vector2 = obstacle.half_size
+			var cosine := absf(cos(obstacle.angle))
+			var sine := absf(sin(obstacle.angle))
+			var extent := Vector2(half.x * cosine + half.y * sine, half.x * sine + half.y * cosine)
+			obstacle["bounds"] = Rect2(obstacle.center - extent, extent * 2.0)
+			rectangular_obstacles.append(obstacle)
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
 			var point := Vector2(float(x) + 0.5, float(y) + 0.5) * CELL_SIZE
@@ -51,9 +57,11 @@ func is_open(point: Vector2, clearance: float = -1.0) -> bool:
 func has_clear_path(from: Vector2, to: Vector2) -> bool:
 	var segment := to - from
 	var length_squared := segment.length_squared()
+	var broad_phase := Rect2(from.min(to), from.max(to) - from.min(to)).grow(agent_radius + 3.0)
 	for obstacle in obstacles:
 		var center := Vector2(obstacle.x, obstacle.y)
 		var clearance := obstacle.z + agent_radius + 2.0
+		if not broad_phase.grow(obstacle.z).has_point(center): continue
 		var start_offset := from - center
 		# An enemy touching a ruin can be inside this padded clearance.
 		# Let it move outward so the route finder can escape the contact edge.
@@ -63,6 +71,7 @@ func has_clear_path(from: Vector2, to: Vector2) -> bool:
 		if center.distance_to(from + segment * fraction) < clearance:
 			return false
 	for obstacle in rectangular_obstacles:
+		if not broad_phase.intersects(obstacle.bounds, true): continue
 		var local_from: Vector2 = (from - obstacle.center).rotated(-obstacle.angle)
 		var local_to: Vector2 = (to - obstacle.center).rotated(-obstacle.angle)
 		var expanded := Rect2(-obstacle.half_size, obstacle.half_size * 2.0).grow(agent_radius + 2.0)

@@ -65,6 +65,7 @@ var previous_attack_elapsed := 0.0
 var current_attack_elapsed := 0.0
 var previous_attack_direction := Vector2.RIGHT
 var current_attack_direction := Vector2.RIGHT
+var crowd_refresh_time := 0.0
 
 func _ready() -> void:
 	get_window().title = scene_title
@@ -108,6 +109,7 @@ func _ready() -> void:
 	player.attack_landed.connect(_on_player_attack_landed)
 	player.flow_wave_triggered.connect(_on_flow_wave)
 	player.moving_slash_landed.connect(func(point: Vector2): _flash(point, Color("b7f8ff"), 0.23))
+	_warm_enemy_rendering()
 	wisp = WispCompanion.new()
 	wisp.player = player
 	wisp.facing_formation = true
@@ -234,6 +236,13 @@ func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, co
 			p1[axis] = span[1]
 			_quad(st, [Vector3(p0.x, bottom, p0.y), Vector3(p1.x, bottom, p1.y), Vector3(p1.x, elevation.call(p1), p1.y), Vector3(p0.x, elevation.call(p0), p0.y)], color)
 
+
+func _plateau_face(st: SurfaceTool, edge: Dictionary, height: float, bottom: float, color: Color) -> void:
+	var horizontal: bool = edge.side == "north" or edge.side == "south"
+	var a := Vector2(edge.start, edge.fixed) if horizontal else Vector2(edge.fixed, edge.start)
+	var b := Vector2(edge.end, edge.fixed) if horizontal else Vector2(edge.fixed, edge.end)
+	_quad(st, [Vector3(a.x, bottom, a.y), Vector3(b.x, bottom, b.y), Vector3(b.x, height, b.y), Vector3(a.x, height, a.y)], color)
+
 func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
 	var step_length := area.size.y / Terrain.STONE_COUNT
@@ -347,8 +356,8 @@ func _build_terrain() -> void:
 	for plateau in terrain.plateaus:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
-		_sides(st, plateau.area, elevation, plateau.base, cliff_color, plateau.openings)
 		for edge in terrain.plateau_edge_spans(plateau):
+			_plateau_face(st, edge, plateau.height, plateau.base, cliff_color)
 			var lip: Rect2
 			match edge.side:
 				"north": lip = Rect2(edge.start, edge.fixed, edge.end - edge.start, 12.0)
@@ -369,7 +378,7 @@ func _build_terrain() -> void:
 			"rock_path": _rock_path(st, ramp)
 			"broken_bridge": _broken_bridge(st, ramp)
 			_: _top(st, ramp.area, elevation, ramp_color)
-		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+		_sides(st, ramp.area, elevation, ramp.get("base", minf(ramp.from, ramp.to)), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
 		if ramp.get("kind", "") not in ["gate_stairs", "rock_path", "broken_bridge"]: _ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
 		if not wall.get("visual", true): continue
@@ -443,6 +452,22 @@ func _actor_visual(color: Color) -> Node3D:
 	root.add_child(shadow)
 	add_child(root)
 	return root
+
+
+func _warm_enemy_rendering() -> void:
+	# Compile the first enemy body/health-bar render path while the region opens,
+	# instead of hitching on the first live spawn during player movement.
+	var sample := TrainingEnemy.new()
+	var visual := _actor_visual(_enemy_color(TrainingEnemy.Role.FRAGMENT))
+	_add_health_bar(visual, sample)
+	visual.position = terrain.world_point(start_point, -60.0)
+	sample.free()
+	_release_warmup_visual(visual)
+
+
+func _release_warmup_visual(visual: Node3D) -> void:
+	await RenderingServer.frame_post_draw
+	if is_instance_valid(visual): visual.queue_free()
 
 func _add_health_bar(visual: Node3D, enemy: TrainingEnemy) -> void:
 	var bar := Sprite3D.new()
@@ -605,6 +630,16 @@ func _on_wisp_hit(enemy: TrainingEnemy) -> void:
 
 func _physics_process(delta: float) -> void:
 	if paused or not is_instance_valid(player): return
+	crowd_refresh_time -= delta
+	if crowd_refresh_time <= 0.0:
+		crowd_refresh_time = 0.10
+		var positions := PackedVector2Array()
+		for actor in actors:
+			if is_instance_valid(actor) and actor is TrainingEnemy and not actor.is_queued_for_deletion():
+				positions.append(actor.global_position)
+		for actor in actors:
+			if is_instance_valid(actor) and actor is TrainingEnemy:
+				actor.crowd_positions = positions
 	for actor in actors.keys():
 		if not is_instance_valid(actor):
 			actors[actor].queue_free()
@@ -720,9 +755,11 @@ func _shot_world_point(shot: Node2D, point: Vector2) -> Vector3:
 
 func _update_hud() -> void:
 	if hud == null: return
-	hud.text = "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	var next_hud := "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	if hud.text != next_hud: hud.text = next_hud
 	if moving_slash_status != null:
-		moving_slash_status.text = "Space 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
+		var next_slash := "Space 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
+		if moving_slash_status.text != next_slash: moving_slash_status.text = next_slash
 
 func _draw_attack() -> void:
 	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)

@@ -125,16 +125,16 @@ func _build_boss_figure(visual: Node3D) -> void:
 	_boss_box(figure, Vector3(0.18, 0.52, 0.15), Vector3(0.32, 2.02, 0.0), Color("d4b881"))
 
 
-func _update_run_hud() -> void:
-	super._update_run_hud()
-	if run_hud == null: return
+func _run_hud_text() -> String:
+	var result := super._run_hud_text()
 	if run_time >= 270.0 and not boss_spawned:
-		run_hud.text += "\n관문 상단에 수호자 출현 예정"
-	if not is_instance_valid(boss) or not boss is JungleWarden: return
+		result += "\n관문 상단에 수호자 출현 예정"
+	if not is_instance_valid(boss) or not boss is JungleWarden: return result
 	if boss.global_position.distance_to(player.global_position) > 850.0:
-		run_hud.text += "\n관문 상단으로 이동"
-	if boss.sweep_warning > 0.0: run_hud.text += "  ·  횡쓸기! 옆/뒤로 피하기"
-	elif boss.gust_warning > 0.0: run_hud.text += "  ·  강풍! 부채꼴 밖으로 피하기"
+		result += "\n관문 상단으로 이동"
+	if boss.sweep_warning > 0.0: result += "  ·  횡쓸기! 옆/뒤로 피하기"
+	elif boss.gust_warning > 0.0: result += "  ·  강풍! 부채꼴 밖으로 피하기"
+	return result
 
 
 func _draw_boss_warning() -> void:
