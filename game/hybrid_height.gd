@@ -885,7 +885,8 @@ func _shot_world_point(shot: Node2D, point: Vector2) -> Vector3:
 
 func _update_hud() -> void:
 	if hud == null: return
-	var next_hud := "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	var death_hint := "쓰러졌습니다 · R로 다시 시작" if show_practice_controls else "쓰러졌습니다"
+	var next_hud := "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, death_hint if player.health <= 0 else ""]
 	if hud.text != next_hud: hud.text = next_hud
 	if player_health_bar != null:
 		player_health_bar.max_value = player.max_health

@@ -46,7 +46,9 @@ func _run() -> void:
 	_check(scene.paused and scene.pause_menu.visible and not scene.retreat_overlay.visible, "cancel from pause returns to pause")
 	scene._set_paused(false)
 	scene.run_currency = 8
+	scene.player.health = 0.0
 	scene._finish_run("DEFEAT")
+	_check(not scene.hud.text.contains("R로 다시"), "live-run death does not advertise the sandbox restart shortcut")
 	var banked: int = scene.profile.currency
 	_check(scene.run_ended and not scene.result_overlay.visible and scene.profile.last_lost == 4, "ending settles safely before its visual delay")
 	scene._set_paused(false)
