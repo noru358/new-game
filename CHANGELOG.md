@@ -1,3 +1,9 @@
+# v21 — 2026-09-30
+
+- Distinct articulated windups/strikes facing the locked attack direction.
+- User-selected timing fills and one final warning highlight; posture/color counter cues without an overhead label/time bar or counter HUD text.
+- Preserve v20 combat timings/damage and unchanged jungle terrain.
+
 # v20 — 2026-09-30
 
 - Distinct temple charge/pulse and jungle sweep/gust rhythms, more late-phase follow-ups, and stationary counter windows.

@@ -253,7 +253,35 @@ func _process(delta: float) -> void:
 			visual.get_node("BossFigure").rotation.z = 0.22
 			if boss.hit_flash <= 0.0: (core.material_override as StandardMaterial3D).albedo_color = Color("8ee4df")
 		visual.get_node("BossFigure").rotation.x = -0.18 if boss.shock_warning > 0.0 else 0.20 if boss.impact_flash > 0.0 else 0.0
+		visual.get_node("BossFigure").rotation.y = atan2(boss.locked_direction.x, boss.locked_direction.y)
+		_animate_boss_arms(visual.get_node("BossFigure"))
 	_draw_boss_warning()
+
+
+func _warning_strength(remaining: float, duration: float) -> float:
+	# One bright finish, rather than repeated flashing; the full danger area stays visible.
+	return 0.65 if remaining <= 0.10 else lerpf(0.12, 0.42, clampf(1.0 - remaining / duration, 0.0, 1.0))
+
+
+func _animate_boss_arms(figure: Node3D) -> void:
+	var lift := 0.0
+	var spread := 0.0
+	if boss.shock_warning > 0.0 or boss.ring_warning > 0.0:
+		var progress := 1.0 - (boss.shock_warning / GateBoss.SHOCK_WARNING if boss.shock_warning > 0.0 else boss.ring_warning / GateBoss.RING_WARNING)
+		lift = lerpf(-0.65, -2.35, progress)
+		spread = 0.22
+	elif boss.impact_flash > 0.0:
+		lift = -0.25
+	elif boss.warning_time > 0.0:
+		lift = 0.65
+		spread = 0.30
+	elif boss.charge_time > 0.0:
+		lift = -1.30
+	elif boss.recovery_time > 0.0:
+		lift = 0.15
+		spread = 0.12
+	figure.get_node("ArmLeft").rotation = Vector3(lift, 0.0, spread)
+	figure.get_node("ArmRight").rotation = Vector3(lift, 0.0, -spread)
 
 
 # Equal-length pressure/recovery pairs keep the scheduled spawn budget unchanged.
@@ -403,7 +431,11 @@ func _build_boss_figure(visual: Node3D) -> void:
 	_boss_box(figure, Vector3(0.25, 0.52, 0.30), Vector3(0.19, 0.26, 0.0), Color("625d55"))
 	for side in [-1.0, 1.0]:
 		_boss_box(figure, Vector3(0.31, 0.35, 0.33), Vector3(side * 0.40, 1.25, 0.0), Color("8f7866"))
-		_boss_box(figure, Vector3(0.25, 0.60, 0.27), Vector3(side * 0.49, 0.88, 0.0), Color("70645b"))
+		var arm := Node3D.new()
+		arm.name = "ArmLeft" if side < 0.0 else "ArmRight"
+		arm.position = Vector3(side * 0.49, 1.20, 0.0)
+		figure.add_child(arm)
+		_boss_box(arm, Vector3(0.25, 0.60, 0.27), Vector3(0.0, -0.32, 0.0), Color("70645b"))
 		_boss_box(figure, Vector3(0.12, 0.34, 0.13), Vector3(side * 0.18, 1.93, 0.0), Color("e6b775"))
 	var head := _sphere(0.28, Color("d9bd94"))
 	head.position.y = 1.60
@@ -524,7 +556,8 @@ func _run_hud_text() -> String:
 	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
 		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
-		result += "  ·  " + boss.combat_cue()
+		var cue := boss.combat_cue()
+		if not cue.is_empty(): result += "  ·  " + cue
 	if profile != null and profile.recovered_backup: result += "\n이전 정상 기록을 복구했습니다."
 	return result
 
@@ -536,15 +569,17 @@ func _draw_boss_warning() -> void:
 	var elevation := terrain.height_at(center) + 65.0
 	boss_warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	if boss.shock_warning > 0.0:
-		_draw_boss_area(center, elevation, 0.0, GateBoss.SHOCK_RADIUS, Color(1.0, 0.38, 0.14, 0.11))
+		_draw_boss_area(center, elevation, 0.0, GateBoss.SHOCK_RADIUS, Color(1.0, 0.38, 0.14, _warning_strength(boss.shock_warning, GateBoss.SHOCK_WARNING)))
 		_draw_boss_ring(center, elevation, GateBoss.SHOCK_RADIUS, 18.0, Color(0.43, 0.08, 0.04, 0.80))
 		_draw_boss_ring(center, elevation + 2.0, GateBoss.SHOCK_RADIUS, 7.0, Color(1.0, 0.55, 0.23, 0.98))
+		_draw_boss_ring(center, elevation + 3.0, GateBoss.SHOCK_RADIUS * clampf(1.0 - boss.shock_warning / GateBoss.SHOCK_WARNING, 0.03, 1.0), 5.0, Color(1.0, 0.85, 0.50, 0.9))
 	elif boss.ring_warning > 0.0:
-		_draw_boss_area(center, elevation, GateBoss.RING_INNER_RADIUS, GateBoss.RING_OUTER_RADIUS, Color(1.0, 0.19, 0.12, 0.15))
+		_draw_boss_area(center, elevation, GateBoss.RING_INNER_RADIUS, GateBoss.RING_OUTER_RADIUS, Color(1.0, 0.19, 0.12, _warning_strength(boss.ring_warning, GateBoss.RING_WARNING)))
 		_draw_boss_ring(center, elevation, GateBoss.RING_INNER_RADIUS, 15.0, Color(0.40, 0.08, 0.04, 0.80))
 		_draw_boss_ring(center, elevation + 2.0, GateBoss.RING_INNER_RADIUS, 6.0, Color(1.0, 0.76, 0.32, 0.98))
 		_draw_boss_ring(center, elevation, GateBoss.RING_OUTER_RADIUS, 18.0, Color(0.40, 0.08, 0.04, 0.80))
 		_draw_boss_ring(center, elevation + 2.0, GateBoss.RING_OUTER_RADIUS, 7.0, Color(1.0, 0.40, 0.20, 0.98))
+		_draw_boss_ring(center, elevation + 3.0, lerpf(GateBoss.RING_INNER_RADIUS, GateBoss.RING_OUTER_RADIUS, clampf(1.0 - boss.ring_warning / GateBoss.RING_WARNING, 0.0, 1.0)), 5.0, Color(1.0, 0.85, 0.50, 0.9))
 	if boss.impact_flash > 0.0:
 		var alpha: float = boss.impact_flash / 0.18
 		_draw_boss_area(center, elevation + 3.0, GateBoss.RING_INNER_RADIUS if boss.impact_is_ring else 0.0, GateBoss.RING_OUTER_RADIUS if boss.impact_is_ring else GateBoss.SHOCK_RADIUS, Color(1.0, 0.75, 0.34, 0.48 * alpha))

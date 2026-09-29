@@ -1096,8 +1096,11 @@ func _draw_enemy_warnings(fraction: float) -> void:
 				var first: Vector2 = source + actor.locked_direction * lerpf(ACTOR_CLEARANCE, limit, float(i) / 8.0)
 				var second: Vector2 = source + actor.locked_direction * lerpf(ACTOR_CLEARANCE, limit, float(i + 1) / 8.0)
 				_warning_strip(first, second, width + 7.0, outline, 62.0, terrain.height_at(source))
-				_warning_strip(first, second, width, Color(color.r, color.g, color.b, 0.32) if is_boss else color, 65.0, terrain.height_at(source))
-				if is_boss: _warning_strip(first, second, 7.0, color, 68.0, terrain.height_at(source))
+				_warning_strip(first, second, width, Color(color.r, color.g, color.b, 0.65 if actor.warning_time <= 0.10 else lerpf(0.12, 0.42, clampf(1.0 - actor.warning_time / actor.warning_duration, 0.0, 1.0))) if is_boss else color, 65.0, terrain.height_at(source))
+				if is_boss:
+					_warning_strip(first, second, 7.0, color, 68.0, terrain.height_at(source))
+					if float(i + 1) / 8.0 <= 1.0 - actor.warning_time / actor.warning_duration:
+						_warning_strip(first, second, width, Color(1.0, 0.78, 0.35, 0.22), 69.0, terrain.height_at(source))
 	for zone in get_tree().get_nodes_in_group("enemy_zones"):
 		if not is_instance_valid(zone) or zone.is_queued_for_deletion(): continue
 		var center: Vector2 = zone.global_position
