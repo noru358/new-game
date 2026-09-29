@@ -1,6 +1,10 @@
 extends "res://game/hybrid_region.gd"
 
 const PassTerrain = preload("res://game/jungle_pass_terrain.gd")
+const GATE_BOSS_POINTS := [Vector2(4700, 800), Vector2(4700, 1200), Vector2(4700, 1650)]
+var canopy_visuals: Dictionary = {}
+var gate_route_encounter := ""
+var gate_route_crest_triggered := false
 
 
 func _init() -> void:
@@ -9,22 +13,25 @@ func _init() -> void:
 	start_point = Vector2(430, 1210)
 	enemy_points = [
 		Vector2(500, 1120), Vector2(970, 820), Vector2(1110, 1750),
-		Vector2(1860, 1120), Vector2(2530, 830), Vector2(3300, 1440),
+		Vector2(1860, 1120), Vector2(2530, 830), Vector2(3300, 1210),
 		Vector2(4210, 1100), Vector2(5080, 1150)
 	]
 	landmark_points = {
 		"정글 입구": Vector2(430, 1210),
 		"서쪽 상승로": Vector2(1410, 1180),
-		"북쪽 덩굴길": Vector2(2180, 420),
+		"북쪽 덩굴길": Vector2(1640, 265),
 		"정글 능선": Vector2(2640, 1120),
-		"남쪽 우회로": Vector2(2870, 1970),
+		"석계단 정면길": Vector2(3070, 1110),
+		"하층 협곡": Vector2(3010, 1850),
+		"끊어진 바위 다리": Vector2(3410, 1790),
+		"남쪽 우회로": Vector2(2180, 2120),
 		"관문 상단": Vector2(4520, 1160),
 	}
 	region_id = RunProfile.JUNGLE_REGION
 	boss_scene = preload("res://game/jungle_warden.tscn")
 	boss_name = "관문 수호자"
 	first_clear_notice = "관문 통과 · 새 3·4타 장비 선택 가능"
-	scene_title = "Loop Conquest — Jungle Pass v09"
+	scene_title = "Loop Conquest — 정글 절벽 관문"
 	scene_hud_title = "정글 절벽 관문"
 	combat_camera_size = 10.0
 	overview_camera_size = 43.0
@@ -39,6 +46,48 @@ func _ready() -> void:
 	super._ready()
 	_build_gate_silhouette()
 	_build_jungle_silhouette()
+	_build_gate_approaches()
+
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if run_ended or practice_mode or paused or growth.choosing or get_tree().paused or _active_enemy_count() > MAX_ENEMIES - 2: return
+	var point: Vector2 = player.global_position
+	if gate_route_encounter.is_empty():
+		for route in terrain.gate_routes:
+			if terrain.gate_routes[route].entry.has_point(point):
+				gate_route_encounter = route
+				_spawn_route_sentries(route, false)
+				return
+	elif not gate_route_crest_triggered and terrain.gate_routes[gate_route_encounter].crest.has_point(point):
+		gate_route_crest_triggered = true
+		_spawn_route_sentries(gate_route_encounter, true)
+
+
+func _spawn_route_sentries(route: String, at_crest: bool) -> void:
+	var sentries: Array = []
+	if route == "stairs":
+		sentries = [[Vector2(3970, 1010), TrainingEnemy.Role.BEAST], [Vector2(4020, 1330), TrainingEnemy.Role.LAMP]] if at_crest else [[Vector2(2890, 1050), TrainingEnemy.Role.BEAST], [Vector2(3080, 1250), TrainingEnemy.Role.LAMP]]
+	else:
+		sentries = [[Vector2(4450, 1760), TrainingEnemy.Role.ZONE], [Vector2(4620, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2830, 1770), TrainingEnemy.Role.ZONE], [Vector2(3130, 1840), TrainingEnemy.Role.BEAST]]
+	for entry in sentries:
+		var spawn_point: Vector2 = entry[0]
+		if navigation.is_open(spawn_point, ACTOR_CLEARANCE + 6.0) and navigation.find_path(spawn_point, player.global_position).size() >= 2:
+			_schedule_spawn(spawn_point, entry[1], false)
+
+
+func _choose_spawn_point(for_boss: bool) -> Vector2:
+	if not for_boss: return super._choose_spawn_point(false)
+	var chosen := Vector2.INF
+	var farthest := 0.0
+	for candidate in GATE_BOSS_POINTS:
+		var point: Vector2 = candidate
+		if not navigation.is_open(point, 48.0): continue
+		var distance: float = point.distance_to(player.global_position)
+		if distance > farthest and navigation.find_path(point, player.global_position).size() >= 2:
+			chosen = point
+			farthest = distance
+	return chosen
 
 
 func _process(delta: float) -> void:
@@ -76,11 +125,16 @@ func _build_boss_figure(visual: Node3D) -> void:
 	_boss_box(figure, Vector3(0.18, 0.52, 0.15), Vector3(0.32, 2.02, 0.0), Color("d4b881"))
 
 
-func _update_run_hud() -> void:
-	super._update_run_hud()
-	if run_hud == null or not is_instance_valid(boss) or not boss is JungleWarden: return
-	if boss.sweep_warning > 0.0: run_hud.text += "  ·  횡쓸기! 옆/뒤로 피하기"
-	elif boss.gust_warning > 0.0: run_hud.text += "  ·  강풍! 부채꼴 밖으로 피하기"
+func _run_hud_text() -> String:
+	var result := super._run_hud_text()
+	if run_time >= 270.0 and not boss_spawned:
+		result += "\n관문 상단에 수호자 출현 예정"
+	if not is_instance_valid(boss) or not boss is JungleWarden: return result
+	if boss.global_position.distance_to(player.global_position) > 850.0:
+		result += "\n관문 상단으로 이동"
+	if boss.sweep_warning > 0.0: result += "  ·  횡쓸기! 옆/뒤로 피하기"
+	elif boss.gust_warning > 0.0: result += "  ·  강풍! 부채꼴 밖으로 피하기"
+	return result
 
 
 func _draw_boss_warning() -> void:
@@ -143,10 +197,12 @@ func _build_gate_silhouette() -> void:
 
 func _build_jungle_silhouette() -> void:
 	# Decorative canopy massing sits beside the clear navigation routes.
-	for point in PassTerrain.CANOPY_POINTS:
+	for i in PassTerrain.CANOPY_POINTS.size():
+		var point: Vector2 = PassTerrain.CANOPY_POINTS[i]
 		var root := terrain.world_point(point)
-		var height := 2.3 + float(int(point.x + point.y) % 5) * 0.28
+		var height := 2.9 + float(int(point.x + point.y) % 5) * 0.32
 		var trunk := MeshInstance3D.new()
+		trunk.name = "CanopyTrunk%d" % i
 		var stem := CylinderMesh.new()
 		stem.top_radius = 0.14
 		stem.bottom_radius = 0.23
@@ -155,12 +211,47 @@ func _build_jungle_silhouette() -> void:
 		trunk.position = root + Vector3(0, height * 0.5, 0)
 		trunk.material_override = _material(Color("5c5344"))
 		add_child(trunk)
-		for branch in [Vector3(0, height, 0), Vector3(-0.45, height * 0.80, 0.12), Vector3(0.38, height * 0.89, -0.18)]:
+		canopy_visuals[point] = trunk
+		for branch in [Vector3(0, height, 0), Vector3(-0.62, height * 0.82, 0.12), Vector3(0.50, height * 0.90, -0.18)]:
 			var leaves := MeshInstance3D.new()
 			var crown := SphereMesh.new()
-			crown.radius = 0.72 if branch.x == 0.0 else 0.55
-			crown.height = 1.1 if branch.x == 0.0 else 0.85
+			crown.radius = 0.93 if branch.x == 0.0 else 0.67
+			crown.height = 0.72 if branch.x == 0.0 else 0.58
+			crown.radial_segments = 8
+			crown.rings = 4
 			leaves.mesh = crown
 			leaves.position = root + branch
 			leaves.material_override = _material(Color("486d57") if int(point.x) % 3 == 0 else Color("657e5a"))
 			add_child(leaves)
+
+
+func _build_gate_approaches() -> void:
+	var stairs: Dictionary = terrain.ramps[3]
+	var rocks: Dictionary = terrain.ramps[4]
+	for side_y in [stairs.area.position.y + 15.0, stairs.area.end.y - 15.0]:
+		for step in [0, 4, 8, 12]:
+			var x: float = stairs.area.position.x + stairs.area.size.x * float(step) / 12.0
+			var height: float = terrain.ramp_height(stairs, Vector2(x, side_y))
+			var post := MeshInstance3D.new()
+			post.name = "StairPost"
+			var shape := BoxMesh.new()
+			shape.size = Vector3(0.24, 0.62, 0.30)
+			post.mesh = shape
+			post.material_override = _material(Color("797d6c"))
+			post.position = Vector3(x * PassTerrain.SCALE, (height + 31.0) * PassTerrain.SCALE, side_y * PassTerrain.SCALE)
+			add_child(post)
+	for side in [-1.0, 1.0]:
+		for step in 5:
+			var x: float = rocks.area.position.x + rocks.area.size.x * (float(step) + 0.5) / 5.0
+			var y: float = rocks.area.position.y - 24.0 if side < 0.0 else rocks.area.end.y + 24.0
+			var height: float = terrain.ramp_height(rocks, Vector2(x, y))
+			var shard := MeshInstance3D.new()
+			shard.name = "RockEdge"
+			var shape := BoxMesh.new()
+			shape.size = Vector3(0.38, 0.44 + float(step % 3) * 0.17, 0.52)
+			shard.mesh = shape
+			shard.material_override = _material(Color("586c65") if step % 2 == 0 else Color("748379"))
+			shard.position = Vector3(x * PassTerrain.SCALE, (height + shape.size.y * 50.0) * PassTerrain.SCALE, y * PassTerrain.SCALE)
+			shard.rotation.y = float(step + 1) * 0.17 * side
+			shard.rotation.z = (0.12 + float(step % 2) * 0.08) * side
+			add_child(shard)

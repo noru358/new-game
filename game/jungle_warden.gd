@@ -15,6 +15,9 @@ var gust_warning := 0.0
 var sweep_burst_time := 0.0
 var gust_burst_time := 0.0
 var next_attack_gust := false
+var engaged := false
+var reposition_time := 0.0
+var reposition_direction := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -25,7 +28,7 @@ func _ready() -> void:
 
 
 func _attack_delay() -> float:
-	return 1.05 if phase == 2 else 1.35
+	return 0.62 if phase == 2 else 0.82
 
 
 func _physics_process(delta: float) -> void:
@@ -43,6 +46,9 @@ func _beast_velocity(delta: float) -> Vector2:
 			attacks_fired += 1
 			attack_cooldown = _attack_delay()
 			next_attack_gust = true
+			reposition_direction = locked_direction.orthogonal() * flank_sign
+			flank_sign = -flank_sign
+			reposition_time = 0.34
 		return Vector2.ZERO
 	if gust_warning > 0.0:
 		gust_warning = maxf(0.0, gust_warning - delta)
@@ -52,10 +58,20 @@ func _beast_velocity(delta: float) -> Vector2:
 			attacks_fired += 1
 			attack_cooldown = _attack_delay()
 			next_attack_gust = false
+			reposition_direction = locked_direction
+			reposition_time = 0.32
 		return Vector2.ZERO
 	if not is_instance_valid(target): return Vector2.ZERO
 	var offset := target.global_position - global_position
 	var distance := offset.length()
+	if not engaged:
+		if distance > 680.0: return Vector2.ZERO
+		engaged = true
+	if reposition_time > 0.0:
+		reposition_time = maxf(0.0, reposition_time - delta)
+		var move_point := global_position + reposition_direction * 65.0
+		if navigation == null or navigation.has_clear_path(global_position, move_point):
+			return reposition_direction * (355.0 if phase == 2 else 295.0)
 	if attack_cooldown <= 0.0 and _clear_shot_to_player():
 		if next_attack_gust and distance <= (500.0 if phase == 2 else 420.0):
 			locked_direction = offset.normalized()
@@ -68,7 +84,7 @@ func _beast_velocity(delta: float) -> Vector2:
 			attacks_started += 1
 			return Vector2.ZERO
 	var toward := _chase_direction(delta)
-	return toward * (160.0 if phase == 2 else 125.0)
+	return toward * (215.0 if phase == 2 else 175.0)
 
 
 func _strike_sweep() -> void:

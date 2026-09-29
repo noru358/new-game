@@ -34,6 +34,9 @@ var result_text: Label
 var replay_button: Button
 var retry_button: Button
 var boss_warning_mesh := ImmediateMesh.new()
+var echo_wisp_mod_enabled := false
+var ember_strike_mod_enabled := false
+var echo_wisp_fired_sequence := -1
 
 
 func _init() -> void:
@@ -52,7 +55,7 @@ func _init() -> void:
 		"회랑": Vector2(3410, 900),
 		"성소": Vector2(4750, 1100)
 	}
-	scene_title = "Loop Conquest — Boss Feedback v07"
+	scene_title = "Loop Conquest — 청록 폐사원"
 	scene_hud_title = "청록 폐사원"
 	combat_camera_size = 9.0
 	overview_camera_size = 40.0
@@ -99,25 +102,47 @@ func _apply_preparation() -> void:
 	player.permanent_dash_cooldown_reduction = 0.04 * int(ranks.MOBILITY)
 	player.permanent_slash_cooldown_reduction = 0.03 * int(ranks.SLASH)
 	player.permanent_finisher_reach_bonus = 0.05 * int(ranks.FINISH)
+	player.permanent_damage_reduction = 0.05 * int(ranks.GUARD)
+	player.permanent_move_speed_bonus = 0.04 * int(ranks.SPEED)
+	growth.permanent_wisp_cadence_reduction = 0.04 * int(ranks.WISP)
 	if profile.equipped_weapon == "W_FLOW":
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20
 		player.permanent_slash_cooldown_reduction += 0.10
-		if profile.owned_gear.get("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
-		elif profile.owned_gear.get("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
-		elif profile.owned_gear.get("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
+		if profile.mod_for("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
+		elif profile.mod_for("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
+		elif profile.mod_for("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
+		elif profile.mod_for("W_FLOW") == "RIPPLE": player.flow_wave_enabled = true
 	elif profile.equipped_weapon == "W_ECHO":
 		player.echo_finisher_enabled = true
-		if profile.owned_gear.get("W_ECHO") == "WIDE": player.echo_finisher_radius_bonus = 0.10
-		elif profile.owned_gear.get("W_ECHO") == "HEAVY": player.echo_finisher_damage_bonus = 0.08
-		elif profile.owned_gear.get("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
+		if profile.mod_for("W_ECHO") == "WIDE": player.echo_finisher_radius_bonus = 0.10
+		elif profile.mod_for("W_ECHO") == "HEAVY": player.echo_finisher_damage_bonus = 0.08
+		elif profile.mod_for("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
+		elif profile.mod_for("W_ECHO") == "ECHO_WISP": echo_wisp_mod_enabled = true
 	if profile.equipped_accessory == "A_EMBER":
 		wisp.permanent_damage_bonus = 0.15
-		if profile.owned_gear.get("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
-		else: player.max_health += 5.0
+		if profile.mod_for("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
+		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
+		elif profile.mod_for("A_EMBER") == "EMBER_STRIKE": ember_strike_mod_enabled = true
+	growth._sync_wisps()
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
 	if supply_ready: player.health_changed.connect(_try_use_supply)
+
+
+func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, finisher: bool) -> void:
+	super._on_player_attack_landed(point, direction, step, finisher)
+	if not echo_wisp_mod_enabled or step != 4 or echo_wisp_fired_sequence == player.attack_sequence: return
+	for companion in growth.wisps:
+		var target := companion.find_target()
+		if target != null and companion.fire_bonus_shot(target):
+			echo_wisp_fired_sequence = player.attack_sequence
+			break
+
+
+func _on_wisp_hit(enemy: TrainingEnemy) -> void:
+	super._on_wisp_hit(enemy)
+	if ember_strike_mod_enabled and is_instance_valid(player): player.grant_ember_followup()
 
 
 func _try_use_supply() -> void:
@@ -351,9 +376,9 @@ func _show_result() -> void:
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
 		run_currency, profile.last_lost, profile.last_award, profile.currency, "\n" + first_clear_notice if profile.last_first_clear else ""
 	]
-	var offer: Dictionary = profile.pending_affix_offers.get(RunProfile.REGION_GEAR[region_id], {})
-	if not offer.is_empty():
-		result_text.text += "\n보관된 장비 옵션: %s · %s\n야영지에서 기존 옵션과 비교해 선택하세요." % [RunProfile.gear_name(offer.gear_id), RunProfile.affix_description(offer.affix)]
+	if not profile.last_mod_award.is_empty():
+		var option_gear := RunProfile.gear_for_affix(profile.last_mod_award)
+		result_text.text += "\n%s 옵션 획득: %s\n야영지 장비창에서 장착할 수 있습니다." % [RunProfile.gear_name(option_gear), RunProfile.affix_description(profile.last_mod_award)]
 
 
 func _retry_settlement() -> void:
@@ -364,15 +389,21 @@ func _retry_settlement() -> void:
 
 func _update_run_hud() -> void:
 	if run_hud == null: return
+	var next_hud := _run_hud_text()
+	if run_hud.text != next_hud: run_hud.text = next_hud
+
+
+func _run_hud_text() -> String:
 	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
-	run_hud.text = "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
-	if boss_announced and not boss_spawned: run_hud.text += "\n%s 등장 예고" % boss_name
+	var result := "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
+	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
-		run_hud.text = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
-		if boss.warning_time > 0.0: run_hud.text += "  ·  붉은 띠 밖으로 회피!"
-		elif boss.shock_warning > 0.0: run_hud.text += "  ·  주황 원 밖으로 회피!"
-		elif boss.ring_warning > 0.0: run_hud.text += "  ·  바깥 고리 회피! 안쪽이 안전"
-	if profile != null and profile.recovered_backup: run_hud.text += "\n이전 정상 기록을 복구했습니다."
+		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
+		if boss.warning_time > 0.0: result += "  ·  붉은 띠 밖으로 회피!"
+		elif boss.shock_warning > 0.0: result += "  ·  주황 원 밖으로 회피!"
+		elif boss.ring_warning > 0.0: result += "  ·  바깥 고리 회피! 안쪽이 안전"
+	if profile != null and profile.recovered_backup: result += "\n이전 정상 기록을 복구했습니다."
+	return result
 
 
 func _draw_boss_warning() -> void:

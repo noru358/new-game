@@ -7,13 +7,14 @@ const DEFEAT_LOSS_RATE := 0.50
 const RETREAT_LOSS_RATE := 0.20
 const GEAR_COST := {"W_FLOW": 35, "W_ECHO": 45, "A_EMBER": 24}
 const GROWTH_COST := [20, 35]
-const GROWTH_IDS := ["POWER", "VITALITY", "MOBILITY", "SLASH", "FINISH"]
+const GROWTH_IDS := ["POWER", "WISP", "SLASH", "FINISH", "VITALITY", "GUARD", "MOBILITY", "SPEED"]
 const SUPPLY_COST := 12
 const SUPPLY_LIMIT := 3
 const TEMPLE_REGION := "O_TEMPLE"
 const JUNGLE_REGION := "O_JUNGLE_PASS"
 const REGION_GEAR := {"O_TEMPLE": "W_FLOW", "O_JUNGLE_PASS": "W_ECHO"}
-const GEAR_AFFIXES := {"W_FLOW": ["KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["WIDE", "HEAVY", "DRAW"], "A_EMBER": ["BRIGHT", "STEADY"]}
+const GEAR_AFFIXES := {"W_FLOW": ["RIPPLE", "KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW"], "A_EMBER": ["EMBER_STRIKE", "BRIGHT", "STEADY"]}
+const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"]}
 
 var save_prefix := "user://loop_conquest_profile"
 var generation := 0
@@ -33,14 +34,16 @@ var last_award := 0
 var last_lost := 0
 var last_first_clear := false
 var owned_gear: Dictionary = {}
+var owned_mods: Array[String] = []
+var slotted_mods: Dictionary = {}
 var equipped_weapon := "W_START"
 var equipped_accessory := ""
-var growth_ranks := {"POWER": 0, "VITALITY": 0, "MOBILITY": 0, "SLASH": 0, "FINISH": 0}
+var growth_ranks := {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 var supply_count := 0
 var supply_selected := false
 var last_launch_id := ""
 var last_launch_supply_used := false
-var pending_affix_offers: Dictionary = {}
+var last_mod_award := ""
 
 
 static func gear_name(id: String) -> String:
@@ -51,8 +54,17 @@ static func gear_name(id: String) -> String:
 	return "기본 마력장"
 
 
+static func gear_for_affix(affix: String) -> String:
+	for gear_id in GEAR_AFFIXES:
+		if GEAR_AFFIXES[gear_id].has(affix): return gear_id
+	return ""
+
+
 static func affix_description(affix: String) -> String:
 	match affix:
+		"RIPPLE": return "강화 평타 적중 → 주변에 작은 파동"
+		"ECHO_WISP": return "4타 적중 → 여우불 1발 추가"
+		"EMBER_STRIKE": return "여우불 적중 → 1.5초 안의 다음 평타가 넓어짐"
 		"KEEN": return "이동 베기 피해 +4%"
 		"SWIFT": return "이동 베기 재사용 -4%p"
 		"WEAVE": return "강화 평타 적중 시 이동 베기 추가 환급 0.10초"
@@ -62,6 +74,26 @@ static func affix_description(affix: String) -> String:
 		"BRIGHT": return "여우불 피해 계수 +0.05"
 		"STEADY": return "최대 HP +5"
 	return ""
+
+
+static func affix_title(affix: String) -> String:
+	match affix:
+		"RIPPLE": return "강화 평타 파동"
+		"ECHO_WISP": return "4타 여우불 추가"
+		"EMBER_STRIKE": return "여우불·평타 연계"
+		"KEEN": return "이동 베기 피해 +4%"
+		"SWIFT": return "이동 베기 재사용 -4%p"
+		"WEAVE": return "강화 평타 Q 환급 +0.10초"
+		"WIDE": return "4타 폭발 범위 +10%"
+		"HEAVY": return "4타 폭발 피해 +8%"
+		"DRAW": return "3타 사거리 +8%"
+		"BRIGHT": return "여우불 피해 +0.05"
+		"STEADY": return "최대 HP +5"
+	return ""
+
+
+static func affix_kind(affix: String) -> String:
+	return "behavior" if affix in ["RIPPLE", "ECHO_WISP", "EMBER_STRIKE"] else "numeric"
 
 
 func load_state() -> void:
@@ -76,14 +108,16 @@ func load_state() -> void:
 	last_lost = 0
 	last_first_clear = false
 	owned_gear = {}
+	owned_mods.clear()
+	slotted_mods = {}
 	equipped_weapon = "W_START"
 	equipped_accessory = ""
-	growth_ranks = {"POWER": 0, "VITALITY": 0, "MOBILITY": 0, "SLASH": 0, "FINISH": 0}
+	growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 	supply_count = 0
 	supply_selected = false
 	last_launch_id = ""
 	last_launch_supply_used = false
-	pending_affix_offers = {}
+	last_mod_award = ""
 	var found_any := false
 	var valid_count := 0
 	var invalid_count := 0
@@ -118,21 +152,32 @@ func load_state() -> void:
 		supply_selected = bool(best.supply_selected)
 		last_launch_id = String(best.last_launch_id)
 		last_launch_supply_used = bool(best.last_launch_supply_used)
-		pending_affix_offers = (best.get("pending_affix_offers", {}) as Dictionary).duplicate(true)
-		if pending_affix_offers.is_empty() and not (best.get("pending_affix_offer", {}) as Dictionary).is_empty():
-			var old_offer: Dictionary = best.pending_affix_offer
-			pending_affix_offers[old_offer.gear_id] = old_offer.duplicate(true)
+		if int(best.version) == 2:
+			for gear_id in owned_gear:
+				var old_mod: String = owned_gear[gear_id]
+				owned_gear[gear_id] = true
+				owned_mods.append(old_mod)
+				slotted_mods[gear_id] = old_mod
+			var old_offers: Dictionary = (best.get("pending_affix_offers", {}) as Dictionary).duplicate(true)
+			if old_offers.is_empty() and not (best.get("pending_affix_offer", {}) as Dictionary).is_empty():
+				var old_offer: Dictionary = best.pending_affix_offer
+				old_offers[old_offer.gear_id] = old_offer
+			for gear_id in old_offers:
+				var offered_mod: String = old_offers[gear_id].affix
+				if not owned_mods.has(offered_mod): owned_mods.append(offered_mod)
+		else:
+			owned_mods.assign(best.owned_mods)
+			slotted_mods = (best.slotted_mods as Dictionary).duplicate(true)
 
 
-func buy_gear(id: String, affix: String) -> bool:
+func buy_gear(id: String) -> bool:
 	if load_error or not GEAR_COST.has(id) or owned_gear.has(id) or currency < int(GEAR_COST[id]): return false
 	if id == "W_FLOW" and not temple_owned: return false
 	if id == "W_ECHO" and not jungle_owned: return false
-	if not GEAR_AFFIXES[id].has(affix): return false
 	var candidate := _snapshot()
 	candidate.currency = currency - int(GEAR_COST[id])
 	var next_gear: Dictionary = owned_gear.duplicate(true)
-	next_gear[id] = affix
+	next_gear[id] = true
 	candidate.owned_gear = next_gear
 	return _commit(candidate)
 
@@ -146,20 +191,18 @@ func equip(id: String) -> bool:
 	return _commit(candidate)
 
 
-func choose_affix_offer(accept: bool, gear_id: String = "") -> bool:
-	if load_error or pending_affix_offers.is_empty(): return false
-	if gear_id.is_empty() and pending_affix_offers.size() == 1: gear_id = pending_affix_offers.keys()[0]
-	if not pending_affix_offers.has(gear_id): return false
-	var offer: Dictionary = pending_affix_offers[gear_id]
-	if accept and not owned_gear.has(gear_id): return false
+func mod_for(gear_id: String) -> String:
+	return String(slotted_mods.get(gear_id, ""))
+
+
+func slot_mod(gear_id: String, mod_id: String) -> bool:
+	if load_error or not owned_gear.has(gear_id): return false
+	if not mod_id.is_empty() and (not owned_mods.has(mod_id) or not GEAR_AFFIXES[gear_id].has(mod_id)): return false
 	var candidate := _snapshot()
-	if accept:
-		var next_gear: Dictionary = owned_gear.duplicate(true)
-		next_gear[gear_id] = offer.affix
-		candidate.owned_gear = next_gear
-	var next_offers: Dictionary = pending_affix_offers.duplicate(true)
-	next_offers.erase(gear_id)
-	candidate.pending_affix_offers = next_offers
+	var next_slots: Dictionary = slotted_mods.duplicate(true)
+	if mod_id.is_empty(): next_slots.erase(gear_id)
+	else: next_slots[gear_id] = mod_id
+	candidate.slotted_mods = next_slots
 	return _commit(candidate)
 
 
@@ -189,7 +232,7 @@ func reset_growth() -> bool:
 	if refund == 0: return true
 	var candidate := _snapshot()
 	candidate.currency = currency + refund
-	candidate.growth_ranks = {"POWER": 0, "VITALITY": 0, "MOBILITY": 0, "SLASH": 0, "FINISH": 0}
+	candidate.growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 	return _commit(candidate)
 
 
@@ -241,31 +284,33 @@ func settle(run_id: String, result: String, earned: int, region_id: String = TEM
 	candidate.owned_outpost_ids = next_outposts
 	candidate.acquired_relic_ids = next_relics
 	candidate.last_run_id = run_id
+	var awarded_mod := ""
 	if result == "SUCCESS" and not first_clear:
-		var gear_id: String = REGION_GEAR[region_id]
-		if not pending_affix_offers.has(gear_id):
-			var possibilities: Array = GEAR_AFFIXES[gear_id].duplicate()
-			if owned_gear.has(gear_id): possibilities.erase(owned_gear[gear_id])
-			var next_offers: Dictionary = pending_affix_offers.duplicate(true)
-			next_offers[gear_id] = {"region_id": region_id, "gear_id": gear_id, "affix": possibilities[posmod(run_id.hash(), possibilities.size())]}
-			candidate.pending_affix_offers = next_offers
+		var possibilities: Array = REGION_MODS[region_id].duplicate()
+		for mod_id in owned_mods: possibilities.erase(mod_id)
+		if not possibilities.is_empty():
+			awarded_mod = String(possibilities[posmod(run_id.hash(), possibilities.size())])
+			var next_mods: Array[String] = owned_mods.duplicate()
+			next_mods.append(awarded_mod)
+			candidate.owned_mods = next_mods
 	if not _commit(candidate): return false
 	last_award = award
 	last_lost = lost
 	last_first_clear = first_clear
+	last_mod_award = awarded_mod
 	return true
 
 
 func _snapshot() -> Dictionary:
 	return {
-		"version": 2, "generation": generation + 1, "currency": currency,
+		"version": 3, "generation": generation + 1, "currency": currency,
 		"owned_outpost_ids": owned_outpost_ids.duplicate(), "acquired_relic_ids": acquired_relic_ids.duplicate(),
 		"last_run_id": last_run_id, "owned_gear": owned_gear.duplicate(true),
+		"owned_mods": owned_mods.duplicate(), "slotted_mods": slotted_mods.duplicate(true),
 		"equipped_weapon": equipped_weapon, "equipped_accessory": equipped_accessory,
 		"growth_ranks": growth_ranks.duplicate(), "supply_count": supply_count,
 		"supply_selected": supply_selected, "last_launch_id": last_launch_id,
 		"last_launch_supply_used": last_launch_supply_used,
-		"pending_affix_offers": pending_affix_offers.duplicate(true),
 	}
 
 
@@ -287,6 +332,8 @@ func _commit(candidate: Dictionary) -> bool:
 	acquired_relic_ids.assign(candidate.acquired_relic_ids)
 	last_run_id = String(candidate.last_run_id)
 	owned_gear = (candidate.owned_gear as Dictionary).duplicate(true)
+	owned_mods.assign(candidate.owned_mods)
+	slotted_mods = (candidate.slotted_mods as Dictionary).duplicate(true)
 	equipped_weapon = String(candidate.equipped_weapon)
 	equipped_accessory = String(candidate.equipped_accessory)
 	growth_ranks = (candidate.growth_ranks as Dictionary).duplicate()
@@ -294,7 +341,6 @@ func _commit(candidate: Dictionary) -> bool:
 	supply_selected = bool(candidate.supply_selected)
 	last_launch_id = String(candidate.last_launch_id)
 	last_launch_supply_used = bool(candidate.last_launch_supply_used)
-	pending_affix_offers = (candidate.pending_affix_offers as Dictionary).duplicate(true)
 	return true
 
 
@@ -304,7 +350,7 @@ func _read(path: String) -> Dictionary:
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary: return {}
 	var data: Dictionary = parser.data
-	if not [1.0, 2.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
+	if not [1.0, 2.0, 3.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
 		return {}
 	if int(data.generation) < 1 or int(data.currency) < 0 or not data.get("owned_outpost_ids") is Array or not data.get("acquired_relic_ids") is Array or not data.get("last_run_id") is String:
 		return {}
@@ -312,18 +358,27 @@ func _read(path: String) -> Dictionary:
 		if not id is String: return {}
 	for id in data.acquired_relic_ids:
 		if not id is String: return {}
-	if int(data.version) == 2:
+	if int(data.version) >= 2:
 		if not data.get("owned_gear") is Dictionary or not data.get("equipped_weapon") is String or not data.get("equipped_accessory") is String or not data.get("growth_ranks") is Dictionary or not data.get("supply_count") is float or not data.get("supply_selected") is bool or not data.get("last_launch_id") is String or not data.get("last_launch_supply_used") is bool: return {}
 		for id in data.owned_gear:
-			if not GEAR_COST.has(id) or not data.owned_gear[id] is String: return {}
-			if not GEAR_AFFIXES[id].has(data.owned_gear[id]): return {}
+			if not GEAR_COST.has(id): return {}
+			if int(data.version) == 2 and (not data.owned_gear[id] is String or not GEAR_AFFIXES[id].has(data.owned_gear[id])): return {}
+			if int(data.version) == 3 and (not data.owned_gear[id] is bool or not data.owned_gear[id]): return {}
 		if not ["W_START", "W_FLOW", "W_ECHO"].has(data.equipped_weapon) or (data.equipped_weapon != "W_START" and not data.owned_gear.has(data.equipped_weapon)): return {}
 		if not ["", "A_EMBER"].has(data.equipped_accessory) or (data.equipped_accessory == "A_EMBER" and not data.owned_gear.has("A_EMBER")): return {}
 		for id in ["POWER", "VITALITY", "MOBILITY"]:
 			if not data.growth_ranks.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
-		for id in ["SLASH", "FINISH"]:
-			if data.growth_ranks.has(id) and (not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2): return {}
+		for id in data.growth_ranks:
+			if not GROWTH_IDS.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
 		if int(data.supply_count) < 0 or int(data.supply_count) > SUPPLY_LIMIT: return {}
+		if int(data.version) == 3:
+			if not data.get("owned_mods") is Array or not data.get("slotted_mods") is Dictionary: return {}
+			var seen_mods := {}
+			for mod_id in data.owned_mods:
+				if not mod_id is String or not _valid_mod(mod_id) or seen_mods.has(mod_id): return {}
+				seen_mods[mod_id] = true
+			for gear_id in data.slotted_mods:
+				if not data.owned_gear.has(gear_id) or not data.slotted_mods[gear_id] is String or not data.owned_mods.has(data.slotted_mods[gear_id]) or not GEAR_AFFIXES[gear_id].has(data.slotted_mods[gear_id]): return {}
 		if data.has("pending_affix_offer"):
 			if not data.pending_affix_offer is Dictionary: return {}
 			if not data.pending_affix_offer.is_empty():
@@ -336,3 +391,9 @@ func _read(path: String) -> Dictionary:
 				var offer: Dictionary = data.pending_affix_offers[gear_id]
 				if not offer.get("region_id") is String or not REGION_GEAR.has(offer.region_id) or REGION_GEAR[offer.region_id] != gear_id or not offer.get("gear_id") is String or offer.gear_id != gear_id or not offer.get("affix") is String or not GEAR_AFFIXES[gear_id].has(offer.affix): return {}
 	return data
+
+
+static func _valid_mod(mod_id: String) -> bool:
+	for gear_id in GEAR_AFFIXES:
+		if GEAR_AFFIXES[gear_id].has(mod_id): return true
+	return false

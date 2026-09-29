@@ -22,13 +22,41 @@ func _run() -> void:
 	await physics_frame
 	await physics_frame
 	_check(scene.terrain.map_size == Vector2(5600, 2400) and scene.region_id == RunProfile.JUNGLE_REGION, "second region uses its own map and progress ID")
-	for point in [Vector2(1410, 1180), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2870, 1970), Vector2(4520, 1160)]:
+	for point in [Vector2(1410, 1180), Vector2(1640, 265), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2180, 2120), Vector2(3010, 1850), Vector2(3410, 1790), Vector2(4520, 1160)]:
 		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(scene.player.position, point).size() >= 2, "ridge, detours and gate remain reachable from the entry")
-	_check(scene.terrain.height_at(Vector2(2640, 1120)) == 240.0 and scene.terrain.height_at(Vector2(4520, 1160)) == 480.0, "the cliff and gate are visibly elevated")
-	scene._spawn_now(scene.player.position + Vector2(220, 0), TrainingEnemy.Role.BEAST, true)
+	_check(scene.navigation.is_open(Vector2(3750, 1760), scene.ACTOR_CLEARANCE) and scene.navigation.find_path(Vector2(3410, 1790), Vector2(4700, 1700)).size() >= 2, "lower canyon bridge reaches a separate gate entrance")
+	_check(scene.terrain.ramps[3].kind == "gate_stairs" and scene.terrain.ramps[4].kind == "rock_path" and scene.terrain.ramps[6].kind == "broken_bridge", "causeway and canyon have distinct terrain and ascent")
+	_check(scene.terrain.rock_ledge_areas.size() == 3 and scene.terrain.gate_routes.stairs.entry.position.x < 2700.0 and scene.terrain.gate_routes.rocks.entry.position.x < 2700.0, "the fork begins on the ridge and the cliff path has three broad rock ledges")
+	var cross_path: PackedVector2Array = scene.navigation.find_path(Vector2(3100, 1200), Vector2(3100, 1850))
+	var cross_distance := 0.0
+	for i in range(cross_path.size() - 1): cross_distance += cross_path[i].distance_to(cross_path[i + 1])
+	_check(cross_distance > 1500.0, "the gorge prevents switching between upper and lower routes near the gate")
+	_check(scene.terrain.height_at(Vector2(2640, 1120)) == 240.0 and scene.terrain.height_at(Vector2(3010, 1850)) == 80.0 and scene.terrain.height_at(Vector2(4520, 1160)) == 480.0, "the two approaches actually use different walking elevations")
+	scene.teleport(Vector2(2590, 1130))
+	await physics_frame
+	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 2, "main stair route starts with its own two-sentry encounter")
+	scene.teleport(Vector2(3840, 1130))
+	await physics_frame
+	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "the main ascent adds a distinct gate-top encounter")
+	scene.teleport(Vector2(2590, 1770))
+	await physics_frame
+	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 4, "the other approach does not stack another route's encounters in one run")
+	scene.run_time = 270.0
+	scene._update_run_hud()
+	_check(scene.run_hud.text.contains("관문 상단에 수호자 출현 예정"), "gate boss location is announced thirty seconds early")
+	var gate_spawn: Vector2 = scene._choose_spawn_point(true)
+	_check(gate_spawn.x == 4700.0 and gate_spawn.distance_to(scene.player.position) > 350.0, "warden appears in the authored gate court instead of near the player")
+	scene.run_time = 299.99
+	await physics_frame
+	await physics_frame
+	_check(scene.boss_announced, "five-minute timer announces the fixed gate spawn")
+	for i in 85: await physics_frame
+	_check(scene.boss_spawned and scene.boss.position.x == 4700.0 and scene.boss.position.distance_to(scene.player.position) > 350.0, "five-minute spawn uses the gate position in the live run")
 	_check(scene.boss is JungleWarden and scene.boss.max_health == 760.0, "jungle boss has a separate behavior and scale")
 	scene.player.hurt_immunity = 1000.0
 	scene.boss.set_physics_process(false)
+	_check(scene.boss._beast_velocity(0.01) == Vector2.ZERO and not scene.boss.engaged, "guardian holds the gate until the player approaches")
+	scene.teleport(scene.boss.position + Vector2(200, 0))
 	scene.boss._beast_velocity(0.01)
 	_check(scene.boss.sweep_warning > 0.0, "jungle guardian starts with a lateral sweep warning")
 	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)

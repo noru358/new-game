@@ -15,23 +15,24 @@ func _run() -> void:
 	profile.save_prefix = PREFIX
 	profile.load_state()
 	_check(not profile.buy_growth("SLASH") and not profile.buy_growth("FINISH", 2), "Q and finisher growth remain locked before their move milestones")
-	_check(profile.settle("first-temple", "SUCCESS", 0) and profile.buy_gear("W_FLOW", "KEEN"), "first region opens its Q weapon")
-	_check(profile.settle("repeat-temple", "SUCCESS", 0) and profile.pending_affix_offers.W_FLOW.gear_id == "W_FLOW", "a repeat clear proposes a region-specific Q option")
-	var old_affix: String = profile.owned_gear.W_FLOW
-	var new_affix: String = profile.pending_affix_offers.W_FLOW.affix
-	_check(new_affix != old_affix, "the proposed option differs from the currently owned one")
+	_check(profile.settle("first-temple", "SUCCESS", 0) and profile.buy_gear("W_FLOW"), "first region opens its Q weapon")
+	_check(profile.settle("repeat-temple", "SUCCESS", 0) and RunProfile.REGION_MODS[RunProfile.TEMPLE_REGION].has(profile.last_mod_award), "a repeat clear grants an unowned regional option")
+	var first_mod: String = profile.last_mod_award
+	_check(profile.owned_mods.has(first_mod) and profile.mod_for("W_FLOW").is_empty(), "new option is stored without overwriting the weapon")
 	var reloaded := RunProfile.new()
 	reloaded.save_prefix = PREFIX
 	reloaded.load_state()
-	_check(reloaded.pending_affix_offers.W_FLOW.affix == new_affix and reloaded.choose_affix_offer(true, "W_FLOW") and reloaded.owned_gear.W_FLOW == new_affix, "offer survives reload and can replace the saved affix")
+	_check(reloaded.owned_mods.has(first_mod) and reloaded.owned_gear.W_FLOW, "option and weapon survive reload separately")
 	_check(reloaded.settle("first-jungle", "SUCCESS", 0, RunProfile.JUNGLE_REGION) and reloaded.jungle_owned, "second region first clear unlocks the combo weapon")
-	_check(reloaded.settle("repeat-jungle", "SUCCESS", 0, RunProfile.JUNGLE_REGION) and reloaded.pending_affix_offers.W_ECHO.gear_id == "W_ECHO", "jungle repeat stores its own gear option even when the weapon is unpurchased")
-	_check(reloaded.settle("another-temple", "SUCCESS", 0) and reloaded.pending_affix_offers.size() == 2, "unresolved offers from both regions survive another clear")
+	_check(reloaded.settle("repeat-jungle", "SUCCESS", 0, RunProfile.JUNGLE_REGION) and RunProfile.REGION_MODS[RunProfile.JUNGLE_REGION].has(reloaded.last_mod_award), "jungle repeat grants a region option even when its weapon is unpurchased")
+	var jungle_mod: String = reloaded.last_mod_award
+	_check(not RunProfile.gear_for_affix(first_mod).is_empty() and not RunProfile.gear_for_affix(jungle_mod).is_empty(), "every awarded option identifies its equipment")
+	_check(reloaded.settle("another-temple", "SUCCESS", 0) and reloaded.last_mod_award != first_mod, "further clears grant unowned options before duplicates")
 	var both_saved := RunProfile.new()
 	both_saved.save_prefix = PREFIX
 	both_saved.load_state()
-	_check(both_saved.pending_affix_offers.size() == 2, "both regional offers survive a fresh profile load")
-	_check(not reloaded.choose_affix_offer(true, "W_ECHO"), "an unpurchased weapon cannot silently accept a saved option")
+	_check(both_saved.owned_mods.has(first_mod) and both_saved.owned_mods.has(jungle_mod), "options from both regions survive a fresh profile load")
+	_check(not reloaded.slot_mod("W_ECHO", jungle_mod), "an unpurchased weapon cannot slot an option")
 	var unlocks := UnlockProgress.new()
 	unlocks.save_prefix = UNLOCKS
 	unlocks.load_progress()
@@ -42,13 +43,15 @@ func _run() -> void:
 	root.add_child(hub)
 	await process_frame
 	hub._select_region(RunProfile.JUNGLE_REGION)
-	_check(hub.jungle_region_button.disabled == false and hub.offer_apply_button.disabled and hub.offer_label.text.contains("장비를 구매한 뒤"), "travel UI shows unlocked region and retains an unpurchased option")
+	_check(hub.jungle_region_button.disabled == false and hub.progress_label.text.contains("재도전 성공"), "departure UI shows regional replay reward")
 	_check(hub.start_button.text.contains("정글 절벽 관문"), "region selection changes the departure target")
 	hub.queue_free()
 	await process_frame
-	_check(reloaded.buy_gear("W_ECHO", "WIDE"), "second clear permits purchasing the combo weapon")
-	var offered_affix: String = reloaded.pending_affix_offers.W_ECHO.affix
-	_check(reloaded.choose_affix_offer(true, "W_ECHO") and reloaded.owned_gear.W_ECHO == offered_affix and reloaded.pending_affix_offers.has("W_FLOW"), "stored option can be applied after buying its weapon without clearing the other region")
+	_check(reloaded.buy_gear("W_ECHO"), "second clear permits purchasing the combo weapon")
+	if RunProfile.GEAR_AFFIXES.W_ECHO.has(jungle_mod):
+		_check(reloaded.slot_mod("W_ECHO", jungle_mod) and reloaded.mod_for("W_ECHO") == jungle_mod, "stored option can be slotted after buying its weapon")
+	else:
+		_check(reloaded.buy_gear("A_EMBER") and reloaded.slot_mod("A_EMBER", jungle_mod), "regional accessory option can be slotted after buying its gear")
 	_check(reloaded.equip("W_ECHO") and reloaded.buy_growth("SLASH", 3) and reloaded.buy_growth("FINISH", 3), "both new growth axes purchase after move unlock")
 	var scene: Node3D = load("res://game/jungle_pass.tscn").instantiate()
 	scene.profile_save_prefix = PREFIX
@@ -70,6 +73,10 @@ func _run() -> void:
 	scene.player.attack_path_filter = Callable()
 	scene.player._hit_enemies(scene.player._attack_spec(4))
 	_check(target.health < 1000.0 and scene.player._attack_spec(4).angle == 360.0, "new fourth hit damages a side target around the third-hit gathering point")
+	scene.profile.last_mod_award = jungle_mod
+	scene.end_result = "SUCCESS"
+	scene._show_result()
+	_check(scene.result_text.text.contains(RunProfile.gear_name(RunProfile.gear_for_affix(jungle_mod))) and scene.result_text.text.contains(RunProfile.affix_description(jungle_mod)), "result screen names the exact gear and its option")
 	target.queue_free()
 	scene.queue_free()
 	await process_frame

@@ -13,6 +13,7 @@ func setup(new_arena: Node3D) -> void:
 	cached_projection_limits = Rect2()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	clip_contents = true
+	resized.connect(func(): cached_projection_limits = Rect2())
 
 
 func _process(delta: float) -> void:
@@ -39,6 +40,8 @@ func _draw() -> void:
 		_draw_world_area(floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in arena.terrain.water_areas:
 		_draw_world_area(water, func(_p): return 1.0, Color("34848d"))
+	for chasm in arena.terrain.chasm_areas:
+		_draw_world_area(chasm, func(_p): return 1.5, Color("263e3d"))
 	for plateau in arena.terrain.plateaus:
 		_draw_world_area(plateau.area, func(_p): return plateau.height, _height_color(plateau.height))
 	for ramp in arena.terrain.ramps:
@@ -57,19 +60,22 @@ func _draw() -> void:
 				var last := Vector2(area.end.x, seam)
 				draw_line(_map_point_at(first, arena.terrain.ramp_height(ramp, first)), _map_point_at(last, arena.terrain.ramp_height(ramp, last)), Color("244742"), 1.1)
 	for wall in arena.terrain.wall_areas:
-		_draw_world_area(wall.area, func(_p): return wall.height, wall.color)
-	for barrier in arena.terrain.barriers():
-		if arena.terrain.water_areas.has(barrier):
-			continue
-		var visible_wall := false
-		for wall in arena.terrain.wall_areas:
-			if wall.area == barrier:
-				visible_wall = true
-				break
-		if visible_wall:
-			continue
-		var barrier_height: float = arena.terrain.height_at(barrier.get_center()) + 2.0
-		_draw_world_area(barrier, func(_point): return barrier_height, Color("294743"))
+		if wall.get("collidable", true):
+			_draw_world_area(wall.area, func(_p): return wall.height, wall.color)
+	for plateau in arena.terrain.plateaus:
+		for edge in arena.terrain.plateau_edge_spans(plateau):
+			var horizontal: bool = edge.side == "north" or edge.side == "south"
+			var a := Vector2(edge.start, edge.fixed) if horizontal else Vector2(edge.fixed, edge.start)
+			var b := Vector2(edge.end, edge.fixed) if horizontal else Vector2(edge.fixed, edge.end)
+			draw_line(_map_point_at(a, plateau.height), _map_point_at(b, plateau.height), Color("354c47"), 1.3)
+	for ramp in arena.terrain.ramps:
+		var area: Rect2 = ramp.area
+		for edge in [0, 1]:
+			var a := Vector2(area.position.x, area.position.y if edge == 0 else area.end.y) if ramp.axis == 0 else Vector2(area.position.x if edge == 0 else area.end.x, area.position.y)
+			var b := Vector2(area.end.x, a.y) if ramp.axis == 0 else Vector2(a.x, area.end.y)
+			draw_line(_map_point_at(a, arena.terrain.ramp_height(ramp, a)), _map_point_at(b, arena.terrain.ramp_height(ramp, b)), Color("354c47"), 1.1)
+	var legend := "물 · 중정 · 테라스 · 뜰 · 회랑 · 성소" if world_size.x > 2500.0 else "청록 물 · 금빛 중정 · 밝은 테라스"
+	draw_string(get_theme_default_font(), Vector2(12, 208), legend, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("d8e5dc"))
 	var footprint := camera_ground_footprint()
 	if footprint.size() == 4:
 		var plane_height: float = arena.terrain.height_at(arena.player.global_position)
@@ -84,8 +90,6 @@ func _draw() -> void:
 		draw_circle(_map_point(arena.player.global_position), 4.7, Color("203f44"))
 		draw_circle(_map_point(arena.player.global_position), 3.2, Color.WHITE)
 	draw_polyline(PackedVector2Array([ground_outline[0], ground_outline[1], ground_outline[2], ground_outline[3], ground_outline[0]]), Color("dceae0"), 1.5)
-	var legend := "물 · 중정 · 테라스 · 뜰 · 회랑 · 성소" if world_size.x > 2500.0 else "청록 물 · 금빛 중정 · 밝은 테라스"
-	draw_string(get_theme_default_font(), Vector2(12, 208), legend, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("d8e5dc"))
 
 
 func _draw_world_area(area: Rect2, elevation: Callable, color: Color) -> void:

@@ -12,9 +12,9 @@ var camera: Camera3D
 var preparation: Control
 var prompt: Label
 var stations := [
-	{"name": "지역 지도", "position": Vector3(-3.5, 0.0, -1.5), "tab": 0, "color": Color("72d3c7")},
-	{"name": "장비와 성장", "position": Vector3(3.4, 0.0, -1.4), "tab": 1, "color": Color("e4bc79")},
-	{"name": "출정 준비", "position": Vector3(0.0, 0.0, 3.3), "tab": 2, "color": Color("b7a8e5")},
+	{"name": "출정", "position": Vector3(-3.5, 0.0, -1.5), "tab": 0, "color": Color("72d3c7")},
+	{"name": "장비", "position": Vector3(3.4, 0.0, -1.4), "tab": 1, "color": Color("e4bc79")},
+	{"name": "성장", "position": Vector3(0.0, 0.0, 3.3), "tab": 2, "color": Color("b7a8e5")},
 ]
 
 
@@ -77,7 +77,7 @@ func _update_prompt() -> void:
 		return
 	prompt.show()
 	var station := _nearest_station()
-	prompt.text = "WASD 이동  ·  E 상호작용\n%s%s" % ["E · " if station.distance <= INTERACT_RANGE else "가까이 가기 · ", station.name]
+	prompt.text = "E · %s" % station.name if station.distance <= INTERACT_RANGE else "WASD 이동 · 시설에 접근"
 
 
 func _build_camp() -> void:
@@ -195,7 +195,7 @@ func _build_overlay() -> void:
 	add_child(canvas)
 	prompt = Label.new()
 	prompt.position = Vector2(24, 20)
-	prompt.add_theme_font_size_override("font_size", 24)
+	prompt.add_theme_font_size_override("font_size", 20)
 	prompt.add_theme_color_override("font_color", Color("fff0ca"))
 	prompt.add_theme_color_override("font_shadow_color", Color.BLACK)
 	canvas.add_child(prompt)

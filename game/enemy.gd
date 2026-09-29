@@ -51,6 +51,7 @@ var navigation_goal := Vector2.ZERO
 var navigation_repath_time := 0.0
 var steering_time := 0.0
 var steering_goal := Vector2.ZERO
+var steering_target := Vector2.ZERO
 var steering_direction := Vector2.ZERO
 var attack_cooldown := 0.0
 var warning_time := 0.0
@@ -63,11 +64,13 @@ var support_boost := false
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var projectile_parent: Node
 var zone_path_filter: Callable
+var crowd_positions := PackedVector2Array()
 
 
 func _ready() -> void:
 	health = max_health
 	add_to_group("training_enemies")
+	if role == Role.SUPPORT: add_to_group("support_enemies")
 
 
 func _physics_process(delta: float) -> void:
@@ -202,7 +205,7 @@ func _support_velocity(delta: float) -> Vector2:
 func _has_support_aura() -> bool:
 	if role == Role.SUPPORT:
 		return false
-	for candidate in get_tree().get_nodes_in_group("training_enemies"):
+	for candidate in get_tree().get_nodes_in_group("support_enemies"):
 		if candidate is TrainingEnemy and candidate.role == Role.SUPPORT and candidate.health > 0.0 and not candidate.is_queued_for_deletion():
 			if global_position.distance_to(candidate.global_position) <= SUPPORT_RADIUS:
 				return true
@@ -233,17 +236,18 @@ func _fire_bolt() -> void:
 
 
 func _chase_direction(delta: float) -> Vector2:
-	var goal := target.global_position
-	if navigation == null: return global_position.direction_to(goal)
+	if navigation == null: return global_position.direction_to(_approach_goal())
 	navigation_repath_time -= delta
 	steering_time -= delta
-	if steering_time > 0.0 and steering_goal.distance_to(goal) <= 20.0:
+	if steering_time > 0.0 and steering_target.distance_to(target.global_position) <= 20.0:
 		return steering_direction
+	var goal := _approach_goal()
+	steering_target = target.global_position
 	steering_goal = goal
 	steering_time = 0.05 + float(get_instance_id() % 3) * 0.01
 	if navigation.has_clear_path(global_position, goal):
 		navigation_path.clear()
-		steering_direction = global_position.direction_to(goal)
+		steering_direction = _spread_direction(global_position.direction_to(goal))
 		return steering_direction
 	if navigation_repath_time <= 0.0 or navigation_path.is_empty() or navigation_goal.distance_to(goal) > 42.0:
 		navigation_path = navigation.find_path(global_position, goal)
@@ -251,10 +255,33 @@ func _chase_direction(delta: float) -> Vector2:
 		navigation_repath_time = 0.28
 	for i in range(navigation_path.size() - 1, -1, -1):
 		if navigation.has_clear_path(global_position, navigation_path[i]):
-			steering_direction = global_position.direction_to(navigation_path[i])
+			steering_direction = _spread_direction(global_position.direction_to(navigation_path[i]))
 			return steering_direction
 	steering_direction = Vector2.ZERO
 	return steering_direction
+
+
+func _approach_goal() -> Vector2:
+	var goal := target.global_position
+	if role != Role.FRAGMENT and role != Role.BEAST: return goal
+	var distance := global_position.distance_to(goal)
+	if distance < 105.0 or distance > 300.0: return goal
+	var angle := float(get_instance_id() % 8) * TAU / 8.0
+	var flank := goal + Vector2.from_angle(angle) * minf(86.0, distance * 0.23)
+	return flank if navigation == null or navigation.is_open(flank, collision_radius + 4.0) and navigation.has_clear_path(global_position, flank) else goal
+
+
+func _spread_direction(direction: Vector2) -> Vector2:
+	if direction.length_squared() < 0.01 or crowd_positions.is_empty(): return direction
+	var away := Vector2.ZERO
+	for position in crowd_positions:
+		var offset := global_position - position
+		var distance_squared := offset.length_squared()
+		if distance_squared < 1.0 or distance_squared > 90.0 * 90.0: continue
+		away += offset / sqrt(distance_squared) * (1.0 - sqrt(distance_squared) / 90.0)
+	if away.length_squared() < 0.01: return direction
+	var spread := (direction + away.normalized() * 0.65).normalized()
+	return spread if navigation == null or navigation.has_clear_path(global_position, global_position + spread * 48.0) else direction
 
 
 func take_hit(damage: float, push_direction: Vector2, is_finisher: bool, impact_scale: float = 1.0) -> void:

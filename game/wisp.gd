@@ -164,6 +164,13 @@ func _fire(target: TrainingEnemy) -> void:
 		shot_audio.play()
 
 
+func fire_bonus_shot(target: TrainingEnemy) -> bool:
+	if not is_instance_valid(target) or target.is_queued_for_deletion() or target.health <= 0.0: return false
+	if global_position.distance_to(target.global_position) > attack_range or _visible_aim_point(target).is_empty(): return false
+	_fire(target)
+	return true
+
+
 func _on_projectile_hit(enemy: TrainingEnemy) -> void:
 	enemy_hit.emit(enemy)
 

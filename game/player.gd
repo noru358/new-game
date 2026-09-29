@@ -6,6 +6,7 @@ signal health_changed
 signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool)
 signal hurt_received(hit_position: Vector2, direction: Vector2)
 signal moving_slash_landed(hit_position: Vector2)
+signal flow_wave_triggered(center: Vector2)
 
 const MAX_HEALTH := 100.0
 const MOVE_SPEED := 300.0
@@ -68,6 +69,8 @@ var hit_targets: Dictionary = {}
 var basic_damage_bonus := 0.0
 var permanent_basic_damage_bonus := 0.0
 var permanent_finisher_reach_bonus := 0.0
+var permanent_damage_reduction := 0.0
+var permanent_move_speed_bonus := 0.0
 var basic_speed_bonus := 0.0
 var basic_reach_bonus := 0.0
 var dash_cooldown_reduction := 0.0
@@ -76,6 +79,7 @@ var companion_orbit_time := 0.0
 var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var input_rotation := 0.0
 var ramp_areas: Array = []
+var ramp_speed_resolver: Callable
 var collision_radius := 18.0
 var move_speed_multiplier := 1.0
 var dash_distance_multiplier := 1.0
@@ -105,11 +109,15 @@ var flow_weave_ready := false
 var flow_weave_attack := false
 var flow_weave_refund_bonus := 0.0
 var flow_weave_refund_used := false
+var flow_wave_enabled := false
+var flow_wave_used := false
 var echo_finisher_enabled := false
 var echo_finisher_center := Vector2.ZERO
 var echo_finisher_radius_bonus := 0.0
 var echo_finisher_damage_bonus := 0.0
 var echo_gather_reach_bonus := 0.0
+var ember_followup_timer := 0.0
+var ember_followup_attack := false
 
 @onready var attack_audio: AudioStreamPlayer = AudioStreamPlayer.new()
 @onready var impact_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -176,6 +184,7 @@ func _physics_process(delta: float) -> void:
 	hurt_recoil = hurt_recoil.move_toward(Vector2.ZERO, 2100.0 * delta)
 	moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - delta)
 	moving_slash_visual_time = maxf(0.0, moving_slash_visual_time - delta)
+	ember_followup_timer = maxf(0.0, ember_followup_timer - delta)
 	if moving_slash_requested:
 		moving_slash_buffer = MOVING_SLASH_BUFFER_TIME
 	moving_slash_buffer = maxf(0.0, moving_slash_buffer - delta)
@@ -194,7 +203,7 @@ func _physics_process(delta: float) -> void:
 		var dash_motion_time := minf(delta, dash_time)
 		dash_elapsed += dash_motion_time
 		dash_time = maxf(0.0, dash_time - delta)
-		velocity = dash_direction * (DASH_DISTANCE * dash_distance_multiplier / DASH_DURATION) * (dash_motion_time / delta)
+		velocity = dash_direction * (DASH_DISTANCE * dash_distance_multiplier / DASH_DURATION) * (dash_motion_time / delta) * _ramp_speed_scale(dash_direction)
 	elif moving_slash_time > 0.0:
 		facing = moving_slash_direction
 		var slash_motion_time := minf(delta, moving_slash_time)
@@ -203,9 +212,9 @@ func _physics_process(delta: float) -> void:
 		var after := moving_slash_elapsed / MOVING_SLASH_DURATION
 		moving_slash_time = maxf(0.0, moving_slash_time - delta)
 		var distance := MOVING_SLASH_DISTANCE * moving_slash_distance_multiplier * (_moving_slash_curve(after) - _moving_slash_curve(before))
-		velocity = _ramp_guided_direction(moving_slash_direction) * distance / delta
+		velocity = _ramp_guided_direction(moving_slash_direction) * distance / delta * _ramp_speed_scale(moving_slash_direction)
 	else:
-		velocity = _ramp_guided_direction(movement) * MOVE_SPEED * move_speed_multiplier * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
+		velocity = _ramp_guided_direction(movement) * _ramp_speed_scale(movement) * MOVE_SPEED * move_speed_multiplier * (1.0 + permanent_move_speed_bonus) * (0.35 if hurt_stun_time > 0.0 else 1.0) + hurt_recoil
 		_update_attack(delta)
 	var requested_motion := velocity * delta
 	var before_motion := global_position
@@ -252,11 +261,15 @@ func _ramp_guided_direction(direction: Vector2) -> Vector2:
 	return direction
 
 
+func _ramp_speed_scale(direction: Vector2) -> float:
+	return float(ramp_speed_resolver.call(global_position, direction)) if ramp_speed_resolver.is_valid() else 1.0
+
+
 func _start_dash(movement: Vector2) -> void:
 	moving_slash_time = 0.0
 	moving_slash_visual_time = 0.0
 	moving_slash_buffer = 0.0
-	dash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
+	dash_direction = _ramp_guided_direction(movement).normalized() if movement.length_squared() > 0.0 else facing
 	dash_time = DASH_DURATION
 	dash_elapsed = 0.0
 	if dash_charges == dash_max_charges:
@@ -284,7 +297,7 @@ func _start_moving_slash(movement: Vector2) -> void:
 	attack_step = 0
 	attack_hitstop_remaining = 0.0
 	combo_wait = 0.0
-	moving_slash_direction = movement.normalized() if movement.length_squared() > 0.0 else facing
+	moving_slash_direction = _ramp_guided_direction(movement).normalized() if movement.length_squared() > 0.0 else facing
 	moving_slash_origin = global_position
 	moving_slash_tip = global_position
 	moving_slash_time = MOVING_SLASH_DURATION
@@ -353,6 +366,9 @@ func _attack_spec(step: int) -> Dictionary:
 	attack.radius *= 1.0 + basic_reach_bonus
 	if step >= 3: attack.radius *= 1.0 + permanent_finisher_reach_bonus
 	if step == 3: attack.radius *= 1.0 + echo_gather_reach_bonus
+	if ember_followup_attack:
+		attack.radius *= 1.18
+		attack.angle = minf(360.0, float(attack.angle) + 35.0)
 	return attack
 
 
@@ -398,6 +414,9 @@ func _start_attack() -> void:
 	flow_weave_attack = flow_weave_ready
 	flow_weave_ready = false
 	flow_weave_refund_used = false
+	flow_wave_used = false
+	ember_followup_attack = ember_followup_timer > 0.0
+	ember_followup_timer = 0.0
 	next_combo_step = 1 if attack_step >= combo_limit() else attack_step + 1
 	attack_elapsed = 0.0
 	attack_hitstop_remaining = 0.0
@@ -417,6 +436,7 @@ func _start_attack() -> void:
 
 func _hit_enemies(attack: Dictionary) -> void:
 	var new_gathered := false
+	var flow_wave_center := Vector2.INF
 	for enemy in get_tree().get_nodes_in_group("training_enemies"):
 		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
 			continue
@@ -435,6 +455,9 @@ func _hit_enemies(attack: Dictionary) -> void:
 		var push_direction := offset.normalized() if offset.length_squared() > 0.01 else attack_direction
 		var finisher := attack_step == combo_limit()
 		hit_targets[id] = true
+		if flow_wave_enabled and flow_weave_attack and not flow_wave_used:
+			flow_wave_used = true
+			flow_wave_center = enemy.global_position
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
 		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0) * (1.0 + echo_finisher_damage_bonus if echo_finisher_enabled and attack_step == 4 else 1.0), push_direction, finisher)
@@ -452,8 +475,29 @@ func _hit_enemies(attack: Dictionary) -> void:
 				attack_hitstop_remaining = (0.025 if attack_step == 1 else 0.040) * attack_hitstop_scale
 			impact_audio.pitch_scale = 1.22 if attack_step == 3 else 0.82 if finisher else 1.13 if attack_step == 1 else 0.98
 			_play_sound("res://game/audio/hit.wav", impact_audio)
+	if flow_wave_center != Vector2.INF:
+		_trigger_flow_wave(flow_wave_center)
 	if new_gathered:
 		_arrange_gathered_enemies()
+
+
+func _trigger_flow_wave(center: Vector2) -> void:
+	flow_wave_triggered.emit(center)
+	for enemy in get_tree().get_nodes_in_group("training_enemies"):
+		if not enemy is TrainingEnemy or enemy.is_queued_for_deletion() or enemy.health <= 0.0: continue
+		var id := enemy.get_instance_id()
+		if hit_targets.has(id): continue
+		var offset: Vector2 = enemy.global_position - center
+		if offset.length() > 82.0 + enemy.collision_radius: continue
+		if attack_path_filter.is_valid() and not attack_path_filter.call(center, enemy.global_position): continue
+		hit_targets[id] = true
+		var direction := offset.normalized() if offset.length_squared() > 0.01 else attack_direction
+		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * 0.55, direction, false)
+		attack_landed.emit(enemy.global_position, direction, attack_step, false)
+
+
+func grant_ember_followup() -> void:
+	ember_followup_timer = 1.5
 
 
 func _arrange_gathered_enemies() -> void:
@@ -530,7 +574,7 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 		return
 	if moving_slash_time > 0.0 and moving_slash_elapsed <= MOVING_SLASH_INVULNERABILITY:
 		return
-	health = maxf(0.0, health - damage)
+	health = maxf(0.0, health - damage * (1.0 - permanent_damage_reduction))
 	hurt_immunity = HURT_INVULNERABILITY
 	hit_flash = 0.25
 	hurt_stun_time = 0.11

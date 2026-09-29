@@ -5,14 +5,14 @@ extends "res://game/hybrid_terrain.gd"
 func _init() -> void:
 	map_size = Vector2(5100, 2160)
 	plateaus = [
-		{"area": Rect2(300, 780, 900, 760), "height": 160.0, "base": 0.0, "name": "수변 마당 중정", "openings": {"north": [[520.0, 760.0]], "south": [[520.0, 760.0], [860.0, 1010.0]], "east": [[1050.0, 1260.0]]}},
-		{"area": Rect2(800, 970, 250, 310), "height": 320.0, "base": 160.0, "name": "사원 테라스", "openings": {"west": [[1030.0, 1210.0]]}}
+		{"area": Rect2(100, 780, 1100, 760), "height": 160.0, "base": 0.0, "name": "수변 마당 중정", "openings": {"north": [[520.0, 760.0]], "south": [[520.0, 760.0], [860.0, 1010.0]], "east": [[1050.0, 1260.0]]}},
+		{"area": Rect2(850, 970, 250, 310), "height": 320.0, "base": 160.0, "name": "사원 테라스", "openings": {"west": [[1030.0, 1210.0]]}}
 	]
 	ramps = [
-		{"area": Rect2(520, 520, 240, 260), "axis": 1, "from": 0.0, "to": 160.0, "name": "북쪽 경사로"},
+		{"area": Rect2(520, 280, 240, 500), "axis": 1, "from": 0.0, "to": 160.0, "name": "북쪽 경사로"},
 		{"area": Rect2(520, 1540, 240, 280), "axis": 1, "from": 160.0, "to": 0.0, "name": "남쪽 경사로"},
 		{"area": Rect2(1200, 1050, 270, 210), "axis": 0, "from": 160.0, "to": 0.0, "name": "사원 뜰 연결로"},
-		{"area": Rect2(620, 1030, 180, 180), "axis": 0, "from": 160.0, "to": 320.0, "name": "테라스 경사로"},
+		{"area": Rect2(350, 1030, 500, 180), "axis": 0, "from": 160.0, "to": 320.0, "name": "테라스 경사로"},
 		{"area": Rect2(860, 1540, 150, 260), "axis": 1, "from": 160.0, "to": 0.0, "name": "디딤돌", "kind": "stepping_stones"}
 	]
 	water_areas = [

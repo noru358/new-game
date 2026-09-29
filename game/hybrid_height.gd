@@ -59,12 +59,17 @@ var overview := false
 var kills := 0
 var paused := false
 var terrain_mesh: MeshInstance3D
+var vertical_face_candidates: Array[Dictionary] = []
+var resolved_vertical_faces: Array[Dictionary] = []
+var lip_candidates: Array[Dictionary] = []
+var resolved_lips: Array[Dictionary] = []
 var previous_attack_step := 0
 var current_attack_step := 0
 var previous_attack_elapsed := 0.0
 var current_attack_elapsed := 0.0
 var previous_attack_direction := Vector2.RIGHT
 var current_attack_direction := Vector2.RIGHT
+var crowd_refresh_time := 0.0
 
 func _ready() -> void:
 	get_window().title = scene_title
@@ -94,6 +99,7 @@ func _ready() -> void:
 	player.collision_mask = 4
 	player.input_rotation = -PI / 4.0
 	player.ramp_areas = terrain.ramps
+	player.ramp_speed_resolver = _ramp_screen_speed_scale
 	player.move_speed_multiplier = 1.12
 	player.dash_distance_multiplier = 1.16
 	player.basic_speed_bonus = 0.18
@@ -106,7 +112,9 @@ func _ready() -> void:
 	actors[player] = _actor_visual(Color.WHITE)
 	actor_motion[player] = [player.global_position, player.global_position]
 	player.attack_landed.connect(_on_player_attack_landed)
+	player.flow_wave_triggered.connect(_on_flow_wave)
 	player.moving_slash_landed.connect(func(point: Vector2): _flash(point, Color("b7f8ff"), 0.23))
+	_warm_enemy_rendering()
 	wisp = WispCompanion.new()
 	wisp.player = player
 	wisp.facing_formation = true
@@ -184,6 +192,26 @@ func _register_inputs() -> void:
 	if not InputMap.action_has_event("attack", mouse):
 		InputMap.action_add_event("attack", mouse)
 
+
+func _ramp_screen_speed_scale(point: Vector2, direction: Vector2) -> float:
+	if direction.length_squared() < 0.01: return 1.0
+	var unit := direction.normalized()
+	for ramp in terrain.ramps:
+		if not (ramp.area as Rect2).has_point(point): continue
+		# The camera projects climbing height against screen Up/Down. Compare
+		# progress along the requested screen direction with flat-ground progress;
+		# only the scalar changes, so the input's world direction is preserved.
+		var rise: float = (float(ramp.to) - float(ramp.from)) / float(ramp.area.size[int(ramp.axis)]) * unit[int(ramp.axis)]
+		var planar := Vector3(unit.x, 0.0, unit.y)
+		var slope := Vector3(unit.x, rise, unit.y)
+		var right := camera.global_transform.basis.x
+		var up := camera.global_transform.basis.y
+		var flat_screen := Vector2(planar.dot(right), -planar.dot(up))
+		var slope_screen := Vector2(slope.dot(right), -slope.dot(up))
+		var progress := slope_screen.dot(flat_screen.normalized())
+		return flat_screen.length() / progress if progress > 0.001 else 1.0
+	return 1.0
+
 func _material(color: Color, unshaded: bool = false) -> StandardMaterial3D:
 	var material := StandardMaterial3D.new()
 	material.albedo_color = color
@@ -209,7 +237,12 @@ func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> vo
 				vertices.append(Vector3(point.x, elevation.call(point), point.y))
 			_quad(st, vertices, color.lightened(0.035) if (x / 100 + z / 100) % 2 == 0 else color)
 
-func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, color: Color, openings: Dictionary = {}, skip_sides: Array = []) -> void:
+func _queue_vertical_face(varying_axis: int, fixed: float, start: float, end: float, bottom: float, top_start: float, top_end: float, color: Color) -> void:
+	if end <= start or maxf(top_start, top_end) <= bottom: return
+	vertical_face_candidates.append({"axis": varying_axis, "fixed": fixed, "start": start, "end": end, "bottom": bottom, "top_start": top_start, "top_end": top_end, "color": color})
+
+
+func _queue_sides(area: Rect2, elevation: Callable, bottom: float, color: Color, openings: Dictionary = {}, skip_sides: Array = []) -> void:
 	var corners := [area.position, Vector2(area.end.x, area.position.y), area.end, Vector2(area.position.x, area.end.y)]
 	for i in range(4):
 		var side: String = ["north", "east", "south", "west"][i]
@@ -231,7 +264,97 @@ func _sides(st: SurfaceTool, area: Rect2, elevation: Callable, bottom: float, co
 			var p1 := b
 			p0[axis] = span[0]
 			p1[axis] = span[1]
-			_quad(st, [Vector3(p0.x, bottom, p0.y), Vector3(p1.x, bottom, p1.y), Vector3(p1.x, elevation.call(p1), p1.y), Vector3(p0.x, elevation.call(p0), p0.y)], color)
+			_queue_vertical_face(axis, p0[1 - axis], span[0], span[1], bottom, elevation.call(p0), elevation.call(p1), color)
+
+
+func _queue_plateau_face(edge: Dictionary, height: float, bottom: float, color: Color) -> void:
+	var horizontal: bool = edge.side == "north" or edge.side == "south"
+	_queue_vertical_face(0 if horizontal else 1, edge.fixed, edge.start, edge.end, bottom, height, height, color)
+
+
+func _face_top(face: Dictionary, at: float) -> float:
+	return lerpf(face.top_start, face.top_end, (at - face.start) / (face.end - face.start))
+
+
+func _emit_vertical_faces(st: SurfaceTool) -> void:
+	# Plateaus and ramps may describe the same solid boundary. Rendering each
+	# wall independently puts differently lit polygons on one depth plane.
+	# Resolve each line into one outer silhouette before building the mesh.
+	resolved_vertical_faces.clear()
+	var lanes := {}
+	for face in vertical_face_candidates:
+		var key := "%d:%.3f" % [face.axis, face.fixed]
+		if not lanes.has(key): lanes[key] = []
+		lanes[key].append(face)
+	for lane in lanes.values():
+		var stops: Array[float] = []
+		for face in lane:
+			stops.append(face.start)
+			stops.append(face.end)
+		for i in lane.size():
+			for j in range(i + 1, lane.size()):
+				var left: float = maxf(lane[i].start, lane[j].start)
+				var right: float = minf(lane[i].end, lane[j].end)
+				if right - left <= 0.001: continue
+				var first_difference: float = _face_top(lane[i], left) - _face_top(lane[j], left)
+				var last_difference: float = _face_top(lane[i], right) - _face_top(lane[j], right)
+				if first_difference * last_difference < 0.0:
+					stops.append(left + (right - left) * absf(first_difference) / (absf(first_difference) + absf(last_difference)))
+		stops.sort()
+		var previous := -INF
+		for stop in stops:
+			if stop - previous <= 0.001: continue
+			if previous != -INF:
+				var middle: float = (previous + stop) * 0.5
+				var owner: Dictionary = {}
+				var highest := -INF
+				var lowest := INF
+				for face in lane:
+					if face.start > middle or face.end < middle: continue
+					lowest = minf(lowest, face.bottom)
+					var top: float = _face_top(face, middle)
+					if top > highest:
+						highest = top
+						owner = face
+				if not owner.is_empty():
+					var a := Vector3(previous, lowest, owner.fixed) if owner.axis == 0 else Vector3(owner.fixed, lowest, previous)
+					var b := Vector3(stop, lowest, owner.fixed) if owner.axis == 0 else Vector3(owner.fixed, lowest, stop)
+					var c := Vector3(b.x, _face_top(owner, stop), b.z)
+					var d := Vector3(a.x, _face_top(owner, previous), a.z)
+					_quad(st, [a, b, c, d], owner.color)
+					resolved_vertical_faces.append({"axis": owner.axis, "fixed": owner.fixed, "start": previous, "end": stop, "bottom": lowest, "top_start": d.y, "top_end": c.y, "color": owner.color})
+			previous = stop
+
+
+func _subtract_lip_overlap(area: Rect2, covered: Rect2) -> Array[Rect2]:
+	var overlap := area.intersection(covered)
+	if overlap.size.x <= 0.001 or overlap.size.y <= 0.001: return [area]
+	var pieces: Array[Rect2] = []
+	if area.position.x < overlap.position.x:
+		pieces.append(Rect2(area.position, Vector2(overlap.position.x - area.position.x, area.size.y)))
+	if overlap.end.x < area.end.x:
+		pieces.append(Rect2(Vector2(overlap.end.x, area.position.y), Vector2(area.end.x - overlap.end.x, area.size.y)))
+	if area.position.y < overlap.position.y:
+		pieces.append(Rect2(Vector2(overlap.position.x, area.position.y), Vector2(overlap.size.x, overlap.position.y - area.position.y)))
+	if overlap.end.y < area.end.y:
+		pieces.append(Rect2(Vector2(overlap.position.x, overlap.end.y), Vector2(overlap.size.x, area.end.y - overlap.end.y)))
+	return pieces
+
+
+func _emit_lips(st: SurfaceTool) -> void:
+	resolved_lips.clear()
+	for lip in lip_candidates:
+		var uncovered: Array[Rect2] = [lip.area]
+		for earlier in resolved_lips:
+			if not is_equal_approx(float(lip.height), float(earlier.height)): continue
+			var remainder: Array[Rect2] = []
+			for piece in uncovered:
+				remainder.append_array(_subtract_lip_overlap(piece, earlier.area))
+			uncovered = remainder
+			if uncovered.is_empty(): break
+		for piece in uncovered:
+			resolved_lips.append({"area": piece, "height": lip.height, "color": lip.color})
+			_top(st, piece, func(_point): return float(lip.height), lip.color)
 
 func _stepping_stones(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
@@ -278,31 +401,110 @@ func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
 	for strip in strips:
 		_top(st, strip, func(point): return terrain.ramp_height(ramp, point) + 4.0, ramp_color.darkened(0.32))
 
+func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), ramp_color.darkened(0.24))
+	for step in 12:
+		var x0: float = area.position.x + area.size.x * float(step) / 12.0
+		var width: float = area.size.x / 12.0
+		var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
+		_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
+		_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
+	_ramp_edge_markers(st, ramp)
+
+func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("465d57"))
+	var slab_count := maxi(3, ceili(area.size.x / 135.0))
+	var north_margins := [13.0, 29.0, 19.0, 35.0, 17.0, 27.0]
+	var south_margins := [30.0, 13.0, 24.0, 15.0, 34.0, 20.0]
+	for slab in slab_count:
+		var x0: float = area.position.x + area.size.x * float(slab) / float(slab_count)
+		var north_margin: float = north_margins[slab % north_margins.size()]
+		var south_margin: float = south_margins[slab % south_margins.size()]
+		var stone := Rect2(x0 + 4.0, area.position.y + north_margin, area.size.x / float(slab_count) - 8.0, area.size.y - north_margin - south_margin)
+		_rough_slab(st, stone, func(point): return terrain.ramp_height(ramp, point), 3.5, Color("a5ad98") if slab == 1 else Color("83978b"))
+	_ramp_edge_markers(st, ramp)
+
+func _broken_bridge(st: SurfaceTool, ramp: Dictionary) -> void:
+	var area: Rect2 = ramp.area
+	_top(st, area, func(point): return terrain.ramp_height(ramp, point), Color("40544f"))
+	for slab in 4:
+		var x0: float = area.position.x + area.size.x * float(slab) / 4.0
+		var north_margin: float = [10.0, 26.0, 14.0, 31.0][slab]
+		var south_margin: float = [29.0, 12.0, 26.0, 10.0][slab]
+		var stone := Rect2(x0 + 3.0, area.position.y + north_margin, area.size.x / 4.0 - 6.0, area.size.y - north_margin - south_margin)
+		_rough_slab(st, stone, func(point): return terrain.ramp_height(ramp, point), 4.0, Color("a3ae9f") if slab % 2 == 0 else Color("8b9e94"))
+	_ramp_edge_markers(st, ramp)
+
+
+func _rough_slab(st: SurfaceTool, area: Rect2, elevation: Callable, lift: float, color: Color) -> void:
+	var p := area.position
+	var e := area.end
+	var outline: Array[Vector2] = [
+		Vector2(p.x + 18.0, p.y), Vector2(e.x - 24.0, p.y + 9.0),
+		Vector2(e.x, p.y + 26.0), Vector2(e.x - 8.0, e.y - 17.0),
+		Vector2(e.x - 26.0, e.y), Vector2(p.x + 10.0, e.y - 5.0),
+		Vector2(p.x, e.y - 25.0), Vector2(p.x + 6.0, p.y + 22.0),
+	]
+	var center := area.get_center()
+	for i in outline.size():
+		var a: Vector2 = outline[i]
+		var b: Vector2 = outline[(i + 1) % outline.size()]
+		for point in [center, a, b]:
+			st.set_color(color.lightened(0.04) if i % 2 == 0 else color)
+			st.add_vertex(Vector3(point.x, elevation.call(point) + lift, point.y) * Terrain.SCALE)
+		_quad(st, [
+			Vector3(a.x, elevation.call(a), a.y), Vector3(b.x, elevation.call(b), b.y),
+			Vector3(b.x, elevation.call(b) + lift, b.y), Vector3(a.x, elevation.call(a) + lift, a.y),
+		], color.darkened(0.25))
+
 func _build_terrain() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	vertical_face_candidates.clear()
+	lip_candidates.clear()
 	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, ground_color)
 	for floor in terrain.floor_areas:
 		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in terrain.water_areas:
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
+	for chasm in terrain.chasm_areas:
+		_top(st, chasm, func(_p): return 1.5, Color("263e3d"))
 	for plateau in terrain.plateaus:
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
-		_sides(st, plateau.area, elevation, plateau.base, cliff_color, plateau.openings)
+		for edge in terrain.plateau_edge_spans(plateau):
+			_queue_plateau_face(edge, plateau.height, plateau.base, cliff_color)
+			var lip: Rect2
+			match edge.side:
+				"north": lip = Rect2(edge.start, edge.fixed, edge.end - edge.start, 12.0)
+				"south": lip = Rect2(edge.start, edge.fixed - 12.0, edge.end - edge.start, 12.0)
+				"west": lip = Rect2(edge.fixed, edge.start, 12.0, edge.end - edge.start)
+				_: lip = Rect2(edge.fixed - 12.0, edge.start, 12.0, edge.end - edge.start)
+			lip_candidates.append({"area": lip, "height": float(plateau.height) + 4.0, "color": cliff_color.lightened(0.16)})
+	_emit_lips(st)
+	if terrain is JunglePassTerrain:
+		for i in terrain.rock_ledge_areas.size():
+			_rough_slab(st, terrain.rock_ledge_areas[i], func(point): return terrain.height_at(point), 5.0, Color("8b9d91") if i % 2 == 0 else Color("a7ae9a"))
 	for ramp in terrain.ramps:
 		if ramp.get("kind", "") == "stepping_stones":
 			_stepping_stones(st, ramp)
 			continue
 		var elevation := func(p): return terrain.ramp_height(ramp, p)
-		_top(st, ramp.area, elevation, ramp_color)
-		_sides(st, ramp.area, elevation, minf(ramp.from, ramp.to), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
-		_ramp_edge_markers(st, ramp)
+		match ramp.get("kind", ""):
+			"gate_stairs": _gate_stairs(st, ramp)
+			"rock_path": _rock_path(st, ramp)
+			"broken_bridge": _broken_bridge(st, ramp)
+			_: _top(st, ramp.area, elevation, ramp_color)
+		_queue_sides(ramp.area, elevation, ramp.get("base", minf(ramp.from, ramp.to)), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
+		if ramp.get("kind", "") not in ["gate_stairs", "rock_path", "broken_bridge"]: _ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
 		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height
 		_top(st, wall.area, elevation, wall.color)
-		_sides(st, wall.area, elevation, wall.get("base", 0.0), wall.color.darkened(0.25))
+		_queue_sides(wall.area, elevation, wall.get("base", 0.0), wall.color.darkened(0.25))
+	_emit_vertical_faces(st)
 	st.generate_normals()
 	terrain_mesh = MeshInstance3D.new()
 	terrain_mesh.mesh = st.commit()
@@ -370,6 +572,22 @@ func _actor_visual(color: Color) -> Node3D:
 	root.add_child(shadow)
 	add_child(root)
 	return root
+
+
+func _warm_enemy_rendering() -> void:
+	# Compile the first enemy body/health-bar render path while the region opens,
+	# instead of hitching on the first live spawn during player movement.
+	var sample := TrainingEnemy.new()
+	var visual := _actor_visual(_enemy_color(TrainingEnemy.Role.FRAGMENT))
+	_add_health_bar(visual, sample)
+	visual.position = terrain.world_point(start_point, -60.0)
+	sample.free()
+	_release_warmup_visual(visual)
+
+
+func _release_warmup_visual(visual: Node3D) -> void:
+	await RenderingServer.frame_post_draw
+	if is_instance_valid(visual): visual.queue_free()
 
 func _add_health_bar(visual: Node3D, enemy: TrainingEnemy) -> void:
 	var bar := Sprite3D.new()
@@ -452,10 +670,20 @@ func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, fin
 	if player.attack_hitstop_scale <= 0.0:
 		_flash(point, Color("94e9ff") if step == 3 else Color("ffd486"))
 		return
-	var color := Color("ffbc69") if player.flow_weave_attack else Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
+	var color := Color("ff9b60") if player.ember_followup_attack else Color("ffbc69") if player.flow_weave_attack else Color("80f0f1") if step == 1 else Color("d6b2ff") if step == 2 else Color("94e9ff") if step == 3 else Color("ffe2a0")
 	_flash(point, color, 0.27 if finisher else 0.20)
 	if not player.impact_played_this_attack:
 		camera.position -= Vector3(direction.x, 0.0, direction.y) * (0.10 if finisher else 0.055)
+
+func _on_flow_wave(point: Vector2) -> void:
+	var pulse := _sphere(0.18, Color("ffbd70"))
+	pulse.transparency = 0.48
+	add_child(pulse)
+	pulse.position = terrain.world_point(point, 55.0)
+	var tween := create_tween()
+	tween.tween_property(pulse, "scale", Vector3.ONE * 4.0, 0.18)
+	tween.parallel().tween_property(pulse, "transparency", 1.0, 0.18)
+	tween.tween_callback(pulse.queue_free)
 
 func _enemy_color(role: TrainingEnemy.Role) -> Color:
 	match role:
@@ -522,6 +750,16 @@ func _on_wisp_hit(enemy: TrainingEnemy) -> void:
 
 func _physics_process(delta: float) -> void:
 	if paused or not is_instance_valid(player): return
+	crowd_refresh_time -= delta
+	if crowd_refresh_time <= 0.0:
+		crowd_refresh_time = 0.10
+		var positions := PackedVector2Array()
+		for actor in actors:
+			if is_instance_valid(actor) and actor is TrainingEnemy and not actor.is_queued_for_deletion():
+				positions.append(actor.global_position)
+		for actor in actors:
+			if is_instance_valid(actor) and actor is TrainingEnemy:
+				actor.crowd_positions = positions
 	for actor in actors.keys():
 		if not is_instance_valid(actor):
 			actors[actor].queue_free()
@@ -585,6 +823,7 @@ func _process(delta: float) -> void:
 		visual.position = terrain.world_point(point)
 		if actor == player:
 			var body: Sprite3D = visual.get_node("Body")
+			body.modulate = Color("ffd0a0") if player.ember_followup_timer > 0.0 or player.ember_followup_attack else Color.WHITE
 			body.flip_h = player.facing.x - player.facing.y < -0.1
 			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
@@ -636,9 +875,11 @@ func _shot_world_point(shot: Node2D, point: Vector2) -> Vector3:
 
 func _update_hud() -> void:
 	if hud == null: return
-	hud.text = "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	var next_hud := "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
+	if hud.text != next_hud: hud.text = next_hud
 	if moving_slash_status != null:
-		moving_slash_status.text = "Space 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
+		var next_slash := "Space 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
+		if moving_slash_status.text != next_slash: moving_slash_status.text = next_slash
 
 func _draw_attack() -> void:
 	_draw_attack_at(player.global_position, player.attack_elapsed, player.attack_direction)
@@ -658,7 +899,7 @@ func _draw_attack_at(origin: Vector2, elapsed: float, direction: Vector2) -> voi
 	var arc: float = half_angle * 2.0
 	var active_progress: float = clampf((elapsed - windup) / active, 0.0, 1.0)
 	var fade: float = 1.0 if elapsed < windup + active else clampf(1.0 - (elapsed - windup - active) / recovery, 0.0, 1.0)
-	var base := Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("84f5cf") if player.echo_finisher_enabled else Color("ffe19a")
+	var base := Color("ff9b60") if player.ember_followup_attack else Color("ffbd70") if player.flow_weave_attack else Color("49e6eb") if player.attack_step == 1 else Color("bda0ff") if player.attack_step == 2 else Color("e9a6fa") if player.attack_step == 3 else Color("84f5cf") if player.echo_finisher_enabled else Color("ffe19a")
 	attack_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	# Keep the swing in one plane at chest height. Sampling the ground height at
 	# every vertex folded the old mesh over stairs and cliffs. The pale blade
