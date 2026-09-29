@@ -179,7 +179,8 @@ func _ready() -> void:
 	camera.look_at(terrain.world_point(player.position), Vector3.UP)
 	camera.reset_physics_interpolation()
 	get_window().focus_exited.connect(func():
-		if not growth.choosing: _set_paused(true)
+		if growth.choosing: growth.paused_before_choice = true
+		_set_paused(true)
 	)
 	print("Hybrid scene ready: ", scene_title)
 

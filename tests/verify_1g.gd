@@ -40,7 +40,7 @@ func _run() -> void:
 	_check(scene.player.moving_slash_enabled and scene.player.combo_limit() == 3, "first lifetime level-up opens Q and the third attack")
 	for i in 2:
 		scene.growth.gain_xp(scene.growth.next_xp())
-		scene.growth.choose_index(0)
+		while scene.growth.choosing: scene.growth.choose_index(0)
 	_check(scene.player.moving_slash_enabled and scene.player.combo_limit() == 4 and not scene.growth.roll_choices().has("U_CHAIN"), "three lifetime level-ups permanently open Q and the full combo without a combo card")
 	scene.player.hurt_immunity = 1000.0
 	var spawn_point: Vector2 = scene._choose_spawn_point(false)

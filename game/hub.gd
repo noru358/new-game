@@ -27,6 +27,7 @@ var mod_preview_label: Label
 var mod_behavior_label: Label
 var mod_numeric_label: Label
 var growth_buttons: Dictionary = {}
+var attack_branch_buttons: Dictionary = {}
 var reset_button: Button
 var supply_buy_button: Button
 var supply_toggle_button: Button
@@ -174,6 +175,9 @@ func _build_ui() -> void:
 		growth.add_child(_label(group.title, 22, Color("f6e7bf")))
 		for id in group.ids:
 			growth_buttons[id] = _button(growth, "", _buy_growth.bind(id))
+	growth.add_child(_label("공격 상위 · 시험값 / 공격 성장 합계 4등급 필요", 20, Color("f6e7bf")))
+	for id in RunProfile.ATTACK_BRANCHES:
+		attack_branch_buttons[id] = _button(growth, "", _buy_attack_branch.bind(id))
 	reset_button = _button(growth, "성장 초기화 · 쓴 재화 전액 반환", _reset_growth)
 	status_label = _label("", 15, Color("f6c58e"))
 	root_box.add_child(status_label)
@@ -344,6 +348,11 @@ func _refresh() -> void:
 		var locked_text := "누적 레벨업 1회 뒤 개방" if id == "SLASH" else "누적 레벨업 3회 뒤 개방"
 		button.text = "%s  %d/2  %s" % [growth_names[id], rank, locked_text if not available else "최대 · " + before if rank == 2 else before + " → " + after + " · 구매 %d" % cost]
 		button.disabled = profile.load_error or not available or rank == 2 or profile.currency < cost
+	for id in attack_branch_buttons:
+		var branch_button: Button = attack_branch_buttons[id]
+		var effect := "직접 공격 · 평타/이동 베기 피해 +10%" if id == "DIRECT" else "동행 공격 · 여우불 피해 +10%"
+		branch_button.text = effect + (" · 선택됨" if profile.attack_branch == id else " · 초기화 후 변경" if not profile.attack_branch.is_empty() else " · 구매 60" if profile.attack_branch_available() else " · 공격 성장 합계 4 필요")
+		branch_button.disabled = profile.load_error or not profile.attack_branch.is_empty() or not profile.attack_branch_available() or profile.currency < RunProfile.ATTACK_BRANCH_COST
 	reset_button.disabled = profile.load_error or profile.growth_ranks.values().all(func(value: Variant) -> bool: return int(value) == 0)
 	status_label.text = "저장 기록과 정상 백업을 읽을 수 없습니다. 기존 파일은 보존했습니다. 저장 폴더에서 백업을 확인하세요." if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
 	if save_folder_button == null:
@@ -427,6 +436,11 @@ func _slot_mod(mod_id: String) -> void:
 func _buy_growth(id: String) -> void:
 	if profile.buy_growth(id, unlocks.lifetime_levelups): _refresh()
 	else: status_label.text = "성장 구매에 실패했습니다."
+
+
+func _buy_attack_branch(id: String) -> void:
+	if profile.buy_attack_branch(id): _refresh()
+	else: status_label.text = "상위 성장 구매를 저장하지 못했습니다. 기존 기록을 유지합니다."
 
 
 func _reset_growth() -> void:

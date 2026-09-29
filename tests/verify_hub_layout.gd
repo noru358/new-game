@@ -59,12 +59,15 @@ func _run() -> void:
 	await process_frame
 	for gear_id in RunProfile.GEAR_AFFIXES:
 		hub._select_gear(gear_id)
+		await process_frame
+		var gear_behavior_y: float = hub.mod_behavior_label.global_position.y
+		var gear_numeric_y: float = hub.mod_numeric_label.global_position.y
 		_check(hub.gear_detail_scroll.get_child(0).size.y <= hub.gear_detail_scroll.size.y, "all %s option rows fit without scrolling" % gear_id)
 		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
 			hub.profile.slotted_mods[gear_id] = mod_id
 			hub._refresh()
 			await process_frame
-			_check(absf(hub.mod_behavior_label.global_position.y - behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - numeric_y) < 0.5, "long option descriptions preserve equipment detail layout: %s" % mod_id)
+			_check(absf(hub.mod_behavior_label.global_position.y - gear_behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - gear_numeric_y) < 0.5, "long option descriptions preserve equipment detail layout: %s" % mod_id)
 			hub._preview_mod(mod_id)
 			_check(hub.mod_preview_label.text == RunProfile.affix_description(mod_id), "compact option keeps the full %s description in its preview" % mod_id)
 	hub.profile.slotted_mods = {"W_ECHO": "ECHO_WISP"}

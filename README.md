@@ -1,4 +1,4 @@
-# Loop Conquest — Traveling Camp & Jungle Pass v17
+# Loop Conquest — Traveling Camp & Jungle Pass v18
 
 Godot 4.6 combat and terrain prototype. The default scene is `game/travel_camp.tscn`: walk between the region map, equipment/growth, and departure stations, then press E to open the corresponding preparation tab. Region 1 remains `game/hybrid_region.tscn`; a first clear opens `game/jungle_pass.tscn`, a cliff/jungle route climbing to a high gate. Movement, enemy routing and hit detection use 2D ground coordinates; terrain records supply height, walkability and line-of-sight boundaries for the 3D scene and minimap.
 
@@ -48,3 +48,11 @@ See `DEV_STATUS.md` for the current work and `LOOP_CONQUEST_MASTER.md` for the d
 The player flashes on damage and visibly fades during hurt immunity. A health bar and a low-health label at 25% complement the HP number. Esc shows selected cards and their ranks; a compact running summary excludes the initial dash upgrade. G and the pause menu request retreat confirmation. Success and defeat settle immediately and freeze combat, then show results after a 0.8-second finish animation without changing time scale. Save errors offer a folder button while preserving the files. Enemy role definitions keep XP and currency independent of HP tuning.
 
 The 2/4/6 lifetime card unlock milestones remain introductory progression; dash input remains immediate without buffering. GitHub Actions runs every `tests/verify_*.gd` script on Godot 4.6 stable. See `CHANGELOG.md` for past implementation records.
+
+## v18 playtest
+
+Each level immediately opens one card choice and heals 20% maximum HP. Each card has one reroll. Overflow XP queues choices in the same paused window. Permanent move unlocks apply at level-up; selection does not heal again.
+
+The five-minute run now alternates short charge/ranged/support pressure with recovery periods, preserving the planned spawn count. A new moving-slash card advances wisp fire by 0.12/0.24 seconds once per slash. In camp, four total attack growth ranks unlock a 60-currency choice of direct damage or wisp damage (+10 percentage points). Full respec refunds that cost too. The temple repeat-clear option pool includes EMBER_STEP for the wisp accessory: wisp hits advance dash recharge by 0.05 seconds, at most once per 0.3 seconds. These are trial values.
+
+Profiles now write version 4, retaining support for reading versions 1–3 and the same save directory. Older executables cannot read version 4.
