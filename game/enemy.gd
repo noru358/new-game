@@ -7,6 +7,7 @@ enum Role { FRAGMENT, BEAST, LAMP, ZONE, SUPPORT }
 
 const BoltScript = preload("res://game/enemy_bolt.gd")
 const ZoneScript = preload("res://game/enemy_zone.gd")
+const Definitions = preload("res://game/enemy_definitions.gd")
 const MAX_HEALTH := 22.0
 const MOVE_SPEED := 105.0
 const CONTACT_DAMAGE := 10.0
@@ -30,6 +31,7 @@ const SUPPORT_COOLDOWN_MULTIPLIER := 1.3
 
 @export var max_health := MAX_HEALTH
 @export var role: Role = Role.FRAGMENT
+
 
 var health := MAX_HEALTH
 var collision_radius := RADIUS
@@ -65,6 +67,14 @@ var arena_bounds := Rect2(Vector2.ZERO, Vector2(2400, 1400))
 var projectile_parent: Node
 var zone_path_filter: Callable
 var crowd_positions := PackedVector2Array()
+
+
+func xp_reward() -> int:
+	return int(Definitions.ROLES[int(role)].xp)
+
+
+func currency_reward() -> int:
+	return int(Definitions.ROLES[int(role)].currency)
 
 
 func _ready() -> void:

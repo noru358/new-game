@@ -61,6 +61,8 @@ func _run() -> void:
 	_check(scene.boss.sweep_warning > 0.0, "jungle guardian starts with a lateral sweep warning")
 	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
 	await physics_frame
+	_check(scene.run_ended and scene.profile.jungle_owned and not scene.result_overlay.visible, "second region settles before its finish animation completes")
+	await create_timer(0.9).timeout
 	_check(scene.run_ended and scene.end_result == "SUCCESS" and scene.profile.jungle_owned and scene.result_text.text.contains("관문 통과"), "second region settles its own first clear and reward")
 	paused = false
 	scene.queue_free()

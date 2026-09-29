@@ -37,6 +37,13 @@ var boss_warning_mesh := ImmediateMesh.new()
 var echo_wisp_mod_enabled := false
 var ember_strike_mod_enabled := false
 var echo_wisp_fired_sequence := -1
+var pause_menu: ColorRect
+var build_details_label: RichTextLabel
+var retreat_overlay: ColorRect
+var retreat_was_paused := false
+var ending_remaining := 0.0
+var ending_visual: Node3D
+var save_folder_button: Button
 
 
 func _init() -> void:
@@ -87,9 +94,10 @@ func _ready() -> void:
 		run_ended = true
 		paused = true
 		get_tree().paused = true
-		result_text.text = "저장 기록을 읽을 수 없습니다.\n기존 기록을 덮어쓰지 않았습니다."
+		result_text.text = "저장 기록과 정상 백업을 읽을 수 없습니다.\n기존 파일은 보존했습니다.\n저장 폴더를 열어 백업 파일을 확인하세요."
 		replay_button.disabled = true
 		retry_button.hide()
+		save_folder_button.show()
 		result_overlay.show()
 	else:
 		_update_run_hud()
@@ -192,6 +200,9 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	if practice_mode: return
+	if ending_remaining > 0.0:
+		ending_remaining = maxf(0.0, ending_remaining - delta)
+		if ending_remaining <= 0.0: _show_result()
 	if is_instance_valid(boss) and actors.has(boss):
 		var visual: Node3D = actors[boss]
 		var core: MeshInstance3D = visual.get_node("BossFigure/BossCore")
@@ -273,7 +284,7 @@ func _tick_pending(delta: float) -> void:
 
 func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> void:
 	if not for_boss:
-		var health: float = [22.0, 45.0, 30.0, 32.0, 36.0][int(role)]
+		var health: float = TrainingEnemy.Definitions.ROLES[int(role)].health
 		_spawn_enemy_at(point, role, health)
 		return
 	boss = boss_scene.instantiate()
@@ -346,10 +357,17 @@ func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 		return
 	if run_ended: return
 	if enemy is GateBoss:
+		if boss_defeated: return
 		boss_defeated = true
+		if actors.has(enemy):
+			ending_visual = actors[enemy]
+			actors.erase(enemy)
+			actor_motion.erase(enemy)
+			var bar := ending_visual.get_node_or_null("HealthBar")
+			if bar != null: bar.hide()
 		return
 	super._on_enemy_defeated(enemy)
-	run_currency += 1 if enemy.role == TrainingEnemy.Role.FRAGMENT else 2
+	run_currency += enemy.currency_reward()
 
 
 func _finish_run(result: String) -> void:
@@ -361,7 +379,39 @@ func _finish_run(result: String) -> void:
 	for entry in pending_spawns: (entry.marker as Node3D).queue_free()
 	pending_spawns.clear()
 	settlement_pending = not profile.settle(run_id, result, run_currency, region_id)
-	_show_result()
+	pause_menu.hide()
+	retreat_overlay.hide()
+	pause_label.hide()
+	pause_backdrop.hide()
+	growth.overlay.hide()
+	_update_hud()
+	if result == "RETREAT":
+		_show_result()
+	else:
+		ending_remaining = 0.8
+		if result == "DEFEAT": ending_visual = actors[player]
+		if is_instance_valid(ending_visual):
+			var tween := create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+			tween.set_parallel(true)
+			tween.tween_property(ending_visual, "rotation:z", -0.8, 0.65)
+			tween.tween_property(ending_visual, "scale", Vector3(1.15, 0.12, 1.15), 0.75)
+			var pulse := MeshInstance3D.new()
+			var ring := TorusMesh.new()
+			ring.inner_radius = 0.34
+			ring.outer_radius = 0.42
+			pulse.mesh = ring
+			var ring_material := _material(Color("f8d38a") if result == "SUCCESS" else Color("e98484"), true)
+			ring_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			ring_material.albedo_color.a = 0.65
+			pulse.material_override = ring_material
+			add_child(pulse)
+			pulse.position = ending_visual.position + Vector3(0, 0.04, 0)
+			var pulse_tween := create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+			pulse_tween.set_parallel(true)
+			pulse_tween.tween_property(pulse, "scale", Vector3(3.0, 0.3, 3.0), 0.78)
+			pulse_tween.tween_property(ring_material, "albedo_color:a", 0.0, 0.78)
+			pulse_tween.set_parallel(false)
+			pulse_tween.tween_callback(pulse.queue_free)
 
 
 func _show_result() -> void:
@@ -504,10 +554,106 @@ func _build_run_ui() -> void:
 	quit_button.pressed.connect(func(): get_tree().quit())
 	result_overlay.add_child(quit_button)
 	result_overlay.hide()
+	save_folder_button = Button.new()
+	save_folder_button.text = "저장 폴더 열기"
+	save_folder_button.position = Vector2(475, 530)
+	save_folder_button.size = Vector2(330, 54)
+	save_folder_button.pressed.connect(func(): OS.shell_open(ProjectSettings.globalize_path(profile_save_prefix).get_base_dir()))
+	result_overlay.add_child(save_folder_button)
+	save_folder_button.hide()
+	_build_pause_menu(canvas)
+
+
+func _build_pause_menu(canvas: CanvasLayer) -> void:
+	pause_menu = ColorRect.new()
+	pause_menu.position = Vector2(250, 70)
+	pause_menu.size = Vector2(780, 570)
+	pause_menu.color = Color(0.035, 0.08, 0.10, 0.98)
+	canvas.add_child(pause_menu)
+	var title := Label.new()
+	title.text = "일시정지 · 이번 런의 카드"
+	title.position = Vector2(32, 22)
+	title.add_theme_font_size_override("font_size", 26)
+	pause_menu.add_child(title)
+	var baseline := Label.new()
+	baseline.text = "시작 대시 2등급 포함 · 카드는 이번 런에서만 유지"
+	baseline.position = Vector2(32, 64)
+	pause_menu.add_child(baseline)
+	build_details_label = RichTextLabel.new()
+	build_details_label.position = Vector2(32, 110)
+	build_details_label.size = Vector2(716, 350)
+	build_details_label.add_theme_font_size_override("normal_font_size", 19)
+	pause_menu.add_child(build_details_label)
+	var resume := Button.new()
+	resume.text = "계속  [Esc]"
+	resume.position = Vector2(32, 490)
+	resume.size = Vector2(342, 50)
+	resume.pressed.connect(func(): _set_paused(false))
+	pause_menu.add_child(resume)
+	var retreat := Button.new()
+	retreat.text = "귀환…  [G]"
+	retreat.position = Vector2(406, 490)
+	retreat.size = Vector2(342, 50)
+	retreat.pressed.connect(_request_retreat)
+	pause_menu.add_child(retreat)
+	pause_menu.hide()
+	retreat_overlay = ColorRect.new()
+	retreat_overlay.size = Vector2(1280, 720)
+	retreat_overlay.color = Color(0.015, 0.04, 0.055, 0.97)
+	canvas.add_child(retreat_overlay)
+	var warning := Label.new()
+	warning.text = "야영지로 귀환할까요?\n이번 런은 끝나며 획득 화폐의 20%를 잃습니다.\n최소 1개는 보존되며 손실은 올림 계산됩니다."
+	warning.position = Vector2(250, 240)
+	warning.size = Vector2(780, 130)
+	warning.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	warning.add_theme_font_size_override("font_size", 24)
+	retreat_overlay.add_child(warning)
+	var cancel := Button.new()
+	cancel.name = "Cancel"
+	cancel.text = "취소  [Esc]"
+	cancel.position = Vector2(320, 400)
+	cancel.size = Vector2(300, 55)
+	cancel.pressed.connect(_cancel_retreat)
+	retreat_overlay.add_child(cancel)
+	var confirm := Button.new()
+	confirm.text = "귀환하기"
+	confirm.position = Vector2(660, 400)
+	confirm.size = Vector2(300, 55)
+	confirm.pressed.connect(func(): _finish_run("RETREAT"))
+	retreat_overlay.add_child(confirm)
+	retreat_overlay.hide()
+
+
+func _request_retreat() -> void:
+	if run_ended or growth.choosing or retreat_overlay.visible: return
+	retreat_was_paused = paused
+	_set_paused(true)
+	pause_menu.hide()
+	retreat_overlay.show()
+	retreat_overlay.get_node("Cancel").grab_focus()
+
+
+func _cancel_retreat() -> void:
+	retreat_overlay.hide()
+	_set_paused(retreat_was_paused)
+
+
+func _set_paused(value: bool) -> void:
+	if run_ended: return
+	super._set_paused(value)
+	if practice_mode or pause_menu == null: return
+	player.require_attack_release()
+	player.dash_requested = false
+	player.moving_slash_requested = false
+	player.moving_slash_buffer = 0.0
+	pause_label.hide()
+	pause_backdrop.hide()
+	pause_menu.visible = value and not retreat_overlay.visible
+	if value: build_details_label.text = growth.build_details()
 
 
 func _return_to_hub() -> void:
-	if settlement_pending or profile.load_error: return
+	if settlement_pending or profile.load_error or ending_remaining > 0.0: return
 	get_tree().paused = false
 	paused = false
 	get_tree().change_scene_to_file("res://game/travel_camp.tscn")
@@ -521,10 +667,15 @@ func _input(event: InputEvent) -> void:
 		if run_ended:
 			if event.keycode == KEY_R: _return_to_hub()
 			return
-		if event.keycode == KEY_R and not growth.choosing:
-			_finish_run("RETREAT")
+		if retreat_overlay.visible:
+			if event.keycode == KEY_ESCAPE: _cancel_retreat()
+			get_viewport().set_input_as_handled()
 			return
-		if event.keycode == KEY_G and not paused and not growth.choosing:
-			_finish_run("RETREAT")
+		if event.keycode == KEY_R:
+			get_viewport().set_input_as_handled()
+			return
+		if event.keycode == KEY_G and not growth.choosing:
+			_request_retreat()
+			get_viewport().set_input_as_handled()
 			return
 	super._input(event)

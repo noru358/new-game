@@ -34,6 +34,7 @@ var level := 1
 var xp := 0
 var pending_choices := 0
 var card_ranks: Dictionary = {}
+var selected_card_ranks: Dictionary = {}
 var current_choices: Array[String] = []
 var choosing := false
 var hud: Label
@@ -73,7 +74,7 @@ func next_xp() -> int:
 
 
 func on_enemy_defeated(enemy: TrainingEnemy) -> void:
-	gain_xp(4 if enemy.max_health > enemy.MAX_HEALTH else 2)
+	gain_xp(enemy.xp_reward())
 
 
 func gain_xp(amount: int) -> void:
@@ -258,6 +259,7 @@ func apply_card(card_id: String) -> void:
 		return
 	rank += 1
 	card_ranks[card_id] = rank
+	selected_card_ranks[card_id] = int(selected_card_ranks.get(card_id, 0)) + 1
 	match card_id:
 		"U_EDGE": player.basic_damage_bonus = 0.15 * rank
 		"U_TEMPO": player.basic_speed_bonus = basic_speed_base + 0.12 * rank
@@ -348,7 +350,25 @@ func _update_hud() -> void:
 		for card_id in unlocks.MILESTONES:
 			if not unlocks.is_unlocked(card_id):
 				hud.text += "\n다음 해금: %s  ·  누적 레벨업 %d회" % [CARDS[card_id].name, unlocks.MILESTONES[card_id]]
-			break
+				break
+
+
+func build_summary() -> String:
+	var count := 0
+	for rank in selected_card_ranks.values(): count += int(rank)
+	var recent: Array[String] = []
+	var ids := selected_card_ranks.keys()
+	for id in ids.slice(maxi(0, ids.size() - 2)):
+		recent.append("%s %d등급" % [CARDS[id].name, card_ranks[id]])
+	return "선택 카드 %d회 · Esc 전체 목록" % count + ("\n" + " · ".join(recent) if not recent.is_empty() else "")
+
+
+func build_details() -> String:
+	var lines: Array[String] = []
+	for id in CARDS:
+		if not selected_card_ranks.has(id): continue
+		lines.append("%s  %d/%d등급\n  마지막 선택: %s" % [CARDS[id].name, card_ranks[id], CARDS[id].max, describe_card(id, int(card_ranks[id])).replace("\n", " · ")])
+	return "선택한 카드가 없습니다." if lines.is_empty() else "\n\n".join(lines)
 
 
 func _build_ui() -> void:

@@ -11,6 +11,7 @@ var unlocks := UnlockProgress.new()
 var currency_label: Label
 var progress_label: Label
 var status_label: Label
+var save_folder_button: Button
 var start_button: Button
 var temple_region_button: Button
 var jungle_region_button: Button
@@ -344,7 +345,10 @@ func _refresh() -> void:
 		button.text = "%s  %d/2  %s" % [growth_names[id], rank, locked_text if not available else "최대 · " + before if rank == 2 else before + " → " + after + " · 구매 %d" % cost]
 		button.disabled = profile.load_error or not available or rank == 2 or profile.currency < cost
 	reset_button.disabled = profile.load_error or profile.growth_ranks.values().all(func(value: Variant) -> bool: return int(value) == 0)
-	status_label.text = "저장 기록을 읽을 수 없습니다." if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
+	status_label.text = "저장 기록과 정상 백업을 읽을 수 없습니다. 기존 파일은 보존했습니다. 저장 폴더에서 백업을 확인하세요." if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
+	if save_folder_button == null:
+		save_folder_button = _button(status_label.get_parent(), "저장 폴더 열기", func(): OS.shell_open(ProjectSettings.globalize_path(profile_save_prefix).get_base_dir()))
+	save_folder_button.visible = profile.load_error
 
 
 func _gear_state(id: String) -> String:

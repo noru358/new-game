@@ -1,4 +1,4 @@
-# Loop Conquest — Traveling Camp & Jungle Pass v12
+# Loop Conquest — Traveling Camp & Jungle Pass v17
 
 Godot 4.6 combat and terrain prototype. The default scene is `game/travel_camp.tscn`: walk between the region map, equipment/growth, and departure stations, then press E to open the corresponding preparation tab. Region 1 remains `game/hybrid_region.tscn`; a first clear opens `game/jungle_pass.tscn`, a cliff/jungle route climbing to a high gate. Movement, enemy routing and hit detection use 2D ground coordinates; terrain records supply height, walkability and line-of-sight boundaries for the 3D scene and minimap.
 
@@ -19,8 +19,8 @@ The earlier 2D temple map remains at `game/temple_region.tscn` for comparison. T
 | Space | Moving slash after its first lifetime level-up |
 | 1 / 2 / 3 | Pick a level-up card |
 | Tab | Toggle region overview |
-| G | Retreat and bank the remaining currency after a 20% loss |
-| R | During a run, retreat and open results; on results, return to preparation |
+| G | Open retreat confirmation; cancel keeps the current run |
+| R | On results, return to preparation; ignored during a run |
 | Esc | Close a camp station or pause/resume combat |
 
 ## Run
@@ -42,3 +42,9 @@ The preparation tabs spend one shared banked currency on a first-region moving-s
 Save compatibility is forward only after the v3 profile format introduced in v10: older builds may reject a profile after the new build saves it. Continue play with v10 or later after equipping options.
 
 See `DEV_STATUS.md` for the current work and `LOOP_CONQUEST_MASTER.md` for the design rules.
+
+## Audit follow-up v17
+
+The player flashes on damage and visibly fades during hurt immunity. A health bar and a low-health label at 25% complement the HP number. Esc shows selected cards and their ranks; a compact running summary excludes the initial dash upgrade. G and the pause menu request retreat confirmation. Success and defeat settle immediately and freeze combat, then show results after a 0.8-second finish animation without changing time scale. Save errors offer a folder button while preserving the files. Enemy role definitions keep XP and currency independent of HP tuning.
+
+The 2/4/6 lifetime card unlock milestones remain introductory progression; dash input remains immediate without buffering. GitHub Actions runs every `tests/verify_*.gd` script on Godot 4.6 stable. See `CHANGELOG.md` for past implementation records.
