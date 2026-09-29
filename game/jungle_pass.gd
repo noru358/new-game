@@ -33,9 +33,9 @@ func _init() -> void:
 	first_clear_notice = "관문 통과 · 새 3·4타 장비 선택 가능"
 	scene_title = "Loop Conquest — 정글 절벽 관문"
 	scene_hud_title = "정글 절벽 관문"
-	combat_camera_size = 10.0
+	combat_camera_size = 9.0
 	overview_camera_size = 43.0
-	camera_offset = Vector3(15, 16, 15)
+	camera_offset = Vector3(14, 13.864, 14)
 	ground_color = Color("536e5e")
 	plateau_color = Color("888d6c")
 	cliff_color = Color("3d5953")
@@ -96,7 +96,8 @@ func _process(delta: float) -> void:
 	var figure: Node3D = actors[boss].get_node("BossFigure")
 	(figure.get_node("BossCore").material_override as StandardMaterial3D).albedo_color = Color.WHITE if boss.hit_flash > 0.0 else Color("d6bc73") if boss.phase == 2 else Color("707d72")
 	figure.rotation.z = 0.22 * (1.0 - boss.sweep_warning / JungleWarden.SWEEP_WARNING) if boss.sweep_warning > 0.0 else -0.34 if boss.sweep_burst_time > 0.0 else 0.0
-	figure.rotation.x = -0.18 if boss.gust_warning > 0.0 else 0.22 if boss.gust_burst_time > 0.0 else 0.0
+	figure.rotation.x = 0.25 if boss.recovery_time > 0.0 else -0.18 if boss.gust_warning > 0.0 else 0.22 if boss.gust_burst_time > 0.0 else 0.0
+	if boss.recovery_time > 0.0 and boss.hit_flash <= 0.0: (figure.get_node("BossCore").material_override as StandardMaterial3D).albedo_color = Color("8ee4df")
 
 
 func _roll_role() -> TrainingEnemy.Role:
@@ -132,8 +133,6 @@ func _run_hud_text() -> String:
 	if not is_instance_valid(boss) or not boss is JungleWarden: return result
 	if boss.global_position.distance_to(player.global_position) > 850.0:
 		result += "\n관문 상단으로 이동"
-	if boss.sweep_warning > 0.0: result += "  ·  횡쓸기! 옆/뒤로 피하기"
-	elif boss.gust_warning > 0.0: result += "  ·  강풍! 부채꼴 밖으로 피하기"
 	return result
 
 

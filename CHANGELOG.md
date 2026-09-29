@@ -1,3 +1,10 @@
+# v20 — 2026-09-30
+
+- Distinct temple charge/pulse and jungle sweep/gust rhythms, more late-phase follow-ups, and stationary counter windows.
+- Separate direction warnings for follow-ups; fix jungle point-blank sweep gap; extend ranged pressure without increasing boss HP/damage.
+- Counter and impact cues preserve hit feedback. Jungle camera matches temple for readability testing.
+- Add actual-input pressure/evasion/counterattack regression coverage.
+
 # v19 — 2026-09-29
 
 - Temple destination boss with a warning after five minutes; free exit/reentry, preserved HP, and no cross-boundary combat.

@@ -4,11 +4,11 @@ extends "res://game/enemy.gd"
 const BOSS_HEALTH := 700.0
 const PHASE_TWO_RATIO := 0.60
 const SHOCK_RADIUS := 215.0
-const SHOCK_WARNING := 0.75
+const SHOCK_WARNING := 0.55
 const SHOCK_DAMAGE := 18.0
 const RING_INNER_RADIUS := 140.0
 const RING_OUTER_RADIUS := 315.0
-const RING_WARNING := 0.90
+const RING_WARNING := 0.75
 const RING_DAMAGE := 22.0
 
 var encounter_active := true
@@ -17,7 +17,13 @@ var shock_warning := 0.0
 var ring_warning := 0.0
 var next_attack_shock := false
 var phase := 1
-var flank_sign := 1.0
+var recovery_time := 0.0
+var charge_followups := 0
+var charge_pending := false
+var planned_charge_distance := 260.0
+var impact_flash := 0.0
+var impact_is_ring := false
+const DUEL_CHARGE_SPEED := 1000.0
 
 
 func _ready() -> void:
@@ -50,7 +56,7 @@ func gather_to(_point: Vector2) -> void:
 
 
 func charge_reach() -> float:
-	return BEAST_CHARGE_SPEED * BEAST_CHARGE_DURATION * (1.25 if phase == 2 else 1.0)
+	return planned_charge_distance
 
 
 func suspend_encounter() -> void:
@@ -60,15 +66,20 @@ func suspend_encounter() -> void:
 	charge_time = 0.0
 	shock_warning = 0.0
 	ring_warning = 0.0
-	attack_cooldown = 1.0
+	attack_cooldown = 0.4
+	recovery_time = 0.0
+	charge_followups = 0
+	charge_pending = false
+	impact_flash = 0.0
 
 
 func _attack_delay() -> float:
-	return 1.25 if phase == 2 else 1.55
+	return 1.45 if phase == 2 else 1.20
 
 
 func _physics_process(delta: float) -> void:
 	if not encounter_active or (encounter_area.has_area() and is_instance_valid(target) and not encounter_area.has_point(target.global_position)): return
+	impact_flash = maxf(0.0, impact_flash - delta)
 	super._physics_process(delta)
 	# The shared enemy mover applies its own long cooldown after a wall hit.
 	if charge_time <= 0.0 and warning_time <= 0.0 and shock_warning <= 0.0 and ring_warning <= 0.0:
@@ -76,13 +87,17 @@ func _physics_process(delta: float) -> void:
 
 
 func _beast_velocity(delta: float) -> Vector2:
+	if recovery_time > 0.0:
+		recovery_time = maxf(0.0, recovery_time - delta)
+		return Vector2.ZERO
 	if ring_warning > 0.0:
 		ring_warning = maxf(0.0, ring_warning - delta)
 		if ring_warning <= 0.0:
 			_strike_ring()
-			attack_cooldown = _attack_delay()
-			next_attack_shock = false
+			impact_is_ring = true
 			attacks_fired += 1
+			impact_flash = 0.18
+			_finish_pattern(true)
 		return Vector2.ZERO
 	if shock_warning > 0.0:
 		shock_warning = maxf(0.0, shock_warning - delta)
@@ -90,40 +105,71 @@ func _beast_velocity(delta: float) -> Vector2:
 			if is_instance_valid(target) and global_position.distance_to(target.global_position) <= SHOCK_RADIUS and _damage_path_clear():
 				target.receive_hit(SHOCK_DAMAGE, global_position)
 			attacks_fired += 1
+			impact_flash = 0.18
+			impact_is_ring = false
 			if phase == 2:
 				ring_warning = RING_WARNING
 			else:
-				attack_cooldown = _attack_delay()
-				next_attack_shock = false
+				_finish_pattern(true)
 		return Vector2.ZERO
-	if charge_time > 0.0 or warning_time > 0.0:
-		var charging := charge_time > 0.0
-		var motion := super._beast_velocity(delta)
-		if charging and charge_time <= 0.0: attack_cooldown = _attack_delay()
-		return motion * (1.25 if phase == 2 else 1.0) if charging else motion
+	if charge_time > 0.0:
+		charge_time = maxf(0.0, charge_time - delta)
+		return locked_direction * DUEL_CHARGE_SPEED
+	if charge_pending:
+		# Wall collisions also end a charge; always resolve its follow-up.
+		charge_pending = false
+		if charge_followups > 0:
+			charge_followups -= 1
+			_begin_charge(0.52)
+		else:
+			_finish_pattern()
+		return Vector2.ZERO
+	if warning_time > 0.0:
+		warning_time = maxf(0.0, warning_time - delta)
+		if warning_time <= 0.0:
+			charge_time = planned_charge_distance / DUEL_CHARGE_SPEED
+			charge_pending = true
+			charge_has_hit = false
+			attacks_fired += 1
+		return Vector2.ZERO
 	if not is_instance_valid(target): return Vector2.ZERO
 	var distance := global_position.distance_to(target.global_position)
-	var clear := _clear_shot_to_player()
-	if attack_cooldown <= 0.0 and clear:
-		if next_attack_shock and distance <= (300.0 if phase == 2 else 260.0):
+	if attack_cooldown <= 0.0 and _clear_shot_to_player():
+		if next_attack_shock and distance <= 280.0:
 			shock_warning = SHOCK_WARNING
 			attacks_started += 1
-			flank_sign = -flank_sign
 			return Vector2.ZERO
-		if not next_attack_shock and distance <= (330.0 if phase == 2 else 260.0):
-			locked_direction = global_position.direction_to(target.global_position)
-			warning_time = 0.48 if phase == 2 else 0.55
+		if distance <= 720.0:
+			charge_followups = 1 if phase == 2 else 0
 			next_attack_shock = true
-			attacks_started += 1
-			flank_sign = -flank_sign
+			_begin_charge(0.60 if phase == 1 else 0.52)
 			return Vector2.ZERO
-	var toward := _chase_direction(delta)
-	if phase == 2 and distance < 500.0 and clear:
-		var flank := (toward * 0.60 + toward.orthogonal() * flank_sign * 0.80).normalized()
-		var flank_point := global_position + flank * 80.0
-		if navigation == null or navigation.has_clear_path(global_position, flank_point):
-			return flank * 165.0
-	return toward * (165.0 if phase == 2 else 135.0)
+	return _chase_direction(delta) * (250.0 if phase == 2 else 220.0)
+
+
+func _begin_charge(warning: float) -> void:
+	if not is_instance_valid(target): return
+	locked_direction = global_position.direction_to(target.global_position)
+	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
+	planned_charge_distance = clampf(global_position.distance_to(target.global_position) + 75.0, 140.0, 650.0)
+	warning_time = warning
+	attacks_started += 1
+
+
+func _finish_pattern(pulse := false) -> void:
+	recovery_time = _attack_delay()
+	attack_cooldown = 0.0
+	if pulse:
+		next_attack_shock = false
+
+
+func combat_cue() -> String:
+	if recovery_time > 0.0: return "반격 기회!"
+	if warning_time > 0.0: return "돌진 예고 · 띠 옆으로" + (" / 후속 돌진 주의" if phase == 2 else "")
+	if shock_warning > 0.0: return "충격파 · 원 밖으로"
+	if ring_warning > 0.0: return "바깥 고리 · 안으로 파고들기"
+	if charge_time > 0.0: return "돌진 중"
+	return "접근 중"
 
 
 func _strike_ring() -> void:
