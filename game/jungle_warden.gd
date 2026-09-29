@@ -108,7 +108,7 @@ func suspend_encounter() -> void:
 
 
 func combat_cue() -> String:
-	if recovery_time > 0.0: return "반격 기회!"
+	if recovery_time > 0.0: return ""
 	if sweep_warning > 0.0: return "횡쓸기 · 표시된 띠 밖으로"
 	if gust_warning > 0.0: return "강풍 · 부채꼴 옆으로"
 	if combo_gap > 0.0: return "후속 공격 주의"

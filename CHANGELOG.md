@@ -1,7 +1,7 @@
 # v21 — 2026-09-30
 
 - Distinct articulated windups/strikes facing the locked attack direction.
-- Provisional timing fills, one final warning highlight and overhead counter label/time bar.
+- User-selected timing fills and one final warning highlight; posture/color counter cues without an overhead label/time bar or counter HUD text.
 - Preserve v20 combat timings/damage and unchanged jungle terrain.
 
 # v20 — 2026-09-30

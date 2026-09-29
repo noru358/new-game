@@ -255,43 +255,7 @@ func _process(delta: float) -> void:
 		visual.get_node("BossFigure").rotation.x = -0.18 if boss.shock_warning > 0.0 else 0.20 if boss.impact_flash > 0.0 else 0.0
 		visual.get_node("BossFigure").rotation.y = atan2(boss.locked_direction.x, boss.locked_direction.y)
 		_animate_boss_arms(visual.get_node("BossFigure"))
-		_update_boss_counter_cue(visual)
 	_draw_boss_warning()
-
-
-func _add_boss_counter_cue(visual: Node3D) -> void:
-	var label := Label3D.new()
-	label.name = "CounterCue"
-	label.text = "반격 기회"
-	label.font_size = 32
-	label.pixel_size = 0.008
-	label.modulate = Color("adfff2")
-	label.outline_size = 8
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	visual.add_child(label)
-	var bar := MeshInstance3D.new()
-	bar.name = "CounterTime"
-	var quad := QuadMesh.new()
-	quad.size = Vector2(1.05, 0.07)
-	bar.mesh = quad
-	var material := _material(Color("8ee4df"), true)
-	material.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
-	bar.material_override = material
-	visual.add_child(bar)
-	label.hide()
-	bar.hide()
-
-
-func _update_boss_counter_cue(visual: Node3D) -> void:
-	var showing := boss.recovery_time > 0.0 and boss.health > 0.0 and boss.encounter_active
-	var label: Label3D = visual.get_node("CounterCue")
-	var bar: MeshInstance3D = visual.get_node("CounterTime")
-	label.visible = showing
-	bar.visible = showing
-	var height: float = visual.get_node("HealthBar").position.y
-	label.position.y = height + 0.32
-	bar.position.y = height + 0.12
-	(bar.mesh as QuadMesh).size.x = 1.05 * clampf(boss.recovery_time / boss._attack_delay(), 0.0, 1.0)
 
 
 func _warning_strength(remaining: float, duration: float) -> float:
@@ -438,7 +402,6 @@ func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> voi
 	_build_boss_figure(visual)
 	_add_health_bar(visual, boss)
 	visual.get_node("HealthBar").position.y = 2.30
-	_add_boss_counter_cue(visual)
 	actors[boss] = visual
 	actor_motion[boss] = [boss.global_position, boss.global_position]
 	boss.defeated.connect(_on_enemy_defeated.bind(boss))
@@ -593,7 +556,8 @@ func _run_hud_text() -> String:
 	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
 		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
-		result += "  ·  " + boss.combat_cue()
+		var cue := boss.combat_cue()
+		if not cue.is_empty(): result += "  ·  " + cue
 	if profile != null and profile.recovered_backup: result += "\n이전 정상 기록을 복구했습니다."
 	return result
 

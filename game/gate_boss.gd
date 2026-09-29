@@ -166,7 +166,7 @@ func _finish_pattern(pulse := false) -> void:
 
 
 func combat_cue() -> String:
-	if recovery_time > 0.0: return "반격 기회!"
+	if recovery_time > 0.0: return ""
 	if warning_time > 0.0: return "돌진 예고 · 띠 옆으로" + (" / 후속 돌진 주의" if phase == 2 else "")
 	if shock_warning > 0.0: return "충격파 · 원 밖으로"
 	if ring_warning > 0.0: return "바깥 고리 · 안으로 파고들기"
