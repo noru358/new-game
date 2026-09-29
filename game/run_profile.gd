@@ -7,14 +7,16 @@ const DEFEAT_LOSS_RATE := 0.50
 const RETREAT_LOSS_RATE := 0.20
 const GEAR_COST := {"W_FLOW": 35, "W_ECHO": 45, "A_EMBER": 24}
 const GROWTH_COST := [20, 35]
+const ATTACK_BRANCH_COST := 60
+const ATTACK_BRANCHES := ["DIRECT", "COMPANION"]
 const GROWTH_IDS := ["POWER", "WISP", "SLASH", "FINISH", "VITALITY", "GUARD", "MOBILITY", "SPEED"]
 const SUPPLY_COST := 12
 const SUPPLY_LIMIT := 3
 const TEMPLE_REGION := "O_TEMPLE"
 const JUNGLE_REGION := "O_JUNGLE_PASS"
 const REGION_GEAR := {"O_TEMPLE": "W_FLOW", "O_JUNGLE_PASS": "W_ECHO"}
-const GEAR_AFFIXES := {"W_FLOW": ["RIPPLE", "KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW"], "A_EMBER": ["EMBER_STRIKE", "BRIGHT", "STEADY"]}
-const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"]}
+const GEAR_AFFIXES := {"W_FLOW": ["RIPPLE", "KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW"], "A_EMBER": ["EMBER_STRIKE", "BRIGHT", "STEADY", "EMBER_STEP"]}
+const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT", "EMBER_STEP"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"]}
 
 var save_prefix := "user://loop_conquest_profile"
 var generation := 0
@@ -39,6 +41,7 @@ var slotted_mods: Dictionary = {}
 var equipped_weapon := "W_START"
 var equipped_accessory := ""
 var growth_ranks := {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+var attack_branch := ""
 var supply_count := 0
 var supply_selected := false
 var last_launch_id := ""
@@ -72,6 +75,7 @@ static func affix_description(affix: String) -> String:
 		"HEAVY": return "4타 폭발 피해 +8%"
 		"DRAW": return "3타 사거리 +8%"
 		"BRIGHT": return "여우불 피해 계수 +0.05"
+		"EMBER_STEP": return "여우불 적중 → 대시 대기 -0.05초 (0.3초 간격)"
 		"STEADY": return "최대 HP +5"
 	return ""
 
@@ -88,12 +92,13 @@ static func affix_title(affix: String) -> String:
 		"HEAVY": return "4타 폭발 피해 +8%"
 		"DRAW": return "3타 사거리 +8%"
 		"BRIGHT": return "여우불 피해 +0.05"
+		"EMBER_STEP": return "여우불·대시 연계"
 		"STEADY": return "최대 HP +5"
 	return ""
 
 
 static func affix_kind(affix: String) -> String:
-	return "behavior" if affix in ["RIPPLE", "ECHO_WISP", "EMBER_STRIKE"] else "numeric"
+	return "behavior" if affix in ["RIPPLE", "ECHO_WISP", "EMBER_STRIKE", "EMBER_STEP"] else "numeric"
 
 
 func load_state() -> void:
@@ -113,6 +118,7 @@ func load_state() -> void:
 	equipped_weapon = "W_START"
 	equipped_accessory = ""
 	growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+	attack_branch = ""
 	supply_count = 0
 	supply_selected = false
 	last_launch_id = ""
@@ -136,6 +142,7 @@ func load_state() -> void:
 		load_error = found_any
 		return
 	recovered_backup = invalid_count > 0 and valid_count > 0
+	attack_branch = String(best.get("attack_branch", ""))
 	generation = int(best.generation)
 	currency = int(best.currency)
 	owned_outpost_ids.assign(best.owned_outpost_ids)
@@ -224,14 +231,30 @@ func buy_growth(id: String, lifetime_levelups: int = 0) -> bool:
 	return _commit(candidate)
 
 
+func buy_attack_branch(id: String) -> bool:
+	if load_error or not ATTACK_BRANCHES.has(id) or not attack_branch.is_empty(): return false
+	if currency < ATTACK_BRANCH_COST or not attack_branch_available(): return false
+	var candidate := _snapshot()
+	candidate.currency = currency - ATTACK_BRANCH_COST
+	candidate.attack_branch = id
+	return _commit(candidate)
+
+
+func attack_branch_available() -> bool:
+	var invested := 0
+	for id in ["POWER", "WISP", "SLASH", "FINISH"]: invested += int(growth_ranks[id])
+	return invested >= 4
+
+
 func reset_growth() -> bool:
 	if load_error: return false
-	var refund := 0
+	var refund := ATTACK_BRANCH_COST if not attack_branch.is_empty() else 0
 	for id in growth_ranks:
 		for rank in int(growth_ranks[id]): refund += int(GROWTH_COST[rank])
 	if refund == 0: return true
 	var candidate := _snapshot()
 	candidate.currency = currency + refund
+	candidate.attack_branch = ""
 	candidate.growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
 	return _commit(candidate)
 
@@ -303,7 +326,7 @@ func settle(run_id: String, result: String, earned: int, region_id: String = TEM
 
 func _snapshot() -> Dictionary:
 	return {
-		"version": 3, "generation": generation + 1, "currency": currency,
+		"version": 4, "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
 		"owned_outpost_ids": owned_outpost_ids.duplicate(), "acquired_relic_ids": acquired_relic_ids.duplicate(),
 		"last_run_id": last_run_id, "owned_gear": owned_gear.duplicate(true),
 		"owned_mods": owned_mods.duplicate(), "slotted_mods": slotted_mods.duplicate(true),
@@ -326,6 +349,7 @@ func _commit(candidate: Dictionary) -> bool:
 	var normalized: Dictionary = JSON.parse_string(JSON.stringify(candidate))
 	if stored.is_empty() or stored != normalized:
 		return false
+	attack_branch = String(candidate.attack_branch)
 	generation = int(candidate.generation)
 	currency = int(candidate.currency)
 	owned_outpost_ids.assign(candidate.owned_outpost_ids)
@@ -350,7 +374,7 @@ func _read(path: String) -> Dictionary:
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary: return {}
 	var data: Dictionary = parser.data
-	if not [1.0, 2.0, 3.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
+	if not [1.0, 2.0, 3.0, 4.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
 		return {}
 	if int(data.generation) < 1 or int(data.currency) < 0 or not data.get("owned_outpost_ids") is Array or not data.get("acquired_relic_ids") is Array or not data.get("last_run_id") is String:
 		return {}
@@ -363,7 +387,7 @@ func _read(path: String) -> Dictionary:
 		for id in data.owned_gear:
 			if not GEAR_COST.has(id): return {}
 			if int(data.version) == 2 and (not data.owned_gear[id] is String or not GEAR_AFFIXES[id].has(data.owned_gear[id])): return {}
-			if int(data.version) == 3 and (not data.owned_gear[id] is bool or not data.owned_gear[id]): return {}
+			if int(data.version) >= 3 and (not data.owned_gear[id] is bool or not data.owned_gear[id]): return {}
 		if not ["W_START", "W_FLOW", "W_ECHO"].has(data.equipped_weapon) or (data.equipped_weapon != "W_START" and not data.owned_gear.has(data.equipped_weapon)): return {}
 		if not ["", "A_EMBER"].has(data.equipped_accessory) or (data.equipped_accessory == "A_EMBER" and not data.owned_gear.has("A_EMBER")): return {}
 		for id in ["POWER", "VITALITY", "MOBILITY"]:
@@ -371,7 +395,7 @@ func _read(path: String) -> Dictionary:
 		for id in data.growth_ranks:
 			if not GROWTH_IDS.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
 		if int(data.supply_count) < 0 or int(data.supply_count) > SUPPLY_LIMIT: return {}
-		if int(data.version) == 3:
+		if int(data.version) >= 3:
 			if not data.get("owned_mods") is Array or not data.get("slotted_mods") is Dictionary: return {}
 			var seen_mods := {}
 			for mod_id in data.owned_mods:
@@ -390,6 +414,12 @@ func _read(path: String) -> Dictionary:
 				if not REGION_GEAR.values().has(gear_id) or not data.pending_affix_offers[gear_id] is Dictionary: return {}
 				var offer: Dictionary = data.pending_affix_offers[gear_id]
 				if not offer.get("region_id") is String or not REGION_GEAR.has(offer.region_id) or REGION_GEAR[offer.region_id] != gear_id or not offer.get("gear_id") is String or offer.gear_id != gear_id or not offer.get("affix") is String or not GEAR_AFFIXES[gear_id].has(offer.affix): return {}
+	if int(data.version) >= 4:
+		if not data.get("attack_branch") is String or not ([""] + ATTACK_BRANCHES).has(data.attack_branch): return {}
+		if not data.attack_branch.is_empty():
+			var invested := 0
+			for id in ["POWER", "WISP", "SLASH", "FINISH"]: invested += int(data.growth_ranks.get(id, 0))
+			if invested < 4: return {}
 	return data
 
 

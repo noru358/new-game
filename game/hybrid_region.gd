@@ -19,6 +19,8 @@ var spawn_credit := 0.0
 var boss_retry := 0.0
 var boss_announced := false
 var boss_spawned := false
+var ember_step_mod_enabled := false
+var ember_step_cooldown := 0.0
 var boss_defeated := false
 var death_pending := false
 var run_ended := false
@@ -78,6 +80,7 @@ func _ready() -> void:
 	super._ready()
 	player.attack_hitstop_scale = 1.0
 	if practice_mode: return
+	growth.heal_on_levelup = true
 	growth.permanent_combo_progression = true
 	growth._sync_permanent_moves()
 	rng.randomize()
@@ -113,11 +116,16 @@ func _apply_preparation() -> void:
 	player.permanent_damage_reduction = 0.05 * int(ranks.GUARD)
 	player.permanent_move_speed_bonus = 0.04 * int(ranks.SPEED)
 	growth.permanent_wisp_cadence_reduction = 0.04 * int(ranks.WISP)
+	if profile.attack_branch == "DIRECT":
+		player.permanent_basic_damage_bonus += 0.10
+		player.moving_slash_damage_bonus += 0.10
+	elif profile.attack_branch == "COMPANION":
+		wisp.permanent_damage_bonus += 0.10
 	if profile.equipped_weapon == "W_FLOW":
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20
 		player.permanent_slash_cooldown_reduction += 0.10
-		if profile.mod_for("W_FLOW") == "KEEN": player.moving_slash_damage_bonus = 0.04
+		if profile.mod_for("W_FLOW") == "KEEN": player.moving_slash_damage_bonus += 0.04
 		elif profile.mod_for("W_FLOW") == "SWIFT": player.permanent_slash_cooldown_reduction += 0.04
 		elif profile.mod_for("W_FLOW") == "WEAVE": player.flow_weave_refund_bonus = 0.10
 		elif profile.mod_for("W_FLOW") == "RIPPLE": player.flow_wave_enabled = true
@@ -128,14 +136,20 @@ func _apply_preparation() -> void:
 		elif profile.mod_for("W_ECHO") == "DRAW": player.echo_gather_reach_bonus = 0.08
 		elif profile.mod_for("W_ECHO") == "ECHO_WISP": echo_wisp_mod_enabled = true
 	if profile.equipped_accessory == "A_EMBER":
-		wisp.permanent_damage_bonus = 0.15
+		wisp.permanent_damage_bonus += 0.15
 		if profile.mod_for("A_EMBER") == "BRIGHT": wisp.permanent_damage_bonus += 0.05
+		elif profile.mod_for("A_EMBER") == "EMBER_STEP": ember_step_mod_enabled = true
 		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
 		elif profile.mod_for("A_EMBER") == "EMBER_STRIKE": ember_strike_mod_enabled = true
 	growth._sync_wisps()
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
 	if supply_ready: player.health_changed.connect(_try_use_supply)
+
+
+func _on_card_applied(card_id: String) -> void:
+	super._on_card_applied(card_id)
+	if is_instance_valid(build_details_label): build_details_label.text = growth.build_details()
 
 
 func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, finisher: bool) -> void:
@@ -151,6 +165,9 @@ func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, fin
 func _on_wisp_hit(enemy: TrainingEnemy) -> void:
 	super._on_wisp_hit(enemy)
 	if ember_strike_mod_enabled and is_instance_valid(player): player.grant_ember_followup()
+	if ember_step_mod_enabled and not run_ended and not get_tree().paused and ember_step_cooldown <= 0.0 and player.dash_charges < player.dash_max_charges:
+		player.dash_cooldown = maxf(0.0, player.dash_cooldown - 0.05)
+		ember_step_cooldown = 0.30
 
 
 func _try_use_supply() -> void:
@@ -175,6 +192,7 @@ func _physics_process(delta: float) -> void:
 		_finish_run("DEFEAT")
 		return
 	if paused or growth.choosing or get_tree().paused: return
+	ember_step_cooldown = maxf(0.0, ember_step_cooldown - delta)
 	run_time += delta
 	_tick_pending(delta)
 	spawn_credit += _spawn_rate() * delta
@@ -211,18 +229,37 @@ func _process(delta: float) -> void:
 	_draw_boss_warning()
 
 
+# Equal-length pressure/recovery pairs keep the scheduled spawn budget unchanged.
+func _encounter_phase() -> Dictionary:
+	if boss_spawned or run_time >= BOSS_TIME: return {}
+	if run_time >= 60.0 and run_time < 85.0:
+		return {"name": "돌진 무리 · 돌진 경로를 비켜 공격", "rate": 0.30, "weights": [50.0, 40.0, 0.0, 10.0, 0.0]}
+	if run_time >= 85.0 and run_time < 110.0:
+		return {"name": "숨 고르기 · 남은 적 정리", "rate": -0.30, "weights": [80.0, 10.0, 0.0, 10.0, 0.0]}
+	if run_time >= 130.0 and run_time < 155.0:
+		return {"name": "원거리 진형 · 뒤의 적부터 돌파", "rate": 0.30, "weights": [40.0, 15.0, 30.0, 10.0, 5.0]}
+	if run_time >= 155.0 and run_time < 180.0:
+		return {"name": "숨 고르기 · 남은 적 정리", "rate": -0.30, "weights": [70.0, 15.0, 5.0, 5.0, 5.0]}
+	if run_time >= 210.0 and run_time < 235.0:
+		return {"name": "지원 진형 · 지원 적 우선 처치", "rate": 0.35, "weights": [35.0, 20.0, 15.0, 10.0, 20.0]}
+	if run_time >= 235.0 and run_time < 260.0:
+		return {"name": "숨 고르기 · 보스전 준비", "rate": -0.35, "weights": [65.0, 15.0, 10.0, 5.0, 5.0]}
+	return {}
+
+
 func _spawn_rate() -> float:
 	if boss_spawned: return 0.25
 	if run_time < 45.0: return 0.60
-	if run_time < 120.0: return 0.85
-	if run_time < 200.0: return 1.10
-	return 1.40
+	if run_time < 120.0: return 0.85 + float(_encounter_phase().get("rate", 0.0))
+	if run_time < 200.0: return 1.10 + float(_encounter_phase().get("rate", 0.0))
+	return 1.40 + float(_encounter_phase().get("rate", 0.0))
 
 
 func _roll_role() -> TrainingEnemy.Role:
 	if boss_spawned or run_time < 45.0: return TrainingEnemy.Role.FRAGMENT
 	var roll := rng.randf() * 100.0
 	var weights := [70.0, 20.0, 0.0, 10.0, 0.0] if run_time < 120.0 else [55.0, 20.0, 10.0, 10.0, 5.0] if run_time < 200.0 else [45.0, 20.0, 15.0, 10.0, 10.0]
+	weights = _encounter_phase().get("weights", weights)
 	for role in 5:
 		roll -= weights[role]
 		if roll < 0.0: return role as TrainingEnemy.Role
@@ -383,7 +420,7 @@ func _finish_run(result: String) -> void:
 	retreat_overlay.hide()
 	pause_label.hide()
 	pause_backdrop.hide()
-	growth.overlay.hide()
+	growth.end_run()
 	_update_hud()
 	if result == "RETREAT":
 		_show_result()
@@ -446,6 +483,8 @@ func _update_run_hud() -> void:
 func _run_hud_text() -> String:
 	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
 	var result := "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
+	var phase := _encounter_phase()
+	if not phase.is_empty(): result += "\n" + String(phase.name)
 	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
 		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]

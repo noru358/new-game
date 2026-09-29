@@ -97,6 +97,7 @@ var moving_slash_cooldown := 0.0
 var moving_slash_visual_time := 0.0
 var moving_slash_origin := Vector2.ZERO
 var moving_slash_tip := Vector2.ZERO
+var moving_slash_sequence := 0
 var moving_slash_direction := Vector2.RIGHT
 var moving_slash_targets: Dictionary = {}
 var moving_slash_radius_bonus := 0.0
@@ -292,6 +293,7 @@ func _start_dash(movement: Vector2) -> void:
 
 
 func _start_moving_slash(movement: Vector2) -> void:
+	moving_slash_sequence += 1
 	# The hit has already happened; the slash replaces remaining recovery and keeps
 	# the next combo step so held attack resumes after the sweep.
 	attack_step = 0

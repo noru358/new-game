@@ -17,6 +17,7 @@ const CARDS := {
 	"S_WISP_ORBIT": {"name": "회전 불꽃", "detail": "마탄을 유지하며 회전 접촉 피해", "max": 2, "group": "AUTO"},
 	"S_WISP_CHAIN": {"name": "연쇄 불꽃", "detail": "마탄 명중 후 가까운 적에게 연쇄", "max": 2, "group": "AUTO"},
 	"S_WISP_FOLLOWUP": {"name": "베기 뒤 불꽃", "detail": "평타 적중 후 여우불 발사 대기 단축", "max": 2, "group": "AUTO"},
+	"S_WISP_SWEEP": {"name": "베기에 실린 불꽃", "detail": "이동 베기 적중 시 여우불 대기 단축", "max": 2, "group": "AUTO"},
 	"S_WISP_REPLY": {"name": "불꽃의 응답", "detail": "여우불 적중 후 이동 베기 재사용 단축", "max": 2, "group": "AUTO"},
 	"S_SEAL": {"name": "자동 마력진", "detail": "가까운 적에게 예고 후 범위 공격", "max": 3, "group": "AUTO"},
 	"U_STEP": {"name": "민첩한 대시", "detail": "대시 충전 강화", "max": 3, "group": "DASH"},
@@ -33,6 +34,14 @@ var rng := RandomNumberGenerator.new()
 var level := 1
 var xp := 0
 var pending_choices := 0
+var heal_on_levelup := false
+var points_earned := 0
+var points_spent := 0
+var exhausted_points := 0
+var choice_windows_opened := 0
+var growth_ended := false
+var paused_before_choice := false
+var last_choice_label: Label
 var card_ranks: Dictionary = {}
 var selected_card_ranks: Dictionary = {}
 var current_choices: Array[String] = []
@@ -49,6 +58,7 @@ var hud_position := Vector2(20, 104)
 var permanent_combo_progression := false
 var permanent_wisp_cadence_reduction := 0.0
 var last_followup_attack := -1
+var last_followup_slash := -1
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -64,6 +74,7 @@ func _ready() -> void:
 	_build_ui()
 	if is_instance_valid(player):
 		player.attack_landed.connect(_on_player_attack_landed)
+		player.moving_slash_landed.connect(_on_player_slash_landed)
 	for wisp in wisps:
 		_connect_wisp(wisp)
 	_update_hud()
@@ -78,7 +89,7 @@ func on_enemy_defeated(enemy: TrainingEnemy) -> void:
 
 
 func gain_xp(amount: int) -> void:
-	if amount <= 0:
+	if amount <= 0 or growth_ended:
 		return
 	unlock_notice = ""
 	xp += amount
@@ -86,14 +97,19 @@ func gain_xp(amount: int) -> void:
 		xp -= next_xp()
 		level += 1
 		pending_choices += 1
+		points_earned += 1
+		if heal_on_levelup: _heal(0.20)
 		var newly_unlocked := unlocks.add_levelup()
 		if not newly_unlocked.is_empty():
 			var names: Array[String] = []
 			for card_id in newly_unlocked:
 				names.append(CARDS[card_id].name)
 			unlock_notice = "새 카드 해금: " + ", ".join(names)
+	if permanent_combo_progression: _sync_permanent_moves()
 	_update_hud()
-	if pending_choices > 0 and not choosing:
+	if choosing:
+		_refresh_choices()
+	elif pending_choices > 0:
 		_start_choice()
 
 
@@ -105,27 +121,43 @@ func _sync_permanent_moves() -> void:
 
 
 func _start_choice() -> void:
-	if pending_choices <= 0:
+	if pending_choices <= 0 or growth_ended or choosing:
 		return
-	current_choices = roll_choices()
-	rerolls_left = 1
+	paused_before_choice = get_tree().paused
+	last_choice_label.text = ""
+	_prepare_next_choice()
 	if current_choices.is_empty():
-		_heal(0.20)
-		pending_choices -= 1
-		if pending_choices > 0:
-			_start_choice()
-		else:
-			get_tree().paused = false
-			_update_hud()
 		return
+	choice_windows_opened += 1
 	choosing = true
 	get_tree().paused = true
 	overlay.show()
 	_refresh_choices()
 
 
+func _prepare_next_choice() -> void:
+	current_choices.clear()
+	if pending_choices > 0: current_choices = roll_choices()
+	rerolls_left = 1
+	# No recursive UI openings when the whole card pool is exhausted.
+	if pending_choices > 0 and current_choices.is_empty():
+		if not heal_on_levelup:
+			_heal(0.20 * pending_choices)
+		exhausted_points += pending_choices
+		pending_choices = 0
+	_update_hud()
+
+
+func end_run() -> void:
+	growth_ended = true
+	choosing = false
+	current_choices.clear()
+	overlay.hide()
+	# The result screen owns the pause; never resume it here.
+
+
 func _refresh_choices() -> void:
-	choice_title.text = "레벨 %d  ·  강화 선택" % level
+	choice_title.text = "레벨 %d  ·  강화 선택  ·  남은 %dpt" % [level, pending_choices]
 	for i in range(choice_buttons.size()):
 		var button := choice_buttons[i]
 		if i >= current_choices.size():
@@ -157,6 +189,7 @@ func describe_card(card_id: String, next_rank: int) -> String:
 		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
 		"S_WISP_CHAIN": return "명중 후 다른 적 1명에게 연쇄" if next_rank == 1 else "연쇄 대상 1명 → 2명"
 		"S_WISP_FOLLOWUP": return "평타 적중 한 동작당\n여우불 발사 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
+		"S_WISP_SWEEP": return "이동 베기 한 동작당 첫 적중\n여우불 대기 %.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
 		"S_WISP_REPLY": return "여우불 적중마다\n이동 베기 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
 		"S_SEAL": return "적 위치에 자동 마력진 추가" if next_rank == 1 else "마력진 범위 %d → %d" % [66 + 10 * (old_rank - 1), 66 + 10 * (next_rank - 1)]
 		"U_STEP": return "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 %.2f초 → %.2f초" % [1.2 * (1.0 - (0.15 if old_rank > 0 else 0.0) - player.permanent_dash_cooldown_reduction), 1.2 * (1.0 - (0.30 if next_rank >= 3 else 0.15) - player.permanent_dash_cooldown_reduction)]
@@ -169,7 +202,7 @@ func _available_card_count() -> int:
 	var count := 0
 	for card_id in CARDS:
 		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
-		if card_id == "S_WISP_REPLY" and not player.moving_slash_enabled: continue
+		if card_id in ["S_WISP_REPLY", "S_WISP_SWEEP"] and not player.moving_slash_enabled: continue
 		if card_id == "U_CHAIN" and permanent_combo_progression: continue
 		if int(card_ranks.get(card_id, 0)) < int(CARDS[card_id].max) and unlocks.is_unlocked(card_id): count += 1
 	return count
@@ -197,7 +230,7 @@ func roll_choices() -> Array[String]:
 	var others: Array[String] = []
 	for card_id in CARDS:
 		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
-		if card_id == "S_WISP_REPLY" and not player.moving_slash_enabled: continue
+		if card_id in ["S_WISP_REPLY", "S_WISP_SWEEP"] and not player.moving_slash_enabled: continue
 		if card_id == "U_CHAIN" and permanent_combo_progression: continue
 		if int(card_ranks.get(card_id, 0)) >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
 			continue
@@ -235,18 +268,23 @@ func choose_index(index: int) -> bool:
 	if not choosing or index < 0 or index >= current_choices.size():
 		return false
 	var card_id := current_choices[index]
+	if int(card_ranks.get(card_id, 0)) >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
+		return false
+	var detail := describe_card(card_id, int(card_ranks.get(card_id, 0)) + 1)
 	apply_card(card_id)
+	last_choice_label.text = "적용: %s · %s" % [CARDS[card_id].name, detail.replace("\n", " · ")]
 	if permanent_combo_progression: _sync_permanent_moves()
 	pending_choices -= 1
-	_heal(0.20)
-	choosing = false
-	overlay.hide()
-	current_choices.clear()
+	points_spent += 1
+	if not heal_on_levelup: _heal(0.20)
 	player.require_attack_release()
+	_prepare_next_choice()
 	if pending_choices > 0:
-		_start_choice()
+		_refresh_choices()
 	else:
-		get_tree().paused = false
+		choosing = false
+		overlay.hide()
+		get_tree().paused = paused_before_choice
 	_update_hud()
 	return true
 
@@ -315,6 +353,14 @@ func _on_player_attack_landed(_point: Vector2, _direction: Vector2, _step: int, 
 	last_followup_attack = player.attack_sequence
 	for wisp in wisps:
 		wisp.fire_cooldown = maxf(0.0, wisp.fire_cooldown - 0.08 * rank)
+
+
+func _on_player_slash_landed(_point: Vector2) -> void:
+	var rank := int(card_ranks.get("S_WISP_SWEEP", 0))
+	if rank <= 0 or last_followup_slash == player.moving_slash_sequence: return
+	last_followup_slash = player.moving_slash_sequence
+	for wisp in wisps:
+		wisp.fire_cooldown = maxf(0.0, wisp.fire_cooldown - 0.12 * rank)
 
 
 func _on_wisp_enemy_hit(_enemy: TrainingEnemy) -> void:
@@ -387,12 +433,22 @@ func _build_ui() -> void:
 	overlay.size = Vector2(1280, 720)
 	overlay.color = Color(0.015, 0.045, 0.065, 0.83)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	canvas.add_child(overlay)
+	var modal_canvas := CanvasLayer.new()
+	modal_canvas.layer = 30
+	modal_canvas.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(modal_canvas)
+	modal_canvas.add_child(overlay)
 	choice_title = Label.new()
 	choice_title.position = Vector2(140, 130)
 	choice_title.add_theme_font_size_override("font_size", 38)
 	choice_title.add_theme_color_override("font_color", Color("f5e8bd"))
 	overlay.add_child(choice_title)
+	last_choice_label = Label.new()
+	last_choice_label.position = Vector2(140, 600)
+	last_choice_label.size = Vector2(1000, 85)
+	last_choice_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	last_choice_label.add_theme_font_size_override("font_size", 19)
+	overlay.add_child(last_choice_label)
 	var help := Label.new()
 	help.text = "1 / 2 / 3 키 또는 카드를 클릭  ·  선택하는 동안 전투 정지"
 	help.position = Vector2(140, 190)
