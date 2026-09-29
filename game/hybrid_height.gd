@@ -51,6 +51,9 @@ var warning_mesh := ImmediateMesh.new()
 var warning_vertex_count := 0
 var seal_visual: MeshInstance3D
 var hud: Label
+var player_health_bar: ProgressBar
+var player_health_warning: Label
+var build_summary_label: Label
 var moving_slash_status: Label
 var minimap: Control
 var pause_label: Label
@@ -112,6 +115,7 @@ func _ready() -> void:
 	actors[player] = _actor_visual(Color.WHITE)
 	actor_motion[player] = [player.global_position, player.global_position]
 	player.attack_landed.connect(_on_player_attack_landed)
+	player.hurt_received.connect(func(point: Vector2, _direction: Vector2): _flash(point, Color("ff7878"), 0.30))
 	player.flow_wave_triggered.connect(_on_flow_wave)
 	player.moving_slash_landed.connect(func(point: Vector2): _flash(point, Color("b7f8ff"), 0.23))
 	_warm_enemy_rendering()
@@ -824,6 +828,12 @@ func _process(delta: float) -> void:
 		if actor == player:
 			var body: Sprite3D = visual.get_node("Body")
 			body.modulate = Color("ffd0a0") if player.ember_followup_timer > 0.0 or player.ember_followup_attack else Color.WHITE
+			if player.hit_flash > 0.0:
+				body.modulate = Color("ff6666") if int(player.hit_flash * 24.0) % 2 == 0 else Color.WHITE
+			elif player.hurt_immunity > 0.0:
+				body.modulate.a = 0.45 if int(player.hurt_immunity * 16.0) % 2 == 0 else 0.85
+			elif (player.dash_time > 0.0 and player.dash_elapsed <= SandboxPlayer.DASH_INVULNERABILITY) or (player.moving_slash_time > 0.0 and player.moving_slash_elapsed <= SandboxPlayer.MOVING_SLASH_INVULNERABILITY):
+				body.modulate = Color(0.55, 0.95, 1.0, 0.65)
 			body.flip_h = player.facing.x - player.facing.y < -0.1
 			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
@@ -877,6 +887,12 @@ func _update_hud() -> void:
 	if hud == null: return
 	var next_hud := "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, "쓰러졌습니다 · R로 다시 시작" if player.health <= 0 else ""]
 	if hud.text != next_hud: hud.text = next_hud
+	if player_health_bar != null:
+		player_health_bar.max_value = player.max_health
+		player_health_bar.value = player.health
+		player_health_warning.visible = player.health > 0.0 and player.health <= player.max_health * 0.25
+	if build_summary_label != null:
+		build_summary_label.text = growth.build_summary()
 	if moving_slash_status != null:
 		var next_slash := "Space 이동 베기 · %s" % ("누적 첫 레벨업 때 영구 습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0.0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0.0 else "준비")
 		if moving_slash_status.text != next_slash: moving_slash_status.text = next_slash
@@ -1191,6 +1207,31 @@ func _build_ui() -> void:
 	hud.position = Vector2(28, 25)
 	hud.add_theme_font_size_override("font_size", 20)
 	canvas.add_child(hud)
+	player_health_bar = ProgressBar.new()
+	player_health_bar.position = Vector2(28, 101)
+	player_health_bar.size = Vector2(280, 12)
+	player_health_bar.show_percentage = false
+	player_health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var health_fill := StyleBoxFlat.new()
+	health_fill.bg_color = Color("ed887b")
+	player_health_bar.add_theme_stylebox_override("fill", health_fill)
+	canvas.add_child(player_health_bar)
+	player_health_warning = Label.new()
+	player_health_warning.text = "체력 위험"
+	player_health_warning.position = Vector2(322, 92)
+	player_health_warning.add_theme_color_override("font_color", Color("ff998a"))
+	player_health_warning.hide()
+	canvas.add_child(player_health_warning)
+	build_summary_label = Label.new()
+	build_summary_label.position = Vector2(28, 276)
+	build_summary_label.size.x = 440
+	build_summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	build_summary_label.add_theme_font_size_override("font_size", 16)
+	build_summary_label.add_theme_color_override("font_shadow_color", Color.BLACK)
+	build_summary_label.add_theme_constant_override("shadow_offset_x", 1)
+	build_summary_label.add_theme_constant_override("shadow_offset_y", 1)
+	canvas.add_child(build_summary_label)
+	build_summary_label.visible = not show_practice_controls
 	minimap = MinimapScript.new()
 	minimap.position = Vector2(1022, 74)
 	minimap.size = Vector2(242, 213)

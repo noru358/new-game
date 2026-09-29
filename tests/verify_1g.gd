@@ -138,7 +138,15 @@ func _run() -> void:
 	restart_key.pressed = true
 	restart_key.keycode = KEY_R
 	third._input(restart_key)
-	_check(third.end_result == "RETREAT" and third.profile.currency == after_success + 5 and third.profile.last_lost == 1 and third.profile.temple_relic, "active restart first retreats and settles after a smaller loss")
+	_check(not third.run_ended and third.profile.currency == after_success + 2, "R does not end or restart an active run")
+	restart_key.keycode = KEY_G
+	third._input(restart_key)
+	_check(not third.run_ended and third.retreat_overlay.visible and paused, "G pauses for confirmation before settlement")
+	third._cancel_retreat()
+	_check(not third.paused and not third.run_ended, "cancel resumes the original live run")
+	third._request_retreat()
+	third._finish_run("RETREAT")
+	_check(third.end_result == "RETREAT" and third.profile.currency == after_success + 5 and third.profile.last_lost == 1 and third.profile.temple_relic, "confirmed retreat settles after a smaller loss")
 	third.queue_free()
 	paused = false
 	await process_frame

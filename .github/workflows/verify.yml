@@ -1,0 +1,46 @@
+name: Godot verification
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.6 stable
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/godot"
+          cd "$RUNNER_TEMP/godot"
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6-stable
+          curl --fail --location --retry 3 -O "$base/Godot_v4.6-stable_linux.x86_64.zip"
+          curl --fail --location --retry 3 -O "$base/SHA512-SUMS.txt"
+          grep ' Godot_v4.6-stable_linux.x86_64.zip$' SHA512-SUMS.txt | sha512sum --check --strict
+          unzip -q Godot_v4.6-stable_linux.x86_64.zip
+          chmod +x Godot_v4.6-stable_linux.x86_64
+          ln -s "$RUNNER_TEMP/godot/Godot_v4.6-stable_linux.x86_64" "$RUNNER_TEMP/godot/godot"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+      - name: Import project
+        run: godot --headless --editor --path . --quit
+      - name: Run every verification script
+        shell: bash
+        run: |
+          mkdir -p verification-logs
+          failed=0
+          for script in tests/verify_*.gd; do
+            name="$(basename "$script" .gd)"
+            if ! timeout 240 godot --headless --path . --script "res://$script" > "verification-logs/$name.log" 2>&1; then
+              failed=1
+            fi
+            cat "verification-logs/$name.log"
+            if grep -Eq 'SCRIPT ERROR:|Parse Error:|^FAIL:' "verification-logs/$name.log"; then
+              failed=1
+            fi
+          done
+          exit "$failed"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verification-logs
+          path: verification-logs/
