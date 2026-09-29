@@ -360,8 +360,11 @@ func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 		if boss_defeated: return
 		boss_defeated = true
 		if actors.has(enemy):
-			ending_visual = actors[enemy].duplicate()
-			add_child(ending_visual)
+			ending_visual = actors[enemy]
+			actors.erase(enemy)
+			actor_motion.erase(enemy)
+			var bar := ending_visual.get_node_or_null("HealthBar")
+			if bar != null: bar.hide()
 		return
 	super._on_enemy_defeated(enemy)
 	run_currency += enemy.currency_reward()

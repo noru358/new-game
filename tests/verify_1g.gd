@@ -114,6 +114,7 @@ func _run() -> void:
 	scene.player.health = 0.0
 	scene.death_pending = true
 	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
+	_check(is_instance_valid(scene.ending_visual) and not scene.actors.has(scene.boss) and not scene.ending_visual.get_node("HealthBar").visible, "boss visual transfers to its ending without a duplicate live body or health bar")
 	scene._physics_process(0.0)
 	_check(scene.end_result == "SUCCESS" and scene.run_ended and scene.profile.temple_owned and scene.profile.temple_relic and scene.profile.currency >= 50, "same-frame boss and player defeat resolves success and first-clear settlement")
 	var after_success: int = scene.profile.currency
