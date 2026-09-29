@@ -1,3 +1,12 @@
+# v19 — 2026-09-29
+
+- Temple destination boss with a warning after five minutes; free exit/reentry, preserved HP, and no cross-boundary combat.
+- One explicit boss retry per run; keep build/currency, restore combatants, do not refund spent supplies.
+- Hidden entrance into a separate 3000×2000 garden mini field: bent approach, pond forks, three distinct guardians, altar and return exit. Main clock continues.
+- Permanent discovery and accessory awakening in profile v5; old profile migration, immediate verified save, no duplicate reward. Revisit heals 20% once per run.
+- Option acquisition/source and ownership status in camp; awakening-aware chain-card preview.
+- Blockout sample only; economy, human play acceptance and final art remain open.
+
 # 작업 이력
 
 현재 상태와 다음 작업은 `DEV_STATUS.md`를 우선한다. 아래 내용은 당시 기록이며 현행 규칙으로 해석하지 않는다.

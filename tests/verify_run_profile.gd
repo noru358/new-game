@@ -54,5 +54,27 @@ func _run() -> void:
 	blocked.load_state()
 	_check(blocked.load_error and not blocked.settle("run-x", "SUCCESS", 1), "corrupt-only profile is not silently overwritten")
 	for suffix in ["_a.json", "_b.json"]: DirAccess.remove_absolute(ProjectSettings.globalize_path(PREFIX + suffix))
+	var legacy := RunProfile.new()._snapshot()
+	legacy.version = 4
+	legacy.currency = 73
+	legacy.erase("discovered_places")
+	legacy.erase("awakenings")
+	var legacy_file := FileAccess.open(PREFIX + "_a.json", FileAccess.WRITE)
+	legacy_file.store_string(JSON.stringify(legacy))
+	legacy_file.close()
+	var migrated := RunProfile.new()
+	migrated.save_prefix = PREFIX
+	migrated.load_state()
+	_check(not migrated.load_error and migrated.currency == 73 and migrated.awakenings.is_empty(), "v4 preserves currency and starts undiscovered")
+	_check(migrated.discover_garden() and migrated.claim_garden_awakening(), "v4 migrates through permanent garden acquisition")
+	migrated.load_state()
+	_check(migrated.currency == 73 and migrated.awakenings.has("EMBER_GARDEN"), "v5 reload preserves legacy currency and awakening")
+	var malformed := migrated._snapshot()
+	malformed.discovered_places = []
+	var bad_file := FileAccess.open(PREFIX + "_invalid.json", FileAccess.WRITE)
+	bad_file.store_string(JSON.stringify(malformed))
+	bad_file.close()
+	_check(migrated._read(PREFIX + "_invalid.json").is_empty(), "awakening without discovery is rejected")
+	for suffix in ["_a.json", "_b.json", "_invalid.json"]: DirAccess.remove_absolute(ProjectSettings.globalize_path(PREFIX + suffix))
 	if failures == 0: print("Run profile verification passed: idempotent settlement, first clear, reload and backup recovery")
 	quit(1 if failures else 0)

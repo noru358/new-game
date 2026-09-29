@@ -593,6 +593,37 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 		defeated.emit()
 
 
+func restore_for_boss_retry() -> void:
+	health = max_health
+	velocity = Vector2.ZERO
+	attack_step = 0
+	attack_elapsed = 0.0
+	attack_lock = 0.0
+	attack_hitstop_remaining = 0.0
+	next_combo_step = 1
+	combo_wait = 0.0
+	dash_requested = false
+	dash_time = 0.0
+	moving_slash_requested = false
+	moving_slash_buffer = 0.0
+	moving_slash_time = 0.0
+	moving_slash_visual_time = 0.0
+	hurt_stun_time = 0.0
+	hurt_recoil = Vector2.ZERO
+	hit_flash = 0.0
+	hurt_immunity = HURT_INVULNERABILITY
+	flow_weave_ready = false
+	flow_weave_attack = false
+	ember_followup_timer = 0.0
+	ember_followup_attack = false
+	hit_targets.clear()
+	gather_sources.clear()
+	gathered_enemies.clear()
+	moving_slash_targets.clear()
+	require_attack_release()
+	health_changed.emit()
+
+
 func require_attack_release() -> void:
 	queued_attack = false
 	attack_buffer_time = 0.0

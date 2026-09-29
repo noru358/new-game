@@ -38,7 +38,7 @@ func _run() -> void:
 	hub._select_gear("W_ECHO")
 	await process_frame
 	hub.mod_buttons["WIDE"].pressed.emit()
-	_check(hub.mod_preview_label.text == RunProfile.affix_description("WIDE") and hub.profile.mod_for("W_ECHO").is_empty(), "an unowned option can be selected for its full description without equipping it")
+	_check(hub.mod_preview_label.text.begins_with(RunProfile.affix_description("WIDE")) and hub.profile.mod_for("W_ECHO").is_empty(), "an unowned option can be selected for its full description without equipping it")
 	var behavior_y: float = hub.mod_behavior_label.global_position.y
 	var numeric_y: float = hub.mod_numeric_label.global_position.y
 	for id in ["W_FLOW", "W_ECHO", "W_FLOW", "W_ECHO"]:
@@ -69,7 +69,7 @@ func _run() -> void:
 			await process_frame
 			_check(absf(hub.mod_behavior_label.global_position.y - gear_behavior_y) < 0.5 and absf(hub.mod_numeric_label.global_position.y - gear_numeric_y) < 0.5, "long option descriptions preserve equipment detail layout: %s" % mod_id)
 			hub._preview_mod(mod_id)
-			_check(hub.mod_preview_label.text == RunProfile.affix_description(mod_id), "compact option keeps the full %s description in its preview" % mod_id)
+			_check(hub.mod_preview_label.text.begins_with(RunProfile.affix_description(mod_id)) and hub.mod_preview_label.text.contains(RunProfile.affix_source(mod_id)), "compact option keeps the full %s description in its preview" % mod_id)
 	hub.profile.slotted_mods = {"W_ECHO": "ECHO_WISP"}
 	_check(hub.growth_buttons.size() == 8, "attack, defense and mobility growth choices appear in the preparation screen")
 	hub.tabs.current_tab = 2

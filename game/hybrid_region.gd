@@ -4,6 +4,10 @@ const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
 const ProfileScript = preload("res://game/run_profile.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 48
+const TempleSectionScript = preload("res://game/temple_section.gd")
+var temple_section: Node
+var garden_terrain_mesh: MeshInstance3D
+var garden_awakening_applied := false
 
 var practice_mode := false
 var region_id := RunProfile.TEMPLE_REGION
@@ -103,6 +107,10 @@ func _ready() -> void:
 		save_folder_button.show()
 		result_overlay.show()
 	else:
+		if region_id == RunProfile.TEMPLE_REGION:
+			temple_section = TempleSectionScript.new()
+			temple_section.setup(self)
+			add_child(temple_section)
 		_update_run_hud()
 
 
@@ -141,10 +149,23 @@ func _apply_preparation() -> void:
 		elif profile.mod_for("A_EMBER") == "EMBER_STEP": ember_step_mod_enabled = true
 		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
 		elif profile.mod_for("A_EMBER") == "EMBER_STRIKE": ember_strike_mod_enabled = true
+	apply_garden_awakening()
 	growth._sync_wisps()
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
 	if supply_ready: player.health_changed.connect(_try_use_supply)
+
+
+func is_place_discovered(id: String) -> bool:
+	return profile != null and profile.discovered_places.has(id)
+
+
+func apply_garden_awakening() -> void:
+	if garden_awakening_applied or profile.equipped_accessory != "A_EMBER" or not profile.awakenings.has("EMBER_GARDEN"): return
+	garden_awakening_applied = true
+	wisp.permanent_damage_bonus += 0.20
+	growth.permanent_wisp_chain_bonus = 1
+	growth._sync_wisps()
 
 
 func _on_card_applied(card_id: String) -> void:
@@ -189,11 +210,13 @@ func _physics_process(delta: float) -> void:
 		_finish_run("SUCCESS")
 		return
 	if death_pending or player.health <= 0.0:
+		if temple_section != null and temple_section.handle_death(): return
 		_finish_run("DEFEAT")
 		return
 	if paused or growth.choosing or get_tree().paused: return
 	ember_step_cooldown = maxf(0.0, ember_step_cooldown - delta)
 	run_time += delta
+	if temple_section != null: temple_section.tick(delta)
 	_tick_pending(delta)
 	spawn_credit += _spawn_rate() * delta
 	while spawn_credit >= 1.0:
@@ -202,7 +225,7 @@ func _physics_process(delta: float) -> void:
 			var point := _choose_spawn_point(false)
 			if point != Vector2.INF:
 				_schedule_spawn(point, _roll_role(), false)
-	if run_time >= BOSS_TIME and not boss_announced and not boss_spawned:
+	if temple_section == null and run_time >= BOSS_TIME and not boss_announced and not boss_spawned:
 		boss_retry -= delta
 		if boss_retry <= 0.0:
 			boss_retry = 1.0
@@ -248,6 +271,7 @@ func _encounter_phase() -> Dictionary:
 
 
 func _spawn_rate() -> float:
+	if temple_section != null and (temple_section.boss_active or temple_section.in_garden): return 0.0
 	if boss_spawned: return 0.25
 	if run_time < 45.0: return 0.60
 	if run_time < 120.0: return 0.85 + float(_encounter_phase().get("rate", 0.0))
@@ -269,9 +293,12 @@ func _roll_role() -> TrainingEnemy.Role:
 func _active_enemy_count() -> int:
 	var count := 0
 	for actor in actors:
-		if is_instance_valid(actor) and actor is TrainingEnemy and not actor is GateBoss and not actor.is_queued_for_deletion(): count += 1
+		if is_instance_valid(actor) and actor is TrainingEnemy and not actor is GateBoss and not actor.is_queued_for_deletion():
+			if temple_section != null and temple_section.GARDEN_AREA.has_point(actor.global_position) != temple_section.in_garden: continue
+			count += 1
 	for entry in pending_spawns:
-		if not entry.boss: count += 1
+		if not entry.boss and (temple_section == null or not temple_section.in_garden): count += 1
+	if temple_section != null and temple_section.in_garden: count += temple_section.guardian_reservations
 	return count
 
 
@@ -282,6 +309,7 @@ func _choose_spawn_point(for_boss: bool) -> Vector2:
 		var point := player.global_position + Vector2.from_angle(rng.randf_range(0.0, TAU)) * radius
 		if point.x < 60.0 or point.y < 60.0 or point.x > terrain.map_size.x - 60.0 or point.y > terrain.map_size.y - 60.0: continue
 		if point.distance_to(player.global_position) < (450.0 if for_boss else 380.0): continue
+		if temple_section != null and temple_section.excludes_ambient_spawn(point): continue
 		if not navigation.is_open(point, 48.0 if for_boss else ACTOR_CLEARANCE + 6.0): continue
 		if navigation.find_path(point, player.global_position).size() < 2: continue
 		if not _point_on_screen(point): return point
@@ -306,6 +334,7 @@ func _schedule_spawn(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -
 
 
 func _tick_pending(delta: float) -> void:
+	if temple_section != null and temple_section.in_garden: return
 	for i in range(pending_spawns.size() - 1, -1, -1):
 		var entry := pending_spawns[i]
 		entry.delay = float(entry.delay) - delta
@@ -313,6 +342,7 @@ func _tick_pending(delta: float) -> void:
 		(entry.marker as Node3D).queue_free()
 		pending_spawns.remove_at(i)
 		var point: Vector2 = entry.point
+		if not entry.boss and temple_section != null and temple_section.excludes_ambient_spawn(point): continue
 		if point.distance_to(player.global_position) >= (350.0 if entry.boss else 260.0) and navigation.is_open(point, 48.0 if entry.boss else ACTOR_CLEARANCE + 6.0) and navigation.find_path(point, player.global_position).size() >= 2:
 			_spawn_now(point, entry.role, entry.boss)
 		elif entry.boss:
@@ -321,6 +351,7 @@ func _tick_pending(delta: float) -> void:
 
 func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> void:
 	if not for_boss:
+		if temple_section != null and temple_section.excludes_ambient_spawn(point): return
 		var health: float = TrainingEnemy.Definitions.ROLES[int(role)].health
 		_spawn_enemy_at(point, role, health)
 		return
@@ -409,6 +440,7 @@ func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 
 func _finish_run(result: String) -> void:
 	if run_ended: return
+	if temple_section != null: temple_section.retry_overlay.hide()
 	run_ended = true
 	end_result = result
 	paused = true
@@ -664,7 +696,7 @@ func _build_pause_menu(canvas: CanvasLayer) -> void:
 
 
 func _request_retreat() -> void:
-	if run_ended or growth.choosing or retreat_overlay.visible: return
+	if run_ended or growth.choosing or retreat_overlay.visible or (temple_section != null and temple_section.retry_pending): return
 	retreat_was_paused = paused
 	_set_paused(true)
 	pause_menu.hide()
@@ -678,7 +710,7 @@ func _cancel_retreat() -> void:
 
 
 func _set_paused(value: bool) -> void:
-	if run_ended: return
+	if run_ended or (temple_section != null and temple_section.retry_pending): return
 	super._set_paused(value)
 	if practice_mode or pause_menu == null: return
 	player.require_attack_release()
@@ -699,6 +731,8 @@ func _return_to_hub() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if temple_section != null and temple_section.handle_input(event): return
+	if temple_section != null and temple_section.retry_pending: return
 	if practice_mode:
 		super._input(event)
 		return
@@ -718,3 +752,25 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 	super._input(event)
+
+
+func display_bounds() -> Rect2:
+	if region_id == RunProfile.TEMPLE_REGION:
+		return TempleSectionScript.Garden.FIELD_BOUNDS if temple_section != null and temple_section.in_garden else TempleSectionScript.Garden.MAIN_BOUNDS
+	return super.display_bounds()
+
+
+func _build_terrain(render_bounds := Rect2()) -> void:
+	if region_id != RunProfile.TEMPLE_REGION:
+		super._build_terrain(render_bounds)
+		return
+	super._build_terrain(TempleSectionScript.Garden.MAIN_BOUNDS)
+	var main_mesh := terrain_mesh
+	var main_faces := resolved_vertical_faces.duplicate(true)
+	var main_lips := resolved_lips.duplicate(true)
+	super._build_terrain(TempleSectionScript.Garden.FIELD_BOUNDS)
+	garden_terrain_mesh = terrain_mesh
+	garden_terrain_mesh.hide()
+	terrain_mesh = main_mesh
+	resolved_vertical_faces = main_faces
+	resolved_lips = main_lips

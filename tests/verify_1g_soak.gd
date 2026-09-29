@@ -41,6 +41,8 @@ func _run() -> void:
 	_check(max_active <= scene.MAX_ENEMIES and max_active > 0, "enemy cap holds throughout the full time axis")
 	_check(choices > 0 and scene.growth.level > 1 and scene.run_currency > 0, "automatic XP, card choices and currency progress through a full run")
 	if is_instance_valid(scene.boss):
+		scene.teleport(scene.temple_section.RETRY_POINT)
+		scene.temple_section.tick(0.0)
 		scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
 		for i in 3: await physics_frame
 		_check(scene.run_ended and scene.end_result == "SUCCESS" and not scene.settlement_pending, "boss defeat settles the accumulated long-run currency")
