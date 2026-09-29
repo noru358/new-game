@@ -2,8 +2,10 @@ class_name TempleHybridTerrain
 extends "res://game/hybrid_terrain.gd"
 
 
+const Garden = preload("res://game/temple_garden_layout.gd")
+
 func _init() -> void:
-	map_size = Vector2(5100, 2160)
+	map_size = Vector2(8700, 2160)
 	plateaus = [
 		{"area": Rect2(100, 780, 1100, 760), "height": 160.0, "base": 0.0, "name": "수변 마당 중정", "openings": {"north": [[520.0, 760.0]], "south": [[520.0, 760.0], [860.0, 1010.0]], "east": [[1050.0, 1260.0]]}},
 		{"area": Rect2(850, 970, 250, 310), "height": 320.0, "base": 160.0, "name": "사원 테라스", "openings": {"west": [[1030.0, 1210.0]]}}
@@ -42,8 +44,22 @@ func _init() -> void:
 		{"area": Rect2(3540, 1010, 120, 80), "height": 90.0, "color": Color("718780")},
 		{"area": Rect2(4020, 730, 36, 165), "height": 105.0, "color": Color("8d9b87")},
 		{"area": Rect2(4020, 1270, 36, 165), "height": 105.0, "color": Color("8d9b87")},
-		{"area": Rect2(4300, 910, 330, 300), "height": 130.0, "color": Color("a9a58d")}
+		{"area": Rect2(4820, 970, 100, 180), "height": 130.0, "color": Color("a9a58d")}
 	]
+
+	# A modest vestibule hides the transition; the actual garden is a mini field.
+	floor_areas.append({"area": Rect2(3030, 180, 210, 160), "height": 1.0, "color": Color("719c69"), "discovery_id": "TEMPLE_GARDEN"})
+	for rect in [Rect2(3030, 155, 235, 25), Rect2(3240, 155, 25, 210), Rect2(3030, 340, 235, 25)]:
+		wall_areas.append({"area": rect, "height": 145.0, "color": Color("52715e"), "discovery_id": "TEMPLE_GARDEN"})
+	floor_areas.append({"area": Garden.FIELD_BOUNDS, "height": 0.8, "color": Color("71966e"), "discovery_id": "TEMPLE_GARDEN"})
+	for rect in [Rect2(5740, 1680, 900, 210), Rect2(6200, 550, 220, 1190), Rect2(6370, 430, 1650, 220), Rect2(6390, 1450, 1650, 230), Rect2(7910, 510, 230, 1070), Rect2(8090, 310, 390, 350)]:
+		floor_areas.append({"area": rect, "height": 1.2, "color": Color("b7bd98"), "discovery_id": "TEMPLE_GARDEN"})
+	water_areas.append(Garden.POND)
+	for rect in [Rect2(5600, 80, 3000, 45), Rect2(5600, 2035, 3000, 45), Rect2(5600, 80, 45, 2000), Rect2(8555, 80, 45, 2000), Rect2(5680, 900, 470, 650), Rect2(6450, 250, 120, 980), Rect2(6750, 1780, 860, 190), Rect2(7770, 140, 120, 620), Rect2(8220, 1700, 210, 170)]:
+		wall_areas.append({"area": rect, "height": 115.0, "color": Color("52715e"), "discovery_id": "TEMPLE_GARDEN"})
+	# No walking/attacking path connects the two fields behind the transition.
+	wall_areas.append({"area": Rect2(5090, 0, 510, 2160), "height": 200.0, "color": Color("607f78"), "visual": false})
+
 
 
 func height_at(point: Vector2) -> float:
@@ -57,6 +73,7 @@ func height_at(point: Vector2) -> float:
 
 
 func surface_name(point: Vector2) -> String:
+	if Garden.FIELD_BOUNDS.has_point(point): return "숨은 정원"
 	for ramp in ramps:
 		if ramp.area.has_point(point):
 			return ramp.name

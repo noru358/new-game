@@ -80,6 +80,9 @@ func _run() -> void:
 	_check(scene.boss_spawned and is_instance_valid(scene.boss) and scene.boss.max_health == GateBoss.BOSS_HEALTH, "one boss appears after the warning")
 	_check(scene.actors[scene.boss].has_node("HealthBar"), "the boss has the same world-space health readout")
 	_check(scene.actors[scene.boss].has_node("BossFigure/BossCore") and not scene.actors[scene.boss].get_node("Body").visible, "the boss has a distinct stone sentinel silhouette")
+	_check(not scene.boss.encounter_active, "destination boss waits until the player arrives")
+	scene.teleport(scene.temple_section.RETRY_POINT)
+	scene.temple_section.tick(0.0)
 	for actor in scene.actors:
 		if actor is TrainingEnemy: actor.set_physics_process(false)
 	scene.paused = true

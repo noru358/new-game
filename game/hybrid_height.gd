@@ -464,19 +464,24 @@ func _rough_slab(st: SurfaceTool, area: Rect2, elevation: Callable, lift: float,
 			Vector3(b.x, elevation.call(b) + lift, b.y), Vector3(a.x, elevation.call(a) + lift, a.y),
 		], color.darkened(0.25))
 
-func _build_terrain() -> void:
+func _build_terrain(render_bounds := Rect2()) -> void:
+	if render_bounds.size == Vector2.ZERO: render_bounds = Rect2(Vector2.ZERO, terrain.map_size)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	vertical_face_candidates.clear()
 	lip_candidates.clear()
-	_top(st, Rect2(Vector2.ZERO, terrain.map_size), func(_p): return 0.0, ground_color)
+	_top(st, render_bounds, func(_p): return 0.0, ground_color)
 	for floor in terrain.floor_areas:
+		if not render_bounds.intersects(floor.area): continue
 		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in terrain.water_areas:
+		if not render_bounds.intersects(water): continue
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
 	for chasm in terrain.chasm_areas:
+		if not render_bounds.intersects(chasm): continue
 		_top(st, chasm, func(_p): return 1.5, Color("263e3d"))
 	for plateau in terrain.plateaus:
+		if not render_bounds.intersects(plateau.area): continue
 		var elevation := func(_p): return plateau.height
 		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
 		for edge in terrain.plateau_edge_spans(plateau):
@@ -493,6 +498,7 @@ func _build_terrain() -> void:
 		for i in terrain.rock_ledge_areas.size():
 			_rough_slab(st, terrain.rock_ledge_areas[i], func(point): return terrain.height_at(point), 5.0, Color("8b9d91") if i % 2 == 0 else Color("a7ae9a"))
 	for ramp in terrain.ramps:
+		if not render_bounds.intersects(ramp.area): continue
 		if ramp.get("kind", "") == "stepping_stones":
 			_stepping_stones(st, ramp)
 			continue
@@ -505,6 +511,7 @@ func _build_terrain() -> void:
 		_queue_sides(ramp.area, elevation, ramp.get("base", minf(ramp.from, ramp.to)), Color("8c8e77"), {}, ["north", "south"] if ramp.axis == 1 else ["west", "east"])
 		if ramp.get("kind", "") not in ["gate_stairs", "rock_path", "broken_bridge"]: _ramp_edge_markers(st, ramp)
 	for wall in terrain.wall_areas:
+		if not render_bounds.intersects(wall.area): continue
 		if not wall.get("visual", true): continue
 		var elevation := func(_p): return wall.height
 		_top(st, wall.area, elevation, wall.color)
@@ -863,7 +870,9 @@ func _process(delta: float) -> void:
 		seal_visual.position = terrain.world_point(seal.global_position, 76.0)
 		seal_visual.scale = Vector3.ONE * (1.7 if seal.burst_time > 0.0 else 1.0 + 0.30 * sin(Time.get_ticks_msec() * 0.018))
 	var focus := terrain.world_point(player_point, 35)
-	if overview: focus = Vector3(terrain.map_size.x * 0.5, 80.0, terrain.map_size.y * 0.5) * Terrain.SCALE
+	if overview:
+		var center := display_bounds().get_center()
+		focus = Vector3(center.x, 80.0, center.y) * Terrain.SCALE
 	camera.position = camera.position.lerp(focus + camera_offset, 1.0 - exp(-8.0 * delta))
 	var attack_elapsed := current_attack_elapsed
 	var attack_direction := current_attack_direction
@@ -1332,3 +1341,7 @@ func _input(event: InputEvent) -> void:
 			get_tree().reload_current_scene()
 		elif event.keycode == KEY_ESCAPE:
 			_set_paused(not paused)
+
+
+func display_bounds() -> Rect2:
+	return Rect2(Vector2.ZERO, terrain.map_size)

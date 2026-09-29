@@ -304,6 +304,8 @@ func _refresh() -> void:
 	weapon_button.text = "흐름의 마력장  %s\n이동 베기 적중 → 다음 평타 강화" % _gear_state("W_FLOW")
 	echo_weapon_button.text = "집결의 마력장  %s\n3타 집결 지점에서 4타 폭발" % _gear_state("W_ECHO")
 	accessory_button.text = "여우불 장신구  %s\n여우불 피해 강화" % _gear_state("A_EMBER")
+	if profile.awakenings.has("EMBER_GARDEN"):
+		accessory_button.text += "\n정원 각성 · 마탄 +20%p / 연쇄 +1"
 	for entry in [["W_START", base_weapon_button], ["W_FLOW", weapon_button], ["W_ECHO", echo_weapon_button], ["A_EMBER", accessory_button]]:
 		(entry[1] as Button).add_theme_stylebox_override("normal", _button_style(selected_gear_id == entry[0]))
 	var selected_owned := selected_gear_id == "W_START" or profile.owned_gear.has(selected_gear_id)
@@ -331,7 +333,7 @@ func _refresh() -> void:
 		elif button.visible: has_numeric = true
 		var mod_state := "장착 중" if profile.mod_for(selected_gear_id) == mod_id else "보유" if profile.owned_mods.has(mod_id) else "미획득"
 		button.text = "%s  %s  ·  %s" % ["●" if mod_state == "장착 중" else "○", RunProfile.affix_title(mod_id), mod_state]
-		button.tooltip_text = RunProfile.affix_description(mod_id)
+		button.tooltip_text = RunProfile.affix_description(mod_id) + "\n획득: " + RunProfile.affix_source(mod_id)
 		button.disabled = profile.load_error
 		button.modulate = Color.WHITE if profile.owned_mods.has(mod_id) else Color(0.68, 0.75, 0.72)
 	mod_behavior_label.visible = has_behavior
@@ -408,6 +410,9 @@ func _select_mod(mod_id: String) -> void:
 
 func _update_mod_preview() -> void:
 	mod_preview_label.text = "옵션을 장착할 수 없습니다." if selected_gear_id == "W_START" else RunProfile.affix_description(previewed_mod_id)
+	if selected_gear_id != "W_START":
+		var state := "장착 가능" if profile.owned_gear.has(selected_gear_id) and profile.owned_mods.has(previewed_mod_id) else "장비 구매 필요" if profile.owned_mods.has(previewed_mod_id) else "미획득"
+		mod_preview_label.text += "\n" + RunProfile.affix_source(previewed_mod_id) + " · " + state
 	for mod_id in mod_buttons:
 		var button: Button = mod_buttons[mod_id]
 		button.add_theme_stylebox_override("normal", _button_style(mod_id == previewed_mod_id, 7))

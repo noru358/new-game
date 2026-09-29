@@ -11,6 +11,8 @@ const RING_OUTER_RADIUS := 315.0
 const RING_WARNING := 0.90
 const RING_DAMAGE := 22.0
 
+var encounter_active := true
+var encounter_area := Rect2()
 var shock_warning := 0.0
 var ring_warning := 0.0
 var next_attack_shock := false
@@ -26,6 +28,7 @@ func _ready() -> void:
 
 
 func take_hit(damage: float, _push_direction: Vector2, _is_finisher: bool, _impact_scale: float = 1.0) -> void:
+	if not encounter_active or (encounter_area.has_area() and is_instance_valid(target) and not encounter_area.has_point(target.global_position)): return
 	# Regular enemies lose their warning and charge on every hit. The boss keeps
 	# acting while damage remains fully effective, so attacking is never wasted.
 	health -= damage
@@ -50,11 +53,22 @@ func charge_reach() -> float:
 	return BEAST_CHARGE_SPEED * BEAST_CHARGE_DURATION * (1.25 if phase == 2 else 1.0)
 
 
+func suspend_encounter() -> void:
+	encounter_active = false
+	velocity = Vector2.ZERO
+	warning_time = 0.0
+	charge_time = 0.0
+	shock_warning = 0.0
+	ring_warning = 0.0
+	attack_cooldown = 1.0
+
+
 func _attack_delay() -> float:
 	return 1.25 if phase == 2 else 1.55
 
 
 func _physics_process(delta: float) -> void:
+	if not encounter_active or (encounter_area.has_area() and is_instance_valid(target) and not encounter_area.has_point(target.global_position)): return
 	super._physics_process(delta)
 	# The shared enemy mover applies its own long cooldown after a wall hit.
 	if charge_time <= 0.0 and warning_time <= 0.0 and shock_warning <= 0.0 and ring_warning <= 0.0:

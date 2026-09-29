@@ -57,6 +57,7 @@ var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
 var permanent_combo_progression := false
 var permanent_wisp_cadence_reduction := 0.0
+var permanent_wisp_chain_bonus := 0.0
 var last_followup_attack := -1
 var last_followup_slash := -1
 
@@ -187,7 +188,7 @@ func describe_card(card_id: String, next_rank: int) -> String:
 		"S_WISP_CADENCE": return "여우불이 더 자주 쏩니다\n발사 간격 %.2f초 → %.2f초" % [1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * old_rank), 1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * next_rank)]
 		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
 		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
-		"S_WISP_CHAIN": return "명중 후 다른 적 1명에게 연쇄" if next_rank == 1 else "연쇄 대상 1명 → 2명"
+		"S_WISP_CHAIN": return "연쇄 대상 %d명 → %d명" % [old_rank + int(permanent_wisp_chain_bonus), next_rank + int(permanent_wisp_chain_bonus)]
 		"S_WISP_FOLLOWUP": return "평타 적중 한 동작당\n여우불 발사 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
 		"S_WISP_SWEEP": return "이동 베기 한 동작당 첫 적중\n여우불 대기 %.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
 		"S_WISP_REPLY": return "여우불 적중마다\n이동 베기 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
@@ -339,7 +340,7 @@ func _sync_wisps() -> void:
 		wisp.permanent_damage_bonus = wisps[0].permanent_damage_bonus
 		wisp.orbit_enabled = int(card_ranks.get("S_WISP_ORBIT", 0)) > 0
 		wisp.orbit_damage = 4.0 + 3.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
-		wisp.chain_jumps = int(card_ranks.get("S_WISP_CHAIN", 0))
+		wisp.chain_jumps = int(card_ranks.get("S_WISP_CHAIN", 0)) + int(permanent_wisp_chain_bonus)
 
 
 func _connect_wisp(wisp: WispCompanion) -> void:

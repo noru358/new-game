@@ -41,6 +41,8 @@ var slotted_mods: Dictionary = {}
 var equipped_weapon := "W_START"
 var equipped_accessory := ""
 var growth_ranks := {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+var discovered_places: Array[String] = []
+var awakenings: Array[String] = []
 var attack_branch := ""
 var supply_count := 0
 var supply_selected := false
@@ -97,6 +99,13 @@ static func affix_title(affix: String) -> String:
 	return ""
 
 
+static func affix_source(affix: String) -> String:
+	for region in REGION_MODS:
+		if REGION_MODS[region].has(affix):
+			return ("사원" if region == TEMPLE_REGION else "정글") + " 재클리어 보상 (미보유 1개)"
+	return ""
+
+
 static func affix_kind(affix: String) -> String:
 	return "behavior" if affix in ["RIPPLE", "ECHO_WISP", "EMBER_STRIKE", "EMBER_STEP"] else "numeric"
 
@@ -118,6 +127,8 @@ func load_state() -> void:
 	equipped_weapon = "W_START"
 	equipped_accessory = ""
 	growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+	discovered_places.clear()
+	awakenings.clear()
 	attack_branch = ""
 	supply_count = 0
 	supply_selected = false
@@ -142,6 +153,8 @@ func load_state() -> void:
 		load_error = found_any
 		return
 	recovered_backup = invalid_count > 0 and valid_count > 0
+	discovered_places.assign(best.get("discovered_places", []))
+	awakenings.assign(best.get("awakenings", []))
 	attack_branch = String(best.get("attack_branch", ""))
 	generation = int(best.generation)
 	currency = int(best.currency)
@@ -228,6 +241,22 @@ func buy_growth(id: String, lifetime_levelups: int = 0) -> bool:
 	var next_ranks: Dictionary = growth_ranks.duplicate()
 	next_ranks[id] = rank + 1
 	candidate.growth_ranks = next_ranks
+	return _commit(candidate)
+
+
+func discover_garden() -> bool:
+	if load_error: return false
+	if discovered_places.has("TEMPLE_GARDEN"): return true
+	var candidate := _snapshot()
+	candidate.discovered_places.append("TEMPLE_GARDEN")
+	return _commit(candidate)
+
+
+func claim_garden_awakening() -> bool:
+	if load_error or not discovered_places.has("TEMPLE_GARDEN"): return false
+	if awakenings.has("EMBER_GARDEN"): return true
+	var candidate := _snapshot()
+	candidate.awakenings.append("EMBER_GARDEN")
 	return _commit(candidate)
 
 
@@ -326,7 +355,7 @@ func settle(run_id: String, result: String, earned: int, region_id: String = TEM
 
 func _snapshot() -> Dictionary:
 	return {
-		"version": 4, "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
+		"version": 5, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
 		"owned_outpost_ids": owned_outpost_ids.duplicate(), "acquired_relic_ids": acquired_relic_ids.duplicate(),
 		"last_run_id": last_run_id, "owned_gear": owned_gear.duplicate(true),
 		"owned_mods": owned_mods.duplicate(), "slotted_mods": slotted_mods.duplicate(true),
@@ -349,6 +378,8 @@ func _commit(candidate: Dictionary) -> bool:
 	var normalized: Dictionary = JSON.parse_string(JSON.stringify(candidate))
 	if stored.is_empty() or stored != normalized:
 		return false
+	discovered_places.assign(candidate.discovered_places)
+	awakenings.assign(candidate.awakenings)
 	attack_branch = String(candidate.attack_branch)
 	generation = int(candidate.generation)
 	currency = int(candidate.currency)
@@ -374,7 +405,7 @@ func _read(path: String) -> Dictionary:
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary: return {}
 	var data: Dictionary = parser.data
-	if not [1.0, 2.0, 3.0, 4.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
+	if not [1.0, 2.0, 3.0, 4.0, 5.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
 		return {}
 	if int(data.generation) < 1 or int(data.currency) < 0 or not data.get("owned_outpost_ids") is Array or not data.get("acquired_relic_ids") is Array or not data.get("last_run_id") is String:
 		return {}
@@ -420,6 +451,13 @@ func _read(path: String) -> Dictionary:
 			var invested := 0
 			for id in ["POWER", "WISP", "SLASH", "FINISH"]: invested += int(data.growth_ranks.get(id, 0))
 			if invested < 4: return {}
+	if int(data.version) >= 5:
+		if not data.get("discovered_places") is Array or not data.get("awakenings") is Array: return {}
+		if data.discovered_places.size() > 1 or data.awakenings.size() > 1: return {}
+		for id in data.discovered_places:
+			if id != "TEMPLE_GARDEN": return {}
+		for id in data.awakenings:
+			if id != "EMBER_GARDEN" or not data.discovered_places.has("TEMPLE_GARDEN"): return {}
 	return data
 
 
