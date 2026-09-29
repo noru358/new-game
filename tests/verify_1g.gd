@@ -95,25 +95,26 @@ func _run() -> void:
 	scene.boss._beast_velocity(0.01)
 	_check(scene.boss.warning_time > 0.0 and scene.boss.next_attack_shock and scene.boss.shock_warning == 0.0, "boss starts with a warned charge")
 	scene._update_run_hud()
-	_check(scene.run_hud.text.contains("붉은 띠 밖으로 회피"), "charge warning names the safe response")
+	_check(scene.run_hud.text.contains("띠 옆으로"), "charge warning names the safe response")
 	scene.boss._beast_velocity(0.01)
 	_check(scene.boss.warning_time > 0.0 and scene.boss.shock_warning == 0.0, "charge warning is not replaced by the next shock")
 	for i in 60: scene.boss._beast_velocity(1.0 / 60.0)
-	_check(scene.boss.charge_time == 0.0 and scene.boss.attack_cooldown > 0.0, "charge completes before the alternate pattern")
-	scene.boss.attack_cooldown = 0.0
+	_check(scene.boss.charge_time == 0.0 and scene.boss.recovery_time > 0.0, "charge completes before the alternate pattern")
+	scene.boss._beast_velocity(scene.boss.recovery_time + 0.01)
 	scene.boss._beast_velocity(0.01)
 	scene._draw_boss_warning()
 	_check(scene.boss.shock_warning > 0.0 and scene.boss_warning_mesh.get_surface_count() > 0, "boss alternate shock has an airborne warning")
 	scene._update_run_hud()
-	_check(scene.run_hud.text.contains("주황 원 밖으로 회피"), "shock warning names its circular safe response")
+	_check(scene.run_hud.text.contains("원 밖으로"), "shock warning names its circular safe response")
 	var before: float = scene.player.health
 	scene.boss._beast_velocity(0.8)
 	_check(scene.player.health == before - GateBoss.SHOCK_DAMAGE, "boss shock deals its displayed radius damage")
 	scene.boss.take_hit(300.0, Vector2.RIGHT, false)
+	scene.boss.recovery_time = 0.0
 	scene.boss.ring_warning = GateBoss.RING_WARNING
 	scene._draw_boss_warning()
 	scene._update_run_hud()
-	_check(scene.boss.phase == 2 and scene.boss_warning_mesh.get_surface_count() > 0 and scene.run_hud.text.contains("안쪽이 안전"), "second phase shows a separate outer-ring dodge")
+	_check(scene.boss.phase == 2 and scene.boss_warning_mesh.get_surface_count() > 0 and scene.run_hud.text.contains("안으로 파고들기"), "second phase shows a separate outer-ring dodge")
 	scene.player.health = 0.0
 	scene.death_pending = true
 	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)

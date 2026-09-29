@@ -1,4 +1,4 @@
-# Loop Conquest — Temple Representative Section v19
+# Loop Conquest — Distinct Boss Rhythms v20
 
 Godot 4.6 combat and terrain prototype. The default scene is `game/travel_camp.tscn`: walk between the region map, equipment/growth, and departure stations, then press E to open the corresponding preparation tab. Region 1 remains `game/hybrid_region.tscn`; a first clear opens `game/jungle_pass.tscn`, a cliff/jungle route climbing to a high gate. Movement, enemy routing and hit detection use 2D ground coordinates; terrain records supply height, walkability and line-of-sight boundaries for the 3D scene and minimap.
 
@@ -64,3 +64,9 @@ Temple only: freely leave/reenter the sanctuary while preserving boss HP; neithe
 A hidden garden off the gallery has a subtle western entrance leading to a separate 3000×2000 mini field, with a bent approach, paths around a pond, and an inner altar. Walk through its western exit to resume the same run. The main clock continues; inactive-field enemies and guardian damage persist across transitions. It is absent from the map until discovered. Defeat three strengthened guardians in separate parts of the field, then press E at the altar. First reward permanently awakens the equipped ember accessory (+20 percentage points projectile damage, +1 chain target, additive with cards); later clears heal 20% maximum HP once per run. Discovery/awakening are saved immediately. Profile v5 reads v1–v4 at the same save path; do not downgrade after saving with v19.
 
 This is a playable blockout sample. Stage 2 economy acceptance, final art, Windows runtime and long-session GPU performance remain unverified.
+
+## v20 boss trial
+
+Temple: locked, longer-range charge and close pulse; late phase adds a separately warned second charge and an outside/inside pulse pair. Jungle: point-blank coverage on the sweep and a longer directional gust; late phase chains three separately warned attacks. Each completed pattern gives 1.2 seconds of stationary counter time (1.45 late phase), signaled by posture, color and HUD. Boss HP/damage are unchanged. Jungle uses the temple's size 9 / roughly 35-degree camera for comparison.
+
+The target is 30–60 seconds with an ordinary build, faster with a strong build; this is not yet a measured human acceptance result. Save format remains v5.

@@ -249,6 +249,10 @@ func _process(delta: float) -> void:
 		var core: MeshInstance3D = visual.get_node("BossFigure/BossCore")
 		(core.material_override as StandardMaterial3D).albedo_color = Color.WHITE if boss.hit_flash > 0.0 else Color("e78363") if boss.phase == 2 else Color("b99975")
 		visual.get_node("BossFigure").rotation.z = -0.15 if boss.charge_time > 0.0 else 0.10 * sin(Time.get_ticks_msec() * 0.008) if boss.warning_time > 0.0 or boss.shock_warning > 0.0 or boss.ring_warning > 0.0 else 0.0
+		if boss.recovery_time > 0.0:
+			visual.get_node("BossFigure").rotation.z = 0.22
+			if boss.hit_flash <= 0.0: (core.material_override as StandardMaterial3D).albedo_color = Color("8ee4df")
+		visual.get_node("BossFigure").rotation.x = -0.18 if boss.shock_warning > 0.0 else 0.20 if boss.impact_flash > 0.0 else 0.0
 	_draw_boss_warning()
 
 
@@ -520,16 +524,14 @@ func _run_hud_text() -> String:
 	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
 		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
-		if boss.warning_time > 0.0: result += "  ·  붉은 띠 밖으로 회피!"
-		elif boss.shock_warning > 0.0: result += "  ·  주황 원 밖으로 회피!"
-		elif boss.ring_warning > 0.0: result += "  ·  바깥 고리 회피! 안쪽이 안전"
+		result += "  ·  " + boss.combat_cue()
 	if profile != null and profile.recovered_backup: result += "\n이전 정상 기록을 복구했습니다."
 	return result
 
 
 func _draw_boss_warning() -> void:
 	boss_warning_mesh.clear_surfaces()
-	if not is_instance_valid(boss) or (boss.shock_warning <= 0.0 and boss.ring_warning <= 0.0): return
+	if not is_instance_valid(boss) or (boss.shock_warning <= 0.0 and boss.ring_warning <= 0.0 and boss.impact_flash <= 0.0): return
 	var center := boss.global_position
 	var elevation := terrain.height_at(center) + 65.0
 	boss_warning_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -537,12 +539,15 @@ func _draw_boss_warning() -> void:
 		_draw_boss_area(center, elevation, 0.0, GateBoss.SHOCK_RADIUS, Color(1.0, 0.38, 0.14, 0.11))
 		_draw_boss_ring(center, elevation, GateBoss.SHOCK_RADIUS, 18.0, Color(0.43, 0.08, 0.04, 0.80))
 		_draw_boss_ring(center, elevation + 2.0, GateBoss.SHOCK_RADIUS, 7.0, Color(1.0, 0.55, 0.23, 0.98))
-	else:
+	elif boss.ring_warning > 0.0:
 		_draw_boss_area(center, elevation, GateBoss.RING_INNER_RADIUS, GateBoss.RING_OUTER_RADIUS, Color(1.0, 0.19, 0.12, 0.15))
 		_draw_boss_ring(center, elevation, GateBoss.RING_INNER_RADIUS, 15.0, Color(0.40, 0.08, 0.04, 0.80))
 		_draw_boss_ring(center, elevation + 2.0, GateBoss.RING_INNER_RADIUS, 6.0, Color(1.0, 0.76, 0.32, 0.98))
 		_draw_boss_ring(center, elevation, GateBoss.RING_OUTER_RADIUS, 18.0, Color(0.40, 0.08, 0.04, 0.80))
 		_draw_boss_ring(center, elevation + 2.0, GateBoss.RING_OUTER_RADIUS, 7.0, Color(1.0, 0.40, 0.20, 0.98))
+	if boss.impact_flash > 0.0:
+		var alpha: float = boss.impact_flash / 0.18
+		_draw_boss_area(center, elevation + 3.0, GateBoss.RING_INNER_RADIUS if boss.impact_is_ring else 0.0, GateBoss.RING_OUTER_RADIUS if boss.impact_is_ring else GateBoss.SHOCK_RADIUS, Color(1.0, 0.75, 0.34, 0.48 * alpha))
 	boss_warning_mesh.surface_end()
 
 
