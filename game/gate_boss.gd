@@ -11,6 +11,7 @@ const RING_OUTER_RADIUS := 315.0
 const RING_WARNING := 0.75
 const RING_DAMAGE := 22.0
 
+var warning_duration := 0.60
 var encounter_active := true
 var encounter_area := Rect2()
 var shock_warning := 0.0
@@ -153,6 +154,7 @@ func _begin_charge(warning: float) -> void:
 	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
 	planned_charge_distance = clampf(global_position.distance_to(target.global_position) + 75.0, 140.0, 650.0)
 	warning_time = warning
+	warning_duration = warning
 	attacks_started += 1
 
 

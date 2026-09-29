@@ -100,6 +100,30 @@ func _process(delta: float) -> void:
 	if boss.recovery_time > 0.0 and boss.hit_flash <= 0.0: (figure.get_node("BossCore").material_override as StandardMaterial3D).albedo_color = Color("8ee4df")
 
 
+func _animate_boss_arms(figure: Node3D) -> void:
+	var lift := 0.0
+	var spread := 0.0
+	var swing := 0.0
+	if boss.sweep_warning > 0.0:
+		var duration: float = boss.warning_duration
+		var progress := clampf(1.0 - boss.sweep_warning / duration, 0.0, 1.0)
+		lift = -1.10
+		swing = lerpf(0.35, 1.20, progress)
+	elif boss.sweep_burst_time > 0.0:
+		lift = -1.10
+		swing = lerpf(-1.15, 1.20, boss.sweep_burst_time / 0.16)
+	elif boss.gust_warning > 0.0:
+		var duration: float = boss.warning_duration
+		spread = lerpf(0.40, 1.30, clampf(1.0 - boss.gust_warning / duration, 0.0, 1.0))
+	elif boss.gust_burst_time > 0.0:
+		lift = -1.45
+	elif boss.recovery_time > 0.0:
+		lift = 0.15
+		spread = 0.12
+	figure.get_node("ArmLeft").rotation = Vector3(lift, swing, spread)
+	figure.get_node("ArmRight").rotation = Vector3(lift, swing, -spread)
+
+
 func _roll_role() -> TrainingEnemy.Role:
 	if boss_spawned or run_time < 45.0: return TrainingEnemy.Role.FRAGMENT
 	var weights := [45.0, 30.0, 5.0, 15.0, 5.0] if run_time < 120.0 else [35.0, 28.0, 12.0, 17.0, 8.0] if run_time < 200.0 else [30.0, 27.0, 15.0, 18.0, 10.0]
@@ -155,7 +179,9 @@ func _draw_boss_warning() -> void:
 			var c := center + forward * JungleWarden.SWEEP_FORWARD_MAX + side * s1
 			var d := center + forward * JungleWarden.SWEEP_FORWARD_MAX + side * s0
 			if clear_attack(center, a) and clear_attack(center, b) and clear_attack(center, c) and clear_attack(center, d):
-				_warden_warning_quad(a, b, c, d, elevation, Color(1.0, 0.46, 0.18, 0.72 if boss.sweep_burst_time > 0.0 else 0.32))
+				if boss.sweep_warning > 0.0 and float(i + 1) / 24.0 <= 1.0 - boss.sweep_warning / boss.warning_duration:
+					_warden_warning_quad(a, b, c, d, elevation + 1.0, Color(1.0, 0.76, 0.32, 0.22))
+				_warden_warning_quad(a, b, c, d, elevation, Color(1.0, 0.46, 0.18, 0.72 if boss.sweep_burst_time > 0.0 else _warning_strength(boss.sweep_warning, boss.warning_duration)))
 	else:
 		var reach: float = JungleWarden.GUST_REACH + (60.0 if boss.phase == 2 else 0.0)
 		for i in 20:
@@ -168,7 +194,9 @@ func _draw_boss_warning() -> void:
 			var c := center + forward * f1 + side * w1
 			var d := center + forward * f1 - side * w1
 			if clear_attack(center, a) and clear_attack(center, b) and clear_attack(center, c) and clear_attack(center, d):
-				_warden_warning_quad(a, b, c, d, elevation, Color(0.50, 0.94, 1.0, 0.68 if boss.gust_burst_time > 0.0 else 0.30))
+				if boss.gust_warning > 0.0 and float(i + 1) / 20.0 <= 1.0 - boss.gust_warning / boss.warning_duration:
+					_warden_warning_quad(a, b, c, d, elevation + 1.0, Color(0.75, 1.0, 1.0, 0.22))
+				_warden_warning_quad(a, b, c, d, elevation, Color(0.50, 0.94, 1.0, 0.68 if boss.gust_burst_time > 0.0 else _warning_strength(boss.gust_warning, boss.warning_duration)))
 	boss_warning_mesh.surface_end()
 
 

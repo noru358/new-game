@@ -78,6 +78,7 @@ func _begin_warden_attack(gust: bool) -> void:
 	if not is_instance_valid(target): return
 	locked_direction = global_position.direction_to(target.global_position)
 	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
+	warning_duration = 0.70 if phase == 1 else 0.62
 	if gust:
 		gust_warning = 0.70 if phase == 1 else 0.62
 	else:

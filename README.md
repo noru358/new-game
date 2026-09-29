@@ -1,4 +1,6 @@
-# Loop Conquest — Distinct Boss Rhythms v20
+# Loop Conquest — Boss Readability v21
+
+v21 adds articulated windups and strikes facing the locked attack direction. Full danger areas remain visible while timing fills advance, with one final highlight. The overhead counter label and time bar are provisional display trials pending user preference. Combat timing, damage, terrain and profile v5 are unchanged.
 
 Godot 4.6 combat and terrain prototype. The default scene is `game/travel_camp.tscn`: walk between the region map, equipment/growth, and departure stations, then press E to open the corresponding preparation tab. Region 1 remains `game/hybrid_region.tscn`; a first clear opens `game/jungle_pass.tscn`, a cliff/jungle route climbing to a high gate. Movement, enemy routing and hit detection use 2D ground coordinates; terrain records supply height, walkability and line-of-sight boundaries for the 3D scene and minimap.
 
