@@ -1,0 +1,85 @@
+{
+  "active_window_limit": 330.0,
+  "choice_dwell_seconds": 1.5,
+  "controller": "fixed route every 70s; pursue visible nearby enemies; hold basic attack; periodic close-range slash/dash; fixed card priority; first life only",
+  "controller_hz": 10,
+  "diagnostics": {
+    "accessory": "",
+    "active_seconds": 311.883333333378,
+    "active_wall_seconds": 311.930553,
+    "attack_branch": "",
+    "boss_engagements": 1,
+    "boss_first_times": {
+      "arrive": {
+        "active_seconds": 234.350000000079,
+        "wall_seconds": 274.731263
+      },
+      "engage": {
+        "active_seconds": 301.200000000055,
+        "wall_seconds": 350.87067
+      },
+      "ready": {
+        "active_seconds": 301.200000000055,
+        "wall_seconds": 350.870626
+      }
+    },
+    "cards": {
+      "S_SEAL": 1,
+      "S_WISP_CADENCE": 3,
+      "S_WISP_CHAIN": 2,
+      "S_WISP_COUNT": 2,
+      "S_WISP_DAMAGE": 3,
+      "S_WISP_FOLLOWUP": 2,
+      "S_WISP_ORBIT": 2,
+      "S_WISP_REPLY": 2,
+      "S_WISP_SWEEP": 2,
+      "U_EDGE": 3,
+      "U_REACH": 3,
+      "U_SLASH_CADENCE": 2,
+      "U_SLASH_SWEEP": 2,
+      "U_TEMPO": 3
+    },
+    "choice_wall_seconds": 49.642949,
+    "choice_windows": 32,
+    "damage_events": 39,
+    "damage_taken_actual": 455.0,
+    "earned_currency": 639,
+    "health": 0.0,
+    "kills": 462,
+    "level": 33,
+    "level_heal_actual": 355.0,
+    "level_heal_events": 32,
+    "max_health": 100.0,
+    "pause_wall_seconds": 0.013247,
+    "permanent_growth": {
+      "FINISH": 0,
+      "GUARD": 0,
+      "MOBILITY": 0,
+      "POWER": 0,
+      "SLASH": 0,
+      "SPEED": 0,
+      "VITALITY": 0,
+      "WISP": 0
+    },
+    "points_earned": 32,
+    "points_exhausted": 0,
+    "points_pending": 0,
+    "points_spent": 32,
+    "region": "O_TEMPLE",
+    "result": "IN_PROGRESS",
+    "schema": "local_run_diagnostics_v1",
+    "time_scale_max": 1.0,
+    "time_scale_min": 1.0,
+    "wall_seconds": 361.586749,
+    "weapon": "W_START",
+    "xp_remainder": 30
+  },
+  "distance_travelled": 94456.7545568324,
+  "human_playtest": false,
+  "input_events": 6260,
+  "permanent_investment": 0,
+  "preset": "fresh",
+  "sample": "synthetic_input_controller_v1",
+  "seed": 250,
+  "stop_reason": "boss_death_retry_available"
+}

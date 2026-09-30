@@ -1,3 +1,12 @@
+## Independent Stage A patch (v30)
+
+This branch is a portable diagnostics/UI patch on the common v26 ancestor, **not a replacement for either canal-city comparison branch**. It does not contain or overwrite the canal scenes from PR #28 or #29. Apply/review its small code commits on the selected game lineage; do not treat its older map tree as the latest production state.
+
+- Permanent card-unlock notices appear inside the level-up modal, including queued choices; compact equipment details fit without the prior overflow.
+- Jungle pressure text describes the two most likely roles from its actual location-specific spawn weights. Recovery text means fewer new arrivals, not the disappearance of existing enemies. Spawn composition and rates are unchanged.
+- Optional local measurement: `godot --path . -- --run-diagnostics`. Run completion prints one `RUN_DIAGNOSTICS` JSON line; no cloud upload, new save fields, HUD panel or default-on tracking.
+- `tests/sample_run_baseline.gd` is a deterministic input-controller experiment, not human play. Exact preset/controller/seed/dwell/stop reason are retained in `docs/diagnostics/v30/`.
+
 # Loop Conquest — Readability & Jungle Density v25
 
 The v25 trial presents each discovered place and awakening as a compact card with its core effect, active state and next action. Camp gear shows the chosen item, awakening and replacement options together. The live HUD shows an XP bar beside the current level. The fourth basic hit no longer enlarges the player model. Near-side walls in both hidden fields are lowered while collision remains, and the jungle boss court's obstructing structures are reduced or moved. Ambient enemy spawn rates and the ordinary enemy cap are 1.5× the earlier baseline (72 cap), with closer spawns; the jungle forest, ruin crossing and riverbank use distinct low scenery and enemy mixes. These are playtest values; human difficulty and readability are pending.
