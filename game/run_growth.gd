@@ -2,6 +2,8 @@ class_name RunGrowth
 extends Node
 
 signal card_applied(card_id: String)
+signal choice_state_changed
+signal level_healed(amount: float)
 
 const WispScript = preload("res://game/wisp.gd")
 const SealScript = preload("res://game/seal_attack.gd")
@@ -138,6 +140,7 @@ func _start_choice() -> void:
 	get_tree().paused = true
 	overlay.show()
 	_refresh_choices()
+	choice_state_changed.emit()
 
 
 func _prepare_next_choice() -> void:
@@ -292,6 +295,7 @@ func choose_index(index: int) -> bool:
 		choosing = false
 		overlay.hide()
 		get_tree().paused = paused_before_choice
+		choice_state_changed.emit()
 	_update_hud()
 	return true
 
@@ -387,7 +391,10 @@ func _sync_seal(rank: int) -> void:
 
 
 func _heal(fraction: float) -> void:
+	var before := player.health
 	player.health = minf(player.max_health, player.health + player.max_health * fraction)
+	# Emit before health_changed: its supply listener may perform another heal.
+	level_healed.emit(player.health - before)
 	player.health_changed.emit()
 
 

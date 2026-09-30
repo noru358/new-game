@@ -5,6 +5,7 @@ signal defeated
 signal health_changed
 signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool)
 signal hurt_received(hit_position: Vector2, direction: Vector2)
+signal damage_received(amount: float)
 signal moving_slash_landed(hit_position: Vector2)
 signal flow_wave_triggered(center: Vector2)
 
@@ -579,7 +580,10 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 		return
 	if moving_slash_time > 0.0 and moving_slash_elapsed <= MOVING_SLASH_INVULNERABILITY:
 		return
+	var before := health
 	health = maxf(0.0, health - damage * (1.0 - permanent_damage_reduction))
+	# Report actual HP lost before automatic supply recovery can mask it.
+	damage_received.emit(before - health)
 	hurt_immunity = HURT_INVULNERABILITY
 	hit_flash = 0.25
 	hurt_stun_time = 0.11

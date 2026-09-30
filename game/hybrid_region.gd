@@ -3,6 +3,7 @@ extends "res://game/hybrid_height.gd"
 const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
 const ProfileScript = preload("res://game/run_profile.gd")
 const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
+const DiagnosticsScript = preload("res://game/run_diagnostics.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 72
 const TempleSectionScript = preload("res://game/temple_section.gd")
@@ -58,6 +59,8 @@ var retreat_was_paused := false
 var ending_remaining := 0.0
 var ending_visual: Node3D
 var save_folder_button: Button
+var diagnostics_enabled := false
+var diagnostics
 
 
 func _init() -> void:
@@ -125,6 +128,12 @@ func _ready() -> void:
 			temple_section.setup(self)
 			add_child(temple_section)
 		_update_run_hud()
+		if diagnostics_enabled or OS.get_cmdline_user_args().has("--run-diagnostics"):
+			diagnostics = DiagnosticsScript.new()
+			growth.level_healed.connect(diagnostics.record_level_heal)
+			player.damage_received.connect(diagnostics.record_damage)
+			growth.choice_state_changed.connect(func(): diagnostics.observe(self))
+			diagnostics.observe(self)
 
 
 func _create_region_section() -> Node:
@@ -288,6 +297,7 @@ func _tick_grotto_blasts(delta: float) -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	if practice_mode: return
+	if diagnostics != null: diagnostics.observe(self)
 	if ending_remaining > 0.0:
 		ending_remaining = maxf(0.0, ending_remaining - delta)
 		if ending_remaining <= 0.0: _show_result()
@@ -455,6 +465,7 @@ func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> voi
 	boss.defeated.connect(_on_enemy_defeated.bind(boss))
 	boss.counter_struck.connect(_on_boss_counter_struck)
 	boss_spawned = true
+	if diagnostics != null: diagnostics.boss_event("ready", run_time)
 
 
 func _on_boss_counter_struck(point: Vector2) -> void:
@@ -523,6 +534,7 @@ func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 	if enemy is GateBoss:
 		if boss_defeated: return
 		boss_defeated = true
+		if diagnostics != null: diagnostics.boss_event("kill", run_time)
 		if actors.has(enemy):
 			ending_visual = actors[enemy]
 			actors.erase(enemy)
@@ -536,6 +548,7 @@ func _on_enemy_defeated(enemy: TrainingEnemy) -> void:
 
 func _finish_run(result: String) -> void:
 	if run_ended: return
+	if diagnostics != null: diagnostics.finish(self, result)
 	if temple_section != null: temple_section.retry_overlay.hide()
 	run_ended = true
 	end_result = result
@@ -893,6 +906,7 @@ func _cancel_retreat() -> void:
 func _set_paused(value: bool) -> void:
 	if run_ended or (temple_section != null and temple_section.retry_pending): return
 	super._set_paused(value)
+	if diagnostics != null: diagnostics.observe(self)
 	if practice_mode or pause_menu == null: return
 	player.require_attack_release()
 	player.dash_requested = false

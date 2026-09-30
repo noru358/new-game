@@ -62,6 +62,8 @@ func _ready() -> void:
 
 func tick(delta: float) -> void:
 	if arena.run_ended or retry_pending: return
+	if arena.diagnostics != null and boss_area.has_point(arena.player.global_position):
+		arena.diagnostics.boss_event("arrive", arena.run_time)
 	portal_cooldown = maxf(0.0, portal_cooldown - delta)
 	if portal_cooldown <= 0.0:
 		if not in_garden and layout.ENTRY_TRIGGER.has_point(arena.player.global_position): enter_garden()
@@ -94,6 +96,7 @@ func tick(delta: float) -> void:
 			_clear_transients()
 			if inside:
 				boss_entered = true
+				if arena.diagnostics != null: arena.diagnostics.boss_event("engage", arena.run_time)
 				arena.boss.encounter_active = true
 				arena.boss.add_to_group("training_enemies")
 			else:
@@ -195,6 +198,7 @@ func handle_death() -> bool:
 	arena.growth.overlay.hide()
 	retry_overlay.show()
 	retry_overlay.get_node("Retry").grab_focus()
+	if arena.diagnostics != null: arena.diagnostics.observe(arena)
 	return true
 
 
@@ -222,6 +226,9 @@ func retry_boss() -> void:
 		arena.growth.paused_before_choice = false
 		arena.growth.overlay.show()
 		get_tree().paused = true
+	if arena.diagnostics != null:
+		arena.diagnostics.boss_event("engage", arena.run_time)
+		arena.diagnostics.observe(arena)
 	_update_hud()
 
 
