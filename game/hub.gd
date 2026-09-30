@@ -303,6 +303,8 @@ func _refresh() -> void:
 	base_weapon_button.text = "기본 마력장  %s\n4타 전방 충격" % ("· 장착 중" if profile.equipped_weapon == "W_START" else "")
 	weapon_button.text = "흐름의 마력장  %s\n이동 베기 적중 → 다음 평타 강화" % _gear_state("W_FLOW")
 	echo_weapon_button.text = "집결의 마력장  %s\n3타 집결 지점에서 4타 폭발" % _gear_state("W_ECHO")
+	if profile.awakenings.has("ECHO_GROTTO"):
+		echo_weapon_button.text += "\n계곡 각성 · 4타 적중 후 0.25초 뒤 작은 추가 폭발"
 	accessory_button.text = "여우불 장신구  %s\n여우불 피해 강화" % _gear_state("A_EMBER")
 	if profile.awakenings.has("EMBER_GARDEN"):
 		accessory_button.text += "\n정원 각성 · 마탄 +20%p / 연쇄 +1"

@@ -37,6 +37,15 @@ var section_hud: Label
 var boundary_visual: Node3D
 var destination_label: Label3D
 
+# Region-specific geometry; constants above remain the temple test contract.
+var layout = Garden
+var field_area := GARDEN_AREA
+var boss_area := BOSS_AREA
+var boss_point := BOSS_POINT
+var retry_point := RETRY_POINT
+var boss_spawn_points := [BOSS_POINT, Vector2(4620, 780), Vector2(4610, 1330), Vector2(4200, 790)]
+var destination_point := Vector2(4090, 1100)
+
 
 func setup(scene) -> void:
 	arena = scene
@@ -47,7 +56,7 @@ func _ready() -> void:
 	_build_destination()
 	_build_garden()
 	_build_ui()
-	arena.player.arena_bounds = Garden.MAIN_BOUNDS
+	arena.player.arena_bounds = layout.MAIN_BOUNDS
 	main_overview_size = arena.overview_camera_size
 
 
@@ -55,11 +64,11 @@ func tick(delta: float) -> void:
 	if arena.run_ended or retry_pending: return
 	portal_cooldown = maxf(0.0, portal_cooldown - delta)
 	if portal_cooldown <= 0.0:
-		if not in_garden and Garden.ENTRY_TRIGGER.has_point(arena.player.global_position): enter_garden()
-		elif in_garden and Garden.EXIT_TRIGGER.has_point(arena.player.global_position): leave_garden()
+		if not in_garden and layout.ENTRY_TRIGGER.has_point(arena.player.global_position): enter_garden()
+		elif in_garden and layout.EXIT_TRIGGER.has_point(arena.player.global_position): leave_garden()
 	if arena.run_time >= arena.BOSS_TIME and not arena.boss_spawned:
 		if spawn_warning_time < 0.0:
-			for point in [BOSS_POINT, Vector2(4620, 780), Vector2(4610, 1330), Vector2(4200, 790)]:
+			for point in boss_spawn_points:
 				if arena.navigation.is_open(point, 48.0) and arena.player.global_position.distance_to(point) >= 250.0:
 					destination_spawn = point
 					break
@@ -73,13 +82,13 @@ func tick(delta: float) -> void:
 			if spawn_warning_time <= 0.0 and arena.player.global_position.distance_to(destination_spawn) >= 140.0:
 				spawn_marker.queue_free()
 				arena._spawn_now(destination_spawn, TrainingEnemy.Role.BEAST, true)
-				arena.boss.arena_bounds = BOSS_AREA
-				arena.boss.encounter_area = BOSS_AREA
+				arena.boss.arena_bounds = boss_area
+				arena.boss.encounter_area = boss_area
 				arena.boss.suspend_encounter()
 				arena.boss.remove_from_group("training_enemies")
 				boss_ready = true
 	if boss_ready and is_instance_valid(arena.boss):
-		var inside := BOSS_AREA.has_point(arena.player.global_position)
+		var inside := boss_area.has_point(arena.player.global_position)
 		if inside != boss_active:
 			boss_active = inside
 			_clear_transients()
@@ -93,18 +102,18 @@ func tick(delta: float) -> void:
 		if boss_active: _clear_arena_intruders()
 	_sync_field_actors()
 	_tick_garden(delta)
-	destination_label.visible = arena.player.global_position.distance_to(Vector2(4090, 1100)) < 650.0
+	destination_label.visible = arena.player.global_position.distance_to(destination_point) < 650.0
 	destination_label.text = "성소 · 문지기의 영역\n" + ("경계 진입 시 교전 · 출입 자유" if boss_ready else "5분 이후 접근하여 교전")
 	_update_hud()
 
 
 func excludes_ambient_spawn(point: Vector2) -> bool:
-	return in_garden or not Garden.MAIN_BOUNDS.has_point(point) or GARDEN_AREA.grow(40).has_point(point) or (boss_ready and BOSS_AREA.grow(100).has_point(point))
+	return in_garden or not layout.MAIN_BOUNDS.has_point(point) or field_area.grow(40).has_point(point) or (boss_ready and boss_area.grow(100).has_point(point))
 
 
 func _clear_arena_intruders() -> void:
 	for actor in arena.actors.keys():
-		if is_instance_valid(actor) and actor is TrainingEnemy and actor != arena.boss and BOSS_AREA.grow(100).has_point(actor.global_position):
+		if is_instance_valid(actor) and actor is TrainingEnemy and actor != arena.boss and boss_area.grow(100).has_point(actor.global_position):
 			_remove_actor(actor)
 	for group in ["enemy_bolts", "enemy_zones"]:
 		for node in get_tree().get_nodes_in_group(group):
@@ -113,7 +122,7 @@ func _clear_arena_intruders() -> void:
 
 func _tick_garden(delta: float) -> void:
 	discovery_retry = maxf(0.0, discovery_retry - delta)
-	if in_garden and GARDEN_AREA.has_point(arena.player.global_position):
+	if in_garden and field_area.has_point(arena.player.global_position):
 		if not arena.is_place_discovered("TEMPLE_GARDEN") and discovery_retry <= 0.0:
 			discovery_retry = 1.0
 			if not arena.profile.discover_garden():
@@ -136,7 +145,7 @@ func _tick_garden(delta: float) -> void:
 		if entry.delay > 0.0 or arena.player.global_position.distance_to(entry.point) < 140.0: continue
 		var role: int = [TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.ZONE][entry.index]
 		var enemy: TrainingEnemy = arena._spawn_enemy_at(entry.point, role, TrainingEnemy.Definitions.ROLES[role].health * 3.0)
-		enemy.arena_bounds = Garden.GUARD_AREAS[entry.index]
+		enemy.arena_bounds = layout.GUARD_AREAS[entry.index]
 		enemy.defeated.connect(func(): guardians_defeated += 1)
 		entry.marker.queue_free()
 		guard_warnings.remove_at(i)
@@ -176,7 +185,7 @@ func handle_input(event: InputEvent) -> bool:
 
 func handle_death() -> bool:
 	if retry_pending: return true
-	if retry_used or not boss_entered or not BOSS_AREA.has_point(arena.player.global_position): return false
+	if retry_used or not boss_entered or not boss_area.has_point(arena.player.global_position): return false
 	retry_pending = true
 	arena.paused = true
 	get_tree().paused = true
@@ -200,10 +209,10 @@ func retry_boss() -> void:
 	arena.boss_defeated = false
 	arena.death_pending = false
 	arena.player.restore_for_boss_retry()
-	arena.teleport(RETRY_POINT)
-	arena._spawn_now(BOSS_POINT, TrainingEnemy.Role.BEAST, true)
-	arena.boss.arena_bounds = BOSS_AREA
-	arena.boss.encounter_area = BOSS_AREA
+	arena.teleport(retry_point)
+	arena._spawn_now(boss_point, TrainingEnemy.Role.BEAST, true)
+	arena.boss.arena_bounds = boss_area
+	arena.boss.encounter_area = boss_area
 	boss_active = true
 	arena.boss.attack_cooldown = 1.0
 	arena.ember_step_cooldown = 0.0
@@ -233,6 +242,7 @@ func _remove_actor(actor: Node) -> void:
 
 
 func _clear_transients() -> void:
+	arena.echo_grotto_blasts.clear()
 	for group in ["enemy_bolts", "enemy_zones", "wisp_projectiles"]:
 		for node in get_tree().get_nodes_in_group(group):
 			if arena.simulation.is_ancestor_of(node): node.queue_free()
@@ -257,7 +267,7 @@ func _update_hud() -> void:
 func _build_destination() -> void:
 	boundary_visual = Node3D.new()
 	add_child(boundary_visual)
-	for rect in [Rect2(4050, 580, 850, 8), Rect2(4050, 1512, 850, 8), Rect2(4050, 580, 8, 940), Rect2(4892, 580, 8, 940)]:
+	for rect in [Rect2(boss_area.position, Vector2(boss_area.size.x, 8)), Rect2(Vector2(boss_area.position.x, boss_area.end.y - 8), Vector2(boss_area.size.x, 8)), Rect2(boss_area.position, Vector2(8, boss_area.size.y)), Rect2(Vector2(boss_area.end.x - 8, boss_area.position.y), Vector2(8, boss_area.size.y))]:
 		var mark := MeshInstance3D.new()
 		var box := BoxMesh.new()
 		box.size = Vector3(rect.size.x * 0.01, 0.025, rect.size.y * 0.01)
@@ -271,7 +281,7 @@ func _build_destination() -> void:
 	title.font_size = 34
 	title.pixel_size = 0.006
 	title.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	title.position = arena.terrain.world_point(Vector2(4090, 1100), 200)
+	title.position = arena.terrain.world_point(destination_point, 200)
 	boundary_visual.add_child(title)
 
 
@@ -296,7 +306,7 @@ func _build_garden() -> void:
 	exit_label.font_size = 28
 	exit_label.pixel_size = 0.006
 	exit_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	exit_label.position = arena.terrain.world_point(Garden.EXIT_TRIGGER.get_center(), 90)
+	exit_label.position = arena.terrain.world_point(layout.EXIT_TRIGGER.get_center(), 90)
 	add_child(exit_label)
 	var altar := MeshInstance3D.new()
 	var base := CylinderMesh.new()
@@ -380,11 +390,11 @@ func _set_field(value: bool) -> void:
 	arena.terrain_mesh.visible = not value
 	arena.garden_terrain_mesh.visible = value
 	boundary_visual.visible = not value
-	arena.player.arena_bounds = Garden.FIELD_BOUNDS if value else Garden.MAIN_BOUNDS
+	arena.player.arena_bounds = layout.FIELD_BOUNDS if value else layout.MAIN_BOUNDS
 	arena.overview_camera_size = 37.0 if value else main_overview_size
 	arena.overview = false
 	arena.camera.size = arena.combat_camera_size
-	arena.teleport(Garden.FIELD_ENTRY if value else Garden.RETURN_POINT)
+	arena.teleport(layout.FIELD_ENTRY if value else layout.RETURN_POINT)
 	altar_label.visible = false
 	altar_ember.visible = false
 	_sync_field_actors()
@@ -404,7 +414,7 @@ func _sync_field_actors() -> void:
 		if not is_instance_valid(actor): sleeping_actors.erase(actor)
 	for actor in arena.actors:
 		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.is_queued_for_deletion(): continue
-		var on_field := GARDEN_AREA.has_point(actor.global_position) == in_garden
+		var on_field := field_area.has_point(actor.global_position) == in_garden
 		arena.actors[actor].visible = on_field
 		if not on_field and not sleeping_actors.has(actor):
 			sleeping_actors[actor] = {"mode": actor.process_mode, "group": actor.is_in_group("training_enemies")}

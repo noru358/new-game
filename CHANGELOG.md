@@ -1,3 +1,11 @@
+# v22 — 2026-09-30
+
+- Add a 3200×2200 waterfall grotto mini field to the jungle route, with two fixed defender groups and an altar.
+- Permanently awaken the echo weapon on the first clear; a landed fourth hit adds one small delayed secondary blast. Repeat clear heals 20% HP once per run.
+- Apply the destination boss boundary, preserved HP on exit/reentry, duel cleanup and one same-build retry to the jungle guardian.
+- Extend profile v6 for both discoveries and awakenings, preserving earlier saves, and show the new reward in camp.
+- Keep the existing jungle main routes and the distinct v21 boss patterns.
+
 # v21 — 2026-09-30
 
 - Distinct articulated windups/strikes facing the locked attack direction.

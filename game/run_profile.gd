@@ -245,10 +245,14 @@ func buy_growth(id: String, lifetime_levelups: int = 0) -> bool:
 
 
 func discover_garden() -> bool:
-	if load_error: return false
-	if discovered_places.has("TEMPLE_GARDEN"): return true
+	return discover_place("TEMPLE_GARDEN")
+
+
+func discover_place(id: String) -> bool:
+	if load_error or not ["TEMPLE_GARDEN", "JUNGLE_GROTTO"].has(id): return false
+	if discovered_places.has(id): return true
 	var candidate := _snapshot()
-	candidate.discovered_places.append("TEMPLE_GARDEN")
+	candidate.discovered_places.append(id)
 	return _commit(candidate)
 
 
@@ -257,6 +261,14 @@ func claim_garden_awakening() -> bool:
 	if awakenings.has("EMBER_GARDEN"): return true
 	var candidate := _snapshot()
 	candidate.awakenings.append("EMBER_GARDEN")
+	return _commit(candidate)
+
+
+func claim_grotto_awakening() -> bool:
+	if load_error or not discovered_places.has("JUNGLE_GROTTO"): return false
+	if awakenings.has("ECHO_GROTTO"): return true
+	var candidate := _snapshot()
+	candidate.awakenings.append("ECHO_GROTTO")
 	return _commit(candidate)
 
 
@@ -355,7 +367,7 @@ func settle(run_id: String, result: String, earned: int, region_id: String = TEM
 
 func _snapshot() -> Dictionary:
 	return {
-		"version": 5, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
+		"version": 6, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
 		"owned_outpost_ids": owned_outpost_ids.duplicate(), "acquired_relic_ids": acquired_relic_ids.duplicate(),
 		"last_run_id": last_run_id, "owned_gear": owned_gear.duplicate(true),
 		"owned_mods": owned_mods.duplicate(), "slotted_mods": slotted_mods.duplicate(true),
@@ -405,7 +417,7 @@ func _read(path: String) -> Dictionary:
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary: return {}
 	var data: Dictionary = parser.data
-	if not [1.0, 2.0, 3.0, 4.0, 5.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
+	if not [1.0, 2.0, 3.0, 4.0, 5.0, 6.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
 		return {}
 	if int(data.generation) < 1 or int(data.currency) < 0 or not data.get("owned_outpost_ids") is Array or not data.get("acquired_relic_ids") is Array or not data.get("last_run_id") is String:
 		return {}
@@ -453,11 +465,18 @@ func _read(path: String) -> Dictionary:
 			if invested < 4: return {}
 	if int(data.version) >= 5:
 		if not data.get("discovered_places") is Array or not data.get("awakenings") is Array: return {}
-		if data.discovered_places.size() > 1 or data.awakenings.size() > 1: return {}
+		if data.discovered_places.size() > (2 if int(data.version) >= 6 else 1) or data.awakenings.size() > (2 if int(data.version) >= 6 else 1): return {}
+		var seen_places := {}
 		for id in data.discovered_places:
-			if id != "TEMPLE_GARDEN": return {}
+			if not id is String or seen_places.has(id) or not (["TEMPLE_GARDEN", "JUNGLE_GROTTO"] if int(data.version) >= 6 else ["TEMPLE_GARDEN"]).has(id): return {}
+			seen_places[id] = true
+		var seen_awakenings := {}
 		for id in data.awakenings:
-			if id != "EMBER_GARDEN" or not data.discovered_places.has("TEMPLE_GARDEN"): return {}
+			if not id is String or seen_awakenings.has(id): return {}
+			if id == "EMBER_GARDEN" and not data.discovered_places.has("TEMPLE_GARDEN"): return {}
+			if id == "ECHO_GROTTO" and (int(data.version) < 6 or not data.discovered_places.has("JUNGLE_GROTTO")): return {}
+			if not ["EMBER_GARDEN", "ECHO_GROTTO"].has(id): return {}
+			seen_awakenings[id] = true
 	return data
 
 

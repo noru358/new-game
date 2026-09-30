@@ -43,6 +43,9 @@ var boss_warning_mesh := ImmediateMesh.new()
 var echo_wisp_mod_enabled := false
 var ember_strike_mod_enabled := false
 var echo_wisp_fired_sequence := -1
+var grotto_awakening_applied := false
+var echo_grotto_fired_sequence := -1
+var echo_grotto_blasts: Array[Dictionary] = []
 var pause_menu: ColorRect
 var build_details_label: RichTextLabel
 var retreat_overlay: ColorRect
@@ -107,11 +110,15 @@ func _ready() -> void:
 		save_folder_button.show()
 		result_overlay.show()
 	else:
-		if region_id == RunProfile.TEMPLE_REGION:
-			temple_section = TempleSectionScript.new()
+		if region_id in [RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION]:
+			temple_section = _create_region_section()
 			temple_section.setup(self)
 			add_child(temple_section)
 		_update_run_hud()
+
+
+func _create_region_section() -> Node:
+	return TempleSectionScript.new()
 
 
 func _apply_preparation() -> void:
@@ -150,6 +157,7 @@ func _apply_preparation() -> void:
 		elif profile.mod_for("A_EMBER") == "STEADY": player.max_health += 5.0
 		elif profile.mod_for("A_EMBER") == "EMBER_STRIKE": ember_strike_mod_enabled = true
 	apply_garden_awakening()
+	apply_grotto_awakening()
 	growth._sync_wisps()
 	player.health = player.max_health
 	supply_ready = profile.last_launch_supply_used
@@ -168,6 +176,11 @@ func apply_garden_awakening() -> void:
 	growth._sync_wisps()
 
 
+func apply_grotto_awakening() -> void:
+	if grotto_awakening_applied or profile.equipped_weapon != "W_ECHO" or not profile.awakenings.has("ECHO_GROTTO"): return
+	grotto_awakening_applied = true
+
+
 func _on_card_applied(card_id: String) -> void:
 	super._on_card_applied(card_id)
 	if is_instance_valid(build_details_label): build_details_label.text = growth.build_details()
@@ -175,6 +188,9 @@ func _on_card_applied(card_id: String) -> void:
 
 func _on_player_attack_landed(point: Vector2, direction: Vector2, step: int, finisher: bool) -> void:
 	super._on_player_attack_landed(point, direction, step, finisher)
+	if grotto_awakening_applied and step == 4 and echo_grotto_fired_sequence != player.attack_sequence:
+		echo_grotto_fired_sequence = player.attack_sequence
+		echo_grotto_blasts.append({"point": player.echo_finisher_center, "delay": 0.25, "damage": SandboxPlayer.ATTACK_DAMAGE * (1.0 + player.basic_damage_bonus + player.permanent_basic_damage_bonus) * 1.5 * (1.0 + player.echo_finisher_damage_bonus) * 0.35})
 	if not echo_wisp_mod_enabled or step != 4 or echo_wisp_fired_sequence == player.attack_sequence: return
 	for companion in growth.wisps:
 		var target := companion.find_target()
@@ -214,6 +230,7 @@ func _physics_process(delta: float) -> void:
 		_finish_run("DEFEAT")
 		return
 	if paused or growth.choosing or get_tree().paused: return
+	_tick_grotto_blasts(delta)
 	ember_step_cooldown = maxf(0.0, ember_step_cooldown - delta)
 	run_time += delta
 	if temple_section != null: temple_section.tick(delta)
@@ -236,6 +253,26 @@ func _physics_process(delta: float) -> void:
 			else:
 				push_warning("No safe boss spawn point; retrying")
 	_update_run_hud()
+
+
+func _tick_grotto_blasts(delta: float) -> void:
+	for i in range(echo_grotto_blasts.size() - 1, -1, -1):
+		var blast := echo_grotto_blasts[i]
+		blast.delay -= delta
+		if blast.delay > 0.0: continue
+		echo_grotto_blasts.remove_at(i)
+		var center: Vector2 = blast.point
+		var visual: MeshInstance3D = _sphere(0.16, Color("a7f5e8"))
+		visual.position = terrain.world_point(center, 50)
+		add_child(visual)
+		var tween := create_tween()
+		tween.tween_property(visual, "scale", Vector3.ONE * 4.0, 0.16)
+		tween.tween_callback(visual.queue_free)
+		for enemy in get_tree().get_nodes_in_group("training_enemies"):
+			if not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or not enemy is TrainingEnemy or enemy.health <= 0.0: continue
+			if enemy.global_position.distance_to(center) > 90.0 + enemy.collision_radius or not clear_attack(center, enemy.global_position): continue
+			var direction := center.direction_to(enemy.global_position)
+			enemy.take_hit(float(blast.damage), direction, false)
 
 
 func _process(delta: float) -> void:
@@ -326,7 +363,7 @@ func _active_enemy_count() -> int:
 	var count := 0
 	for actor in actors:
 		if is_instance_valid(actor) and actor is TrainingEnemy and not actor is GateBoss and not actor.is_queued_for_deletion():
-			if temple_section != null and temple_section.GARDEN_AREA.has_point(actor.global_position) != temple_section.in_garden: continue
+			if temple_section != null and temple_section.field_area.has_point(actor.global_position) != temple_section.in_garden: continue
 			count += 1
 	for entry in pending_spawns:
 		if not entry.boss and (temple_section == null or not temple_section.in_garden): count += 1
@@ -794,21 +831,22 @@ func _input(event: InputEvent) -> void:
 	super._input(event)
 
 
+func region_layout():
+	return TempleSectionScript.Garden
+
+
 func display_bounds() -> Rect2:
-	if region_id == RunProfile.TEMPLE_REGION:
-		return TempleSectionScript.Garden.FIELD_BOUNDS if temple_section != null and temple_section.in_garden else TempleSectionScript.Garden.MAIN_BOUNDS
-	return super.display_bounds()
+	var layout = region_layout()
+	return layout.FIELD_BOUNDS if temple_section != null and temple_section.in_garden else layout.MAIN_BOUNDS
 
 
 func _build_terrain(render_bounds := Rect2()) -> void:
-	if region_id != RunProfile.TEMPLE_REGION:
-		super._build_terrain(render_bounds)
-		return
-	super._build_terrain(TempleSectionScript.Garden.MAIN_BOUNDS)
+	var layout = region_layout()
+	super._build_terrain(layout.MAIN_BOUNDS)
 	var main_mesh := terrain_mesh
 	var main_faces := resolved_vertical_faces.duplicate(true)
 	var main_lips := resolved_lips.duplicate(true)
-	super._build_terrain(TempleSectionScript.Garden.FIELD_BOUNDS)
+	super._build_terrain(layout.FIELD_BOUNDS)
 	garden_terrain_mesh = terrain_mesh
 	garden_terrain_mesh.hide()
 	terrain_mesh = main_mesh

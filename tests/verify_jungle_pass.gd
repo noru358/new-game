@@ -21,7 +21,7 @@ func _run() -> void:
 	root.add_child(scene)
 	await physics_frame
 	await physics_frame
-	_check(scene.terrain.map_size == Vector2(5600, 2400) and scene.region_id == RunProfile.JUNGLE_REGION, "second region uses its own map and progress ID")
+	_check(scene.display_bounds() == Rect2(0, 0, 5600, 2400) and scene.region_id == RunProfile.JUNGLE_REGION, "second region uses its own map and progress ID")
 	for point in [Vector2(1410, 1180), Vector2(1640, 265), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2180, 2120), Vector2(3010, 1850), Vector2(3410, 1790), Vector2(4520, 1160)]:
 		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(scene.player.position, point).size() >= 2, "ridge, detours and gate remain reachable from the entry")
 	_check(scene.navigation.is_open(Vector2(3750, 1760), scene.ACTOR_CLEARANCE) and scene.navigation.find_path(Vector2(3410, 1790), Vector2(4700, 1700)).size() >= 2, "lower canyon bridge reaches a separate gate entrance")
@@ -44,19 +44,21 @@ func _run() -> void:
 	scene.run_time = 270.0
 	scene._update_run_hud()
 	_check(scene.run_hud.text.contains("관문 상단에 수호자 출현 예정"), "gate boss location is announced thirty seconds early")
-	var gate_spawn: Vector2 = scene._choose_spawn_point(true)
-	_check(gate_spawn.x == 4700.0 and gate_spawn.distance_to(scene.player.position) > 350.0, "warden appears in the authored gate court instead of near the player")
+	var gate_spawn: Vector2 = scene.temple_section.boss_point
+	_check(scene.temple_section.boss_area.has_point(gate_spawn) and gate_spawn.distance_to(scene.player.position) > 350.0, "warden appears in the authored gate court instead of near the player")
 	scene.run_time = 299.99
 	await physics_frame
 	await physics_frame
 	_check(scene.boss_announced, "five-minute timer announces the fixed gate spawn")
 	for i in 85: await physics_frame
-	_check(scene.boss_spawned and scene.boss.position.x == 4700.0 and scene.boss.position.distance_to(scene.player.position) > 350.0, "five-minute spawn uses the gate position in the live run")
+	_check(scene.boss_spawned and scene.temple_section.boss_area.has_point(scene.boss.position) and scene.boss.position.distance_to(scene.player.position) > 350.0, "five-minute spawn uses the gate position in the live run")
 	_check(scene.boss is JungleWarden and scene.boss.max_health == 760.0, "jungle boss has a separate behavior and scale")
 	scene.player.hurt_immunity = 1000.0
 	scene.boss.set_physics_process(false)
 	_check(scene.boss._beast_velocity(0.01) == Vector2.ZERO and not scene.boss.engaged, "guardian holds the gate until the player approaches")
 	scene.teleport(scene.boss.position + Vector2(200, 0))
+	scene.temple_section.tick(0.0)
+	scene.boss.attack_cooldown = 0.0
 	scene.boss._beast_velocity(0.01)
 	_check(scene.boss.sweep_warning > 0.0, "jungle guardian starts with a lateral sweep warning")
 	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
