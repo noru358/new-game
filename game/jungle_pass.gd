@@ -7,6 +7,14 @@ var gate_route_encounter := ""
 var gate_route_crest_triggered := false
 
 
+func region_layout():
+	return preload("res://game/jungle_grotto_layout.gd")
+
+
+func _create_region_section() -> Node:
+	return preload("res://game/jungle_section.gd").new()
+
+
 func _init() -> void:
 	super._init()
 	terrain = PassTerrain.new()
@@ -52,6 +60,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	if run_ended or practice_mode or paused or growth.choosing or get_tree().paused or _active_enemy_count() > MAX_ENEMIES - 2: return
+	if temple_section != null and (temple_section.in_garden or temple_section.boss_active): return
 	var point: Vector2 = player.global_position
 	if gate_route_encounter.is_empty():
 		for route in terrain.gate_routes:

@@ -1,6 +1,8 @@
 class_name JunglePassTerrain
 extends "res://game/hybrid_terrain.gd"
 
+const Grotto = preload("res://game/jungle_grotto_layout.gd")
+
 const GATE_COLUMN_RISE := 530.0
 const GATE_COLUMN_SIZE := Vector2(125.0, 120.0)
 const GATE_COLUMN_CENTERS := [Vector2(4120, 1160), Vector2(5070, 1160)]
@@ -87,6 +89,8 @@ func _init() -> void:
 		wall["base"] = base
 		wall["height"] = base + float(wall.rise)
 
+	Grotto.install(self)
+
 
 func height_at(point: Vector2) -> float:
 	for ramp in ramps:
@@ -97,6 +101,7 @@ func height_at(point: Vector2) -> float:
 
 
 func surface_name(point: Vector2) -> String:
+	if Grotto.FIELD_BOUNDS.has_point(point): return "폭포 뒤 숨은 계곡"
 	for ramp in ramps:
 		if ramp.area.has_point(point): return ramp.name
 	if plateaus[3].area.has_point(point) or plateaus[4].area.has_point(point): return "관문 상단"

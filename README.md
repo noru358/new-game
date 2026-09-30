@@ -1,4 +1,6 @@
-# Loop Conquest — Boss Readability v21
+# Loop Conquest — Jungle Grotto v22
+
+The second region now has a waterfall entrance into a separate 3200×2200 grotto. Two fixed defender groups guard the stream path and inner ruin. The first altar claim permanently awakens the echo weapon: a fourth hit that lands schedules one small secondary blast 0.25 seconds later. Repeat clears heal 20% maximum HP once per run. The guardian waits at the gate after five minutes; approaching its marked court starts the fight. Leaving suspends combat and preserves boss HP, and the first boss death offers one same-build retry. Profile v6 preserves earlier v1–v5 saves and uses the existing save directory; a v6 save cannot be opened by an older build.
 
 v21 adds articulated windups and strikes facing the locked attack direction. Full danger areas remain visible while timing fills advance, with one final highlight, as selected by the user. Counter openings use posture and color only; no overhead label, time bar or counter HUD text. Combat timing, damage, terrain and profile v5 are unchanged.
 
@@ -57,11 +59,11 @@ Each level immediately opens one card choice and heals 20% maximum HP. Each card
 
 The five-minute run now alternates short charge/ranged/support pressure with recovery periods, preserving the planned spawn count. A new moving-slash card advances wisp fire by 0.12/0.24 seconds once per slash. In camp, four total attack growth ranks unlock a 60-currency choice of direct damage or wisp damage (+10 percentage points). Full respec refunds that cost too. The temple repeat-clear option pool includes EMBER_STEP for the wisp accessory: wisp hits advance dash recharge by 0.05 seconds, at most once per 0.3 seconds. These are trial values.
 
-Profiles now write version 4, retaining support for reading versions 1–3 and the same save directory. Older executables cannot read version 4.
+The current profile writes version 6 and reads versions 1–5 in the same save directory. Older executables cannot read version 6.
 
 ## v19 representative section
 
-Temple only: freely leave/reenter the sanctuary while preserving boss HP; neither side attacks across the boundary. One retry prompt restores player/boss health and keeps the build, without restoring spent supplies. Ordinary deaths and a second boss death settle defeat.
+Introduced in the temple, and also used at the jungle gate since v22: freely leave/reenter the duel court while preserving boss HP; neither side attacks across the boundary. One retry prompt restores player/boss health and keeps the build, without restoring spent supplies. Ordinary deaths and a second boss death settle defeat.
 
 A hidden garden off the gallery has a subtle western entrance leading to a separate 3000×2000 mini field, with a bent approach, paths around a pond, and an inner altar. Walk through its western exit to resume the same run. The main clock continues; inactive-field enemies and guardian damage persist across transitions. It is absent from the map until discovered. Defeat three strengthened guardians in separate parts of the field, then press E at the altar. First reward permanently awakens the equipped ember accessory (+20 percentage points projectile damage, +1 chain target, additive with cards); later clears heal 20% maximum HP once per run. Discovery/awakening are saved immediately. Profile v5 reads v1–v4 at the same save path; do not downgrade after saving with v19.
 
@@ -69,6 +71,6 @@ This is a playable blockout sample. Stage 2 economy acceptance, final art, Windo
 
 ## v20 boss trial
 
-Temple: locked, longer-range charge and close pulse; late phase adds a separately warned second charge and an outside/inside pulse pair. Jungle: point-blank coverage on the sweep and a longer directional gust; late phase chains three separately warned attacks. Each completed pattern gives 1.2 seconds of stationary counter time (1.45 late phase), signaled by posture, color and HUD. Boss HP/damage are unchanged. Jungle uses the temple's size 9 / roughly 35-degree camera for comparison.
+Temple: locked, longer-range charge and close pulse; late phase adds a separately warned second charge and an outside/inside pulse pair. Jungle: point-blank coverage on the sweep and a longer directional gust; late phase chains three separately warned attacks. Each completed pattern gives 1.2 seconds of stationary counter time (1.45 late phase), signaled by posture and color. Boss HP/damage are unchanged. Jungle uses the temple's size 9 / roughly 35-degree camera for comparison.
 
-The target is 30–60 seconds with an ordinary build, faster with a strong build; this is not yet a measured human acceptance result. Save format remains v5.
+The target is 30–60 seconds with an ordinary build, faster with a strong build; this is not yet a measured human acceptance result. v22 writes profile v6.
