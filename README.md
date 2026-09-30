@@ -1,4 +1,43 @@
-# Loop Conquest — Readability & Jungle Density v25
+# Loop Conquest — Canal City Place Trial v29
+
+A bounded, playable **place-authoring experiment**, not finished vertical-slice art or a new campaign region. The v25 temple/jungle implementation and v26 production direction are preserved. The closed, unmerged v27 camera experiment is not included.
+
+## Run this trial
+
+Requires Godot 4.6.x. From this project folder:
+
+```sh
+godot --headless --editor --path . --quit
+godot --path .
+```
+
+In camp, approach departure and press E, then choose **개발 시험 · 수로도시 장소 경험 (저장·보상 없음)**. Direct entry:
+
+```sh
+godot --path . res://game/canal_city_trial.tscn
+```
+
+WASD / Shift / J or click / Space retain the current movement, dash, direct attack and moving-slash controls. F2 switches scenery/limited existing enemies; N resets the eight fixed opponents; R restores the fixed practice loadout at the east gate; Tab shows the authored layout; Esc pauses; G or the camp button returns. The three top buttons are comparison checkpoints, not campaign travel unlocks. The trial has a fixed four-hit/moving-slash practice loadout, no XP, economy, boss, settlement, profile writes or save unlocks. Existing temple/jungle progression remains unchanged.
+
+The 7200×4800 reference is expressed as shared building/water/bridge records with shop-front groups, produce/pottery stalls, warehouses/loading traces, a fixed quay/boat and opposite-bank buildings. Foreground house fading protects the actor while retaining collision. These are simple representative meshes; human place identity, beauty and combat feel are still unverified.
+
+Automated 60Hz input-driven traversal, with current speed/camera and no enemies or viewing dwell:
+
+| Route | Walk | Frequent dash |
+|---|---:|---:|
+| East gate → market | 18.25 s | 14.27 s |
+| Market → quay viewpoint | 11.53 s | 8.97 s |
+| Quay → sluice → east gate → warehouse return → market → quay | 47.73 s | 37.50 s |
+
+These are navigation-shortest locomotion measurements plus a fixed waypoint return loop, not a human exploration/playtime result. Reproduce with `godot --headless --fixed-fps 60 --path . --script res://tests/measure_canal_city.gd`. `verify_canal_city.gd` checks isolation, terrain, bridge round trips, six existing chasers passing the bridge, water blocking and comparison reset. `capture_canal_city.gd` needs a real graphical display and writes five actual engine screenshots; set `CANAL_CAPTURE_DIR` to an absolute output folder.
+
+The same build also restores permanent-card unlock notices to the level-up modal (including overflow choices), and fixes compact camp equipment option fit. These change presentation only.
+
+Package scope: runnable Godot source. No new native macOS/Windows export, signing or device test is claimed for v29. Linux 4.6.3 GL Compatibility renders were captured with llvmpipe; audio playback and long-session GPU performance remain unverified. See `DEV_STATUS.md` for the exact final test record and next work.
+
+---
+
+# Previous playable baseline: Readability & Jungle Density v25
 
 The v25 trial presents each discovered place and awakening as a compact card with its core effect, active state and next action. Camp gear shows the chosen item, awakening and replacement options together. The live HUD shows an XP bar beside the current level. The fourth basic hit no longer enlarges the player model. Near-side walls in both hidden fields are lowered while collision remains, and the jungle boss court's obstructing structures are reduced or moved. Ambient enemy spawn rates and the ordinary enemy cap are 1.5× the earlier baseline (72 cap), with closer spawns; the jungle forest, ruin crossing and riverbank use distinct low scenery and enemy mixes. These are playtest values; human difficulty and readability are pending.
 

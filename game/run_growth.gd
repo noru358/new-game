@@ -53,6 +53,7 @@ var choice_buttons: Array[Button] = []
 var reroll_button: Button
 var rerolls_left := 0
 var unlock_notice := ""
+var unlock_notice_label: Label
 var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
 var permanent_combo_progression := false
@@ -94,7 +95,8 @@ func on_enemy_defeated(enemy: TrainingEnemy) -> void:
 func gain_xp(amount: int) -> void:
 	if amount <= 0 or growth_ended:
 		return
-	unlock_notice = ""
+	# Keep every unlock earned during this choice window, including overflow XP.
+	if not choosing: unlock_notice = ""
 	xp += amount
 	while xp >= next_xp():
 		xp -= next_xp()
@@ -107,7 +109,7 @@ func gain_xp(amount: int) -> void:
 			var names: Array[String] = []
 			for card_id in newly_unlocked:
 				names.append(CARDS[card_id].name)
-			unlock_notice = "새 카드 해금: " + ", ".join(names)
+			unlock_notice += (", " if not unlock_notice.is_empty() else "영구 카드 해금: ") + ", ".join(names)
 	if permanent_combo_progression: _sync_permanent_moves()
 	_update_hud()
 	if choosing:
@@ -161,6 +163,8 @@ func end_run() -> void:
 
 func _refresh_choices() -> void:
 	choice_title.text = "레벨 %d  ·  강화 선택  ·  남은 %dpt" % [level, pending_choices]
+	unlock_notice_label.visible = not unlock_notice.is_empty()
+	unlock_notice_label.text = unlock_notice + "\n강화 후보에 추가됨 · 직접 선택해야 이번 런에 적용" if not unlock_notice.is_empty() else ""
 	for i in range(choice_buttons.size()):
 		var button := choice_buttons[i]
 		if i >= current_choices.size():
@@ -458,7 +462,7 @@ func _build_ui() -> void:
 	add_child(modal_canvas)
 	modal_canvas.add_child(overlay)
 	choice_title = Label.new()
-	choice_title.position = Vector2(140, 130)
+	choice_title.position = Vector2(140, 80)
 	choice_title.add_theme_font_size_override("font_size", 38)
 	choice_title.add_theme_color_override("font_color", Color("f5e8bd"))
 	overlay.add_child(choice_title)
@@ -470,10 +474,19 @@ func _build_ui() -> void:
 	overlay.add_child(last_choice_label)
 	var help := Label.new()
 	help.text = "1 / 2 / 3 키 또는 카드를 클릭  ·  선택하는 동안 전투 정지"
-	help.position = Vector2(140, 190)
+	help.position = Vector2(140, 143)
 	help.add_theme_font_size_override("font_size", 19)
 	help.add_theme_color_override("font_color", Color("c4e9e8"))
 	overlay.add_child(help)
+	unlock_notice_label = Label.new()
+	unlock_notice_label.position = Vector2(140, 176)
+	unlock_notice_label.size = Vector2(1000, 64)
+	unlock_notice_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	unlock_notice_label.add_theme_font_size_override("font_size", 18)
+	unlock_notice_label.add_theme_color_override("font_color", Color("8ee4df"))
+	unlock_notice_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	unlock_notice_label.hide()
+	overlay.add_child(unlock_notice_label)
 	for i in range(3):
 		var button := Button.new()
 		button.position = Vector2(140 + i * 335, 250)

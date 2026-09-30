@@ -13,6 +13,7 @@ var currency_label: Label
 var progress_label: Label
 var status_label: Label
 var save_folder_button: Button
+var canal_trial_button: Button
 var start_button: Button
 var temple_region_button: Button
 var jungle_region_button: Button
@@ -110,6 +111,8 @@ func _build_ui() -> void:
 	supply_toggle_button = _button(supplies, "", _toggle_supply)
 	supply_buy_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	supply_toggle_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	canal_trial_button = _button(region, "개발 시험 · 수로도시 장소 경험 (저장·보상 없음)", _depart_canal_trial)
+	canal_trial_button.custom_minimum_size.y = 34
 	start_button = _button(root_box, "청록 폐사원 출정", _depart)
 	start_button.custom_minimum_size.y = 54
 	tabs.tab_changed.connect(func(index: int): start_button.visible = index == 0)
@@ -136,13 +139,13 @@ func _build_ui() -> void:
 	gear_detail_column.name = "효과·각성과 교체 옵션"
 	gear_detail_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gear_detail_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	gear_detail_column.add_theme_constant_override("separation", 9)
+	gear_detail_column.add_theme_constant_override("separation", 6)
 	gear_columns.add_child(gear_detail_column)
 	gear_effects_label = RichTextLabel.new()
 	gear_effects_label.bbcode_enabled = true
 	gear_effects_label.fit_content = true
 	gear_effects_label.scroll_active = false
-	gear_effects_label.add_theme_font_size_override("normal_font_size", 17)
+	gear_effects_label.add_theme_font_size_override("normal_font_size", 16)
 	gear_detail_column.add_child(gear_effects_label)
 	var detail_heading := HBoxContainer.new()
 	detail_heading.add_theme_constant_override("separation", 6)
@@ -539,3 +542,9 @@ func _toggle_supply() -> void:
 func _depart() -> void:
 	if profile.load_error or not profile.region_available(selected_region_id): return
 	get_tree().change_scene_to_file(JUNGLE_SCENE if selected_region_id == RunProfile.JUNGLE_REGION else REGION_SCENE)
+
+
+func _depart_canal_trial() -> void:
+	# No region selection, profile mutation or supply consumption.
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://game/canal_city_trial.tscn")
