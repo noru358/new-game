@@ -184,6 +184,7 @@ func _build_boss_figure(visual: Node3D) -> void:
 
 
 func _encounter_cue() -> String:
+	if _spawn_rate() <= 0.0: return ""
 	var phase := _encounter_phase()
 	if phase.is_empty(): return ""
 	if float(phase.get("rate", 0.0)) < 0.0:

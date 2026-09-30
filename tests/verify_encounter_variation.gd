@@ -51,6 +51,10 @@ func _run() -> void:
 		check(scene._spawn_rate() < 1.65, "pressure is followed by recovery")
 		if path.ends_with("jungle_pass.tscn"):
 			check(scene._encounter_cue().contains("합류 감소") and scene._encounter_cue().contains("남은 적"), "recovery cue describes fewer new spawns without claiming existing enemies vanished")
+		scene.run_time = 140.0
+		scene.temple_section.in_garden = true
+		check(scene._spawn_rate() == 0.0 and scene._encounter_cue().is_empty(), "hidden fixed encounters never show ambient arrival cues")
+		scene.temple_section.in_garden = false
 		scene.boss_spawned = true
 		check(scene._encounter_phase().is_empty() and scene._encounter_cue().is_empty() and is_equal_approx(scene._spawn_rate(), 0.25), "boss phase has no extra wave pressure")
 		scene.queue_free()

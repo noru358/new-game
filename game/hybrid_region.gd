@@ -627,6 +627,7 @@ func _update_run_hud() -> void:
 
 
 func _encounter_cue() -> String:
+	if _spawn_rate() <= 0.0: return ""
 	var phase := _encounter_phase()
 	return String(phase.get("name", ""))
 
