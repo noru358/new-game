@@ -473,7 +473,8 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	_top(st, render_bounds, func(_p): return 0.0, ground_color)
 	for floor in terrain.floor_areas:
 		if not render_bounds.intersects(floor.area): continue
-		_top(st, floor.area, func(_p): return float(floor.get("height", 0.7)), floor.color)
+		for area in terrain.surface_areas(floor):
+			_top(st, area, func(_p): return float(floor.get("height", 0.7)), floor.color)
 	for water in terrain.water_areas:
 		if not render_bounds.intersects(water): continue
 		_top(st, water, func(_p): return 1.0, Color("39858b"))
@@ -483,7 +484,8 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	for plateau in terrain.plateaus:
 		if not render_bounds.intersects(plateau.area): continue
 		var elevation := func(_p): return plateau.height
-		_top(st, plateau.area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
+		for area in terrain.surface_areas(plateau):
+			_top(st, area, elevation, Color("d6cfb1") if plateau.height == 160 else plateau_color)
 		for edge in terrain.plateau_edge_spans(plateau):
 			_queue_plateau_face(edge, plateau.height, plateau.base, cliff_color)
 			var lip: Rect2

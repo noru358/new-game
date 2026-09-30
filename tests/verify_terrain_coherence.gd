@@ -94,7 +94,7 @@ func _run() -> void:
 	player.hurt_immunity = 1000.0
 	for action in ["move_up", "move_down"]:
 		var flat_screen: float = await _sample_screen_y(scene, Vector2(430, 1210), action)
-		for point in [Vector2(3420, 1120), Vector2(3350, 1770), Vector2(3890, 1770)]:
+		for point in [Vector2(3420, 1120), Vector2(3350, 1770), Vector2(3890, 1770), Vector2(2890, 1460)]:
 			var slope_screen: float = await _sample_screen_y(scene, point, action)
 			_check(signf(slope_screen) == signf(flat_screen) and absf(slope_screen) >= absf(flat_screen) * 0.9, "screen %s keeps flat-ground vertical progress on %s: %.1f / %.1f" % [action, scene.terrain.surface_name(point), slope_screen, flat_screen])
 	for region in [scene.terrain, TempleHybridTerrain.new(), HybridTerrain.new()]:

@@ -1,4 +1,4 @@
-# Loop Conquest — Exploration and Awakening v23
+# Loop Conquest — Jungle Routes v24
 
 The jungle grotto is a fixed 4200×2800 exploration field: a winding stream, branching ravines, open pools, inner ruins and a western return passage. The first visit targets 2–3 minutes; this is a playtest target, not a measured duration. Reach the inner ruins and press E for the permanent echo-weapon awakening. The two local enemy groups may be fought or avoided; no kill quota or puzzle gates the reward. The temple garden keeps its three-guardian challenge. Repeat grotto visits can heal 20% maximum HP once per run at the ruins.
 
