@@ -42,6 +42,7 @@ var wisp_visual: MeshInstance3D
 var wisp_visuals: Dictionary = {}
 var wisp_motion: Dictionary = {}
 var growth_save_prefix := "user://loop_conquest_hybrid_lab_unlocks"
+var growth_persists := true
 var attack_visual := MeshInstance3D.new()
 var attack_mesh := ImmediateMesh.new()
 var moving_slash_visual := MeshInstance3D.new()
@@ -138,6 +139,7 @@ func _ready() -> void:
 	growth = GrowthScript.new()
 	growth.setup(simulation, player, wisp)
 	growth.unlocks.save_prefix = growth_save_prefix
+	growth.unlocks.save_enabled = growth_persists
 	growth.basic_speed_base = player.basic_speed_bonus
 	growth.hud_position = Vector2(28, 128)
 	# Keep the accepted two-charge movement baseline in this comparison scene.

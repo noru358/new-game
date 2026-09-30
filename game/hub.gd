@@ -4,6 +4,7 @@ const ProfileScript = preload("res://game/run_profile.gd")
 const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const REGION_SCENE := "res://game/hybrid_region.tscn"
 const JUNGLE_SCENE := "res://game/jungle_pass.tscn"
+const CANAL_TRIAL_SCENE := "res://game/canal_city_trial.tscn"
 
 var profile: RunProfile
 var profile_save_prefix := "user://loop_conquest_profile"
@@ -110,6 +111,8 @@ func _build_ui() -> void:
 	supply_toggle_button = _button(supplies, "", _toggle_supply)
 	supply_buy_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	supply_toggle_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var trial := _button(region, "개발 시험 · 수로도시 대표 구간 (진행·보상 저장 없음)", func(): get_tree().change_scene_to_file(CANAL_TRIAL_SCENE))
+	trial.add_theme_font_size_override("font_size", 15)
 	start_button = _button(root_box, "청록 폐사원 출정", _depart)
 	start_button.custom_minimum_size.y = 54
 	tabs.tab_changed.connect(func(index: int): start_button.visible = index == 0)

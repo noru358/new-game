@@ -4,3 +4,4 @@
 .DS_Store
 
 verification-logs/
+/docs/maps/*.import
