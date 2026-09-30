@@ -136,13 +136,13 @@ func _build_ui() -> void:
 	gear_detail_column.name = "효과·각성과 교체 옵션"
 	gear_detail_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gear_detail_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	gear_detail_column.add_theme_constant_override("separation", 9)
+	gear_detail_column.add_theme_constant_override("separation", 6)
 	gear_columns.add_child(gear_detail_column)
 	gear_effects_label = RichTextLabel.new()
 	gear_effects_label.bbcode_enabled = true
 	gear_effects_label.fit_content = true
 	gear_effects_label.scroll_active = false
-	gear_effects_label.add_theme_font_size_override("normal_font_size", 17)
+	gear_effects_label.add_theme_font_size_override("normal_font_size", 16)
 	gear_detail_column.add_child(gear_effects_label)
 	var detail_heading := HBoxContainer.new()
 	detail_heading.add_theme_constant_override("separation", 6)
