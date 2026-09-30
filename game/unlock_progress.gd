@@ -8,6 +8,7 @@ const MILESTONES := {
 }
 
 var save_prefix := "user://loop_conquest_1d_unlocks"
+var save_enabled := true
 var lifetime_levelups := 0
 var generation := 0
 
@@ -15,6 +16,7 @@ var generation := 0
 func load_progress() -> void:
 	lifetime_levelups = 0
 	generation = 0
+	if not save_enabled: return
 	for suffix in ["_a.json", "_b.json"]:
 		var path: String = save_prefix + suffix
 		if not FileAccess.file_exists(path):
@@ -51,6 +53,7 @@ func is_unlocked(card_id: String) -> bool:
 
 
 func _save_progress() -> void:
+	if not save_enabled: return
 	var next_generation := generation + 1
 	var suffix := "_a.json" if next_generation % 2 == 1 else "_b.json"
 	var file := FileAccess.open(save_prefix + suffix, FileAccess.WRITE)
