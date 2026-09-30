@@ -49,7 +49,7 @@ The preparation tabs spend one shared banked currency on a first-region moving-s
 
 Save compatibility is forward only after the v3 profile format introduced in v10: older builds may reject a profile after the new build saves it. Continue play with v10 or later after equipping options.
 
-See `DEV_STATUS.md` for the current work and `LOOP_CONQUEST_MASTER.md` for the design rules.
+See `DEV_STATUS.md` for the current work and `LOOP_CONQUEST_MASTER.md` for the design rules. The next production sequence and its completion criteria are in [`docs/PRODUCTION_NEXT.md`](docs/PRODUCTION_NEXT.md). This planning update does not change the v25 game build. Check the latest working branch: `main` was still at the older 1G build when this plan was written.
 
 ## Audit follow-up v17
 
