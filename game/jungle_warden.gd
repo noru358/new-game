@@ -1,6 +1,7 @@
 class_name JungleWarden
 extends "res://game/gate_boss.gd"
 
+const WARDEN_HEALTH := 2000.0
 const SWEEP_WARNING := 0.70
 const SWEEP_FORWARD_MIN := -60.0
 const SWEEP_FORWARD_MAX := 310.0
@@ -9,6 +10,7 @@ const SWEEP_DAMAGE := 22.0
 const GUST_WARNING := 0.85
 const GUST_REACH := 560.0
 const GUST_DAMAGE := 10.0
+const GUST_SAFE_RADIUS := 185.0
 
 var sweep_warning := 0.0
 var gust_warning := 0.0
@@ -23,7 +25,7 @@ var pending_gust := false
 
 func _ready() -> void:
 	super._ready()
-	max_health = 760.0
+	max_health = WARDEN_HEALTH
 	health = max_health
 	contact_margin = 5.0
 
@@ -80,7 +82,9 @@ func _begin_warden_attack(gust: bool) -> void:
 	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
 	warning_duration = 0.70 if phase == 1 else 0.62
 	if gust:
-		gust_warning = 0.70 if phase == 1 else 0.62
+		# A broad outer wind forces a different response from the front sweep.
+		warning_duration = 0.95 if phase == 1 else 0.85
+		gust_warning = warning_duration
 	else:
 		sweep_warning = 0.70 if phase == 1 else 0.62
 	attacks_started += 1
@@ -110,7 +114,7 @@ func suspend_encounter() -> void:
 func combat_cue() -> String:
 	if recovery_time > 0.0: return ""
 	if sweep_warning > 0.0: return "횡쓸기 · 표시된 띠 밖으로"
-	if gust_warning > 0.0: return "강풍 · 부채꼴 옆으로"
+	if gust_warning > 0.0: return "바깥 강풍 · 보스 가까이 파고들기"
 	if combo_gap > 0.0: return "후속 공격 주의"
 	return "위치 잡기"
 
@@ -127,10 +131,9 @@ func _strike_sweep() -> void:
 func _strike_gust() -> void:
 	if not is_instance_valid(target) or not _damage_path_clear(): return
 	var offset := target.global_position - global_position
-	var forward := offset.dot(locked_direction)
-	var side := absf(offset.dot(locked_direction.orthogonal()))
-	if forward < 0.0 or forward > GUST_REACH + (60.0 if phase == 2 else 0.0) or side > maxf(55.0, forward * 0.58): return
+	var distance := offset.length()
+	if distance < GUST_SAFE_RADIUS or distance > GUST_REACH + (60.0 if phase == 2 else 0.0): return
 	var prior_health: float = target.health
 	target.receive_hit(GUST_DAMAGE, global_position)
 	if target.health < prior_health:
-		target.hurt_recoil = locked_direction * (530.0 if phase == 2 else 420.0)
+		target.hurt_recoil = offset.normalized() * (530.0 if phase == 2 else 420.0)

@@ -18,7 +18,7 @@ func _run() -> void:
 	boss.set_physics_process(false)
 	player.position = boss.position + Vector2(20, 0)
 	boss._beast_velocity(0.01)
-	check(boss.max_health == 760 and boss.sweep_warning > 0, "unchanged stats and visible close-range sweep")
+	check(boss.max_health == 2000 and boss.sweep_warning > 0, "trial health and visible close-range sweep")
 	var hp := player.health
 	boss._beast_velocity(0.71)
 	check(player.health == hp - JungleWarden.SWEEP_DAMAGE, "point blank no longer bypasses the sweep")
@@ -37,17 +37,17 @@ func _run() -> void:
 	player.position = boss.position + Vector2(450, 0)
 	boss._beast_velocity(0.01)
 	check(boss.gust_warning > 0, "gust threatens farther targets")
-	player.position += Vector2(0, 340)
-	boss._beast_velocity(0.71)
-	check(player.health == hp, "leaving fan sideways avoids gust")
-	boss.take_hit(320, Vector2.RIGHT, false)
+	player.position = boss.position + Vector2(100, 0)
+	boss._beast_velocity(0.96)
+	check(player.health == hp, "approaching the inner calm avoids outer wind")
+	boss.take_hit(boss.max_health * 0.45, Vector2.RIGHT, false)
 	boss.recovery_time = 0
 	boss.next_attack_gust = false
 	player.position = boss.position + Vector2(100, 0)
 	var before := boss.attacks_fired
 	boss._beast_velocity(0.01)
 	for i in 3:
-		boss._beast_velocity(0.71)
+		boss._beast_velocity(0.96)
 		if i < 2:
 			check(boss.combo_gap > 0 and boss.recovery_time == 0, "late sequence continues before recovery")
 			player.position = boss.position + Vector2(0, 100) if i == 0 else boss.position - Vector2(100, 0)

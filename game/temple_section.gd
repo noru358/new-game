@@ -170,6 +170,7 @@ func claim_garden_reward() -> bool:
 		arena.apply_garden_awakening()
 		garden_message = "정원 각성 저장 완료 · 여우불 장신구 마탄 +20%p / 연쇄 +1"
 		if arena.profile.equipped_accessory != "A_EMBER": garden_message += "\n야영지에서 여우불 장신구를 구매·장착하면 적용됩니다."
+		arena.show_awakening_reward("EMBER_GARDEN")
 	_update_hud()
 	return true
 
@@ -260,8 +261,8 @@ func _update_hud() -> void:
 
 	if in_garden:
 		section_hud.text = "숨은 정원 · 수호 적 %d / 3 · 안쪽 제단으로" % guardians_defeated
-		section_hud.text += "\n서쪽 입구로 돌아가면 회랑 복귀 · 본편 시간은 계속 흐릅니다"
-	if not garden_message.is_empty(): section_hud.text += "\n" + garden_message
+		section_hud.text += "\n서쪽 입구로 회랑 복귀"
+	if garden_message.contains("실패"): section_hud.text += "\n" + garden_message
 
 
 func _build_destination() -> void:
@@ -336,8 +337,10 @@ func _build_ui() -> void:
 	canvas.layer = 35
 	add_child(canvas)
 	section_hud = Label.new()
-	section_hud.position = Vector2(28, 350)
-	section_hud.add_theme_font_size_override("font_size", 18)
+	section_hud.position = Vector2(28, 138)
+	section_hud.size.x = 380
+	section_hud.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	section_hud.add_theme_font_size_override("font_size", 17)
 	section_hud.add_theme_color_override("font_shadow_color", Color.BLACK)
 	section_hud.add_theme_constant_override("shadow_offset_x", 2)
 	section_hud.add_theme_constant_override("shadow_offset_y", 2)
@@ -389,9 +392,10 @@ func _set_field(value: bool) -> void:
 	portal_cooldown = 0.8
 	arena.terrain_mesh.visible = not value
 	arena.garden_terrain_mesh.visible = value
+	arena.set_main_decor_visible(not value)
 	boundary_visual.visible = not value
 	arena.player.arena_bounds = layout.FIELD_BOUNDS if value else layout.MAIN_BOUNDS
-	arena.overview_camera_size = 37.0 if value else main_overview_size
+	arena.overview_camera_size = maxf(37.0, layout.FIELD_BOUNDS.size.x * 0.012) if value else main_overview_size
 	arena.overview = false
 	arena.camera.size = arena.combat_camera_size
 	arena.teleport(layout.FIELD_ENTRY if value else layout.RETURN_POINT)

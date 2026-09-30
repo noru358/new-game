@@ -18,7 +18,7 @@ func _run() -> void:
 	boss.set_physics_process(false)
 	player.position = boss.position + Vector2(560, 0)
 	boss._beast_velocity(0.01)
-	check(boss.max_health == 700 and boss.warning_time > 0 and boss.charge_reach() >= 560, "unchanged health, charge threatens beyond old chase-only range")
+	check(boss.max_health == 1800 and boss.warning_time > 0 and boss.charge_reach() >= 560, "trial health, charge threatens beyond old chase-only range")
 	var direction := boss.locked_direction
 	var warning := boss.warning_time
 	player.position += Vector2(0, 150)
@@ -45,7 +45,7 @@ func _run() -> void:
 	hp = player.health
 	boss._beast_velocity(0.56)
 	check(player.health == hp, "walking outside the warned pulse avoids damage")
-	boss.take_hit(300, Vector2.RIGHT, false)
+	boss.take_hit(boss.max_health * 0.45, Vector2.RIGHT, false)
 	boss.recovery_time = 0
 	boss.next_attack_shock = false
 	player.position = boss.position + Vector2(300, 0)

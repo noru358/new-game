@@ -50,7 +50,7 @@ func _run() -> void:
 							direction = [-boss.locked_direction, boss.locked_direction, boss.locked_direction.orthogonal(), -boss.locked_direction.orthogonal()][int(choices[0].y)] if choices[0].x > 0 else Vector2.ZERO
 							attack = false
 						elif boss.gust_warning > 0:
-							direction = boss.locked_direction.orthogonal()
+							direction = -away if distance > 120 else Vector2.ZERO
 							attack = false
 					else:
 						if boss.warning_time > 0 or boss.charge_time > 0:

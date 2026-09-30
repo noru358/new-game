@@ -5,6 +5,7 @@ const GATE_BOSS_POINTS := [Vector2(4700, 800), Vector2(4700, 1200), Vector2(4700
 var canopy_visuals: Dictionary = {}
 var gate_route_encounter := ""
 var gate_route_crest_triggered := false
+var main_decor: Array[Node3D] = []
 
 
 func region_layout():
@@ -52,9 +53,16 @@ func _init() -> void:
 
 func _ready() -> void:
 	super._ready()
+	var before := get_children()
 	_build_gate_silhouette()
 	_build_jungle_silhouette()
 	_build_gate_approaches()
+	for child in get_children():
+		if child is Node3D and not before.has(child): main_decor.append(child)
+
+
+func set_main_decor_visible(value: bool) -> void:
+	for visual in main_decor: visual.visible = value
 
 
 func _physics_process(delta: float) -> void:
@@ -107,6 +115,9 @@ func _process(delta: float) -> void:
 	figure.rotation.z = 0.22 * (1.0 - boss.sweep_warning / JungleWarden.SWEEP_WARNING) if boss.sweep_warning > 0.0 else -0.34 if boss.sweep_burst_time > 0.0 else 0.0
 	figure.rotation.x = 0.25 if boss.recovery_time > 0.0 else -0.18 if boss.gust_warning > 0.0 else 0.22 if boss.gust_burst_time > 0.0 else 0.0
 	if boss.recovery_time > 0.0 and boss.hit_flash <= 0.0: (figure.get_node("BossCore").material_override as StandardMaterial3D).albedo_color = Color("8ee4df")
+	if boss.counter_flash > 0.0:
+		figure.rotation.z += sin(boss.counter_flash * 65.0) * 0.13
+		(figure.get_node("BossCore").material_override as StandardMaterial3D).albedo_color = Color("fff0bd")
 
 
 func _animate_boss_arms(figure: Node3D) -> void:
@@ -193,19 +204,14 @@ func _draw_boss_warning() -> void:
 				_warden_warning_quad(a, b, c, d, elevation, Color(1.0, 0.46, 0.18, 0.72 if boss.sweep_burst_time > 0.0 else _warning_strength(boss.sweep_warning, boss.warning_duration)))
 	else:
 		var reach: float = JungleWarden.GUST_REACH + (60.0 if boss.phase == 2 else 0.0)
-		for i in 20:
-			var f0 := reach * float(i) / 20.0
-			var f1 := reach * float(i + 1) / 20.0
-			var w0 := maxf(55.0, f0 * 0.58)
-			var w1 := maxf(55.0, f1 * 0.58)
-			var a := center + forward * f0 - side * w0
-			var b := center + forward * f0 + side * w0
-			var c := center + forward * f1 + side * w1
-			var d := center + forward * f1 - side * w1
-			if clear_attack(center, a) and clear_attack(center, b) and clear_attack(center, c) and clear_attack(center, d):
-				if boss.gust_warning > 0.0 and float(i + 1) / 20.0 <= 1.0 - boss.gust_warning / boss.warning_duration:
-					_warden_warning_quad(a, b, c, d, elevation + 1.0, Color(0.75, 1.0, 1.0, 0.22))
-				_warden_warning_quad(a, b, c, d, elevation, Color(0.50, 0.94, 1.0, 0.68 if boss.gust_burst_time > 0.0 else _warning_strength(boss.gust_warning, boss.warning_duration)))
+		var inner: float = JungleWarden.GUST_SAFE_RADIUS
+		var alpha := 0.68 if boss.gust_burst_time > 0.0 else _warning_strength(boss.gust_warning, boss.warning_duration)
+		_draw_boss_area(center, elevation, inner, reach, Color(0.50, 0.94, 1.0, alpha))
+		_draw_boss_ring(center, elevation + 1.0, inner, 10.0, Color(0.82, 1.0, 0.93, 0.95))
+		_draw_boss_ring(center, elevation + 1.0, reach, 8.0, Color(0.50, 0.94, 1.0, 0.9))
+		if boss.gust_warning > 0.0:
+			var progress := clampf(1.0 - boss.gust_warning / boss.warning_duration, 0.0, 1.0)
+			_draw_boss_ring(center, elevation + 2.0, lerpf(reach, inner, progress), 5.0, Color(0.85, 1.0, 1.0, 0.9))
 	boss_warning_mesh.surface_end()
 
 

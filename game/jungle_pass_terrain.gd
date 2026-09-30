@@ -101,7 +101,7 @@ func height_at(point: Vector2) -> float:
 
 
 func surface_name(point: Vector2) -> String:
-	if Grotto.FIELD_BOUNDS.has_point(point): return "폭포 뒤 숨은 계곡"
+	if Grotto.FIELD_BOUNDS.has_point(point): return Grotto.surface_name(point)
 	for ramp in ramps:
 		if ramp.area.has_point(point): return ramp.name
 	if plateaus[3].area.has_point(point) or plateaus[4].area.has_point(point): return "관문 상단"

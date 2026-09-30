@@ -28,7 +28,7 @@ func _run() -> void:
 	_check(boss.warning_time >= 0.0 and boss.charge_time >= 0.0 and boss.shock_warning >= 0.0, "live boss state remains valid across multiple cycles")
 	var started_before: int = boss.attacks_started
 	var fired_before: int = boss.attacks_fired
-	boss.take_hit(300.0, Vector2.RIGHT, false)
+	boss.take_hit(boss.max_health * 0.45, Vector2.RIGHT, false)
 	for i in 600: await physics_frame
 	_check(boss.phase == 2 and boss.attacks_started >= started_before + 2 and boss.attacks_fired >= fired_before + 2, "second phase keeps using its faster attacks in live physics")
 	scene.queue_free()

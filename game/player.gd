@@ -330,7 +330,7 @@ func _hit_moving_slash(from: Vector2, to: Vector2) -> void:
 		if enemy.global_position.distance_to(closest) > MOVING_SLASH_RADIUS + moving_slash_radius_bonus + enemy.collision_radius: continue
 		if attack_path_filter.is_valid() and not attack_path_filter.call(closest, enemy.global_position): continue
 		moving_slash_targets[id] = true
-		enemy.take_hit(MOVING_SLASH_DAMAGE * (1.0 + moving_slash_damage_bonus), moving_slash_direction, false, 1.1)
+		enemy.take_direct_hit(MOVING_SLASH_DAMAGE * (1.0 + moving_slash_damage_bonus), moving_slash_direction, false, 1.1)
 		if flow_weave_enabled: flow_weave_ready = true
 		moving_slash_landed.emit(enemy.global_position)
 		_play_sound("res://game/audio/hit.wav", impact_audio)
@@ -462,7 +462,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 			flow_wave_center = enemy.global_position
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
-		enemy.take_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0) * (1.0 + echo_finisher_damage_bonus if echo_finisher_enabled and attack_step == 4 else 1.0), push_direction, finisher)
+		var counter: bool = enemy.take_direct_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0) * (1.0 + echo_finisher_damage_bonus if echo_finisher_enabled and attack_step == 4 else 1.0), push_direction, finisher)
 		if flow_weave_attack and not flow_weave_refund_used:
 			moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - 0.22 - flow_weave_refund_bonus)
 			flow_weave_refund_used = true
@@ -476,6 +476,9 @@ func _hit_enemies(attack: Dictionary) -> void:
 			if attack_step <= 2:
 				attack_hitstop_remaining = (0.025 if attack_step == 1 else 0.040) * attack_hitstop_scale
 			impact_audio.pitch_scale = 1.22 if attack_step == 3 else 0.82 if finisher else 1.13 if attack_step == 1 else 0.98
+			if counter:
+				impact_audio.pitch_scale = 0.68
+				attack_hitstop_remaining = maxf(attack_hitstop_remaining, 0.055 * attack_hitstop_scale)
 			_play_sound("res://game/audio/hit.wav", impact_audio)
 	if flow_wave_center != Vector2.INF:
 		_trigger_flow_wave(flow_wave_center)
