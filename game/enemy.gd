@@ -294,6 +294,11 @@ func _spread_direction(direction: Vector2) -> Vector2:
 	return spread if navigation == null or navigation.has_clear_path(global_position, global_position + spread * 48.0) else direction
 
 
+func take_direct_hit(damage: float, push_direction: Vector2, is_finisher: bool, impact_scale: float = 1.0) -> bool:
+	take_hit(damage, push_direction, is_finisher, impact_scale)
+	return false
+
+
 func take_hit(damage: float, push_direction: Vector2, is_finisher: bool, impact_scale: float = 1.0) -> void:
 	gathering = false
 	_interrupt_special()

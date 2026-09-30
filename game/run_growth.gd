@@ -56,6 +56,7 @@ var unlock_notice := ""
 var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
 var permanent_combo_progression := false
+var compact_hud := false
 var permanent_wisp_cadence_reduction := 0.0
 var permanent_wisp_chain_bonus := 0.0
 var last_followup_attack := -1
@@ -387,6 +388,9 @@ func _heal(fraction: float) -> void:
 
 func _update_hud() -> void:
 	if hud == null:
+		return
+	if compact_hud:
+		hud.text = "LV %d   XP %d / %d" % [level, xp, next_xp()]
 		return
 	hud.text = "LV %d  |  XP %d / %d  |  누적 레벨업 %d  |  여우불 %d" % [
 		level, xp, next_xp(), unlocks.lifetime_levelups, wisps.size()

@@ -897,6 +897,8 @@ func _update_hud() -> void:
 	if hud == null: return
 	var death_hint := "쓰러졌습니다 · R로 다시 시작" if show_practice_controls else "쓰러졌습니다"
 	var next_hud := "%s  ·  %s\nHP %d   대시 %d/%d   연계 %d타   처치 %d\n%s" % [scene_hud_title, terrain.surface_name(player.position), player.health, player.dash_charges, player.dash_max_charges, player.combo_limit(), kills, death_hint if player.health <= 0 else ""]
+	if not show_practice_controls:
+		next_hud = "%s\nHP %d / %d     대시 %d / %d" % [terrain.surface_name(player.position), ceili(player.health), ceili(player.max_health), player.dash_charges, player.dash_max_charges]
 	if hud.text != next_hud: hud.text = next_hud
 	if player_health_bar != null:
 		player_health_bar.max_value = player.max_health
@@ -1213,7 +1215,7 @@ func _build_ui() -> void:
 	add_child(canvas)
 	var panel := ColorRect.new()
 	panel.position = Vector2(16, 16)
-	panel.size = Vector2(445, 172)
+	panel.size = Vector2(445, 172) if show_practice_controls else Vector2(385, 102)
 	panel.color = Color(0.05, 0.12, 0.14, 0.88)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(panel)
@@ -1222,7 +1224,7 @@ func _build_ui() -> void:
 	hud.add_theme_font_size_override("font_size", 20)
 	canvas.add_child(hud)
 	player_health_bar = ProgressBar.new()
-	player_health_bar.position = Vector2(28, 101)
+	player_health_bar.position = Vector2(28, 101 if show_practice_controls else 90)
 	player_health_bar.size = Vector2(280, 12)
 	player_health_bar.show_percentage = false
 	player_health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1232,13 +1234,13 @@ func _build_ui() -> void:
 	canvas.add_child(player_health_bar)
 	player_health_warning = Label.new()
 	player_health_warning.text = "체력 위험"
-	player_health_warning.position = Vector2(322, 92)
+	player_health_warning.position = Vector2(322, 92 if show_practice_controls else 84)
 	player_health_warning.add_theme_color_override("font_color", Color("ff998a"))
 	player_health_warning.hide()
 	canvas.add_child(player_health_warning)
 	build_summary_label = Label.new()
-	build_summary_label.position = Vector2(28, 276)
-	build_summary_label.size.x = 440
+	build_summary_label.position = Vector2(28, 620)
+	build_summary_label.size.x = 720
 	build_summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	build_summary_label.add_theme_font_size_override("font_size", 16)
 	build_summary_label.add_theme_color_override("font_shadow_color", Color.BLACK)
@@ -1259,6 +1261,10 @@ func _build_ui() -> void:
 	help.add_theme_constant_override("shadow_offset_x", 1)
 	help.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(help)
+	if not show_practice_controls:
+		help.text = "Tab 지도   ·   Esc 카드 / 장비 / 각성 / 조작"
+		help.position = Vector2(850, 680)
+		help.add_theme_font_size_override("font_size", 16)
 	var roles := Label.new()
 	roles.text = "적: 회색 추격 · 빨강 돌진 · 금빛 사격 · 청록 장판 · 보라 강화"
 	roles.position = Vector2(20, 643)
@@ -1267,6 +1273,7 @@ func _build_ui() -> void:
 	roles.add_theme_constant_override("shadow_offset_x", 1)
 	roles.add_theme_constant_override("shadow_offset_y", 1)
 	canvas.add_child(roles)
+	roles.visible = show_practice_controls
 	if moving_slash_practice:
 		moving_slash_status = Label.new()
 		moving_slash_status.position = Vector2(20, 611)
@@ -1275,6 +1282,9 @@ func _build_ui() -> void:
 		moving_slash_status.add_theme_constant_override("shadow_offset_x", 1)
 		moving_slash_status.add_theme_constant_override("shadow_offset_y", 1)
 		canvas.add_child(moving_slash_status)
+		if not show_practice_controls:
+			moving_slash_status.position = Vector2(28, 680)
+			moving_slash_status.add_theme_font_size_override("font_size", 16)
 	var row := HBoxContainer.new()
 	row.position = Vector2(490 if landmark_points.size() > 5 else 590, 20)
 	canvas.add_child(row)

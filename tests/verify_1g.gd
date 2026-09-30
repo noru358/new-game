@@ -109,7 +109,7 @@ func _run() -> void:
 	var before: float = scene.player.health
 	scene.boss._beast_velocity(0.8)
 	_check(scene.player.health == before - GateBoss.SHOCK_DAMAGE, "boss shock deals its displayed radius damage")
-	scene.boss.take_hit(300.0, Vector2.RIGHT, false)
+	scene.boss.take_hit(scene.boss.max_health * 0.45, Vector2.RIGHT, false)
 	scene.boss.recovery_time = 0.0
 	scene.boss.ring_warning = GateBoss.RING_WARNING
 	scene._draw_boss_warning()
@@ -117,7 +117,7 @@ func _run() -> void:
 	_check(scene.boss.phase == 2 and scene.boss_warning_mesh.get_surface_count() > 0 and scene.run_hud.text.contains("안으로 파고들기"), "second phase shows a separate outer-ring dodge")
 	scene.player.health = 0.0
 	scene.death_pending = true
-	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
+	scene.boss.take_hit(scene.boss.max_health * 2.0, Vector2.RIGHT, true)
 	_check(is_instance_valid(scene.ending_visual) and not scene.actors.has(scene.boss) and not scene.ending_visual.get_node("HealthBar").visible, "boss visual transfers to its ending without a duplicate live body or health bar")
 	scene._physics_process(0.0)
 	_check(scene.end_result == "SUCCESS" and scene.run_ended and scene.profile.temple_owned and scene.profile.temple_relic and scene.profile.currency >= 50, "same-frame boss and player defeat resolves success and first-clear settlement")

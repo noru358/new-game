@@ -17,8 +17,9 @@ func _run() -> void:
 	root.add_child(hub)
 	await process_frame
 	hub.tabs.current_tab = 1
+	hub.gear_tabs.current_tab = 1
 	await process_frame
-	_check(hub.gear_list_scroll != hub.gear_detail_scroll and hub.gear_list_scroll.get_parent() == hub.gear_detail_scroll.get_parent().get_parent(), "gear choice and option detail have independent scroll views")
+	_check(hub.gear_list_scroll != hub.gear_detail_scroll and not hub.gear_list_scroll.is_ancestor_of(hub.gear_detail_scroll) and hub.gear_tabs.get_tab_count() == 2, "gear choice and option detail have independent scroll views")
 	var option_panel: Control = hub.gear_detail_scroll.get_child(0)
 	_check(option_panel.size.y <= hub.gear_detail_scroll.size.y and hub.mod_preview_label.global_position.y + hub.mod_preview_label.size.y <= hub.tabs.global_position.y + hub.tabs.size.y, "all four option rows and the selected description fit at 960×540")
 	for style_name in ["normal", "hover", "pressed", "hover_pressed", "disabled", "focus"]:
@@ -76,14 +77,14 @@ func _run() -> void:
 	hub.profile.currency = 100
 	hub._refresh()
 	await process_frame
-	var growth_scroll: ScrollContainer = hub.tabs.get_child(2)
-	var growth_y: float = hub.growth_buttons.VITALITY.global_position.y
+	var growth_scroll: ScrollContainer = hub.growth_tabs.get_child(0)
+	var growth_y: float = hub.growth_buttons.WISP.global_position.y
 	var power: Button = hub.growth_buttons.POWER
 	power.grab_focus()
 	for rank in 2:
 		power.pressed.emit()
 		await process_frame
-		_check(growth_scroll.scroll_vertical == 0 and absf(hub.growth_buttons.VITALITY.global_position.y - growth_y) < 0.5, "growth rank text changes do not shift the other category rows: rank %d / scroll %d / y %.1f → %.1f" % [rank + 1, growth_scroll.scroll_vertical, growth_y, hub.growth_buttons.VITALITY.global_position.y])
+		_check(growth_scroll.scroll_vertical == 0 and absf(hub.growth_buttons.WISP.global_position.y - growth_y) < 0.5, "growth rank text changes do not shift the other category rows: rank %d / scroll %d / y %.1f → %.1f" % [rank + 1, growth_scroll.scroll_vertical, growth_y, hub.growth_buttons.WISP.global_position.y])
 	hub.queue_free()
 	await process_frame
 	for prefix in [PROFILE, UNLOCKS]:

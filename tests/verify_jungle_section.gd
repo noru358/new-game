@@ -65,6 +65,8 @@ func _run() -> void:
 	check(not section.claim_garden_reward() and not section.garden_claimed, "failed save never grants awakening")
 	scene.profile.save_prefix = prefix
 	check(section.claim_garden_reward() and not section.claim_garden_reward(), "first claim grants once")
+	check(paused and scene.awakening_overlay.visible, "first permanent reward gives a readable paused receipt")
+	scene._close_awakening_receipt()
 	check(scene.grotto_awakening_applied and scene.profile.awakenings.has("ECHO_GROTTO"), "equipped weapon awakens immediately")
 	check(section.garden_claimed, "first claim marks only this run")
 	var dummy = scene._spawn_enemy_at(layout.ALTAR + Vector2(90, 0), TrainingEnemy.Role.BEAST, 100.0)

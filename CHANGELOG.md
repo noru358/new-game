@@ -1,3 +1,12 @@
+# v23 — 2026-09-30
+
+- Expand the jungle grotto to fixed branching ravines with pools, a stream route and a return passage. Ruin arrival grants the reward; both enemy groups are optional and independently triggered.
+- Add awakening acquisition comparison, persistent discovered-place records, actual equipment/mastery activation status and pause equipment details. Unknown rewards stay hidden.
+- Reorganize combat HUD and split camp gear effects/options and attack/defense/mobility growth tabs.
+- Add a 30% direct-attack counter bonus with local impact reaction. Jungle gust now warns an outer wind ring; approaching its inner calm avoids damage. Counter hits do not extend recovery.
+- Trial boss HP: temple 1800, jungle 2000. Synthetic mixed-build damage measurement informs the trial; actual 30–60 second duration is not yet accepted.
+- Preserve profile v6 and existing save directory, retry/settlement rules and the five-minute destination boss timer.
+
 # v22 — 2026-09-30
 
 - Add a 3200×2200 waterfall grotto mini field to the jungle route, with two fixed defender groups and an altar.

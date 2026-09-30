@@ -52,7 +52,7 @@ func _run() -> void:
 	_check(scene.boss_announced, "five-minute timer announces the fixed gate spawn")
 	for i in 85: await physics_frame
 	_check(scene.boss_spawned and scene.temple_section.boss_area.has_point(scene.boss.position) and scene.boss.position.distance_to(scene.player.position) > 350.0, "five-minute spawn uses the gate position in the live run")
-	_check(scene.boss is JungleWarden and scene.boss.max_health == 760.0, "jungle boss has a separate behavior and scale")
+	_check(scene.boss is JungleWarden and scene.boss.max_health == 2000.0, "jungle boss has a separate behavior and scale")
 	scene.player.hurt_immunity = 1000.0
 	scene.boss.set_physics_process(false)
 	_check(scene.boss._beast_velocity(0.01) == Vector2.ZERO and not scene.boss.engaged, "guardian holds the gate until the player approaches")
@@ -61,7 +61,7 @@ func _run() -> void:
 	scene.boss.attack_cooldown = 0.0
 	scene.boss._beast_velocity(0.01)
 	_check(scene.boss.sweep_warning > 0.0, "jungle guardian starts with a lateral sweep warning")
-	scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
+	scene.boss.take_hit(scene.boss.max_health * 2.0, Vector2.RIGHT, true)
 	await physics_frame
 	_check(scene.run_ended and scene.profile.jungle_owned and not scene.result_overlay.visible, "second region settles before its finish animation completes")
 	await create_timer(0.9).timeout

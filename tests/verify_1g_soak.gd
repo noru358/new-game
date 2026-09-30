@@ -43,7 +43,7 @@ func _run() -> void:
 	if is_instance_valid(scene.boss):
 		scene.teleport(scene.temple_section.RETRY_POINT)
 		scene.temple_section.tick(0.0)
-		scene.boss.take_hit(1000.0, Vector2.RIGHT, true)
+		scene.boss.take_hit(scene.boss.max_health * 2.0, Vector2.RIGHT, true)
 		for i in 3: await physics_frame
 		_check(scene.run_ended and scene.end_result == "SUCCESS" and not scene.settlement_pending, "boss defeat settles the accumulated long-run currency")
 	print("1G soak: %.1f game seconds in %.1f wall seconds, %d physics samples, %d kills, %d choices, max %d active, %d currency" % [scene.run_time, float(Time.get_ticks_msec() - started) / 1000.0, samples, scene.kills, choices, max_active, scene.run_currency])

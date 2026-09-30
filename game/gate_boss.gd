@@ -1,7 +1,9 @@
 class_name GateBoss
 extends "res://game/enemy.gd"
 
-const BOSS_HEALTH := 700.0
+signal counter_struck(point: Vector2)
+
+const BOSS_HEALTH := 1800.0
 const PHASE_TWO_RATIO := 0.60
 const SHOCK_RADIUS := 215.0
 const SHOCK_WARNING := 0.55
@@ -24,6 +26,8 @@ var charge_pending := false
 var planned_charge_distance := 260.0
 var impact_flash := 0.0
 var impact_is_ring := false
+var counter_flash := 0.0
+const COUNTER_DAMAGE_MULTIPLIER := 1.30
 const DUEL_CHARGE_SPEED := 1000.0
 
 
@@ -32,6 +36,16 @@ func _ready() -> void:
 	max_health = BOSS_HEALTH
 	charge_damage = 20.0
 	super._ready()
+
+
+func take_direct_hit(damage: float, direction: Vector2, finisher: bool, impact_scale: float = 1.0) -> bool:
+	if not encounter_active or health <= 0.0 or (encounter_area.has_area() and is_instance_valid(target) and not encounter_area.has_point(target.global_position)): return false
+	var counter := recovery_time > 0.0
+	if counter:
+		counter_flash = 0.22
+		counter_struck.emit(global_position)
+	take_hit(damage * (COUNTER_DAMAGE_MULTIPLIER if counter else 1.0), direction, finisher, impact_scale)
+	return counter
 
 
 func take_hit(damage: float, _push_direction: Vector2, _is_finisher: bool, _impact_scale: float = 1.0) -> void:
@@ -72,6 +86,7 @@ func suspend_encounter() -> void:
 	charge_followups = 0
 	charge_pending = false
 	impact_flash = 0.0
+	counter_flash = 0.0
 
 
 func _attack_delay() -> float:
@@ -81,6 +96,7 @@ func _attack_delay() -> float:
 func _physics_process(delta: float) -> void:
 	if not encounter_active or (encounter_area.has_area() and is_instance_valid(target) and not encounter_area.has_point(target.global_position)): return
 	impact_flash = maxf(0.0, impact_flash - delta)
+	counter_flash = maxf(0.0, counter_flash - delta)
 	super._physics_process(delta)
 	# The shared enemy mover applies its own long cooldown after a wall hit.
 	if charge_time <= 0.0 and warning_time <= 0.0 and shock_warning <= 0.0 and ring_warning <= 0.0:

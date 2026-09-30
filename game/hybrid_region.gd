@@ -2,6 +2,7 @@ extends "res://game/hybrid_height.gd"
 
 const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
 const ProfileScript = preload("res://game/run_profile.gd")
+const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 48
 const TempleSectionScript = preload("res://game/temple_section.gd")
@@ -35,6 +36,7 @@ var boss: GateBoss
 var pending_spawns: Array[Dictionary] = []
 var rng := RandomNumberGenerator.new()
 var run_hud: Label
+var boss_health_bar: ProgressBar
 var result_overlay: ColorRect
 var result_text: Label
 var replay_button: Button
@@ -48,6 +50,9 @@ var echo_grotto_fired_sequence := -1
 var echo_grotto_blasts: Array[Dictionary] = []
 var pause_menu: ColorRect
 var build_details_label: RichTextLabel
+var pause_equipment_label: RichTextLabel
+var awakening_overlay: ColorRect
+var awakening_receipt: RichTextLabel
 var retreat_overlay: ColorRect
 var retreat_was_paused := false
 var ending_remaining := 0.0
@@ -89,6 +94,9 @@ func _ready() -> void:
 	if practice_mode: return
 	growth.heal_on_levelup = true
 	growth.permanent_combo_progression = true
+	growth.compact_hud = true
+	growth.hud.position = Vector2(28, 588)
+	growth._update_hud()
 	growth._sync_permanent_moves()
 	rng.randomize()
 	run_id = "%d-%d-%d" % [Time.get_unix_time_from_system(), Time.get_ticks_usec(), rng.randi()]
@@ -292,6 +300,9 @@ func _process(delta: float) -> void:
 		visual.get_node("BossFigure").rotation.x = -0.18 if boss.shock_warning > 0.0 else 0.20 if boss.impact_flash > 0.0 else 0.0
 		visual.get_node("BossFigure").rotation.y = atan2(boss.locked_direction.x, boss.locked_direction.y)
 		_animate_boss_arms(visual.get_node("BossFigure"))
+		if boss.counter_flash > 0.0:
+			visual.get_node("BossFigure").rotation.z += sin(boss.counter_flash * 65.0) * 0.13
+			(core.material_override as StandardMaterial3D).albedo_color = Color("fff0bd")
 	_draw_boss_warning()
 
 
@@ -442,7 +453,19 @@ func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> voi
 	actors[boss] = visual
 	actor_motion[boss] = [boss.global_position, boss.global_position]
 	boss.defeated.connect(_on_enemy_defeated.bind(boss))
+	boss.counter_struck.connect(_on_boss_counter_struck)
 	boss_spawned = true
+
+
+func _on_boss_counter_struck(point: Vector2) -> void:
+	_flash(point, Color("ffe4a3"), 0.34)
+	var pulse := _sphere(0.16, Color("fff0c2"))
+	add_child(pulse)
+	pulse.position = terrain.world_point(point, 95.0)
+	var tween := create_tween()
+	tween.tween_property(pulse, "scale", Vector3(4.0, 1.2, 4.0), 0.16)
+	tween.parallel().tween_property(pulse, "transparency", 1.0, 0.16)
+	tween.tween_callback(pulse.queue_free)
 
 
 func _build_boss_figure(visual: Node3D) -> void:
@@ -583,18 +606,23 @@ func _update_run_hud() -> void:
 	if run_hud == null: return
 	var next_hud := _run_hud_text()
 	if run_hud.text != next_hud: run_hud.text = next_hud
+	if boss_health_bar != null:
+		boss_health_bar.visible = is_instance_valid(boss) and boss.health > 0.0 and (temple_section == null or temple_section.boss_active)
+		if boss_health_bar.visible:
+			boss_health_bar.max_value = boss.max_health
+			boss_health_bar.value = boss.health
 
 
 func _run_hud_text() -> String:
 	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
-	var result := "경과 %02d:%02d  ·  %s까지 %02d:%02d  ·  화폐 %d  ·  적 %d/%d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), boss_name, remaining / 60, remaining % 60, run_currency, _active_enemy_count(), MAX_ENEMIES]
+	var result := "%s까지 %02d:%02d  ·  화폐 %d" % [boss_name, remaining / 60, remaining % 60, run_currency]
 	var phase := _encounter_phase()
 	if not phase.is_empty(): result += "\n" + String(phase.name)
 	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
-		result = "경과 %02d:%02d  ·  화폐 %d  ·  적 %d/%d\n%s %d단계 · HP %d / %d" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, _active_enemy_count(), MAX_ENEMIES, boss_name, boss.phase, ceili(boss.health), ceili(boss.max_health)]
+		result = "경과 %02d:%02d · 화폐 %d\n%s · %d단계" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, boss_name, boss.phase]
 		var cue := boss.combat_cue()
-		if not cue.is_empty(): result += "  ·  " + cue
+		if not cue.is_empty() and (temple_section == null or not temple_section.in_garden): result += "\n" + cue
 	if profile != null and profile.recovered_backup: result += "\n이전 정상 기록을 복구했습니다."
 	return result
 
@@ -664,13 +692,25 @@ func _build_run_ui() -> void:
 	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(canvas)
 	run_hud = Label.new()
-	run_hud.position = Vector2(28, 204)
+	run_hud.position = Vector2(450, 24)
+	run_hud.size.x = 550
+	run_hud.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	run_hud.add_theme_font_size_override("font_size", 18)
 	run_hud.add_theme_color_override("font_color", Color("fff2c9"))
 	run_hud.add_theme_color_override("font_shadow_color", Color.BLACK)
 	run_hud.add_theme_constant_override("shadow_offset_x", 2)
 	run_hud.add_theme_constant_override("shadow_offset_y", 2)
 	canvas.add_child(run_hud)
+	boss_health_bar = ProgressBar.new()
+	boss_health_bar.position = Vector2(450, 132)
+	boss_health_bar.size = Vector2(500, 10)
+	boss_health_bar.show_percentage = false
+	boss_health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var boss_fill := StyleBoxFlat.new()
+	boss_fill.bg_color = Color("e49d6e")
+	boss_health_bar.add_theme_stylebox_override("fill", boss_fill)
+	boss_health_bar.hide()
+	canvas.add_child(boss_health_bar)
 	result_overlay = ColorRect.new()
 	result_overlay.position = Vector2.ZERO
 	result_overlay.size = Vector2(1280, 720)
@@ -719,19 +759,22 @@ func _build_pause_menu(canvas: CanvasLayer) -> void:
 	pause_menu.color = Color(0.035, 0.08, 0.10, 0.98)
 	canvas.add_child(pause_menu)
 	var title := Label.new()
-	title.text = "일시정지 · 이번 런의 카드"
+	title.text = "여행 중 · 일시정지"
 	title.position = Vector2(32, 22)
 	title.add_theme_font_size_override("font_size", 26)
 	pause_menu.add_child(title)
 	var baseline := Label.new()
-	baseline.text = "시작 대시 2등급 포함 · 카드는 이번 런에서만 유지"
+	baseline.text = "장비와 각성은 영구 보유 · 카드는 이번 런에서만 유지"
 	baseline.position = Vector2(32, 64)
 	pause_menu.add_child(baseline)
-	build_details_label = RichTextLabel.new()
-	build_details_label.position = Vector2(32, 110)
-	build_details_label.size = Vector2(716, 350)
-	build_details_label.add_theme_font_size_override("normal_font_size", 19)
-	pause_menu.add_child(build_details_label)
+	var pages := TabContainer.new()
+	pages.position = Vector2(32, 104)
+	pages.size = Vector2(716, 365)
+	pause_menu.add_child(pages)
+	build_details_label = _pause_page(pages, "이번 런 카드")
+	pause_equipment_label = _pause_page(pages, "장비·각성")
+	var controls := _pause_page(pages, "조작·상태")
+	controls.text = "WASD  이동\nJ / 왼쪽 클릭  평타\nSpace  이동 베기\nShift  대시\nTab  전체 지도\nE  장소 상호작용\nG  귀환 확인\nEsc  일시정지 / 계속\n\n적 역할\n회색 추격 · 빨강 돌진 · 금빛 사격 · 청록 장판 · 보라 강화"
 	var resume := Button.new()
 	resume.text = "계속  [Esc]"
 	resume.position = Vector2(32, 490)
@@ -770,10 +813,71 @@ func _build_pause_menu(canvas: CanvasLayer) -> void:
 	confirm.pressed.connect(func(): _finish_run("RETREAT"))
 	retreat_overlay.add_child(confirm)
 	retreat_overlay.hide()
+	_build_awakening_receipt()
+
+
+func _pause_page(pages: TabContainer, title: String) -> RichTextLabel:
+	var margin := MarginContainer.new()
+	margin.name = title
+	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 14)
+	pages.add_child(margin)
+	var label := RichTextLabel.new()
+	label.add_theme_font_size_override("normal_font_size", 19)
+	label.bbcode_enabled = true
+	margin.add_child(label)
+	return label
+
+
+func _build_awakening_receipt() -> void:
+	var canvas := CanvasLayer.new()
+	canvas.layer = 40
+	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(canvas)
+	awakening_overlay = ColorRect.new()
+	awakening_overlay.size = Vector2(1280, 720)
+	awakening_overlay.color = Color(0.015, 0.04, 0.05, 0.97)
+	canvas.add_child(awakening_overlay)
+	awakening_receipt = RichTextLabel.new()
+	awakening_receipt.position = Vector2(280, 110)
+	awakening_receipt.size = Vector2(720, 440)
+	awakening_receipt.add_theme_font_size_override("normal_font_size", 23)
+	awakening_receipt.bbcode_enabled = true
+	awakening_overlay.add_child(awakening_receipt)
+	var resume := Button.new()
+	resume.name = "Continue"
+	resume.text = "확인 · 탐험 계속  [Esc]"
+	resume.position = Vector2(430, 578)
+	resume.size = Vector2(420, 58)
+	resume.pressed.connect(_close_awakening_receipt)
+	awakening_overlay.add_child(resume)
+	awakening_overlay.hide()
+
+
+func show_awakening_reward(id: String) -> void:
+	if run_ended or not profile.awakenings.has(id): return
+	_set_paused(true)
+	pause_menu.hide()
+	awakening_receipt.text = "[font_size=28][color=#f5d99c]영구 각성 획득 — %s[/color][/font_size]\n[color=#8ee4df]%s[/color]\n\n%s\n\n[font_size=18]저장 완료 · 보스에게 패배해도 유지됩니다.\n야영지 ‘발견·각성’에서 다시 확인할 수 있습니다.[/font_size]" % [AwakeningCatalog.ENTRIES[id].title, AwakeningCatalog.status(profile, id, growth.unlocks.lifetime_levelups), AwakeningCatalog.comparison(id)]
+	awakening_overlay.show()
+	awakening_overlay.get_node("Continue").grab_focus()
+
+
+func _close_awakening_receipt() -> void:
+	awakening_overlay.hide()
+	_set_paused(false)
+
+
+func _equipment_details() -> String:
+	var lines: Array[String] = []
+	for gear in [profile.equipped_weapon, profile.equipped_accessory]:
+		if gear.is_empty(): continue
+		var option: String = profile.mod_for(gear)
+		lines.append("%s\n옵션: %s" % [RunProfile.gear_name(gear), RunProfile.affix_description(option) if not option.is_empty() else "없음"])
+	return "\n\n".join(lines) + "\n\n영구 각성\n" + AwakeningCatalog.records(profile, growth.unlocks.lifetime_levelups)
 
 
 func _request_retreat() -> void:
-	if run_ended or growth.choosing or retreat_overlay.visible or (temple_section != null and temple_section.retry_pending): return
+	if run_ended or growth.choosing or retreat_overlay.visible or awakening_overlay.visible or (temple_section != null and temple_section.retry_pending): return
 	retreat_was_paused = paused
 	_set_paused(true)
 	pause_menu.hide()
@@ -796,8 +900,10 @@ func _set_paused(value: bool) -> void:
 	player.moving_slash_buffer = 0.0
 	pause_label.hide()
 	pause_backdrop.hide()
-	pause_menu.visible = value and not retreat_overlay.visible
-	if value: build_details_label.text = growth.build_details()
+	pause_menu.visible = value and not retreat_overlay.visible and not awakening_overlay.visible
+	if value:
+		build_details_label.text = growth.build_details()
+		pause_equipment_label.text = _equipment_details()
 
 
 func _return_to_hub() -> void:
@@ -808,6 +914,10 @@ func _return_to_hub() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if awakening_overlay != null and awakening_overlay.visible:
+		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE: _close_awakening_receipt()
+		# Leave mouse/keyboard focus activation to the receipt's own button.
+		return
 	if temple_section != null and temple_section.handle_input(event): return
 	if temple_section != null and temple_section.retry_pending: return
 	if practice_mode:
@@ -833,6 +943,10 @@ func _input(event: InputEvent) -> void:
 
 func region_layout():
 	return TempleSectionScript.Garden
+
+
+func set_main_decor_visible(_value: bool) -> void:
+	pass
 
 
 func display_bounds() -> Rect2:

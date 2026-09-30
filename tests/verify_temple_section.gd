@@ -50,6 +50,8 @@ func _run() -> void:
 	check(not section.claim_garden_reward() and not section.garden_claimed and not scene.profile.awakenings.has("EMBER_GARDEN"), "failed save never grants or consumes awakening")
 	scene.profile.save_prefix = original_prefix
 	check(section.claim_garden_reward() and not section.claim_garden_reward(), "altar grants reward once after successful save")
+	check(paused and scene.awakening_overlay.visible, "first permanent reward gives a readable paused receipt")
+	scene._close_awakening_receipt()
 	check(is_equal_approx(scene.wisp.permanent_damage_bonus, 0.35) and scene.wisp.chain_jumps == 1, "equipped accessory awakening applies immediately")
 	scene.apply_garden_awakening()
 	check(is_equal_approx(scene.wisp.permanent_damage_bonus, 0.35), "reapplying cannot stack awakening")
