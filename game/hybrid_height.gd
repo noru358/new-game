@@ -9,6 +9,7 @@ const ActorTexture = preload("res://game/hybrid_actor.svg")
 const COMBAT_CAMERA_SIZE := 10.8
 const OVERVIEW_CAMERA_SIZE := 30.0
 const ACTOR_CLEARANCE := 30.0
+const ACTOR_BODY_POSITION := Vector3(-0.353553, 0.866025, -0.353553) * 0.44
 const ENEMY_POINTS := [Vector2(390, 1660), Vector2(720, 680), Vector2(1430, 1000), Vector2(1700, 1320), Vector2(2100, 1100), Vector2(890, 600), Vector2(1380, 1360), Vector2(2100, 1240)]
 const ENEMY_ROLES := [TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.FRAGMENT, TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.LAMP, TrainingEnemy.Role.ZONE, TrainingEnemy.Role.SUPPORT]
 const ENEMY_HEALTH := [22.0, 22.0, 22.0, 45.0, 30.0, 30.0, 32.0, 36.0]
@@ -21,6 +22,7 @@ var scene_hud_title := "높이 비교"
 var combat_camera_size := COMBAT_CAMERA_SIZE
 var overview_camera_size := OVERVIEW_CAMERA_SIZE
 var camera_offset := Vector3(14, 11.431, 14)
+var actor_view_scale := 1.0
 var ground_color := Color("93afa1")
 var plateau_color := Color("e7ddbd")
 var cliff_color := Color("798e80")
@@ -566,7 +568,7 @@ func _actor_visual(color: Color) -> Node3D:
 	sprite.texture = ActorTexture
 	sprite.pixel_size = 0.01
 	# Offset in camera-up direction so billboard feet stay on the sampled ground.
-	sprite.position = Vector3(-0.353553, 0.866025, -0.353553) * 0.44
+	sprite.position = ACTOR_BODY_POSITION
 	sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	# Alpha-scissor writes depth consistently when the billboard brushes a cliff face.
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
@@ -615,6 +617,21 @@ func _add_health_bar(visual: Node3D, enemy: TrainingEnemy) -> void:
 	bar.texture = ImageTexture.create_from_image(_health_bar_image(enemy, ratio))
 	bar.set_meta("shown_ratio", ratio)
 	visual.add_child(bar)
+
+
+func _apply_actor_visual_scale(visual: Node3D, scale_factor: float) -> void:
+	var body: Sprite3D = visual.get_node("Body")
+	body.scale = Vector3.ONE * scale_factor
+	body.position = ACTOR_BODY_POSITION * scale_factor
+	visual.get_node("Shadow").scale = Vector3.ONE * scale_factor
+	var bar: Sprite3D = visual.get_node_or_null("HealthBar")
+	if bar != null:
+		bar.pixel_size = 0.012 * scale_factor
+		bar.position.y = 1.10 * scale_factor
+	var marker: MeshInstance3D = visual.get_node_or_null("RoleMarker")
+	if marker != null:
+		marker.scale = Vector3.ONE * scale_factor
+		marker.position.y = 0.86 * scale_factor
 
 func _update_health_bar(visual: Node3D, enemy: TrainingEnemy) -> void:
 	var bar: Sprite3D = visual.get_node_or_null("HealthBar")
@@ -669,8 +686,10 @@ func _spawn_enemy_at(point: Vector2, role: TrainingEnemy.Role, health: float) ->
 	_add_health_bar(visual, enemy)
 	if enemy.role != TrainingEnemy.Role.FRAGMENT:
 		var marker := _sphere(0.14 if enemy.role == TrainingEnemy.Role.BEAST else 0.11, _enemy_color(enemy.role).lightened(0.25))
+		marker.name = "RoleMarker"
 		marker.position.y = 0.86
 		visual.add_child(marker)
+	_apply_actor_visual_scale(visual, actor_view_scale)
 	actors[enemy] = visual
 	actor_motion[enemy] = [enemy.global_position, enemy.global_position]
 	enemy.defeated.connect(_on_enemy_defeated.bind(enemy))
@@ -847,7 +866,7 @@ func _process(delta: float) -> void:
 			body.flip_h = player.facing.x - player.facing.y < -0.1
 			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
-			body.scale = Vector3.ONE
+			body.scale = Vector3.ONE * actor_view_scale
 		elif actor is TrainingEnemy:
 			visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
 			_update_health_bar(visual, actor)

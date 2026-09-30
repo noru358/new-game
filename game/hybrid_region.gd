@@ -5,6 +5,8 @@ const ProfileScript = preload("res://game/run_profile.gd")
 const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 72
+const TRIAL_CAMERA_SIZE := 8.4
+const TRIAL_ACTOR_SCALE := 0.85
 const TempleSectionScript = preload("res://game/temple_section.gd")
 var temple_section: Node
 var garden_terrain_mesh: MeshInstance3D
@@ -36,6 +38,9 @@ var boss: GateBoss
 var pending_spawns: Array[Dictionary] = []
 var rng := RandomNumberGenerator.new()
 var run_hud: Label
+var view_compare_label: Label
+var view_compare_enabled := false
+var original_combat_camera_size := 0.0
 var boss_health_bar: ProgressBar
 var result_overlay: ColorRect
 var result_text: Label
@@ -92,6 +97,7 @@ func _ready() -> void:
 	super._ready()
 	player.attack_hitstop_scale = 1.0
 	if practice_mode: return
+	_set_view_compare(true)
 	growth.heal_on_levelup = true
 	growth.permanent_combo_progression = true
 	growth.compact_hud = true
@@ -701,6 +707,23 @@ func _build_run_ui() -> void:
 	run_hud.add_theme_constant_override("shadow_offset_x", 2)
 	run_hud.add_theme_constant_override("shadow_offset_y", 2)
 	canvas.add_child(run_hud)
+	var compare_backdrop := ColorRect.new()
+	compare_backdrop.position = Vector2(1022, 289)
+	compare_backdrop.size = Vector2(242, 31)
+	compare_backdrop.color = Color(0.05, 0.13, 0.15, 0.88)
+	compare_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	canvas.add_child(compare_backdrop)
+	view_compare_label = Label.new()
+	view_compare_label.position = Vector2(1029, 294)
+	view_compare_label.size = Vector2(228, 24)
+	view_compare_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	view_compare_label.add_theme_font_size_override("font_size", 14)
+	view_compare_label.add_theme_color_override("font_color", Color("f4f4df"))
+	view_compare_label.add_theme_color_override("font_shadow_color", Color.BLACK)
+	view_compare_label.add_theme_constant_override("shadow_offset_x", 2)
+	view_compare_label.add_theme_constant_override("shadow_offset_y", 2)
+	canvas.add_child(view_compare_label)
+	_update_view_compare_label()
 	boss_health_bar = ProgressBar.new()
 	boss_health_bar.position = Vector2(450, 132)
 	boss_health_bar.size = Vector2(500, 10)
@@ -923,6 +946,10 @@ func _input(event: InputEvent) -> void:
 	if practice_mode:
 		super._input(event)
 		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F6 and not run_ended and not paused and not growth.choosing and not get_tree().paused:
+		_set_view_compare(not view_compare_enabled)
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if run_ended:
 			if event.keycode == KEY_R: _return_to_hub()
@@ -939,6 +966,24 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			return
 	super._input(event)
+
+
+func _set_view_compare(enabled: bool) -> void:
+	if original_combat_camera_size <= 0.0:
+		original_combat_camera_size = combat_camera_size
+	view_compare_enabled = enabled
+	actor_view_scale = TRIAL_ACTOR_SCALE if enabled else 1.0
+	combat_camera_size = TRIAL_CAMERA_SIZE if enabled else original_combat_camera_size
+	if not overview: camera.size = combat_camera_size
+	for actor in actors:
+		if actor == player or (actor is TrainingEnemy and not actor is GateBoss):
+			_apply_actor_visual_scale(actors[actor], actor_view_scale)
+	_update_view_compare_label()
+
+
+func _update_view_compare_label() -> void:
+	if view_compare_label != null:
+		view_compare_label.text = "시험 비율  ·  F6 원본 보기" if view_compare_enabled else "원본 비율  ·  F6 시험 보기"
 
 
 func region_layout():

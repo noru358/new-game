@@ -22,9 +22,10 @@ func _run() -> void:
 	_check(scene.growth.xp_bar.visible and scene.growth.xp_bar.position.y > scene.growth.hud.position.y and scene.build_summary_label.position.x > scene.growth.xp_bar.position.x + scene.growth.xp_bar.size.x, "XP number and progress bar are visible without covering card summary")
 	scene.growth.gain_xp(2)
 	_check(scene.growth.xp_bar.value == 2.0 and scene.growth.hud.text.contains("경험치 2 / 8"), "visible XP changes with a real award")
+	var player_scale_before: Vector3 = scene.actors[scene.player].get_node("Body").scale
 	scene.player.attack_step = 4
 	scene._process(0.016)
-	_check(scene.actors[scene.player].get_node("Body").scale == Vector3.ONE, "fourth attack no longer enlarges the player")
+	_check(scene.actors[scene.player].get_node("Body").scale == player_scale_before, "fourth attack does not enlarge the player in either view mode")
 	_check(is_equal_approx(scene._spawn_rate(), 0.90) and scene.MAX_ENEMIES == 72, "early ambient rate and headroom grow by 50 percent")
 	scene.run_time = 200.0
 	_check(is_equal_approx(scene._spawn_rate(), 2.10), "late ambient rate also grows by 50 percent")
