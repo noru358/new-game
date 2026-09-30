@@ -1,3 +1,10 @@
+## 2026-10-01 — independent Stage A diagnostics / truthful jungle cues
+
+- Add opt-in local-only activity/card/pause wall times, effective healing/damage, income and boss event measurements without changing gameplay or save data.
+- Correct jungle incoming-role cues to match the authoritative route weights; retain timed spawn pressure/recovery values. Existing spawn rolls and zero-weight exclusions are regression-tested.
+- Include the standalone permanent-unlock modal and compact equipment-fit fixes; no canal map files or art changes. Preserve PR #28/#29 as independent comparison checkpoints.
+- Store two normal-speed synthetic input samples with their explicit controller, seed, dwell assumption and stop reasons. Human economy/fun acceptance is not inferred.
+
 # v24 — 2026-09-30
 
 - 정글 본선 시험: 정면 석교의 낮은 잔해와 수비대, 넓어진 강변·유적 오르막, 두 길을 잇는 비탈.

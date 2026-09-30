@@ -1,0 +1,90 @@
+{
+  "active_window_limit": 330.0,
+  "choice_dwell_seconds": 1.5,
+  "controller": "fixed route every 70s; pursue visible nearby enemies; hold basic attack; periodic close-range slash/dash; fixed card priority; first life only",
+  "controller_hz": 10,
+  "diagnostics": {
+    "accessory": "A_EMBER",
+    "active_seconds": 312.083333333378,
+    "active_wall_seconds": 312.09823,
+    "attack_branch": "DIRECT",
+    "boss_engagements": 5,
+    "boss_first_times": {
+      "arrive": {
+        "active_seconds": 230.616666666742,
+        "wall_seconds": 271.002982
+      },
+      "engage": {
+        "active_seconds": 301.266666666721,
+        "wall_seconds": 352.4427
+      },
+      "kill": {
+        "active_seconds": 312.083333333378,
+        "wall_seconds": 363.271846
+      },
+      "ready": {
+        "active_seconds": 301.266666666721,
+        "wall_seconds": 352.442662
+      }
+    },
+    "cards": {
+      "S_SEAL": 1,
+      "S_WISP_CADENCE": 3,
+      "S_WISP_CHAIN": 2,
+      "S_WISP_COUNT": 2,
+      "S_WISP_DAMAGE": 3,
+      "S_WISP_FOLLOWUP": 2,
+      "S_WISP_ORBIT": 2,
+      "S_WISP_REPLY": 2,
+      "S_WISP_SWEEP": 2,
+      "U_EDGE": 3,
+      "U_REACH": 3,
+      "U_SLASH_CADENCE": 2,
+      "U_SLASH_SWEEP": 2,
+      "U_STEP": 1,
+      "U_TEMPO": 3
+    },
+    "choice_wall_seconds": 51.173974,
+    "choice_windows": 33,
+    "damage_events": 41,
+    "damage_taken_actual": 447.0,
+    "earned_currency": 663,
+    "health": 65.0,
+    "kills": 463,
+    "level": 34,
+    "level_heal_actual": 402.0,
+    "level_heal_events": 33,
+    "max_health": 110.0,
+    "pause_wall_seconds": 0.0,
+    "permanent_growth": {
+      "FINISH": 0.0,
+      "GUARD": 0.0,
+      "MOBILITY": 0.0,
+      "POWER": 2.0,
+      "SLASH": 0.0,
+      "SPEED": 0.0,
+      "VITALITY": 1.0,
+      "WISP": 2.0
+    },
+    "points_earned": 33,
+    "points_exhausted": 0,
+    "points_pending": 0,
+    "points_spent": 33,
+    "region": "O_TEMPLE",
+    "result": "SUCCESS",
+    "schema": "local_run_diagnostics_v1",
+    "time_scale_max": 1.0,
+    "time_scale_min": 1.0,
+    "wall_seconds": 363.272204,
+    "weapon": "W_FLOW",
+    "xp_remainder": 6
+  },
+  "distance_travelled": 91370.1517251098,
+  "human_playtest": false,
+  "input_events": 5750,
+  "permanent_investment": 249,
+  "preset": "grown",
+  "sample": "synthetic_input_controller_v1",
+  "seed": 250,
+  "stop_reason": "SUCCESS"
+}
