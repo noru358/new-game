@@ -626,11 +626,16 @@ func _update_run_hud() -> void:
 			boss_health_bar.value = boss.health
 
 
+func _encounter_cue() -> String:
+	var phase := _encounter_phase()
+	return String(phase.get("name", ""))
+
+
 func _run_hud_text() -> String:
 	var remaining := maxi(0, ceili(BOSS_TIME - run_time))
 	var result := "%s까지 %02d:%02d  ·  화폐 %d" % [boss_name, remaining / 60, remaining % 60, run_currency]
-	var phase := _encounter_phase()
-	if not phase.is_empty(): result += "\n" + String(phase.name)
+	var encounter_cue := _encounter_cue()
+	if not encounter_cue.is_empty(): result += "\n" + encounter_cue
 	if boss_announced and not boss_spawned: result += "\n%s 등장 예고" % boss_name
 	if is_instance_valid(boss) and boss.health > 0.0:
 		result = "경과 %02d:%02d · 화폐 %d\n%s · %d단계" % [floori(run_time / 60.0), floori(fmod(run_time, 60.0)), run_currency, boss_name, boss.phase]

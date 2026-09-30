@@ -25,11 +25,34 @@ func _run() -> void:
 				check(is_equal_approx(total, 100.0), "role weights sum to 100")
 		check(is_equal_approx(actual, baseline), "pressure and recovery preserve five-minute scheduled spawn budget")
 		scene.run_time = 140.0
-		check(scene._encounter_phase().name.contains("원거리") and scene._spawn_rate() > 1.1, "middle wave shifts role and pressure")
+		check(scene._spawn_rate() > 1.1, "middle wave preserves pressure increase")
+		if path.ends_with("jungle_pass.tscn"):
+			for sample in [
+				{"point": Vector2(700, 1800), "weights": [55.0, 30.0, 0.0, 15.0, 0.0], "cue": "추격·돌진"},
+				{"point": Vector2(2900, 1200), "weights": [25.0, 45.0, 10.0, 15.0, 5.0], "cue": "돌진·추격"},
+				{"point": Vector2(2900, 1800), "weights": [35.0, 15.0, 25.0, 15.0, 10.0], "cue": "추격·원거리"},
+				{"point": Vector2(1800, 1100), "weights": [40.0, 30.0, 10.0, 15.0, 5.0], "cue": "추격·돌진"}
+			]:
+				scene.player.position = sample.point
+				check(scene._route_role_weights(sample.point) == sample.weights, "authored jungle spawn composition is unchanged")
+				for second in [70.0, 140.0, 220.0]:
+					scene.run_time = second
+					check(scene._encounter_cue().contains(sample.cue) and scene._run_hud_text().contains(sample.cue), "jungle HUD describes authoritative incoming roles in each pressure phase")
+					if sample.weights[2] == 0.0: check(not scene._encounter_cue().contains("원거리"), "forest cue never promises absent ranged spawns")
+					if sample.weights[4] == 0.0: check(not scene._encounter_cue().contains("지원"), "forest cue never promises absent support spawns")
+					scene.rng.seed = 4321
+					var seen := [0, 0, 0, 0, 0]
+					for draw in 500: seen[scene._roll_role()] += 1
+					for role in 5:
+						check((seen[role] == 0) == (sample.weights[role] == 0.0), "actual jungle role rolls respect the same nonzero role set")
+		else:
+			check(scene._encounter_cue().contains("원거리"), "temple retains its real timed ranged cue")
 		scene.run_time = 160.0
 		check(scene._spawn_rate() < 1.65, "pressure is followed by recovery")
+		if path.ends_with("jungle_pass.tscn"):
+			check(scene._encounter_cue().contains("합류 감소") and scene._encounter_cue().contains("남은 적"), "recovery cue describes fewer new spawns without claiming existing enemies vanished")
 		scene.boss_spawned = true
-		check(scene._encounter_phase().is_empty() and is_equal_approx(scene._spawn_rate(), 0.25), "boss phase has no extra wave pressure")
+		check(scene._encounter_phase().is_empty() and scene._encounter_cue().is_empty() and is_equal_approx(scene._spawn_rate(), 0.25), "boss phase has no extra wave pressure")
 		scene.queue_free()
 		await process_frame
 	print("encounter variation: ", failures, " failures")

@@ -183,6 +183,24 @@ func _build_boss_figure(visual: Node3D) -> void:
 	_boss_box(figure, Vector3(0.18, 0.52, 0.15), Vector3(0.32, 2.02, 0.0), Color("d4b881"))
 
 
+func _encounter_cue() -> String:
+	var phase := _encounter_phase()
+	if phase.is_empty(): return ""
+	if float(phase.get("rate", 0.0)) < 0.0:
+		return "새 적 합류 감소 · 남은 적 경계"
+	# Jungle spawns use the player's authored route weights, not the temple's
+	# timed role weights. Describe the two most likely incoming roles only.
+	var weights := _route_role_weights(player.global_position)
+	var roles: Array[int] = [0, 1, 2, 3, 4]
+	roles.sort_custom(func(a: int, b: int): return weights[a] > weights[b])
+	var names := ["추격", "돌진", "원거리", "장판", "지원"]
+	var incoming: Array[String] = []
+	for role in roles:
+		if weights[role] > 0.0: incoming.append(names[role])
+		if incoming.size() == 2: break
+	return "새 적: %s · 합류 증가" % "·".join(incoming)
+
+
 func _run_hud_text() -> String:
 	var result := super._run_hud_text()
 	if run_time >= 270.0 and not boss_spawned:
