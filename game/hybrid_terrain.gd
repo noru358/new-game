@@ -106,3 +106,18 @@ func barriers() -> Array[Rect2]:
 	for a in [Rect2(0, 0, map_size.x, 12), Rect2(0, map_size.y - 12, map_size.x, 12), Rect2(0, 0, 12, map_size.y), Rect2(map_size.x - 12, 0, 12, map_size.y)]:
 		result.append(a)
 	return result
+
+
+func surface_areas(record: Dictionary) -> Array[Rect2]:
+	var pieces: Array[Rect2] = [record.area]
+	for cut in record.get("cutouts", []):
+		var remaining: Array[Rect2] = []
+		for area in pieces:
+			var overlap: Rect2 = area.intersection(cut)
+			if not overlap.has_area():
+				remaining.append(area)
+				continue
+			for piece in [Rect2(area.position, Vector2(area.size.x, overlap.position.y - area.position.y)), Rect2(Vector2(area.position.x, overlap.end.y), Vector2(area.size.x, area.end.y - overlap.end.y)), Rect2(Vector2(area.position.x, overlap.position.y), Vector2(overlap.position.x - area.position.x, overlap.size.y)), Rect2(Vector2(overlap.end.x, overlap.position.y), Vector2(area.end.x - overlap.end.x, overlap.size.y))]:
+				if piece.has_area(): remaining.append(piece)
+		pieces = remaining
+	return pieces

@@ -30,8 +30,9 @@ func _init() -> void:
 		"서쪽 상승로": Vector2(1410, 1180),
 		"북쪽 덩굴길": Vector2(1640, 265),
 		"정글 능선": Vector2(2640, 1120),
-		"석계단 정면길": Vector2(3070, 1110),
-		"하층 협곡": Vector2(3010, 1850),
+		"석교 직행로": Vector2(2850, 1140),
+		"강변 연결 비탈": Vector2(2890, 1480),
+		"강변 우회로": Vector2(3010, 2050),
 		"끊어진 바위 다리": Vector2(3410, 1790),
 		"남쪽 우회로": Vector2(2180, 2120),
 		"관문 상단": Vector2(4520, 1160),
@@ -57,6 +58,7 @@ func _ready() -> void:
 	_build_gate_silhouette()
 	_build_jungle_silhouette()
 	_build_gate_approaches()
+	_build_river_route()
 	for child in get_children():
 		if child is Node3D and not before.has(child): main_decor.append(child)
 
@@ -76,17 +78,20 @@ func _physics_process(delta: float) -> void:
 				gate_route_encounter = route
 				_spawn_route_sentries(route, false)
 				return
-	elif not gate_route_crest_triggered and terrain.gate_routes[gate_route_encounter].crest.has_point(point):
-		gate_route_crest_triggered = true
-		_spawn_route_sentries(gate_route_encounter, true)
+	elif not gate_route_crest_triggered:
+		for route in terrain.gate_routes:
+			if terrain.gate_routes[route].crest.has_point(point):
+				gate_route_crest_triggered = true
+				_spawn_route_sentries(route, true)
+				return
 
 
 func _spawn_route_sentries(route: String, at_crest: bool) -> void:
 	var sentries: Array = []
 	if route == "stairs":
-		sentries = [[Vector2(3970, 1010), TrainingEnemy.Role.BEAST], [Vector2(4020, 1330), TrainingEnemy.Role.LAMP]] if at_crest else [[Vector2(2890, 1050), TrainingEnemy.Role.BEAST], [Vector2(3080, 1250), TrainingEnemy.Role.LAMP]]
+		sentries = [[Vector2(3970, 1010), TrainingEnemy.Role.BEAST], [Vector2(4020, 1330), TrainingEnemy.Role.LAMP]] if at_crest else [[Vector2(2890, 1100), TrainingEnemy.Role.BEAST], [Vector2(2960, 1180), TrainingEnemy.Role.LAMP]]
 	else:
-		sentries = [[Vector2(4450, 1760), TrainingEnemy.Role.ZONE], [Vector2(4620, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2830, 1770), TrainingEnemy.Role.ZONE], [Vector2(3130, 1840), TrainingEnemy.Role.BEAST]]
+		sentries = [[Vector2(4450, 1760), TrainingEnemy.Role.ZONE], [Vector2(4620, 1840), TrainingEnemy.Role.BEAST]] if at_crest else [[Vector2(2820, 1930), TrainingEnemy.Role.ZONE], [Vector2(2960, 2100), TrainingEnemy.Role.FRAGMENT]]
 	for entry in sentries:
 		var spawn_point: Vector2 = entry[0]
 		if navigation.is_open(spawn_point, ACTOR_CLEARANCE + 6.0) and navigation.find_path(spawn_point, player.global_position).size() >= 2:
@@ -297,3 +302,27 @@ func _build_gate_approaches() -> void:
 			shard.rotation.y = float(step + 1) * 0.17 * side
 			shard.rotation.z = (0.12 + float(step % 2) * 0.08) * side
 			add_child(shard)
+
+
+func _build_river_route() -> void:
+	# Low water ribbons and rooted banks keep the path and actors readable.
+	for i in 28:
+		var point := Vector2(2790 + i * 48, 2200 + sin(i * 0.7) * 14)
+		var water := MeshInstance3D.new()
+		water.name = "RiverRibbon"
+		var shape := BoxMesh.new()
+		shape.size = Vector3(0.52, 0.025, 0.55)
+		water.mesh = shape
+		water.position = terrain.world_point(point, 2)
+		water.material_override = _material(Color("76b2ad"))
+		add_child(water)
+	for point in [Vector2(2790, 2030), Vector2(3170, 2090), Vector2(2810, 1590)]:
+		var root := MeshInstance3D.new()
+		root.name = "RiverRoot"
+		var shape := BoxMesh.new()
+		shape.size = Vector3(0.22, 0.10, 0.65)
+		root.mesh = shape
+		root.position = terrain.world_point(point, 5)
+		root.rotation.y = 0.7
+		root.material_override = _material(Color("685d48"))
+		add_child(root)

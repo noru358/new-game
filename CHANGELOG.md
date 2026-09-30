@@ -1,3 +1,11 @@
+# v24 — 2026-09-30
+
+- 정글 본선 시험: 정면 석교의 낮은 잔해와 수비대, 넓어진 강변·유적 오르막, 두 길을 잇는 비탈.
+- 첫 진입 전투는 런당 한 번, 관문 전투는 실제 도착한 쪽에서 한 번. 중간 경로 변경을 허용하며 반복 왕복으로 수비대를 재생성하지 않는다.
+- 사용자 선택으로 전망 카메라를 추가하지 않는다. 기존 전투 카메라에서 가까워질 때 관문을 보는 구성. 5분 보스·히든·저장 규칙 유지.
+- 새 하강 경사로의 상부 지형 가림을 제거하고 입력 이동·높이 연속성·동선 전환 회귀 검사 추가.
+- 지형은 블록아웃이며 본선 전체 아트 완성이나 탐험 재미 수용을 의미하지 않는다.
+
 # v23 — 2026-09-30
 
 - Expand the jungle grotto to fixed branching ravines with pools, a stream route and a return passage. Ruin arrival grants the reward; both enemy groups are optional and independently triggered.

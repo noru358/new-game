@@ -30,14 +30,21 @@ func _run() -> void:
 	var cross_path: PackedVector2Array = scene.navigation.find_path(Vector2(3100, 1200), Vector2(3100, 1850))
 	var cross_distance := 0.0
 	for i in range(cross_path.size() - 1): cross_distance += cross_path[i].distance_to(cross_path[i + 1])
-	_check(cross_distance > 1500.0, "the gorge prevents switching between upper and lower routes near the gate")
+	_check(cross_distance > 650.0 and cross_distance < 1400.0, "the middle slope reconnects upper and lower routes without a cliff shortcut")
 	_check(scene.terrain.height_at(Vector2(2640, 1120)) == 240.0 and scene.terrain.height_at(Vector2(3010, 1850)) == 80.0 and scene.terrain.height_at(Vector2(4520, 1160)) == 480.0, "the two approaches actually use different walking elevations")
+	for area in scene.terrain.surface_areas(scene.terrain.plateaus[1]):
+		_check(not area.has_point(Vector2(2890, 1300)), "upper plateau does not visually cover descending connector")
+	for y in range(1190, 1741, 20):
+		_check(scene.navigation.is_open(Vector2(2890, y), scene.ACTOR_CLEARANCE), "new connecting slope has full player clearance")
+		_check(absf(scene.terrain.height_at(Vector2(2890, y)) - scene.terrain.height_at(Vector2(2890, y + 1))) < 1.0, "connecting slope has no elevation seam")
+	_check(scene.navigation.find_path(Vector2(2890, 1700), Vector2(3030, 2090)).size() > 1, "expanded riverbank clearing reachable")
+	_check(not scene.navigation.is_open(Vector2(2860, 930), scene.ACTOR_CLEARANCE), "broken parapet constricts the direct route")
 	scene.teleport(Vector2(2590, 1130))
 	await physics_frame
 	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 2, "main stair route starts with its own two-sentry encounter")
-	scene.teleport(Vector2(3840, 1130))
+	scene.teleport(Vector2(4180, 1770))
 	await physics_frame
-	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "the main ascent adds a distinct gate-top encounter")
+	_check(scene.gate_route_crest_triggered and scene._active_enemy_count() == 4, "switching from the direct route to the river route still triggers its gate-top encounter")
 	scene.teleport(Vector2(2590, 1770))
 	await physics_frame
 	_check(scene.gate_route_encounter == "stairs" and scene._active_enemy_count() == 4, "the other approach does not stack another route's encounters in one run")
