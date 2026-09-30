@@ -1,0 +1,323 @@
+extends "res://game/hybrid_height.gd"
+## Isolated place-authoring experiment. No RunProfile, rewards or settlement.
+const CityTerrain = preload("res://game/canal_city_terrain.gd")
+const ENCOUNTERS := [
+	Vector2(1730, 1590), Vector2(2100, 1630), Vector2(2480, 1690),
+	Vector2(3460, 2830), Vector2(3990, 2850), Vector2(4330, 2770),
+	Vector2(6010, 1620), Vector2(6530, 1630)
+]
+var combat_enabled := false
+var spawn_delay := 0.0
+var trial_elapsed := 0.0
+var trial_canvas: CanvasLayer
+var mode_button: Button
+var building_visuals: Array[Dictionary] = []
+var material_cache: Dictionary = {}
+
+func _init() -> void:
+	terrain = CityTerrain.new()
+	start_point = CityTerrain.ENTRY
+	enemy_points = []
+	landmark_points = {"동문": CityTerrain.ENTRY, "시장": CityTerrain.MARKET, "수변": CityTerrain.WATERFRONT}
+	combat_camera_size = 9.0
+	overview_camera_size = 96.0
+	camera_offset = Vector3(14, 13.864, 14)
+	scene_title = "Loop Conquest — Canal City Place Trial v29"
+	scene_hud_title = "수로도시 · 제작 시험"
+	ground_color = Color("b4b49d")
+	show_practice_controls = false
+	moving_slash_practice = true
+	# Super reads only this separate, non-progression prefix. No XP is awarded.
+	growth_save_prefix = "user://canal_city_trial_unused_unlocks"
+
+func _ready() -> void:
+	super._ready()
+	growth.growth_ended = true
+	growth.hud.hide()
+	growth.xp_bar.hide()
+	growth.last_choice_label.hide()
+	player.set_combo_rank(2)
+	player.attack_hitstop_scale = 1.0
+	_update_hud()
+
+func _build_terrain(render_bounds := Rect2()) -> void:
+	super._build_terrain(render_bounds)
+	for record in terrain.buildings:
+		_build_house(record)
+	for record in terrain.props:
+		_build_prop(record)
+	for bridge in CityTerrain.BRIDGES:
+		_build_bridge(bridge)
+	# Quay coping: same water boundaries, low enough to leave telegraphs clear.
+	for water in terrain.water_areas:
+		for y in [water.position.y, water.end.y]:
+			_box(self, Vector3(water.get_center().x, 3, y), Vector3(water.size.x, 6, 14), Color("d0ccaf"))
+	# Waterfront steps are visual coping inside blocked water, not fake stairs.
+	for i in 4:
+		_box(self, Vector3(4610, -2 + i * 3, 2375 + i * 12), Vector3(320, 8, 12), Color("aaa98f"))
+	for point in [Vector2(4680, 2280), Vector2(6740, 2200)]:
+		_build_boat(point)
+	# Fixed landing stage stays on dry ground, adjacent to blocked water.
+	_box(self, Vector3(4530, 3, 2500), Vector3(400, 6, 145), Color("928060"))
+	for x in range(4350, 4740, 45):
+		_box(self, Vector3(x, 7, 2500), Vector3(3, 2, 145), Color("655e4d"))
+	# Mooring posts, coiled rope and handcart are loading context, not random clutter.
+	for point in [Vector2(4360, 2470), Vector2(4700, 2470), Vector2(4120, 2580)]:
+		_box(self, Vector3(point.x, 20, point.y), Vector3(18, 40, 18), Color("706449"))
+		_box(self, Vector3(point.x + 28, 7, point.y), Vector3(36, 14, 28), Color("c6a56d"))
+	_build_cart(CityTerrain.CART)
+	for point in CityTerrain.LOADING_BARRELS:
+		_cylinder(self, Vector3(point.x, 26, point.y), 25, 28, 52, Color("8d7852"))
+		_cylinder(self, Vector3(point.x, 45, point.y), 28, 28, 6, Color("56665b"))
+	# Loading yard: leaning planks and tied canvas bales stay with the warehouse.
+	for i in 4:
+		var plank := _box(self, Vector3(4780 + i * 17, 45, 2780), Vector3(12, 92, 15), Color("b09360"))
+		plank.rotation.x = 0.22
+	_box(self, Vector3(4420, 15, 2950), Vector3(130, 30, 68), Color("bfb28c"))
+
+	# The destination is visible architecture only: no new boss or trigger.
+	_box(self, Vector3(6690, 235, 975), Vector3(660, 38, 190), Color("3f625b"))
+	_box(self, Vector3(6690, 285, 975), Vector3(510, 60, 115), Color("304a48"))
+
+func _box(parent: Node, center: Vector3, extent: Vector3, color: Color) -> MeshInstance3D:
+	var instance := MeshInstance3D.new()
+	var mesh := BoxMesh.new()
+	mesh.size = extent * Terrain.SCALE
+	instance.mesh = mesh
+	var key := color.to_html()
+	if not material_cache.has(key): material_cache[key] = _material(color)
+	instance.material_override = material_cache[key]
+	instance.position = center * Terrain.SCALE
+	parent.add_child(instance)
+	return instance
+
+func _cylinder(parent: Node, center: Vector3, top: float, bottom: float, height: float, color: Color) -> MeshInstance3D:
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = top * Terrain.SCALE
+	mesh.bottom_radius = bottom * Terrain.SCALE
+	mesh.height = height * Terrain.SCALE
+	mesh.radial_segments = 10
+	var node := MeshInstance3D.new()
+	node.mesh = mesh
+	node.material_override = _material(color)
+	node.position = center * Terrain.SCALE
+	parent.add_child(node)
+	return node
+
+func _build_house(record: Dictionary) -> void:
+	var root := Node3D.new()
+	root.name = "BackgroundHouse" if record.background else "ShopCluster" if record.kind == "shop" else "WarehouseCluster"
+	add_child(root)
+	var area: Rect2 = record.area
+	var h: float = record.height
+	var wall_color := Color("b4c5b7") if record.background else Color("e1d9bc")
+	_box(root, Vector3(area.get_center().x, h * 0.5, area.get_center().y), Vector3(area.size.x, h, area.size.y), wall_color)
+	_box(root, Vector3(area.get_center().x, 15, area.get_center().y), Vector3(area.size.x + 8, 30, area.size.y + 8), Color("879488"))
+	var roof := PrismMesh.new()
+	roof.size = Vector3(area.size.x + 32, 64, area.size.y + 32) * Terrain.SCALE
+	var roof_instance := MeshInstance3D.new()
+	roof_instance.mesh = roof
+	roof_instance.material_override = _material(Color("365951") if record.kind == "shop" else Color("475c56"))
+	roof_instance.position = Vector3(area.get_center().x, h + 27, area.get_center().y) * Terrain.SCALE
+	root.add_child(roof_instance)
+	_box(root, Vector3(area.get_center().x, h + 61, area.get_center().y), Vector3(12, 9, area.size.y + 44), Color("29453f"))
+	# Door and timber frame read from the street; shutters repeat by building use.
+	var y := area.end.y + 2
+	for x in range(int(area.position.x + 65), int(area.end.x - 35), 145):
+		_box(root, Vector3(x, 74, y), Vector3(66, 72, 5), Color("687c6c"))
+		_box(root, Vector3(x, 74, y + 3), Vector3(5, 72, 4), Color("b6a77c"))
+	_box(root, Vector3(area.get_center().x, 51, y + 4), Vector3(62, 102, 9), Color("695e4e"))
+	if record.kind == "shop":
+		var awning_color := Color("b36b4d") if int(area.position.x) % 3 == 0 else Color("8ba78c")
+		_box(root, Vector3(area.get_center().x, 117, y + 35), Vector3(area.size.x * 0.70, 9, 72), awning_color)
+		_box(root, Vector3(area.position.x + 65, 86, y + 39), Vector3(29, 59, 9), Color("ad704d"))
+		_cylinder(root, Vector3(area.end.x - 65, 85, y + 34), 16, 16, 29, Color("e8bb69"))
+		for x in [area.get_center().x - area.size.x * 0.30, area.get_center().x + area.size.x * 0.30]:
+			_box(root, Vector3(x, 55, y + 58), Vector3(6, 110, 6), Color("655f48"))
+	else:
+		for x in [area.position.x + 15, area.end.x - 15]:
+			_box(root, Vector3(x, h * 0.5, y + 3), Vector3(16, h, 10), Color("737665"))
+	building_visuals.append({"area": area, "height": h + 65, "root": root, "background": record.background})
+
+func _build_prop(record: Dictionary) -> void:
+	var area: Rect2 = record.area
+	var center := area.get_center()
+	match record.kind:
+		"stall":
+			var variant := int(area.position.x) % 4
+			_box(self, Vector3(center.x, 24, center.y), Vector3(area.size.x, 48, area.size.y), Color("9f8254"))
+			_box(self, Vector3(center.x, 48, center.y + 12), Vector3(area.size.x + 5, 5, area.size.y + 4), Color("c19d67") if variant == 0 else Color("a67356"))
+			# A small market stall is a repeatable functional group: supports,
+			# canvas, goods, under-counter storage, then a clear selling side.
+			for x in [area.position.x + 6, area.end.x - 6]:
+				_box(self, Vector3(x, 63, area.position.y + 4), Vector3(7, 126, 7), Color("6a644b"))
+			var canopy := _box(self, Vector3(center.x, 132, center.y - 7), Vector3(area.size.x + 22, 6, area.size.y + 18), Color("cb9b5d") if variant == 0 else Color("b88065"))
+			canopy.rotation.x = -0.09
+			for j in 3:
+				var point := Vector2(area.position.x + 23 + j * 41, center.y + 22)
+				if variant == 0:
+					_cylinder(self, Vector3(point.x, 57, point.y), 16, 19, 15, Color("b99662"))
+					for k in 4:
+						var fruit := _sphere(0.072, Color("deaa45") if j % 2 == 0 else Color("75984a"))
+						add_child(fruit)
+						fruit.position = Vector3(point.x + (k % 2) * 10 - 5, 70 + (k / 2) * 4, point.y + (k / 2) * 9 - 5) * Terrain.SCALE
+				else:
+					_cylinder(self, Vector3(point.x, 65 + j * 3, point.y), 10 + j * 3, 15 + j * 2, 29 + j * 6, Color("bd8964") if j % 2 == 0 else Color("b8c4ad"))
+			_box(self, Vector3(area.position.x + 22, 13, center.y + 1), Vector3(33, 26, 40), Color("756547"))
+		"cargo":
+			_box(self, Vector3(center.x, 26, center.y), Vector3(area.size.x, 52, area.size.y), Color("aa8c60"))
+			for x in [area.position.x + 12, area.end.x - 12]:
+				_box(self, Vector3(x, 29, center.y), Vector3(8, 58, area.size.y + 4), Color("695e46"))
+			_box(self, Vector3(center.x, 66, center.y), Vector3(area.size.x * 0.6, 28, area.size.y * 0.7), Color("cab481"))
+		_:
+			_box(self, Vector3(center.x, 110, center.y), Vector3(area.size.x, 220, area.size.y), Color("8e9a88"))
+			_box(self, Vector3(center.x, 227, center.y), Vector3(area.size.x + 20, 22, area.size.y + 20), Color("445c51"))
+
+func _build_bridge(area: Rect2) -> void:
+	var horizontal := area.size.x > area.size.y
+	# Low decorative coping occupies only the water-side edge, no invisible barrier.
+	for offset in [-1.0, 1.0]:
+		var center := area.get_center()
+		center[1 if horizontal else 0] += offset * (area.size[1 if horizontal else 0] * 0.5 - 8)
+		_box(self, Vector3(center.x, 12, center.y), Vector3(area.size.x if horizontal else 12, 24, 12 if horizontal else area.size.y), Color("ced0b4"))
+
+func _build_boat(point: Vector2) -> void:
+	_box(self, Vector3(point.x, 15, point.y), Vector3(220, 30, 75), Color("536e65"))
+	_box(self, Vector3(point.x, 35, point.y), Vector3(160, 12, 52), Color("99865b"))
+	for x in [point.x - 102, point.x + 102]:
+		_box(self, Vector3(x, 32, point.y), Vector3(17, 32, 66), Color("465d55"))
+	_box(self, Vector3(point.x + 20, 68, point.y), Vector3(68, 54, 68), Color("a98e65"))
+
+func _build_cart(point: Vector2) -> void:
+	_box(self, Vector3(point.x, 32, point.y), Vector3(130, 15, 75), Color("796a4d"))
+	for x in [-42, 42]:
+		for z in [-42, 42]:
+			var wheel := _sphere(0.16, Color("505b49"))
+			add_child(wheel)
+			wheel.position = Vector3(point.x + x, 16, point.y + z) * Terrain.SCALE
+	_box(self, Vector3(point.x + 87, 38, point.y), Vector3(75, 8, 9), Color("796a4d"))
+
+func spawn_enemies() -> void:
+	for actor in actors.keys():
+		if actor != player:
+			if is_instance_valid(actor): actor.queue_free()
+			actors[actor].queue_free()
+			actors.erase(actor)
+			actor_motion.erase(actor)
+	for group in ["enemy_bolts", "enemy_zones", "wisp_projectiles"]:
+		for node in get_tree().get_nodes_in_group(group): node.queue_free()
+	spawn_delay = 1.0 if combat_enabled else 0.0
+
+func set_combat_enabled(enabled: bool) -> void:
+	combat_enabled = enabled
+	spawn_enemies()
+	_update_hud()
+
+func _physics_process(delta: float) -> void:
+	if paused: return
+	trial_elapsed += delta
+	if spawn_delay > 0.0:
+		spawn_delay -= delta
+		if spawn_delay <= 0.0 and combat_enabled:
+			for i in ENCOUNTERS.size():
+				var point: Vector2 = ENCOUNTERS[i]
+				if point.distance_to(player.position) < 210.0: continue
+				if navigation.is_open(point, ACTOR_CLEARANCE):
+					_spawn_enemy_at(point, ENEMY_ROLES[i], ENEMY_HEALTH[i])
+	for actor in actors:
+		if actor is TrainingEnemy and is_instance_valid(actor):
+			actor.set_physics_process(actor.position.distance_to(player.position) < 1050.0 and player.health > 0.0)
+	super._physics_process(delta)
+
+func _on_enemy_defeated(_enemy: TrainingEnemy) -> void:
+	kills += 1 # No XP, currency, unlocks or profile writes in this experiment.
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if overview:
+		camera.position = terrain.world_point(display_bounds().get_center(), 80) + camera_offset.normalized() * 120.0
+	if not is_instance_valid(player): return
+	# Fade only near-side architecture crossing the camera-to-actor ray.
+	# Collision never changes with visibility, preserving solid silhouettes.
+	for item in building_visuals:
+		var obscures := false
+		if not overview and not item.background:
+			var end := player.position + Vector2.ONE * float(item.height)
+			obscures = navigation._segment_hits_rect(player.position, end, (item.area as Rect2).grow(35.0))
+		for child in item.root.get_children():
+			if child is GeometryInstance3D:
+				child.transparency = 0.80 if obscures else 0.0
+
+func _build_ui() -> void:
+	trial_canvas = CanvasLayer.new()
+	trial_canvas.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(trial_canvas)
+	var panel := ColorRect.new()
+	panel.position = Vector2(16, 16)
+	panel.size = Vector2(500, 83)
+	panel.color = Color(0.055, 0.12, 0.12, 0.91)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	trial_canvas.add_child(panel)
+	hud = Label.new()
+	hud.position = Vector2(29, 26)
+	hud.add_theme_font_size_override("font_size", 19)
+	trial_canvas.add_child(hud)
+	var row := HBoxContainer.new()
+	row.position = Vector2(600, 20)
+	row.add_theme_constant_override("separation", 8)
+	trial_canvas.add_child(row)
+	mode_button = _trial_button(row, "F2 · 전투 비교", func(): set_combat_enabled(not combat_enabled))
+	_trial_button(row, "동문", func(): teleport(CityTerrain.ENTRY))
+	_trial_button(row, "시장", func(): teleport(CityTerrain.MARKET))
+	_trial_button(row, "수변", func(): teleport(CityTerrain.WATERFRONT))
+	_trial_button(row, "야영지", _return_to_camp)
+	var help := Label.new()
+	help.position = Vector2(22, 654)
+	help.text = "WASD 이동 · Shift 대시 · J/클릭 공격 · Space 이동 베기\nTab 전체 배치 · F2 풍경/제한 전투 · N 적 재배치 · R 동문 재시작 · Esc 정지 · G 야영지"
+	help.add_theme_font_size_override("font_size", 17)
+	help.add_theme_color_override("font_shadow_color", Color.BLACK)
+	help.add_theme_constant_override("shadow_offset_x", 1)
+	help.add_theme_constant_override("shadow_offset_y", 1)
+	trial_canvas.add_child(help)
+	pause_label = Label.new()
+	pause_label.position = Vector2(480, 320)
+	pause_label.text = "일시정지 · Esc로 계속"
+	pause_label.add_theme_font_size_override("font_size", 26)
+	pause_label.hide()
+	trial_canvas.add_child(pause_label)
+
+func _trial_button(row: HBoxContainer, title: String, action: Callable) -> Button:
+	var button := Button.new()
+	button.text = title
+	button.custom_minimum_size = Vector2(82, 38)
+	button.focus_mode = Control.FOCUS_NONE
+	button.pressed.connect(action)
+	row.add_child(button)
+	return button
+
+func _update_hud() -> void:
+	if hud == null or not is_instance_valid(player): return
+	var mode := "제한 전투 · 적 최대 8" if combat_enabled else "풍경 · 적 없음"
+	if spawn_delay > 0.0: mode = "1초 후 고정 지점에 적 배치"
+	hud.text = "수로도시 v29 · %s\nHP %d · 대시 %d/%d · 고정 시험 빌드 / 저장·보상 없음" % [mode, ceili(player.health), player.dash_charges, player.dash_max_charges]
+	if player.health <= 0.0: hud.text += "\n쓰러졌습니다 · R로 동문에서 다시 시작"
+	if mode_button != null: mode_button.text = "F2 · 풍경 보기" if combat_enabled else "F2 · 전투 비교"
+
+func _return_to_camp() -> void:
+	_set_paused(false)
+	get_tree().change_scene_to_file("res://game/travel_camp.tscn")
+
+func _input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo: return
+	match event.keycode:
+		KEY_F2:
+			if not paused: set_combat_enabled(not combat_enabled)
+		KEY_N:
+			if not paused: spawn_enemies()
+		KEY_R:
+			_set_paused(false)
+			player.restore_for_boss_retry()
+			teleport(CityTerrain.ENTRY)
+			spawn_enemies()
+		KEY_G: _return_to_camp()
+		_: super._input(event)
