@@ -4,7 +4,7 @@ const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
 const ProfileScript = preload("res://game/run_profile.gd")
 const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const BOSS_TIME := 300.0
-const MAX_ENEMIES := 48
+const MAX_ENEMIES := 72
 const TempleSectionScript = preload("res://game/temple_section.gd")
 var temple_section: Node
 var garden_terrain_mesh: MeshInstance3D
@@ -96,6 +96,8 @@ func _ready() -> void:
 	growth.permanent_combo_progression = true
 	growth.compact_hud = true
 	growth.hud.position = Vector2(28, 588)
+	growth.xp_bar.position = Vector2(28, 622)
+	growth.xp_bar.visible = true
 	growth._update_hud()
 	growth._sync_permanent_moves()
 	rng.randomize()
@@ -353,10 +355,8 @@ func _encounter_phase() -> Dictionary:
 func _spawn_rate() -> float:
 	if temple_section != null and (temple_section.boss_active or temple_section.in_garden): return 0.0
 	if boss_spawned: return 0.25
-	if run_time < 45.0: return 0.60
-	if run_time < 120.0: return 0.85 + float(_encounter_phase().get("rate", 0.0))
-	if run_time < 200.0: return 1.10 + float(_encounter_phase().get("rate", 0.0))
-	return 1.40 + float(_encounter_phase().get("rate", 0.0))
+	var base := 0.60 if run_time < 45.0 else 0.85 if run_time < 120.0 else 1.10 if run_time < 200.0 else 1.40
+	return (base + float(_encounter_phase().get("rate", 0.0))) * 1.5
 
 
 func _roll_role() -> TrainingEnemy.Role:
@@ -385,7 +385,7 @@ func _active_enemy_count() -> int:
 func _choose_spawn_point(for_boss: bool) -> Vector2:
 	var visible_candidate := Vector2.INF
 	for attempt in 60:
-		var radius := rng.randf_range(500.0, 850.0)
+		var radius := rng.randf_range(380.0, 700.0)
 		var point := player.global_position + Vector2.from_angle(rng.randf_range(0.0, TAU)) * radius
 		if point.x < 60.0 or point.y < 60.0 or point.x > terrain.map_size.x - 60.0 or point.y > terrain.map_size.y - 60.0: continue
 		if point.distance_to(player.global_position) < (450.0 if for_boss else 380.0): continue

@@ -56,7 +56,8 @@ func _init() -> void:
 		floor_areas.append({"area": rect, "height": 1.2, "color": Color("b7bd98"), "discovery_id": "TEMPLE_GARDEN"})
 	water_areas.append(Garden.POND)
 	for rect in [Rect2(5600, 80, 3000, 45), Rect2(5600, 2035, 3000, 45), Rect2(5600, 80, 45, 2000), Rect2(8555, 80, 45, 2000), Rect2(5680, 900, 470, 650), Rect2(6450, 250, 120, 980), Rect2(6750, 1780, 860, 190), Rect2(7770, 140, 120, 620), Rect2(8220, 1700, 210, 170)]:
-		wall_areas.append({"area": rect, "height": 115.0, "color": Color("52715e"), "discovery_id": "TEMPLE_GARDEN"})
+		var foreground: bool = rect.position.y >= 1700.0 or rect.position.x >= 8550.0 or rect.position.x == 6450.0 or rect.position.x == 8220.0
+		wall_areas.append({"area": rect, "height": 45.0 if foreground else 115.0, "color": Color("668477") if foreground else Color("52715e"), "discovery_id": "TEMPLE_GARDEN"})
 	# No walking/attacking path connects the two fields behind the transition.
 	wall_areas.append({"area": Rect2(5090, 0, 510, 2160), "height": 200.0, "color": Color("607f78"), "visual": false})
 

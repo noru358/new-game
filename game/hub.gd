@@ -40,8 +40,8 @@ var embedded_in_camp := false
 var selected_region_id := RunProfile.TEMPLE_REGION
 var selected_gear_id := "W_FLOW"
 var previewed_mod_id := ""
-var discovery_records: RichTextLabel
-var gear_tabs: TabContainer
+var discovery_cards: HBoxContainer
+var gear_detail_column: VBoxContainer
 var gear_effects_label: RichTextLabel
 var growth_tabs: TabContainer
 
@@ -132,29 +132,23 @@ func _build_ui() -> void:
 	gear_choices.add_child(_label("장신구", 22, Color("f6e7bf")))
 	accessory_button = _button(gear_choices, "", func(): _select_gear("A_EMBER"))
 	gear_action_button = _button(gear_choices, "", _gear_action)
-	gear_tabs = TabContainer.new()
-	gear_tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gear_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	gear_columns.add_child(gear_tabs)
-	var effects_margin := MarginContainer.new()
-	effects_margin.name = "효과·각성"
-	for side in ["left", "right", "top", "bottom"]: effects_margin.add_theme_constant_override("margin_" + side, 18)
-	gear_tabs.add_child(effects_margin)
-	gear_effects_label = RichTextLabel.new()
-	gear_effects_label.bbcode_enabled = true
-	gear_effects_label.add_theme_font_size_override("normal_font_size", 19)
-	effects_margin.add_child(gear_effects_label)
-	var gear_detail_column := VBoxContainer.new()
-	gear_detail_column.name = "교체 옵션"
+	gear_detail_column = VBoxContainer.new()
+	gear_detail_column.name = "효과·각성과 교체 옵션"
 	gear_detail_column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gear_detail_column.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	gear_detail_column.add_theme_constant_override("separation", 6)
-	gear_tabs.add_child(gear_detail_column)
+	gear_detail_column.add_theme_constant_override("separation", 9)
+	gear_columns.add_child(gear_detail_column)
+	gear_effects_label = RichTextLabel.new()
+	gear_effects_label.bbcode_enabled = true
+	gear_effects_label.fit_content = true
+	gear_effects_label.scroll_active = false
+	gear_effects_label.add_theme_font_size_override("normal_font_size", 17)
+	gear_detail_column.add_child(gear_effects_label)
 	var detail_heading := HBoxContainer.new()
 	detail_heading.add_theme_constant_override("separation", 6)
 	gear_detail_column.add_child(detail_heading)
-	mod_info_label = _label("", 15, Color("c5ded6"))
-	mod_info_label.custom_minimum_size.y = 46
+	mod_info_label = _label("교체 옵션", 19, Color("f5d99c"))
+	mod_info_label.custom_minimum_size.y = 30
 	mod_info_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	detail_heading.add_child(mod_info_label)
 	mod_clear_button = _button(detail_heading, "옵션 해제", func(): _slot_mod(""))
@@ -176,13 +170,13 @@ func _build_ui() -> void:
 		for mod_id in RunProfile.GEAR_AFFIXES[gear_id]:
 			mod_buttons[mod_id] = _button(behavior_options if RunProfile.affix_kind(mod_id) == "behavior" else numeric_options, "", _select_mod.bind(mod_id))
 			var option_button: Button = mod_buttons[mod_id]
-			option_button.custom_minimum_size.y = 34
+			option_button.custom_minimum_size.y = 28
 			option_button.add_theme_font_size_override("font_size", 14)
-			_apply_button_styles(option_button, 6)
+			_apply_button_styles(option_button, 4)
 			option_button.mouse_entered.connect(_preview_mod.bind(mod_id))
 			option_button.focus_entered.connect(_preview_mod.bind(mod_id))
 	mod_preview_label = _label("", 15, Color("d6e7dc"))
-	mod_preview_label.custom_minimum_size.y = 44
+	mod_preview_label.custom_minimum_size.y = 34
 	gear_detail_column.add_child(mod_preview_label)
 	var growth := VBoxContainer.new()
 	growth.name = "성장"
@@ -212,16 +206,10 @@ func _build_ui() -> void:
 		_apply_button_styles(attack_branch_buttons[id], 7)
 	reset_button = _button(growth, "성장 초기화 · 쓴 재화 전액 반환", _reset_growth)
 	var discoveries := _tab_page("발견·각성")
-	discoveries.add_child(_label("여행에서 얻은 영구 보상", 24, Color("f6e7bf")))
-	discoveries.add_child(_label("각성은 해당 장비를 착용할 때 적용됩니다. 보스에게 패배해도 보유 기록은 유지됩니다.", 17))
-	discovery_records = RichTextLabel.new()
-	discovery_records.bbcode_enabled = true
-	discovery_records.fit_content = true
-	discovery_records.scroll_active = false
-	discovery_records.custom_minimum_size.y = 160
-	discovery_records.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	discovery_records.add_theme_font_size_override("normal_font_size", 19)
-	discoveries.add_child(discovery_records)
+	discoveries.add_child(_label("발견한 장소와 각성", 24, Color("f6e7bf")))
+	discovery_cards = HBoxContainer.new()
+	discovery_cards.add_theme_constant_override("separation", 12)
+	discoveries.add_child(discovery_cards)
 	status_label = _label("", 15, Color("f6c58e"))
 	root_box.add_child(status_label)
 	if embedded_in_camp:
@@ -321,7 +309,7 @@ func _button_style(highlighted: bool, inset: int = 12, pressed: bool = false) ->
 
 
 func _refresh() -> void:
-	discovery_records.text = AwakeningCatalog.records(profile, unlocks.lifetime_levelups)
+	_refresh_discovery_cards()
 	currency_label.text = "재화 %d" % profile.currency
 	temple_region_button.text = "청록 폐사원  ·  %s%s\n문지기" % ["완료" if profile.temple_owned else "도전 가능", "  ✓" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
 	jungle_region_button.text = "정글 절벽 관문  ·  %s%s\n수호자" % ["완료" if profile.jungle_owned else "도전 가능" if profile.temple_owned else "잠김", "  ✓" if selected_region_id == RunProfile.JUNGLE_REGION else ""]
@@ -364,7 +352,7 @@ func _refresh() -> void:
 	gear_action_button.disabled = profile.load_error or (selected_gear_id == "W_START" and profile.equipped_weapon == "W_START") or (not selected_owned and (profile.currency < int(RunProfile.GEAR_COST[selected_gear_id]) or selected_gear_id == "W_FLOW" and not profile.temple_owned or selected_gear_id == "W_ECHO" and not profile.jungle_owned))
 	if selected_gear_id != "W_START" and not RunProfile.GEAR_AFFIXES[selected_gear_id].has(previewed_mod_id):
 		previewed_mod_id = RunProfile.GEAR_AFFIXES[selected_gear_id][0]
-	mod_info_label.text = "기본 마력장\n교체 옵션 없음" if selected_gear_id == "W_START" else "%s\n장착: %s" % [RunProfile.gear_name(selected_gear_id), RunProfile.affix_title(profile.mod_for(selected_gear_id)) if not profile.mod_for(selected_gear_id).is_empty() else "없음"]
+	mod_info_label.text = "교체 옵션 없음" if selected_gear_id == "W_START" else "교체 옵션"
 	mod_clear_button.visible = selected_gear_id != "W_START"
 	mod_clear_button.disabled = profile.load_error or profile.mod_for(selected_gear_id).is_empty()
 	var has_behavior := false
@@ -375,12 +363,12 @@ func _refresh() -> void:
 		if button.visible and RunProfile.affix_kind(mod_id) == "behavior": has_behavior = true
 		elif button.visible: has_numeric = true
 		var mod_state := "장착 중" if profile.mod_for(selected_gear_id) == mod_id else "보유" if profile.owned_mods.has(mod_id) else "미획득"
-		button.text = "%s  %s  ·  %s" % ["●" if mod_state == "장착 중" else "○", RunProfile.affix_title(mod_id), mod_state]
+		button.text = "%s  %s · %s  ·  %s" % ["●" if mod_state == "장착 중" else "○", "행동" if RunProfile.affix_kind(mod_id) == "behavior" else "수치", RunProfile.affix_title(mod_id), mod_state]
 		button.tooltip_text = RunProfile.affix_description(mod_id) + "\n획득: " + RunProfile.affix_source(mod_id)
 		button.disabled = profile.load_error
 		button.modulate = Color.WHITE if profile.owned_mods.has(mod_id) else Color(0.68, 0.75, 0.72)
-	mod_behavior_label.visible = has_behavior
-	mod_numeric_label.visible = has_numeric
+	mod_behavior_label.visible = false
+	mod_numeric_label.visible = false
 	_update_mod_preview()
 	var growth_names := {"POWER": "평타 피해", "WISP": "여우불 발사 간격", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리", "VITALITY": "최대 HP", "GUARD": "받는 피해", "MOBILITY": "대시 충전 시간", "SPEED": "기본 이동속도"}
 	for id in growth_buttons:
@@ -405,14 +393,45 @@ func _refresh() -> void:
 	save_folder_button.visible = profile.load_error
 
 
+func _refresh_discovery_cards() -> void:
+	for child in discovery_cards.get_children():
+		discovery_cards.remove_child(child)
+		child.queue_free()
+	var known := 0
+	for id in AwakeningCatalog.ENTRIES:
+		if not profile.discovered_places.has(AwakeningCatalog.ENTRIES[id].place): continue
+		known += 1
+		var card := PanelContainer.new()
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color("102b31")
+		style.border_color = Color("4d7770")
+		style.set_border_width_all(2)
+		style.set_corner_radius_all(8)
+		style.set_content_margin_all(14)
+		card.add_theme_stylebox_override("panel", style)
+		discovery_cards.add_child(card)
+		var details := RichTextLabel.new()
+		details.bbcode_enabled = true
+		details.fit_content = true
+		details.scroll_active = false
+		details.custom_minimum_size = Vector2(390, 145)
+		details.add_theme_font_size_override("normal_font_size", 20)
+		details.text = AwakeningCatalog.record(profile, id, unlocks.lifetime_levelups)
+		card.add_child(details)
+	if known == 0:
+		var empty := _label("아직 발견한 장소가 없습니다.", 20)
+		discovery_cards.add_child(empty)
+
+
 func _refresh_gear_effects() -> void:
-	var effects := {"W_START": "기본 근거리 마력 타격.\n4타는 전방 충격으로 마무리합니다.", "W_FLOW": "이동 베기를 적중시킨 뒤 다음 평타가 강화됩니다.\n이동 베기로 진입하고 평타를 이어가는 주공격입니다.", "W_ECHO": "3타로 적을 집결시키고, 그 지점에서 4타가 폭발합니다.\n여러 적을 모아 한 번에 마무리하는 주공격입니다.", "A_EMBER": "여우불 마탄 피해 보너스 +15%.\n직접 공격과 함께 싸우는 여우불을 강화합니다."}
-	gear_effects_label.text = "[font_size=25][color=#f5d99c]%s[/color][/font_size]\n%s\n\n%s" % [RunProfile.gear_name(selected_gear_id), _gear_state(selected_gear_id), effects[selected_gear_id]]
+	var effects := {"W_START": "근거리 마력 타격 · 4타 전방 충격", "W_FLOW": "이동 베기 적중 → 다음 평타 강화", "W_ECHO": "3타 집결 → 같은 지점에 4타 폭발", "A_EMBER": "여우불 마탄 피해 +15%"}
+	gear_effects_label.text = "[font_size=23][color=#f5d99c]%s[/color][/font_size]  %s\n%s" % [RunProfile.gear_name(selected_gear_id), _gear_state(selected_gear_id), effects[selected_gear_id]]
 	var option: String = profile.mod_for(selected_gear_id)
 	for id in AwakeningCatalog.ENTRIES:
 		if AwakeningCatalog.ENTRIES[id].gear == selected_gear_id and profile.awakenings.has(id):
-			gear_effects_label.text += "\n\n[color=#8ee4df]%s\n%s[/color]\n[color=#f5d99c]%s[/color]\n[font_size=18]%s[/font_size]" % [AwakeningCatalog.ENTRIES[id].title, AwakeningCatalog.status(profile, id, unlocks.lifetime_levelups), AwakeningCatalog.ENTRIES[id].after, AwakeningCatalog.ENTRIES[id].condition]
-	gear_effects_label.text += "\n\n현재 옵션\n" + (RunProfile.affix_description(option) if not option.is_empty() else "없음 · ‘교체 옵션’에서 확인")
+			gear_effects_label.text += "\n[color=#8ee4df]각성 · %s[/color] · %s" % [AwakeningCatalog.ENTRIES[id].title, AwakeningCatalog.next_step(profile, id, unlocks.lifetime_levelups)]
+	gear_effects_label.text += "\n현재 옵션 · " + (RunProfile.affix_title(option) if not option.is_empty() else "없음")
 
 
 func _gear_state(id: String) -> String:

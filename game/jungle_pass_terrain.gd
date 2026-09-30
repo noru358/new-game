@@ -3,15 +3,15 @@ extends "res://game/hybrid_terrain.gd"
 
 const Grotto = preload("res://game/jungle_grotto_layout.gd")
 
-const GATE_COLUMN_RISE := 530.0
+const GATE_COLUMN_RISE := 155.0
 const GATE_COLUMN_SIZE := Vector2(125.0, 120.0)
-const GATE_COLUMN_CENTERS := [Vector2(4120, 1160), Vector2(5070, 1160)]
+const GATE_COLUMN_CENTERS := [Vector2(4120, 650), Vector2(5200, 650)]
 const CANOPY_POINTS := [
 	Vector2(350, 470), Vector2(650, 360), Vector2(1090, 350),
 	Vector2(350, 1880), Vector2(820, 2070), Vector2(1250, 1790),
 	Vector2(1820, 600), Vector2(2310, 570), Vector2(3180, 590),
 	Vector2(1810, 1790), Vector2(2450, 2160), Vector2(3470, 2200),
-	Vector2(3980, 640), Vector2(5140, 640), Vector2(4060, 1390), Vector2(5150, 1760),
+	Vector2(3980, 640), Vector2(5140, 480), Vector2(4060, 1390), Vector2(5200, 2160),
 ]
 
 var gate_columns: Array[Dictionary] = []
@@ -56,11 +56,14 @@ func _init() -> void:
 	]
 	floor_areas = [
 		{"area": Rect2(100, 370, 1260, 1670), "color": Color("6b8664")},
+		{"area": Rect2(210, 390, 930, 270), "height": 1.3, "color": Color("52745b")},
+		{"area": Rect2(220, 1650, 1060, 300), "height": 1.3, "color": Color("587663")},
 		{"area": Rect2(390, 780, 1160, 720), "height": 1.2, "color": Color("9b9b70")},
 		{"area": Rect2(1640, 540, 790, 1320), "height": 241.2, "color": Color("788b6d")},
 		{"area": Rect2(1930, 910, 570, 520), "height": 242.4, "color": Color("b3aa83")},
 		{"area": Rect2(2530, 700, 770, 670), "height": 241.2, "color": Color("b8ad87")},
 		{"area": Rect2(2760, 1630, 450, 620), "height": 81.2, "color": Color("536d65")},
+		{"area": Rect2(2760, 2050, 450, 190), "height": 81.4, "color": Color("497775")},
 		{"area": Rect2(3920, 540, 1270, 1010), "height": 481.2, "color": Color("9f9b7f")},
 		{"area": Rect2(4360, 1550, 830, 620), "height": 481.2, "color": Color("9f9b7f")},
 		{"area": Rect2(4100, 800, 1030, 720), "height": 482.4, "color": Color("bcb08a")},
@@ -73,8 +76,8 @@ func _init() -> void:
 		{"area": Rect2(2860, 710, 160, 160), "rise": 145.0, "color": Color("52644f")},
 		{"area": Rect2(2700, 1460, 110, 110), "rise": 185.0, "color": Color("40564e"), "collidable": false},
 		{"area": Rect2(3350, 1480, 120, 110), "rise": 210.0, "color": Color("50665c"), "collidable": false},
-		{"area": Rect2(4380, 590, 210, 300), "rise": 270.0, "color": Color("727a65")},
-		{"area": Rect2(4380, 1250, 210, 220), "rise": 270.0, "color": Color("727a65")},
+		{"area": Rect2(4380, 590, 210, 300), "rise": 90.0, "color": Color("727a65")},
+		{"area": Rect2(4380, 1250, 210, 220), "rise": 90.0, "color": Color("727a65")},
 		{"area": Rect2(3330, 2050, 70, 75), "rise": 110.0, "color": Color("586b63"), "collidable": false},
 		{"area": Rect2(4490, 1690, 90, 100), "rise": 115.0, "color": Color("67776b")},
 	]

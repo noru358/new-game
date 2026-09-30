@@ -17,7 +17,7 @@ func _run() -> void:
 		for second in 300:
 			scene.run_time = float(second) + 0.5
 			actual += scene._spawn_rate()
-			baseline += 0.60 if second < 45 else 0.85 if second < 120 else 1.10 if second < 200 else 1.40
+			baseline += 0.90 if second < 45 else 1.275 if second < 120 else 1.65 if second < 200 else 2.10
 			var phase: Dictionary = scene._encounter_phase()
 			if not phase.is_empty():
 				var total := 0.0
@@ -27,7 +27,7 @@ func _run() -> void:
 		scene.run_time = 140.0
 		check(scene._encounter_phase().name.contains("원거리") and scene._spawn_rate() > 1.1, "middle wave shifts role and pressure")
 		scene.run_time = 160.0
-		check(scene._spawn_rate() < 1.1, "pressure is followed by recovery")
+		check(scene._spawn_rate() < 1.65, "pressure is followed by recovery")
 		scene.boss_spawned = true
 		check(scene._encounter_phase().is_empty() and is_equal_approx(scene._spawn_rate(), 0.25), "boss phase has no extra wave pressure")
 		scene.queue_free()

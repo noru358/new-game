@@ -17,9 +17,8 @@ func _run() -> void:
 	root.add_child(hub)
 	await process_frame
 	hub.tabs.current_tab = 1
-	hub.gear_tabs.current_tab = 1
 	await process_frame
-	_check(hub.gear_list_scroll != hub.gear_detail_scroll and not hub.gear_list_scroll.is_ancestor_of(hub.gear_detail_scroll) and hub.gear_tabs.get_tab_count() == 2, "gear choice and option detail have independent scroll views")
+	_check(hub.gear_list_scroll != hub.gear_detail_scroll and hub.gear_detail_column.is_ancestor_of(hub.gear_effects_label) and hub.gear_detail_column.is_ancestor_of(hub.gear_detail_scroll), "gear effect, awakening and option choices share one visible detail column")
 	var option_panel: Control = hub.gear_detail_scroll.get_child(0)
 	_check(option_panel.size.y <= hub.gear_detail_scroll.size.y and hub.mod_preview_label.global_position.y + hub.mod_preview_label.size.y <= hub.tabs.global_position.y + hub.tabs.size.y, "all four option rows and the selected description fit at 960×540")
 	for style_name in ["normal", "hover", "pressed", "hover_pressed", "disabled", "focus"]:

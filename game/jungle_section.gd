@@ -132,10 +132,27 @@ func _build_garden() -> void:
 		stone.position = arena.terrain.world_point(point, 5)
 		add_child(stone)
 	for point in [Vector2(1130, 455), Vector2(1360, 540), Vector2(1380, 780), Vector2(6810, 2270), Vector2(7650, 1850), Vector2(8510, 1050), Vector2(9030, 1220), Vector2(9410, 1500), Vector2(9600, 300)]:
-		var bush: MeshInstance3D = arena._sphere(0.8, Color("356b51"))
-		bush.position = arena.terrain.world_point(point, 180)
-		bush.scale = Vector3(1.3, 0.8, 1.0)
+		var bush: MeshInstance3D = arena._sphere(0.35, Color("356b51"))
+		bush.name = "GrottoBush"
+		bush.position = arena.terrain.world_point(point, 30)
+		bush.scale = Vector3(1.4, 0.75, 1.0)
 		add_child(bush)
+	for point in [Vector2(6430, 2510), Vector2(6590, 2740), Vector2(6800, 2530), Vector2(7060, 2460), Vector2(7360, 2510), Vector2(7740, 2340), Vector2(8160, 1810), Vector2(8690, 1420), Vector2(9230, 1370)]:
+		var moss: MeshInstance3D = arena._sphere(0.18, Color("688e70"))
+		moss.name = "GrottoEdgeMoss"
+		moss.position = arena.terrain.world_point(point, 15)
+		moss.scale = Vector3(1.5, 0.55, 1.0)
+		add_child(moss)
+	for point in [Vector2(6500, 2540), Vector2(6850, 2720), Vector2(7480, 2470), Vector2(8260, 1710), Vector2(8900, 1270), Vector2(9670, 750)]:
+		var stone := MeshInstance3D.new()
+		stone.name = "GrottoEdgeStone"
+		var shape := BoxMesh.new()
+		shape.size = Vector3(0.44, 0.22, 0.36)
+		stone.mesh = shape
+		stone.rotation.y = point.x * 0.002
+		stone.material_override = arena._material(Color("738a79"))
+		stone.position = arena.terrain.world_point(point, 11)
+		add_child(stone)
 	altar_label = Label3D.new()
 	altar_label.font_size = 27
 	altar_label.pixel_size = 0.006

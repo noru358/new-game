@@ -57,6 +57,7 @@ var basic_speed_base := 0.0
 var hud_position := Vector2(20, 104)
 var permanent_combo_progression := false
 var compact_hud := false
+var xp_bar: ProgressBar
 var permanent_wisp_cadence_reduction := 0.0
 var permanent_wisp_chain_bonus := 0.0
 var last_followup_attack := -1
@@ -390,7 +391,10 @@ func _update_hud() -> void:
 	if hud == null:
 		return
 	if compact_hud:
-		hud.text = "LV %d   XP %d / %d" % [level, xp, next_xp()]
+		hud.text = "레벨 %d   경험치 %d / %d" % [level, xp, next_xp()]
+		if xp_bar != null:
+			xp_bar.max_value = next_xp()
+			xp_bar.value = xp
 		return
 	hud.text = "LV %d  |  XP %d / %d  |  누적 레벨업 %d  |  여우불 %d" % [
 		level, xp, next_xp(), unlocks.lifetime_levelups, wisps.size()
@@ -433,6 +437,16 @@ func _build_ui() -> void:
 	hud.add_theme_color_override("font_color", Color("e5fff5"))
 	hud.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
 	canvas.add_child(hud)
+	xp_bar = ProgressBar.new()
+	xp_bar.position = hud_position + Vector2(0, 28)
+	xp_bar.size = Vector2(300, 14)
+	xp_bar.show_percentage = false
+	xp_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var xp_fill := StyleBoxFlat.new()
+	xp_fill.bg_color = Color("e8c67e")
+	xp_bar.add_theme_stylebox_override("fill", xp_fill)
+	canvas.add_child(xp_bar)
+	xp_bar.visible = compact_hud
 	overlay = ColorRect.new()
 	overlay.position = Vector2.ZERO
 	overlay.size = Vector2(1280, 720)
