@@ -40,6 +40,9 @@ static func _kind(point: Vector2) -> int:
 	if _walkable(point): return 0
 	for area in POOLS:
 		if area.has_point(point): return 1
+	# The camera looks from the southeast. Tall near-side walls hide actors
+	# walking just behind them, so keep only those edges at curb height.
+	if _walkable(point - Vector2(140.0, 0.0)) or _walkable(point - Vector2(0.0, 140.0)): return 3
 	return 2
 
 
@@ -62,7 +65,7 @@ static func install(terrain) -> void:
 			elif kind == 1:
 				terrain.water_areas.append(rect)
 			else:
-				terrain.wall_areas.append({"area": rect, "base": 0.0, "height": 155.0, "color": Color("416657"), "discovery_id": "JUNGLE_GROTTO"})
+				terrain.wall_areas.append({"area": rect, "base": 0.0, "height": 45.0 if kind == 3 else 155.0, "color": Color("527e6d") if kind == 3 else Color("416657"), "discovery_id": "JUNGLE_GROTTO", "foreground_edge": kind == 3})
 			start = end
 	for rect in [Rect2(6000, 80, 4200, 40), Rect2(6000, 2840, 4200, 40), Rect2(6000, 80, 40, 2800), Rect2(10160, 80, 40, 2800)]:
 		terrain.wall_areas.append({"area": rect, "base": 0.0, "height": 175.0, "color": Color("375a50"), "discovery_id": "JUNGLE_GROTTO"})

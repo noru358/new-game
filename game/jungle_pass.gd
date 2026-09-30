@@ -59,6 +59,7 @@ func _ready() -> void:
 	_build_jungle_silhouette()
 	_build_gate_approaches()
 	_build_river_route()
+	_build_route_scenery()
 	for child in get_children():
 		if child is Node3D and not before.has(child): main_decor.append(child)
 
@@ -151,12 +152,19 @@ func _animate_boss_arms(figure: Node3D) -> void:
 
 func _roll_role() -> TrainingEnemy.Role:
 	if boss_spawned or run_time < 45.0: return TrainingEnemy.Role.FRAGMENT
-	var weights := [45.0, 30.0, 5.0, 15.0, 5.0] if run_time < 120.0 else [35.0, 28.0, 12.0, 17.0, 8.0] if run_time < 200.0 else [30.0, 27.0, 15.0, 18.0, 10.0]
+	var weights := _route_role_weights(player.global_position)
 	var roll := rng.randf() * 100.0
 	for role in 5:
 		roll -= weights[role]
 		if roll < 0.0: return role as TrainingEnemy.Role
 	return TrainingEnemy.Role.FRAGMENT
+
+
+func _route_role_weights(point: Vector2) -> Array[float]:
+	if point.x < 1550.0: return [55.0, 30.0, 0.0, 15.0, 0.0]
+	if point.x >= 2500.0 and point.x < 4360.0 and point.y < 1500.0: return [25.0, 45.0, 10.0, 15.0, 5.0]
+	if point.x >= 2500.0 and point.y >= 1500.0: return [35.0, 15.0, 25.0, 15.0, 10.0]
+	return [40.0, 30.0, 10.0, 15.0, 5.0]
 
 
 func _spawn_now(point: Vector2, role: TrainingEnemy.Role, for_boss: bool) -> void:
@@ -235,10 +243,10 @@ func _build_gate_silhouette() -> void:
 	var bridge := MeshInstance3D.new()
 	bridge.name = "GateLintel"
 	var lintel := BoxMesh.new()
-	lintel.size = Vector3((last.x - first.x + PassTerrain.GATE_COLUMN_SIZE.x + 160.0) * PassTerrain.SCALE, 1.15, 1.45)
+	lintel.size = Vector3((last.x - first.x + PassTerrain.GATE_COLUMN_SIZE.x + 160.0) * PassTerrain.SCALE, 0.45, 0.65)
 	bridge.mesh = lintel
 	bridge.material_override = _material(Color("788879"), false)
-	bridge.position = Vector3((first.x + last.x) * 0.5, column_top + 37.5, (first.y + last.y) * 0.5) * PassTerrain.SCALE
+	bridge.position = Vector3((first.x + last.x) * 0.5, column_top + 10.0, (first.y + last.y) * 0.5) * PassTerrain.SCALE
 	add_child(bridge)
 
 
@@ -326,3 +334,39 @@ func _build_river_route() -> void:
 		root.rotation.y = 0.7
 		root.material_override = _material(Color("685d48"))
 		add_child(root)
+
+
+func _build_route_scenery() -> void:
+	# Low silhouettes give forest, causeway and riverbank different visual rhythms.
+	for center in [Vector2(420, 480), Vector2(850, 430), Vector2(420, 1740), Vector2(1150, 1830), Vector2(1850, 640), Vector2(2220, 1850)]:
+		for i in 6:
+			var angle := float(i) * TAU / 6.0
+			var point: Vector2 = center + Vector2.from_angle(angle) * (45.0 + float(i % 3) * 30.0)
+			var shrub := _sphere(0.18 + float(i % 3) * 0.04, Color("456c53") if i % 2 == 0 else Color("789165"))
+			shrub.name = "ForestUnderstory"
+			shrub.position = terrain.world_point(point, 18.0)
+			add_child(shrub)
+	for i in 16:
+		var point := Vector2(2600 + i * 75, 820 + float(i % 3) * 32)
+		var fragment := MeshInstance3D.new()
+		fragment.name = "CausewayFragment"
+		var shape := BoxMesh.new()
+		shape.size = Vector3(0.22 + float(i % 3) * 0.09, 0.08, 0.27)
+		fragment.mesh = shape
+		fragment.position = terrain.world_point(point, 4.0)
+		fragment.rotation.y = float(i) * 0.37
+		fragment.material_override = _material(Color("b5aa88") if i % 2 == 0 else Color("7b806d"))
+		add_child(fragment)
+	for i in 24:
+		var point := Vector2(2770 + i * 57, 2180 + sin(float(i) * 0.72) * 26.0)
+		var reed := MeshInstance3D.new()
+		reed.name = "RiverReed"
+		var shape := CylinderMesh.new()
+		shape.top_radius = 0.025
+		shape.bottom_radius = 0.055
+		shape.height = 0.42 + float(i % 3) * 0.08
+		reed.mesh = shape
+		reed.position = terrain.world_point(point, 27.0)
+		reed.rotation.z = -0.15 + 0.12 * float(i % 4)
+		reed.material_override = _material(Color("b4b17e") if i % 2 == 0 else Color("799b78"))
+		add_child(reed)

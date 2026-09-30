@@ -23,16 +23,31 @@ static func comparison(id: String) -> String:
 	return "[color=#a5bbb5]획득 전\n%s[/color]\n\n[color=#f5d99c]획득 후\n%s[/color]\n\n[font_size=18]%s[/font_size]" % [entry.before, entry.after, entry.condition]
 
 
+static func next_step(profile, id: String, lifetime_levelups: int) -> String:
+	var gear: String = ENTRIES[id].gear
+	if not profile.owned_gear.has(gear): return "정글 첫 정복 후 장비 구매" if id == "ECHO_GROTTO" and not profile.jungle_owned else "장비 구매"
+	if profile.equipped_weapon != gear and profile.equipped_accessory != gear: return "장비 착용"
+	if id == "ECHO_GROTTO" and lifetime_levelups < 3: return "누적 레벨업 3회로 4타 습득"
+	return "적용 중"
+
+
 static func records(profile, lifetime_levelups: int) -> String:
 	var lines: Array[String] = []
 	for id in ENTRIES:
-		var entry: Dictionary = ENTRIES[id]
-		if not profile.discovered_places.has(entry.place): continue
-		if not profile.awakenings.has(id):
-			lines.append("%s\n장소 발견 · 영구 보상은 아직 얻지 않았습니다." % entry.place_name)
-			continue
-		lines.append("%s — %s\n%s\n\n%s" % [entry.place_name, entry.title, status(profile, id, lifetime_levelups), comparison(id)])
-	return "아직 기록된 장소가 없습니다.\n여행 중 발견한 장소와 얻은 각성이 여기에 남습니다." if lines.is_empty() else "\n\n────────────────────\n\n".join(lines)
+		if profile.discovered_places.has(ENTRIES[id].place): lines.append(record(profile, id, lifetime_levelups))
+	return "아직 발견한 장소가 없습니다." if lines.is_empty() else "\n\n".join(lines)
+
+
+static func record(profile, id: String, lifetime_levelups: int) -> String:
+	var entry: Dictionary = ENTRIES[id]
+	if not profile.awakenings.has(id):
+		var objective: String = "수호 적 3명 처치 후 제단" if id == "EMBER_GARDEN" else "안쪽 유적 도착 후 E"
+		return "[font_size=25]%s[/font_size]\n[color=#a9bbb8]장소 발견 · 보상 미획득[/color]\n다음 · %s" % [entry.place_name, objective]
+	var active: bool = status(profile, id, lifetime_levelups).begins_with("적용 중")
+	var state: String = "적용 중" if active else "보유 · 미적용"
+	var effect: String = "마탄 피해 +20%p · 연쇄 +1" if id == "EMBER_GARDEN" else "4타 적중 후 추가 폭발 · 4타 피해의 35%"
+	var direction: String = ("여우불 장신구에 적용" if id == "EMBER_GARDEN" else "집결의 마력장에 적용") if active else "다음 · " + next_step(profile, id, lifetime_levelups)
+	return "[font_size=25][color=#f5d99c]%s[/color][/font_size]\n[color=%s]%s[/color]\n%s\n[font_size=17][color=#a9bbb8]%s[/color][/font_size]\n[color=%s]%s[/color]" % [entry.title, "#8ee4df" if active else "#f0bf85", state, effect, entry.place_name, "#a9bbb8" if active else "#f0bf85", direction]
 
 
 static func equipped_summary(profile, lifetime_levelups: int) -> String:

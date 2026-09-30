@@ -847,7 +847,7 @@ func _process(delta: float) -> void:
 			body.flip_h = player.facing.x - player.facing.y < -0.1
 			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
-			body.scale = Vector3.ONE * (1.08 if player.attack_step == 4 else 1.0)
+			body.scale = Vector3.ONE
 		elif actor is TrainingEnemy:
 			visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
 			_update_health_bar(visual, actor)
@@ -1241,8 +1241,8 @@ func _build_ui() -> void:
 	player_health_warning.hide()
 	canvas.add_child(player_health_warning)
 	build_summary_label = Label.new()
-	build_summary_label.position = Vector2(28, 620)
-	build_summary_label.size.x = 720
+	build_summary_label.position = Vector2(380, 588)
+	build_summary_label.size.x = 620
 	build_summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	build_summary_label.add_theme_font_size_override("font_size", 16)
 	build_summary_label.add_theme_color_override("font_shadow_color", Color.BLACK)

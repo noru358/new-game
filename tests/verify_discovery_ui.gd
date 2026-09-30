@@ -17,7 +17,7 @@ func _run() -> void:
 	var empty := Catalog.records(profile, 0)
 	check(not empty.contains("계곡") and not empty.contains("정원") and not empty.contains("/2"), "unfound places and total secret count stay hidden")
 	profile.discovered_places.append("JUNGLE_GROTTO")
-	check(Catalog.records(profile, 0).contains("장소 발견") and not Catalog.records(profile, 0).contains("추가 폭발"), "discovery alone does not expose or award the fixed reward")
+	check(Catalog.records(profile, 0).contains("보상 미획득") and Catalog.records(profile, 0).contains("안쪽 유적 도착") and not Catalog.records(profile, 0).contains("추가 폭발"), "discovery shows the next objective without exposing or awarding the fixed reward")
 	profile.awakenings.append("ECHO_GROTTO")
 	check(Catalog.status(profile, "ECHO_GROTTO", 6).contains("첫 정복"), "unowned reward gear explains its unlock prerequisite")
 	profile.owned_gear["W_ECHO"] = true
@@ -63,7 +63,7 @@ func _run() -> void:
 	hub.growth_save_prefix = PREFIX + "_growth"
 	root.add_child(hub)
 	await process_frame
-	check(hub.tabs.get_tab_count() == 4 and hub.discovery_records.text.contains("계곡의 메아리") and not hub.discovery_records.text.contains("정원의 불씨"), "camp records reload known rewards without leaking other secrets")
+	check(hub.tabs.get_tab_count() == 4 and hub.discovery_cards.get_child_count() == 1 and Catalog.records(hub.profile, hub.unlocks.lifetime_levelups).contains("계곡의 메아리") and not Catalog.records(hub.profile, hub.unlocks.lifetime_levelups).contains("정원의 불씨"), "camp cards reload known rewards without leaking other secrets")
 	hub.queue_free()
 	await process_frame
 	for stem in [PREFIX, PREFIX + "_growth"]:

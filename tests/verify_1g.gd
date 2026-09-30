@@ -53,10 +53,10 @@ func _run() -> void:
 	scene._update_health_bar(scene.actors[first_enemy], first_enemy)
 	var bar_image: Image = scene._health_bar_image(first_enemy, 0.5)
 	_check(is_equal_approx(float(scene.actors[first_enemy].get_node("HealthBar").get_meta("shown_ratio")), 0.5) and bar_image.get_pixel(12, 3) != bar_image.get_pixel(42, 3), "the overhead bar fills to the actual health ratio")
-	for i in 47: scene.pending_spawns.append({"boss": false, "delay": 1000.0})
+	for i in scene.MAX_ENEMIES - 1: scene.pending_spawns.append({"boss": false, "delay": 1000.0})
 	scene.spawn_credit = 1.0
 	scene._physics_process(0.0)
-	_check(scene._active_enemy_count() == 48 and scene.spawn_credit < 1.0, "ordinary enemy cap discards a failed spawn attempt without building debt")
+	_check(scene._active_enemy_count() == scene.MAX_ENEMIES and scene.spawn_credit < 1.0, "ordinary enemy cap discards a failed spawn attempt without building debt")
 	scene.pending_spawns.clear()
 	for actor in scene.actors:
 		if actor is TrainingEnemy: actor.set_physics_process(false)
@@ -68,11 +68,11 @@ func _run() -> void:
 	scene.run_time = 45.0
 	scene._update_run_hud()
 	_check(scene.run_hud.text.contains("문지기까지 04:15"), "the countdown follows elapsed play time")
-	_check(is_equal_approx(scene._spawn_rate(), 0.85), "second time band raises the spawn rate")
+	_check(is_equal_approx(scene._spawn_rate(), 1.275), "second time band raises the spawn rate")
 	scene.run_time = 120.0
-	_check(is_equal_approx(scene._spawn_rate(), 1.10), "mixed-role time band begins")
+	_check(is_equal_approx(scene._spawn_rate(), 1.65), "mixed-role time band begins")
 	scene.run_time = 200.0
-	_check(is_equal_approx(scene._spawn_rate(), 1.40), "late wave is denser")
+	_check(is_equal_approx(scene._spawn_rate(), 2.10), "late wave is denser")
 	scene.run_time = 299.99
 	await _frames(4)
 	_check(scene.boss_announced, "the boss is announced when the five-minute clock is reached")
