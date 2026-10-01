@@ -1,6 +1,6 @@
-# Loop Conquest — Consolidated Playtest v35
+# Loop Conquest — Consolidated Playtest v37
 
-Includes the v32 canal synthesis, v33 partial temple kit, v34 movement-link/retreat-keyboard fixes, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
+Includes the canal synthesis, corridor and sanctuary environment sample, movement-link/retreat-keyboard fixes, export cleanup, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
 
 Start a **fresh separate trial** (Godot 4.6.x on PATH):
 
@@ -16,10 +16,12 @@ Use WASD, J/click, Space moving slash, Shift dash, E interaction, G retreat. Buy
 
 Batch playtest agenda (human judgment remains open):
 1. Does the canal market→warehouse→waterfront read as connected, distinct places during combat?
-2. Does the temple threshold help the approach while preserving character/attack visibility?
+2. Does the gallery→sanctuary reveal read as a place while keeping the boss, attack warnings and escape space clear?
 3. Is moving slash→empowered basic→cooldown refund understandable and useful?
 4. Do second-rank prices70/105 create worthwhile priorities while first improvements and weapons remain accessible?
 5. After success or return, is the reward→purchase→equip→next-run difference clear and worth repeating?
+
+The sanctuary adds a side chamber and ruined gallery beyond the existing sealed court edge, quiet paving, and selective sight protection. It is a representative environment step; final actor/boss art, sound and the complete first-region presentation remain unfinished. A developer comparison keeps the previous corridor kit: `godot --path . res://game/hybrid_region.tscn -- --sanctuary-baseline`. The older `--temple-baseline` still removes the whole environment kit.
 
 The engine checks establish isolation, displayed/charged prices, respec and reload. The budget study combines actual scripted success/retreat/loss awards with fixed-budget arithmetic; it does not establish human saving pressure or a closed-loop winning price. See `docs/PRODUCTION_NEXT.md` section15 and `docs/measurements/price-v35/`. Native macOS device/audio/long-session GPU validation remains pending; Windows runner evidence is headless and linked from the PR.
 

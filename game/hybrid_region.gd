@@ -5,6 +5,7 @@ const ProfileScript = preload("res://game/run_profile.gd")
 const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const DiagnosticsScript = preload("res://game/run_diagnostics.gd")
 const TempleEnvironmentScript = preload("res://game/temple_environment_kit.gd")
+const TempleSanctuaryScript = preload("res://game/temple_sanctuary_environment.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 72
 const TempleSectionScript = preload("res://game/temple_section.gd")
@@ -13,6 +14,8 @@ var garden_terrain_mesh: MeshInstance3D
 var garden_awakening_applied := false
 var temple_environment_enabled := not OS.get_cmdline_user_args().has("--temple-baseline")
 var temple_environment_root: Node3D
+var temple_sanctuary_enabled := not OS.get_cmdline_user_args().has("--sanctuary-baseline")
+var temple_sanctuary_root: Node3D
 
 var practice_mode := false
 var region_id := RunProfile.TEMPLE_REGION
@@ -302,6 +305,9 @@ func _process(delta: float) -> void:
 	if is_instance_valid(temple_environment_root):
 		temple_environment_root.visible = temple_section == null or not temple_section.in_garden
 		_update_temple_environment_visibility()
+	if is_instance_valid(temple_sanctuary_root):
+		temple_sanctuary_root.visible = temple_section == null or not temple_section.in_garden
+		TempleSanctuaryScript.update_visibility(temple_sanctuary_root, self)
 	if practice_mode: return
 	if diagnostics != null: diagnostics.observe(self)
 	if ending_remaining > 0.0:
@@ -1017,9 +1023,11 @@ func display_bounds() -> Rect2:
 func _build_terrain(render_bounds := Rect2()) -> void:
 	var layout = region_layout()
 	var use_temple_kit := region_id == RunProfile.TEMPLE_REGION and temple_environment_enabled
+	var use_sanctuary := use_temple_kit and temple_sanctuary_enabled
 	if region_id == RunProfile.TEMPLE_REGION:
 		for wall in terrain.wall_areas:
 			if TempleEnvironmentScript.replaces_wall(wall): wall["visual"] = not use_temple_kit
+			if TempleSanctuaryScript.replaces_wall(wall): wall["visual"] = not use_sanctuary
 	super._build_terrain(layout.MAIN_BOUNDS)
 	var main_mesh := terrain_mesh
 	var main_faces := resolved_vertical_faces.duplicate(true)
@@ -1033,3 +1041,6 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	if use_temple_kit:
 		temple_environment_root = TempleEnvironmentScript.build(self)
 		add_child(temple_environment_root)
+	if use_sanctuary:
+		temple_sanctuary_root = TempleSanctuaryScript.build(self)
+		add_child(temple_sanctuary_root)

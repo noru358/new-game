@@ -1,0 +1,194 @@
+extends "res://tests/sample_run_baseline.gd"
+## Actual input/AI/render inspection fixture, not a normal run or balance sample.
+var output_dir := ""
+var images_enabled := true
+var captured: Dictionary = {}
+var observed: Dictionary = {}
+var route_checks: Array = []
+var inspection_error := ""
+var inspection_started := 0
+var combat_seconds := 24.0
+var save_guard: Dictionary = {}
+var source_guard: Dictionary = {}
+
+func _run() -> void:
+	output_dir = OS.get_environment("SANCTUARY_LIVE_OUTPUT")
+	var isolation := OS.get_environment("SANCTUARY_LIVE_ISOLATION")
+	if output_dir.is_empty() or isolation.is_empty() or not OS.get_user_data_dir().begins_with(isolation + "/"):
+		printerr("FAIL: explicit private output/user-data roots required")
+		quit(1)
+		return
+	for arg in OS.get_cmdline_user_args():
+		if arg == "--no-images": images_enabled = false
+		if arg.begins_with("--combat-seconds="): combat_seconds = arg.trim_prefix("--combat-seconds=").to_float()
+	DirAccess.make_dir_recursive_absolute(output_dir)
+	for prefix in ["user://loop_conquest_profile", "user://loop_conquest_1d_unlocks"]:
+		for suffix in ["_a.json", "_b.json"]:
+			var path: String = prefix + suffix
+			if FileAccess.file_exists(path):
+				printerr("FAIL: inspection requires a fresh private save root")
+				quit(1)
+				return
+			if suffix == "_a.json":
+				var sentinel := FileAccess.open(path, FileAccess.WRITE)
+				sentinel.store_string("private visibility-fixture ordinary-slot guard\n")
+				sentinel.close()
+			save_guard[path] = FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "absent"
+	for path in ["res://game/hybrid_region.gd", "res://game/temple_environment_kit.gd", "res://game/temple_sanctuary_environment.gd", "res://game/temple_hybrid_terrain.gd", "res://game/player.gd", "res://game/gate_boss.gd", "res://game/temple_section.gd"]:
+		source_guard[path] = FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "absent"
+	Engine.time_scale = 1.0
+	root.size = Vector2i(1280, 720)
+	scene = load("res://game/hybrid_region.tscn").instantiate()
+	scene.profile_save_prefix = "user://sanctuary_live_fixture_profile"
+	scene.growth_save_prefix = "user://sanctuary_live_fixture_unlocks"
+	root.add_child(scene)
+	current_scene = scene
+	for i in 6: await process_frame
+	scene.rng.seed = 3701
+	scene.growth.growth_ended = true
+	scene.spawn_credit = -100000.0
+	scene.player.max_health = 1000
+	scene.player.health = 1000
+	scene.teleport(Vector2(3900, 1120))
+	scene.run_time = 300.0
+	inspection_started = Time.get_ticks_usec()
+	await create_timer(1.6).timeout
+	if not is_instance_valid(scene.boss):
+		inspection_error = "normal elapsed-time boss spawn did not complete"
+		_finish_inspection()
+		return
+	scene.boss.phase = 2
+	scene.boss.charge_damage = 25.0
+	await _capture_live("01-approach")
+	await _walk_live(Vector2(4320, 1150), "approach_into_court")
+	var started: float = scene.run_time
+	var next_input := 0.0
+	while scene.run_time - started < combat_seconds and inspection_error.is_empty():
+		await physics_frame
+		if not is_instance_valid(scene.boss) or scene.run_ended:
+			inspection_error = "visibility fixture ended before the inspection window"
+			break
+		if scene.run_time >= next_input:
+			_drive_live_combat()
+			next_input = scene.run_time + 0.10
+		for state in ["warning_time", "charge_time", "shock_warning", "ring_warning", "recovery_time", "counter_flash"]:
+			if float(scene.boss.get(state)) > 0.0:
+				observed[state] = int(observed.get(state, 0)) + 1
+		if scene.boss.warning_time > 0.30: await _capture_live("02-live-charge-warning")
+		if scene.boss.shock_warning > 0.28: await _capture_live("03-live-shock-warning")
+		if scene.boss.ring_warning > 0.35: await _capture_live("04-live-ring-warning")
+		if scene.boss.counter_flash > 0.10: await _capture_live("05-live-counter-hit")
+	_release()
+	if inspection_error.is_empty():
+		await _walk_live(Vector2(3900, 1120), "leave_court")
+		var hp_before: float = scene.boss.health
+		await create_timer(0.7).timeout
+		route_checks.append({"label": "suspended_outside", "passed": not scene.temple_section.boss_active and is_equal_approx(scene.boss.health, hp_before)})
+		await _walk_live(Vector2(4320, 1300), "reenter_court")
+		route_checks.append({"label": "resumed_inside", "passed": scene.temple_section.boss_active})
+		for point in [Vector2(4700, 1410), Vector2(4840, 1290), Vector2(4710, 720), Vector2(4200, 740)]:
+			await _walk_live(point, "circle_" + str(point))
+			if point == Vector2(4840, 1290): await _capture_live("06-live-far-court")
+	_release()
+	_finish_inspection()
+
+func _walk_live(goal: Vector2, label: String) -> void:
+	var started := Time.get_ticks_usec()
+	var next_input := 0.0
+	var dashed := false
+	while scene.player.position.distance_to(goal) > 30.0:
+		await physics_frame
+		if scene.run_ended or Time.get_ticks_usec() - started > 12000000:
+			inspection_error = "walk did not reach " + label
+			break
+		if scene.run_time < next_input: continue
+		next_input = scene.run_time + 0.10
+		var path: PackedVector2Array = scene.navigation.find_path(scene.player.position, goal)
+		var direction := Vector2.ZERO
+		if path.size() >= 2:
+			var index := 1
+			while index < path.size() - 1 and scene.player.position.distance_to(path[index]) < 28.0: index += 1
+			direction = scene.player.position.direction_to(path[index])
+		_live_direction(direction)
+		_action("attack", 0.0)
+		_action("dash", 0.0)
+		if not dashed and scene.player.position.distance_to(goal) > 220.0 and scene.player.dash_charges > 0:
+			_action("dash", 1.0)
+			dashed = true
+	# Arrival means reaching the target circle. Queued input release is applied
+	# on the next frame; report that settled position separately.
+	var arrival_distance: float = scene.player.position.distance_to(goal)
+	_release()
+	await physics_frame
+	route_checks.append({"label": label, "passed": arrival_distance <= 30.0, "arrival_distance": arrival_distance, "stopped_distance": scene.player.position.distance_to(goal), "position": {"x": scene.player.position.x, "y": scene.player.position.y}, "dash_requested": dashed})
+
+func _live_direction(direction: Vector2) -> void:
+	var input: Vector2 = direction.rotated(-scene.player.input_rotation)
+	_action("move_left", maxf(0.0, -input.x))
+	_action("move_right", maxf(0.0, input.x))
+	_action("move_up", maxf(0.0, -input.y))
+	_action("move_down", maxf(0.0, input.y))
+
+func _drive_live_combat() -> void:
+	var boss = scene.boss
+	var player = scene.player
+	var away: Vector2 = boss.position.direction_to(player.position)
+	var distance: float = player.position.distance_to(boss.position)
+	var goal: Vector2 = boss.position + away * 60.0
+	var attack := true
+	if boss.warning_time > 0.0 or boss.charge_time > 0.0:
+		var side: Vector2 = boss.locked_direction.orthogonal()
+		if not scene.temple_section.boss_area.grow(-70.0).has_point(player.position + side * 140.0): side = -side
+		goal = player.position + side * 140.0
+		attack = false
+	elif boss.shock_warning > 0.0:
+		goal = boss.position + away * 260.0
+		attack = false
+	elif boss.ring_warning > 0.0:
+		goal = boss.position + away * 65.0
+		attack = false
+	var inside: Rect2 = scene.temple_section.boss_area.grow(-55.0)
+	goal = goal.clamp(inside.position, inside.end)
+	var direction := Vector2.ZERO
+	if player.position.distance_to(goal) > 18.0:
+		var path: PackedVector2Array = scene.navigation.find_path(player.position, goal)
+		if path.size() >= 2: direction = player.position.direction_to(path[1])
+	_live_direction(direction)
+	_action("attack", 1.0 if attack and distance < 160.0 else 0.0)
+	_action("dash", 0.0)
+	_action("moving_slash", 0.0)
+
+func _capture_live(name: String) -> void:
+	if captured.has(name): return
+	captured[name] = {"run_time": scene.run_time, "player_position": {"x": scene.player.position.x, "y": scene.player.position.y}}
+	if not images_enabled: return
+	await RenderingServer.frame_post_draw
+	var frame := root.get_texture().get_image()
+	if frame == null or frame.is_empty():
+		inspection_error = "actual graphical frame unavailable"
+		return
+	frame.save_png(output_dir.path_join(name + ".png"))
+
+func _finish_inspection() -> void:
+	_release()
+	var complete := inspection_error.is_empty()
+	var guards_preserved := true
+	for path in save_guard:
+		guards_preserved = guards_preserved and save_guard[path] == (FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "absent")
+	for path in source_guard:
+		guards_preserved = guards_preserved and source_guard[path] == (FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "absent")
+	complete = complete and guards_preserved
+	for check in route_checks: complete = complete and bool(check.passed)
+	for state in ["warning_time", "charge_time", "shock_warning", "ring_warning", "counter_flash"]:
+		complete = complete and observed.has(state)
+	var report := {"kind": "live_input_boss_visibility_fixture", "human_playtest": false, "time_scale": Engine.time_scale,
+		"fixture": "Private saves; initial position at approach; elapsed time set to 300 for ordinary spawn; phase 2 selected; player 1000 HP; ambient spawn and growth disabled. Attack definitions, AI, terrain and camera remain unchanged. Not normal progression, balance or performance evidence.",
+		"wall_seconds": float(Time.get_ticks_usec() - inspection_started) / 1000000.0,
+		"observed_live_states_frames": observed, "route_checks": route_checks, "captures": captured,
+		"input_events": actions_sent, "error": inspection_error, "complete": complete,
+		"private_normal_slot_and_source_guards_preserved": guards_preserved, "source_hashes": source_guard,
+		"user_data_dir": OS.get_user_data_dir()}
+	var file := FileAccess.open(output_dir.path_join("live-inspection.json"), FileAccess.WRITE)
+	file.store_string(JSON.stringify(report, "  ") + "\n")
+	print(JSON.stringify(report))
+	quit(0 if complete else 1)

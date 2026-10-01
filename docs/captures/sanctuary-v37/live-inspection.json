@@ -1,0 +1,160 @@
+{
+  "captures": {
+    "01-approach": {
+      "player_position": {
+        "x": 3900.0,
+        "y": 1120.0
+      },
+      "run_time": 301.616666666665
+    },
+    "02-live-charge-warning": {
+      "player_position": {
+        "x": 4344.3857421875,
+        "y": 1322.45190429688
+      },
+      "run_time": 303.23333333333
+    },
+    "03-live-shock-warning": {
+      "player_position": {
+        "x": 4378.0029296875,
+        "y": 1359.44067382812
+      },
+      "run_time": 305.616666666662
+    },
+    "04-live-ring-warning": {
+      "player_position": {
+        "x": 4260.40478515625,
+        "y": 1360.06433105469
+      },
+      "run_time": 306.183333333328
+    },
+    "05-live-counter-hit": {
+      "player_position": {
+        "x": 4335.94140625,
+        "y": 1283.3212890625
+      },
+      "run_time": 304.716666666662
+    },
+    "06-live-far-court": {
+      "player_position": {
+        "x": 4840.5146484375,
+        "y": 1315.64282226562
+      },
+      "run_time": 332.216666666637
+    }
+  },
+  "complete": true,
+  "error": "",
+  "fixture": "Private saves; initial position at approach; elapsed time set to 300 for ordinary spawn; phase 2 selected; player 1000 HP; ambient spawn and growth disabled. Attack definitions, AI, terrain and camera remain unchanged. Not normal progression, balance or performance evidence.",
+  "human_playtest": false,
+  "input_events": 543,
+  "kind": "live_input_boss_visibility_fixture",
+  "observed_live_states_frames": {
+    "charge_time": 125,
+    "counter_flash": 245,
+    "recovery_time": 702,
+    "ring_warning": 178,
+    "shock_warning": 132,
+    "warning_time": 276
+  },
+  "private_normal_slot_and_source_guards_preserved": true,
+  "route_checks": [
+    {
+      "arrival_distance": 27.8558349609375,
+      "dash_requested": true,
+      "label": "approach_into_court",
+      "passed": true,
+      "position": {
+        "x": 4304.73681640625,
+        "y": 1168.48364257812
+      },
+      "stopped_distance": 23.971019744873
+    },
+    {
+      "arrival_distance": 26.0999774932861,
+      "dash_requested": true,
+      "label": "leave_court",
+      "passed": true,
+      "position": {
+        "x": 3909.01000976562,
+        "y": 1100.73107910156
+      },
+      "stopped_distance": 21.2713794708252
+    },
+    {
+      "label": "suspended_outside",
+      "passed": true
+    },
+    {
+      "arrival_distance": 27.8735980987549,
+      "dash_requested": true,
+      "label": "reenter_court",
+      "passed": true,
+      "position": {
+        "x": 4332.03125,
+        "y": 1277.14294433594
+      },
+      "stopped_distance": 25.8301372528076
+    },
+    {
+      "label": "resumed_inside",
+      "passed": true
+    },
+    {
+      "arrival_distance": 25.0606746673584,
+      "dash_requested": true,
+      "label": "circle_(4700.0, 1410.0)",
+      "passed": true,
+      "position": {
+        "x": 4683.9521484375,
+        "y": 1398.91381835938
+      },
+      "stopped_distance": 19.5047931671143
+    },
+    {
+      "arrival_distance": 28.8956737518311,
+      "dash_requested": false,
+      "label": "circle_(4840.0, 1290.0)",
+      "passed": true,
+      "position": {
+        "x": 4840.5146484375,
+        "y": 1315.64282226562
+      },
+      "stopped_distance": 25.6479873657227
+    },
+    {
+      "arrival_distance": 28.4580726623535,
+      "dash_requested": true,
+      "label": "circle_(4710.0, 720.0)",
+      "passed": true,
+      "position": {
+        "x": 4720.0146484375,
+        "y": 741.104187011719
+      },
+      "stopped_distance": 23.3597927093506
+    },
+    {
+      "arrival_distance": 29.9874076843262,
+      "dash_requested": true,
+      "label": "circle_(4200.0, 740.0)",
+      "passed": true,
+      "position": {
+        "x": 4217.5654296875,
+        "y": 722.87841796875
+      },
+      "stopped_distance": 24.5294284820557
+    }
+  ],
+  "source_hashes": {
+    "res://game/gate_boss.gd": "28195644b4f60de1d2d1bb1e74ba2d1187eddeba922172da782510ebb2361739",
+    "res://game/hybrid_region.gd": "f6c824e50f92391adf1698246854649c30401d8508150ede518753d94e64ddd9",
+    "res://game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "res://game/temple_environment_kit.gd": "4ae0dafc113926b7dc870e8d2552ee8aa88fa0eba72eff030b82587cc2fe2c4d",
+    "res://game/temple_hybrid_terrain.gd": "991680f9715bae9ea09dc14de8c9e70da7367ef0a83a88a2362bc42405d392a3",
+    "res://game/temple_sanctuary_environment.gd": "c65b77e1d16ff26502b5f65d4c47957e01368b67541d8fb83e04f402018bb213",
+    "res://game/temple_section.gd": "f4a4f7bcb1edeb7ef85b0023837612c4de7df47986650c023177a1533d39bab5"
+  },
+  "time_scale": 1.0,
+  "user_data_dir": "/tmp/sanctuary-live-v37.qSzMr8/data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03",
+  "wall_seconds": 46.959559
+}
