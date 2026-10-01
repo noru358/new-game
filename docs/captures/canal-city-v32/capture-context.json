@@ -1,0 +1,21 @@
+{
+  "engine": "Godot 4.6.3 stable official",
+  "renderer": "GL Compatibility, Mesa llvmpipe",
+  "gameplay_camera_size": 9.0,
+  "camera_offset": [
+    14,
+    13.864,
+    14
+  ],
+  "map_size": [
+    7200,
+    4800
+  ],
+  "capture_command": "godot --audio-driver Dummy --path . --script res://tests/capture_canal_city.gd",
+  "method": "Real engine viewport PNGs; same gameplay camera; full-map overview is the existing developer view. No generated illustration. Captured source file hashes below.",
+  "source_sha256": {
+    "game/canal_city_trial.gd": "e27aeb92aa0264f6430112673dada14386d9e84c1ff5a63ad6d900c509611277",
+    "game/canal_city_terrain.gd": "98363e39029916bda83eb7e6c3324f228845e80eb5a813e52932bcb5da023859",
+    "tests/capture_canal_city.gd": "47fe66f0964a08ea407a59b8c4ccf1289b43737eae55a0ba2136b00a4377d28a"
+  }
+}

@@ -1,4 +1,4 @@
-# Loop Conquest — Canal City Place Trial v29
+# Loop Conquest — Jiangnan Canal Town v32
 
 A bounded, playable **place-authoring experiment**, not finished vertical-slice art or a new campaign region. The v25 temple/jungle implementation and v26 production direction are preserved. The closed, unmerged v27 camera experiment is not included.
 
@@ -19,7 +19,7 @@ godot --path . res://game/canal_city_trial.tscn
 
 WASD / Shift / J or click / Space retain the current movement, dash, direct attack and moving-slash controls. F2 switches scenery/limited existing enemies; N resets the eight fixed opponents; R restores the fixed practice loadout at the east gate; Tab shows the authored layout; Esc pauses; G or the camp button returns. The three top buttons are comparison checkpoints, not campaign travel unlocks. The trial has a fixed four-hit/moving-slash practice loadout, no XP, economy, boss, settlement, profile writes or save unlocks. Existing temple/jungle progression remains unchanged.
 
-The 7200×4800 reference is expressed as shared building/water/bridge records with shop-front groups, produce/pottery stalls, warehouses/loading traces, a fixed quay/boat and opposite-bank buildings. Foreground house fading protects the actor while retaining collision. These are simple representative meshes; human place identity, beauty and combat feel are still unverified.
+The design follows **China south → Jiangnan reference region → canal town → east gate / market / cargo quay / sluice court → buildings and props**. The regional identity uses low white plaster walls, dark tiled roofs, narrow canals and short stone bridges. A’s shop architecture joins B’s connected streets and meaningful goods clusters: produce/pottery/cloth stock at shop fronts, warehouse cargo beside its handling lane, and a small fixed landing facing the nearby opposite bank. The 7200×4800 v2 connections and current gameplay camera/movement remain. Cached alpha materials fade only foreground architecture covering the player or nearby on-screen enemies in Compatibility, preserving collision and restoring solid materials when clear. These are representative meshes; human place appeal and combat feel remain unverified.
 
 Automated 60Hz input-driven traversal, with current speed/camera and no enemies or viewing dwell:
 
@@ -29,11 +29,11 @@ Automated 60Hz input-driven traversal, with current speed/camera and no enemies 
 | Market → quay viewpoint | 11.53 s | 8.97 s |
 | Quay → sluice → east gate → warehouse return → market → quay | 47.73 s | 37.50 s |
 
-These are navigation-shortest locomotion measurements plus a fixed waypoint return loop, not a human exploration/playtime result. Reproduce with `godot --headless --fixed-fps 60 --path . --script res://tests/measure_canal_city.gd`. `verify_canal_city.gd` checks isolation, terrain, bridge round trips, six existing chasers passing the bridge, water blocking and comparison reset. `capture_canal_city.gd` needs a real graphical display and writes five actual engine screenshots; set `CANAL_CAPTURE_DIR` to an absolute output folder.
+These are navigation-shortest locomotion measurements plus a fixed waypoint return loop, not a human exploration/playtime result. Reproduce with `godot --headless --fixed-fps 60 --path . --script res://tests/measure_canal_city.gd`. `verify_canal_city.gd` checks save-byte isolation, terrain, bridge round trips, six existing chasers passing the bridge, open market/cargo connections, foreground player/enemy visibility and material restoration. `capture_canal_city.gd` needs a real graphical display and writes actual engine screenshots including a clear street viewpoint, warehouse, market/waterfront combat and 960×540 fit; set `CANAL_CAPTURE_DIR` to an absolute output folder.
 
-The same build also restores permanent-card unlock notices to the level-up modal (including overflow choices), and fixes compact camp equipment option fit. These change presentation only.
+Validated common patches are integrated: permanent-card unlock notices and compact equipment fit from v29, opt-in local run diagnostics and truthful jungle encounter cues from v30, and v31 Windows export/startup automation. No balance or save-policy change is included.
 
-Package scope: runnable Godot source. No new native macOS/Windows export, signing or device test is claimed for v29. Linux 4.6.3 GL Compatibility renders were captured with llvmpipe; audio playback and long-session GPU performance remain unverified. See `DEV_STATUS.md` for the exact final test record and next work.
+Package scope: runnable Godot source. Linux 4.6.3 GL Compatibility images use actual llvmpipe rendering. The Windows CI exports and headlessly starts the exact commit on a Windows runner; consult the PR for its result. Interactive Windows device/GPU tests, audio listening, sustained performance and a new macOS signed/notarized package remain unverified. `DEV_STATUS.md` records the local verification and next production work.
 
 ---
 

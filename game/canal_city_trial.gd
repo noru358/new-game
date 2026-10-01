@@ -12,19 +12,21 @@ var trial_elapsed := 0.0
 var trial_canvas: CanvasLayer
 var mode_button: Button
 var building_visuals: Array[Dictionary] = []
+var landmark_visuals: Array[Dictionary] = []
 var material_cache: Dictionary = {}
+var faded_material_cache: Dictionary = {}
 
 func _init() -> void:
 	terrain = CityTerrain.new()
 	start_point = CityTerrain.ENTRY
 	enemy_points = []
-	landmark_points = {"동문": CityTerrain.ENTRY, "시장": CityTerrain.MARKET, "수변": CityTerrain.WATERFRONT}
+	landmark_points = {"동문": CityTerrain.ENTRY, "시장": CityTerrain.MARKET, "창고": CityTerrain.WAREHOUSE, "수변": CityTerrain.WATERFRONT}
 	combat_camera_size = 9.0
 	overview_camera_size = 96.0
 	camera_offset = Vector3(14, 13.864, 14)
-	scene_title = "Loop Conquest — Canal City Place Trial v29"
-	scene_hud_title = "수로도시 · 제작 시험"
-	ground_color = Color("b4b49d")
+	scene_title = "Loop Conquest — Jiangnan Canal Town v32"
+	scene_hud_title = "강남 수로도시 · 조화 시험"
+	ground_color = Color("b9b199")
 	show_practice_controls = false
 	moving_slash_practice = true
 	# Super reads only this separate, non-progression prefix. No XP is awarded.
@@ -48,6 +50,14 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 		_build_prop(record)
 	for bridge in CityTerrain.BRIDGES:
 		_build_bridge(bridge)
+	# A small tiled ward gate belongs to this commercial town, not a fortress.
+	# The roof is above the entry; only the existing two piers are collidable.
+	var gate := Node3D.new()
+	gate.name = "TiledWardGate"
+	add_child(gate)
+	_pitched_roof(gate, Rect2(6420, 3760, 215, 570), 238, Color("385453"), 62, Color("e2dbc6"))
+	_box(gate, Vector3(6528, 222, 4045), Vector3(170, 25, 540), Color("75573e"))
+	landmark_visuals.append({"area": Rect2(6420, 3760, 215, 570), "height": 320.0, "root": gate, "background": false})
 	# Quay coping: same water boundaries, low enough to leave telegraphs clear.
 	for water in terrain.water_areas:
 		for y in [water.position.y, water.end.y]:
@@ -75,9 +85,14 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 		plank.rotation.x = 0.22
 	_box(self, Vector3(4420, 15, 2950), Vector3(130, 30, 68), Color("bfb28c"))
 
-	# The destination is visible architecture only: no new boss or trigger.
-	_box(self, Vector3(6690, 235, 975), Vector3(660, 38, 190), Color("3f625b"))
-	_box(self, Vector3(6690, 285, 975), Vector3(510, 60, 115), Color("304a48"))
+	# Water-control pavilion: a recognisable destination beyond the shop lane.
+	# It remains scenery; no gate puzzle, new boss or progression trigger.
+	var pavilion := Node3D.new()
+	pavilion.name = "SluicePavilion"
+	add_child(pavilion)
+	_box(pavilion, Vector3(6690, 228, 995), Vector3(655, 28, 170), Color("75573e"))
+	_pitched_roof(pavilion, Rect2(6360, 880, 660, 245), 241, Color("385453"), 65, Color("bfcbbb"))
+	landmark_visuals.append({"area": Rect2(6360, 880, 660, 245), "height": 326.0, "root": pavilion, "background": false})
 
 func _box(parent: Node, center: Vector3, extent: Vector3, color: Color) -> MeshInstance3D:
 	var instance := MeshInstance3D.new()
@@ -110,60 +125,109 @@ func _build_house(record: Dictionary) -> void:
 	add_child(root)
 	var area: Rect2 = record.area
 	var h: float = record.height
-	var wall_color := Color("b4c5b7") if record.background else Color("e1d9bc")
+	var wall_color := Color("bac6bb") if record.background else Color("e2dbc6")
 	_box(root, Vector3(area.get_center().x, h * 0.5, area.get_center().y), Vector3(area.size.x, h, area.size.y), wall_color)
-	_box(root, Vector3(area.get_center().x, 15, area.get_center().y), Vector3(area.size.x + 8, 30, area.size.y + 8), Color("879488"))
-	var roof := PrismMesh.new()
-	roof.size = Vector3(area.size.x + 32, 64, area.size.y + 32) * Terrain.SCALE
-	var roof_instance := MeshInstance3D.new()
-	roof_instance.mesh = roof
-	roof_instance.material_override = _material(Color("365951") if record.kind == "shop" else Color("475c56"))
-	roof_instance.position = Vector3(area.get_center().x, h + 27, area.get_center().y) * Terrain.SCALE
-	root.add_child(roof_instance)
-	_box(root, Vector3(area.get_center().x, h + 61, area.get_center().y), Vector3(12, 9, area.size.y + 44), Color("29453f"))
-	# Door and timber frame read from the street; shutters repeat by building use.
-	var y := area.end.y + 2
-	for x in range(int(area.position.x + 65), int(area.end.x - 35), 145):
-		_box(root, Vector3(x, 74, y), Vector3(66, 72, 5), Color("687c6c"))
-		_box(root, Vector3(x, 74, y + 3), Vector3(5, 72, 4), Color("b6a77c"))
-	_box(root, Vector3(area.get_center().x, 51, y + 4), Vector3(62, 102, 9), Color("695e4e"))
+	_box(root, Vector3(area.get_center().x, 13, area.get_center().y), Vector3(area.size.x + 8, 26, area.size.y + 8), Color("869487"))
+	_pitched_roof(root, area, h, Color("385453") if record.kind == "shop" else Color("435755"), 62, wall_color)
+	# Shop doors face the shared selling lane; warehouse doors face the
+	# unloading yard. The same region palette serves different building uses.
+	var side := -1.0 if record.front == "north" else 1.0
+	var y: float = area.position.y if side < 0 else area.end.y
+	var door_width := 74.0 if record.kind == "shop" else 180.0
+	var door_height := 125.0 if record.kind == "shop" else 165.0
+	_box(root, Vector3(area.get_center().x, door_height * 0.5, y + side * 4), Vector3(door_width, door_height, 10), Color("654b39"))
+	for x in [area.position.x + 20, area.end.x - 20]:
+		_box(root, Vector3(x, h * 0.48, y + side * 7), Vector3(14, h * 0.96, 16), Color("75573e"))
+	_box(root, Vector3(area.get_center().x, h - 26, y + side * 6), Vector3(area.size.x - 28, 16, 12), Color("75573e"))
 	if record.kind == "shop":
-		var awning_color := Color("b36b4d") if int(area.position.x) % 3 == 0 else Color("8ba78c")
-		_box(root, Vector3(area.get_center().x, 117, y + 35), Vector3(area.size.x * 0.70, 9, 72), awning_color)
-		_box(root, Vector3(area.position.x + 65, 86, y + 39), Vector3(29, 59, 9), Color("ad704d"))
-		_cylinder(root, Vector3(area.end.x - 65, 85, y + 34), 16, 16, 29, Color("e8bb69"))
-		for x in [area.get_center().x - area.size.x * 0.30, area.get_center().x + area.size.x * 0.30]:
-			_box(root, Vector3(x, 55, y + 58), Vector3(6, 110, 6), Color("655f48"))
+		for x in [area.get_center().x - area.size.x * 0.28, area.get_center().x + area.size.x * 0.28]:
+			_box(root, Vector3(x, 103, y + side * 6), Vector3(64, 58, 10), Color("b7a279"))
+			for offset in [-22, 0, 22]:
+				_box(root, Vector3(x + offset, 103, y + side * 12), Vector3(5, 60, 5), Color("6d553c"))
+		var awning_width: float = area.size.x * 0.76
+		for stripe in 5:
+			var x: float = area.get_center().x - awning_width * 0.5 + (stripe + 0.5) * awning_width / 5.0
+			_box(root, Vector3(x, 151, y + side * 46), Vector3(awning_width / 5.0 - 2, 8, 91), Color("dbca9f") if stripe % 2 == 0 else Color("a86d53"))
+		for x in [area.get_center().x - awning_width * 0.48, area.get_center().x + awning_width * 0.48]:
+			_box(root, Vector3(x, 74, y + side * 82), Vector3(9, 148, 9), Color("6c5940"))
+		# A modest hanging board and warm lantern mark a business, not a quest.
+		_box(root, Vector3(area.position.x + 60, 116, y + side * 88), Vector3(28, 48, 8), Color("916142"))
+		_cylinder(root, Vector3(area.end.x - 62, 110, y + side * 72), 14, 14, 28, Color("e0c486"))
 	else:
-		for x in [area.position.x + 15, area.end.x - 15]:
-			_box(root, Vector3(x, h * 0.5, y + 3), Vector3(16, h, 10), Color("737665"))
-	building_visuals.append({"area": area, "height": h + 65, "root": root, "background": record.background})
+		for offset in [-65, -22, 22, 65]:
+			_box(root, Vector3(area.get_center().x + offset, 78, y + side * 11), Vector3(7, 154, 5), Color("8d7350"))
+		_box(root, Vector3(area.get_center().x, 38, y + side * 13), Vector3(175, 11, 5), Color("b29768"))
+	building_visuals.append({"area": area, "height": h + 80, "root": root, "background": record.background})
+
+func _pitched_roof(parent: Node, area: Rect2, h: float, color: Color, rise: float, plaster: Color) -> void:
+	# A's tiled roof language: low white gables, timber eaves, dark tile bands.
+	# One mesh per roof avoids one draw call for every tile.
+	var eave := area.grow(24)
+	var ridge_y := eave.get_center().y
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for side in 2:
+		var edge: float = eave.position.y if side == 0 else eave.end.y
+		for row in 6:
+			var a := float(row) / 6.0
+			var b := float(row + 1) / 6.0
+			for tile in ceili(eave.size.x / 64.0):
+				var x0 := eave.position.x + tile * 64.0
+				var x1 := minf(x0 + 64, eave.end.x)
+				var tone := color.lightened(0.055) if (tile + row) % 3 == 0 else color.darkened(0.045) if row % 2 == 0 else color
+				_quad(st, [Vector3(x0, h + 12 + rise * a, lerpf(edge, ridge_y, a)), Vector3(x1, h + 12 + rise * a, lerpf(edge, ridge_y, a)), Vector3(x1, h + 12 + rise * b, lerpf(edge, ridge_y, b)), Vector3(x0, h + 12 + rise * b, lerpf(edge, ridge_y, b))], tone)
+	# End gables close the roof instead of floating tile planes above a box.
+	for x in [area.position.x, area.end.x]:
+		for point in [Vector3(x, h, area.position.y), Vector3(x, h + rise + 12, ridge_y), Vector3(x, h, area.end.y)]:
+			st.set_color(plaster)
+			st.add_vertex(point * Terrain.SCALE)
+	st.generate_normals()
+	var roof := MeshInstance3D.new()
+	roof.name = "TiledRoof"
+	roof.mesh = st.commit()
+	var material := _material(Color.WHITE)
+	material.vertex_color_use_as_albedo = true
+	roof.material_override = material
+	parent.add_child(roof)
+	_box(parent, Vector3(eave.get_center().x, h + rise + 17, ridge_y), Vector3(eave.size.x + 12, 12, 15), color.darkened(0.20))
+	for y in [eave.position.y, eave.end.y]:
+		_box(parent, Vector3(eave.get_center().x, h + 7, y), Vector3(eave.size.x, 14, 14), Color("72553c"))
 
 func _build_prop(record: Dictionary) -> void:
 	var area: Rect2 = record.area
 	var center := area.get_center()
 	match record.kind:
 		"stall":
-			var variant := int(area.position.x) % 4
+			var trade: String = record.trade
 			_box(self, Vector3(center.x, 24, center.y), Vector3(area.size.x, 48, area.size.y), Color("9f8254"))
-			_box(self, Vector3(center.x, 48, center.y + 12), Vector3(area.size.x + 5, 5, area.size.y + 4), Color("c19d67") if variant == 0 else Color("a67356"))
+			_box(self, Vector3(center.x, 48, center.y + 12), Vector3(area.size.x + 5, 5, area.size.y + 4), Color("c19d67") if trade == "produce" else Color("a67356"))
 			# A small market stall is a repeatable functional group: supports,
 			# canvas, goods, under-counter storage, then a clear selling side.
 			for x in [area.position.x + 6, area.end.x - 6]:
 				_box(self, Vector3(x, 63, area.position.y + 4), Vector3(7, 126, 7), Color("6a644b"))
-			var canopy := _box(self, Vector3(center.x, 132, center.y - 7), Vector3(area.size.x + 22, 6, area.size.y + 18), Color("cb9b5d") if variant == 0 else Color("b88065"))
+			var canopy := _box(self, Vector3(center.x, 137, center.y - 7), Vector3(area.size.x + 22, 6, area.size.y + 18), Color("c8ac76") if trade == "produce" else Color("9cab98") if trade == "textile" else Color("b98468"))
 			canopy.rotation.x = -0.09
 			for j in 3:
 				var point := Vector2(area.position.x + 23 + j * 41, center.y + 22)
-				if variant == 0:
+				if trade == "produce":
 					_cylinder(self, Vector3(point.x, 57, point.y), 16, 19, 15, Color("b99662"))
 					for k in 4:
 						var fruit := _sphere(0.072, Color("deaa45") if j % 2 == 0 else Color("75984a"))
 						add_child(fruit)
 						fruit.position = Vector3(point.x + (k % 2) * 10 - 5, 70 + (k / 2) * 4, point.y + (k / 2) * 9 - 5) * Terrain.SCALE
-				else:
+				elif trade == "pottery":
 					_cylinder(self, Vector3(point.x, 65 + j * 3, point.y), 10 + j * 3, 15 + j * 2, 29 + j * 6, Color("bd8964") if j % 2 == 0 else Color("b8c4ad"))
+				else:
+					_box(self, Vector3(point.x, 58 + j * 3, point.y), Vector3(34, 15 + j * 6, 44), Color("9ba9a0") if j % 2 == 0 else Color("c4ad82"))
 			_box(self, Vector3(area.position.x + 22, 13, center.y + 1), Vector3(33, 26, 40), Color("756547"))
+		"stock":
+			if record.trade == "pottery":
+				for x in [center.x - 19, center.x + 19]:
+					_cylinder(self, Vector3(x, 25, center.y), 11, 18, 50, Color("b29270"))
+			else:
+				_box(self, Vector3(center.x, 22, center.y), Vector3(area.size.x, 44, area.size.y), Color("b7ad8a"))
+				for x in [area.position.x + 13, area.end.x - 13]:
+					_box(self, Vector3(x, 24, center.y), Vector3(5, 49, area.size.y + 3), Color("776d50"))
 		"cargo":
 			_box(self, Vector3(center.x, 26, center.y), Vector3(area.size.x, 52, area.size.y), Color("aa8c60"))
 			for x in [area.position.x + 12, area.end.x - 12]:
@@ -180,13 +244,34 @@ func _build_bridge(area: Rect2) -> void:
 		var center := area.get_center()
 		center[1 if horizontal else 0] += offset * (area.size[1 if horizontal else 0] * 0.5 - 8)
 		_box(self, Vector3(center.x, 12, center.y), Vector3(area.size.x if horizontal else 12, 24, 12 if horizontal else area.size.y), Color("ced0b4"))
+	# Short stone spans have repeated transverse paving joints, unlike the
+	# timber landing. Keep every raised detail on the water-side edges.
+	var length: float = area.size.x if horizontal else area.size.y
+	for step in range(1, ceili(length / 65.0)):
+		var point := area.position + (Vector2(step * 65, area.size.y * 0.5) if horizontal else Vector2(area.size.x * 0.5, step * 65))
+		_box(self, Vector3(point.x, 3, point.y), Vector3(4 if horizontal else area.size.x - 30, 2, area.size.y - 30 if horizontal else 4), Color("929883"))
 
 func _build_boat(point: Vector2) -> void:
-	_box(self, Vector3(point.x, 15, point.y), Vector3(220, 30, 75), Color("536e65"))
+	# Shallow narrow cargo boat: pointed hull, low cover and tied goods.
+	var outline := [Vector2(-125, -40), Vector2(90, -40), Vector2(135, 0), Vector2(90, 40), Vector2(-125, 40), Vector2(-145, 0)]
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in outline.size():
+		var a: Vector2 = point + outline[i]
+		var b: Vector2 = point + outline[(i + 1) % outline.size()]
+		_quad(st, [Vector3(a.x, 1, a.y), Vector3(b.x, 1, b.y), Vector3(b.x, 31, b.y), Vector3(a.x, 31, a.y)], Color("5d5948"))
+	st.generate_normals()
+	var hull := MeshInstance3D.new()
+	hull.mesh = st.commit()
+	hull.material_override = _material(Color("5d5948"))
+	add_child(hull)
 	_box(self, Vector3(point.x, 35, point.y), Vector3(160, 12, 52), Color("99865b"))
 	for x in [point.x - 102, point.x + 102]:
 		_box(self, Vector3(x, 32, point.y), Vector3(17, 32, 66), Color("465d55"))
-	_box(self, Vector3(point.x + 20, 68, point.y), Vector3(68, 54, 68), Color("a98e65"))
+	_box(self, Vector3(point.x + 27, 59, point.y), Vector3(64, 39, 51), Color("aa9167"))
+	_box(self, Vector3(point.x - 61, 83, point.y), Vector3(83, 8, 81), Color("a6ac8d"))
+	for z in [-32, 32]:
+		_box(self, Vector3(point.x - 61, 58, point.y + z), Vector3(5, 48, 5), Color("716348"))
 
 func _build_cart(point: Vector2) -> void:
 	_box(self, Vector3(point.x, 32, point.y), Vector3(130, 15, 75), Color("796a4d"))
@@ -237,16 +322,46 @@ func _process(delta: float) -> void:
 	if overview:
 		camera.position = terrain.world_point(display_bounds().get_center(), 80) + camera_offset.normalized() * 120.0
 	if not is_instance_valid(player): return
+	var visible_targets: Array[Vector2] = [player.position]
+	if combat_enabled:
+		for actor in actors:
+			if not actor is TrainingEnemy or not is_instance_valid(actor): continue
+			if actor.position.distance_to(player.position) > 1050.0: continue
+			var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
+			if get_viewport().get_visible_rect().grow(40).has_point(screen): visible_targets.append(actor.position)
 	# Fade only near-side architecture crossing the camera-to-actor ray.
 	# Collision never changes with visibility, preserving solid silhouettes.
-	for item in building_visuals:
+	for item in building_visuals + landmark_visuals:
 		var obscures := false
 		if not overview and not item.background:
-			var end := player.position + Vector2.ONE * float(item.height)
-			obscures = navigation._segment_hits_rect(player.position, end, (item.area as Rect2).grow(35.0))
-		for child in item.root.get_children():
-			if child is GeometryInstance3D:
-				child.transparency = 0.80 if obscures else 0.0
+			for target in visible_targets:
+				var end := target + Vector2.ONE * float(item.height)
+				if navigation._segment_hits_rect(target, end, (item.area as Rect2).grow(35.0)):
+					obscures = true
+					break
+		_set_architecture_fade(item.root, obscures)
+
+func _set_architecture_fade(root: Node3D, obscures: bool) -> void:
+	# GeometryInstance3D.transparency is not implemented by Compatibility.
+	# Switch to a cached alpha material instead, without mutating shared colors
+	# or removing collision. This also covers the tiled gate and pavilion.
+	if root.has_meta("fade_state") and root.get_meta("fade_state") == obscures: return
+	root.set_meta("fade_state", obscures)
+	for child in root.get_children():
+		if not child is MeshInstance3D: continue
+		if not child.has_meta("solid_material"):
+			child.set_meta("solid_material", child.material_override)
+		var solid: StandardMaterial3D = child.get_meta("solid_material")
+		if not obscures:
+			child.material_override = solid
+			continue
+		var key := solid.get_instance_id()
+		if not faded_material_cache.has(key):
+			var faded := solid.duplicate() as StandardMaterial3D
+			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			faded.albedo_color.a = 0.16
+			faded_material_cache[key] = faded
+		child.material_override = faded_material_cache[key]
 
 func _build_ui() -> void:
 	trial_canvas = CanvasLayer.new()
@@ -299,7 +414,7 @@ func _update_hud() -> void:
 	if hud == null or not is_instance_valid(player): return
 	var mode := "제한 전투 · 적 최대 8" if combat_enabled else "풍경 · 적 없음"
 	if spawn_delay > 0.0: mode = "1초 후 고정 지점에 적 배치"
-	hud.text = "수로도시 v29 · %s\nHP %d · 대시 %d/%d · 고정 시험 빌드 / 저장·보상 없음" % [mode, ceili(player.health), player.dash_charges, player.dash_max_charges]
+	hud.text = "강남 수로도시 v32 · %s\nHP %d · 대시 %d/%d · 고정 시험 빌드 / 저장·보상 없음" % [mode, ceili(player.health), player.dash_charges, player.dash_max_charges]
 	if player.health <= 0.0: hud.text += "\n쓰러졌습니다 · R로 동문에서 다시 시작"
 	if mode_button != null: mode_button.text = "F2 · 풍경 보기" if combat_enabled else "F2 · 전투 비교"
 

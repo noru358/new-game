@@ -1,0 +1,41 @@
+{
+  "measurements": [
+    {
+      "dash": false,
+      "ground_distance": 6132.0,
+      "route": "entry_to_market",
+      "seconds": 18.25
+    },
+    {
+      "dash": false,
+      "ground_distance": 3875.0,
+      "route": "market_to_waterfront",
+      "seconds": 11.53
+    },
+    {
+      "dash": false,
+      "ground_distance": 16037.0,
+      "route": "sightseeing_return_loop",
+      "seconds": 47.73
+    },
+    {
+      "dash": true,
+      "ground_distance": 6131.0,
+      "route": "entry_to_market",
+      "seconds": 14.27
+    },
+    {
+      "dash": true,
+      "ground_distance": 3876.0,
+      "route": "market_to_waterfront",
+      "seconds": 8.97
+    },
+    {
+      "dash": true,
+      "ground_distance": 16024.0,
+      "route": "sightseeing_return_loop",
+      "seconds": 37.5
+    }
+  ],
+  "method": "60Hz physics input driven navigation-shortest paths; return loop via authored waypoints, no viewing dwell, no enemies; not human exploration time"
+}

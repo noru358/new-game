@@ -1,3 +1,11 @@
+## 2026-10-01 — Jiangnan canal-town A+B synthesis v32
+
+- Preserve both comparison branches; combine A's tiled roofs, white plaster and striped shop fronts with B's connected streets, trade clusters and working quay.
+- Follow China south → Jiangnan → canal town → place → building/prop hierarchy. Keep the broad-river ferry/fortress as a separate candidate.
+- Frame the market while preserving a navigable rear towpath. Repair foreground fading in Compatibility for the player and nearby on-screen enemies, retaining collision and restoring materials.
+- Integrate portable v30 diagnostics/cue fixes and v31 Windows smoke automation without duplicating B's existing UI fixes.
+- Preserve camera/movement, save contracts and measured travel times. Actual engine captures/tests remain distinct from human place/art/fun acceptance.
+
 ## 2026-10-01 — v29 수로도시 장소 경험 시험
 
 - v25 게임 구현과 v26 제작 방향을 보존한 개발 전용 장소 씬, 야영지 진입, 풍경/기존 일반 적 비교를 추가했다. 새 캠페인·보상·저장 구조는 추가하지 않았다.
