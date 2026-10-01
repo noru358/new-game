@@ -19,9 +19,11 @@ func _run() -> void:
 	await process_frame
 	scene.set_physics_process(false)
 	scene.simulation.process_mode = Node.PROCESS_MODE_DISABLED
-	_check(scene.growth.xp_bar.visible and scene.growth.xp_bar.position.y > scene.growth.hud.position.y and scene.build_summary_label.position.x > scene.growth.xp_bar.position.x + scene.growth.xp_bar.size.x, "XP number and progress bar are visible without covering card summary")
+	var flow_progress: Label = scene.get_node("RunFlowHudPresenter").get("progress")
+	_check(flow_progress.visible and flow_progress.text.contains("XP 0 / 8") and scene.growth.xp_bar.visible and scene.growth.xp_bar.position.y > flow_progress.position.y + flow_progress.size.y and scene.growth.xp_bar.position.y + scene.growth.xp_bar.size.y <= 720.0 and not scene.build_summary_label.visible, "XP number and thin progress bar remain visible below combat content")
 	scene.growth.gain_xp(2)
-	_check(scene.growth.xp_bar.value == 2.0 and scene.growth.hud.text.contains("경험치 2 / 8"), "visible XP changes with a real award")
+	scene.get_node("RunFlowHudPresenter").refresh()
+	_check(scene.growth.xp_bar.value == 2.0 and scene.growth.hud.text.contains("경험치 2 / 8") and flow_progress.text.contains("XP 2 / 8"), "visible XP changes with a real award")
 	scene.player.attack_step = 4
 	scene._process(0.016)
 	_check(scene.actors[scene.player].get_node("Body").scale == Vector3.ONE, "fourth attack no longer enlarges the player")

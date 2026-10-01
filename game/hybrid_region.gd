@@ -131,7 +131,7 @@ func _ready() -> void:
 		run_ended = true
 		paused = true
 		get_tree().paused = true
-		result_text.text = "저장 기록과 정상 백업을 읽을 수 없습니다.\n기존 파일은 보존했습니다.\n저장 폴더를 열어 백업 파일을 확인하세요."
+		result_text.text = profile.save_block_reason()
 		replay_button.disabled = true
 		retry_button.hide()
 		save_folder_button.show()
@@ -149,7 +149,7 @@ func _ready() -> void:
 			growth.choice_state_changed.connect(func(): diagnostics.observe(self))
 			diagnostics.observe(self)
 
-	preload("res://game/run_hud_presenter.gd").new().setup(self)
+	preload("res://game/run_flow_hud_presenter.gd").new().setup(self)
 
 
 func _create_region_section() -> Node:

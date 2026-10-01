@@ -56,6 +56,7 @@ func _ready() -> void:
 	unlocks.save_prefix = growth_save_prefix
 	unlocks.load_progress()
 	_build_ui()
+	preload("res://game/departure_preparation_presenter.gd").new().setup(self)
 	_refresh()
 
 
@@ -390,7 +391,7 @@ func _refresh() -> void:
 		branch_button.text = effect + (" · 선택됨" if profile.attack_branch == id else " · 초기화 후 변경" if not profile.attack_branch.is_empty() else " · 구매 60" if profile.attack_branch_available() else " · 공격 성장 합계 4 필요")
 		branch_button.disabled = profile.load_error or not profile.attack_branch.is_empty() or not profile.attack_branch_available() or profile.currency < RunProfile.ATTACK_BRANCH_COST
 	reset_button.disabled = profile.load_error or profile.growth_ranks.values().all(func(value: Variant) -> bool: return int(value) == 0)
-	status_label.text = "저장 기록과 정상 백업을 읽을 수 없습니다. 기존 파일은 보존했습니다. 저장 폴더에서 백업을 확인하세요." if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
+	status_label.text = profile.save_block_reason() if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
 	if save_folder_button == null:
 		save_folder_button = _button(status_label.get_parent(), "저장 폴더 열기", func(): OS.shell_open(ProjectSettings.globalize_path(profile_save_prefix).get_base_dir()))
 	save_folder_button.visible = profile.load_error
