@@ -1,0 +1,99 @@
+{
+  "scope": "Fixed-budget arithmetic using real observed awards; not closed-loop candidate play or human balance acceptance",
+  "curves": {
+    "baseline": {
+      "rank1": 20,
+      "rank2": 35,
+      "all_eight_axes": 440,
+      "all_axes_branch_available_gear": 559,
+      "first_success_late_ranks_after_all_rank1_branch_and_gear": 8
+    },
+    "late2": {
+      "rank1": 20,
+      "rank2": 70,
+      "all_eight_axes": 720,
+      "all_axes_branch_available_gear": 839,
+      "first_success_late_ranks_after_all_rank1_branch_and_gear": 6
+    },
+    "late3": {
+      "rank1": 20,
+      "rank2": 105,
+      "all_eight_axes": 1000,
+      "all_axes_branch_available_gear": 1119,
+      "first_success_late_ranks_after_all_rank1_branch_and_gear": 4
+    }
+  },
+  "cases": [
+    {
+      "case": "fresh_first_success_v34",
+      "award": 699,
+      "cleared": true,
+      "source": "../build-v34/fresh-economy.json",
+      "hypothetical_first_rank_and_accessory": 44,
+      "remaining_after_hypothetical_44": 655,
+      "can_buy_one_late_rank_after_44": {
+        "baseline": true,
+        "late2": true,
+        "late3": true
+      }
+    },
+    {
+      "case": "fresh-retreat-90",
+      "award": 88,
+      "earned": 111,
+      "lost": 23,
+      "result": "RETREAT",
+      "active_seconds": 90.0166666666628,
+      "cleared": false,
+      "source": "fresh-retreat-90.json",
+      "hypothetical_first_rank_and_accessory": 44,
+      "remaining_after_hypothetical_44": 44,
+      "can_buy_one_late_rank_after_44": {
+        "baseline": true,
+        "late2": false,
+        "late3": false
+      }
+    },
+    {
+      "case": "fresh-retreat-180",
+      "award": 243,
+      "earned": 304,
+      "lost": 61,
+      "result": "RETREAT",
+      "active_seconds": 180.000000000035,
+      "cleared": false,
+      "source": "fresh-retreat-180.json",
+      "hypothetical_first_rank_and_accessory": 44,
+      "remaining_after_hypothetical_44": 199,
+      "can_buy_one_late_rank_after_44": {
+        "baseline": true,
+        "late2": true,
+        "late3": true
+      }
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "award": 177,
+      "earned": 354,
+      "lost": 177,
+      "result": "DEFEAT",
+      "active_seconds": 208.500000000058,
+      "cleared": false,
+      "source": "fresh-stopped-input-loss-180-retry.json",
+      "hypothetical_first_rank_and_accessory": 44,
+      "remaining_after_hypothetical_44": 133,
+      "can_buy_one_late_rank_after_44": {
+        "baseline": true,
+        "late2": true,
+        "late3": true
+      }
+    }
+  ],
+  "notes": [
+    "No shopping occurred in the three single-run probes. The 44 cost is a hypothetical first rank20 plus unrestricted A_EMBER24.",
+    "W_FLOW remains temple-clear gated; unchanged35 cost does not make it available after retreat or defeat.",
+    "Stopped-input loss deliberately stops movement/combat after180s while real companion/enemy simulation and card choices continue. It is not a novice failure distribution.",
+    "First failed release assertion attempt is retained separately and excluded from the primary budget comparison.",
+    "After the first699 success, all first ranks160 +branch60 +available gear59 leave420 for late ranks; all current ranks cost559 baseline,839 late2,1119 late3."
+  ]
+}

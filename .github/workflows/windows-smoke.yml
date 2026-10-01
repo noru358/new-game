@@ -5,6 +5,9 @@ on:
     paths:
       - '.github/workflows/windows-smoke.yml'
       - 'scripts/windows_export_smoke.py'
+      - 'scripts/launch_price_trial.py'
+      - 'tests/test_price_trial_launcher.py'
+      - 'tests/price_trial_probe.gd'
       - 'project.godot'
       - 'export_presets.cfg'
       - 'game/**'
@@ -37,10 +40,19 @@ jobs:
           --scratch "$env:RUNNER_TEMP/new-game-windows-smoke"
           --report "$env:RUNNER_TEMP/new-game-windows-smoke-report"
           --commit "$env:SOURCE_SHA"
+      - name: Verify isolated price-trial copies on Windows
+        shell: pwsh
+        run: >-
+          python tests/test_price_trial_launcher.py
+          --godot "$env:RUNNER_TEMP/new-game-windows-smoke/editor/Godot_v4.6-stable_win64_console.exe"
+          --work-dir "$env:RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: windows-smoke-${{ env.SOURCE_SHA }}
-          path: ${{ runner.temp }}/new-game-windows-smoke-report/
+          path: |
+            ${{ runner.temp }}/new-game-windows-smoke-report/
+            ${{ runner.temp }}/price-trial-checks/engine-summary.json
+            ${{ runner.temp }}/price-trial-checks/*/*.log
           retention-days: 3
           if-no-files-found: error

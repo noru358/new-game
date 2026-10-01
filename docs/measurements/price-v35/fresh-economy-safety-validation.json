@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "scope": "Only dedicated temporary sentinel roots; no existing user saves read or reset",
+  "checks": [
+    {
+      "check": "existing_campaign",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-existing_campaign-q3qemxei",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: Existing campaign slot found; use a genuinely empty isolated home\n",
+      "slot_sha256_before": {
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_profile_a.json": "3ae250ea3fb15a45d95a8ee161684f8fb8762b1a30b8a59ecb44010cc919e75d",
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_profile_b.json": "ce23ed8fb6cd27a0d663037dfafdf1c7190843236640600fa8bc4349c155dd1c",
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_1d_unlocks_a.json": "f845aa006342fa934db26f8e290e1da6e41c72d1a5cdbe94c7d739ff23d181ec",
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_1d_unlocks_b.json": "abf61c5a12c1e630fdb9a96da15fbf31b76122337ce8e17e404554b9c8031e8e"
+      },
+      "slot_sha256_after": {
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_profile_a.json": "3ae250ea3fb15a45d95a8ee161684f8fb8762b1a30b8a59ecb44010cc919e75d",
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_profile_b.json": "ce23ed8fb6cd27a0d663037dfafdf1c7190843236640600fa8bc4349c155dd1c",
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_1d_unlocks_a.json": "f845aa006342fa934db26f8e290e1da6e41c72d1a5cdbe94c7d739ff23d181ec",
+        "data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03/loop_conquest_1d_unlocks_b.json": "abf61c5a12c1e630fdb9a96da15fbf31b76122337ce8e17e404554b9c8031e8e"
+      }
+    },
+    {
+      "check": "xdg_boundary",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-xdg_boundary-wtx157tk",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: XDG_CONFIG_HOME is outside the isolated root\n",
+      "slot_sha256_before": {},
+      "slot_sha256_after": {}
+    },
+    {
+      "check": "missing_marker",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-missing_marker-l8bg_1zh",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: Missing explicit .fresh-economy-sample marker in isolated root\n",
+      "slot_sha256_before": {},
+      "slot_sha256_after": {}
+    },
+    {
+      "check": "run_bound",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-run_bound-uzpskm5m",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: Use --runs=1..3, --seconds=1..330, and an optional positive --stop-input-at below the active limit (not with --smoke)\n",
+      "slot_sha256_before": {},
+      "slot_sha256_after": {}
+    },
+    {
+      "check": "duration_bound",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-duration_bound-acezc23y",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: Use --runs=1..3, --seconds=1..330, and an optional positive --stop-input-at below the active limit (not with --smoke)\n",
+      "slot_sha256_before": {},
+      "slot_sha256_after": {}
+    },
+    {
+      "check": "stop_bound",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-stop_bound-e8z75rk0",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: Use --runs=1..3, --seconds=1..330, and an optional positive --stop-input-at below the active limit (not with --smoke)\n",
+      "slot_sha256_before": {},
+      "slot_sha256_after": {}
+    },
+    {
+      "check": "smoke_stop_conflict",
+      "passed": true,
+      "isolation_root": "/tmp/new-game-fresh-economy-v35-guard-smoke_stop_conflict-gpd2yevu",
+      "exit_code": 1,
+      "stdout": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n",
+      "stderr": "FRESH_ECONOMY_REFUSED: Use --runs=1..3, --seconds=1..330, and an optional positive --stop-input-at below the active limit (not with --smoke)\n",
+      "slot_sha256_before": {},
+      "slot_sha256_after": {}
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+## 2026-10-01 — isolated permanent-price comparison v35
+
+- Keep ordinary growth prices20/35 and campaign saves unchanged; add one-command fresh project copies for baseline, rank-two70, and rank-two105.
+- Preserve authored resources/import settings, isolate each copy/profile, and bind resume to its curve/content/path/platform. Reject overrides, quoted setting keys, unsafe destinations and mismatched ownership.
+- Verify displayed/charged prices, eight-axis/branch respec and cross-process reload with synthetic wallets only in disposable test copies. Extend existing Linux/Windows CI without new services or permissions.
+- Reuse the input sample for two actual fresh retreats and one explicitly stopped-input loss probe. Preserve original evidence and one validation-only retry; compare fixed budgets without claiming final balance or human saving pressure.
+- Consolidate current source and a five-item play agenda. No ordinary combat, XP, healing, density, weapon access or price values changed.
+
 ## 2026-10-01 — three-build and first-three-run assessment v34
 
 - Explain the moving-slash weapon's empowered next basic attack and once-per-attack cooldown refund; use ability names rather than a legacy key shorthand.

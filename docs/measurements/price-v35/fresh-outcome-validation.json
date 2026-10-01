@@ -1,0 +1,313 @@
+{
+  "passed": true,
+  "checks_count": 47,
+  "checks": [
+    {
+      "case": "fresh-retreat-90",
+      "check": "complete_no_failure",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "one_fresh_seed250_nonhuman_run",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "genuinely_fresh_initial_state",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "source_hashes_stable",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "executed_sample_archived",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "baseline_runtime_and_driver",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "normal_engine_speed",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "real_saved_result",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "actual_offerings_and_points",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "earned_lost_awarded",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "real_live_and_disk_reload",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "unchanged_final_budget_no_shopping",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "earned_lifetime_unlocks",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "no_engine_errors",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-90",
+      "check": "actual_confirmed_retreat_at_bound",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "complete_no_failure",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "one_fresh_seed250_nonhuman_run",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "genuinely_fresh_initial_state",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "source_hashes_stable",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "executed_sample_archived",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "baseline_runtime_and_driver",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "normal_engine_speed",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "real_saved_result",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "actual_offerings_and_points",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "earned_lost_awarded",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "real_live_and_disk_reload",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "unchanged_final_budget_no_shopping",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "earned_lifetime_unlocks",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "no_engine_errors",
+      "passed": true
+    },
+    {
+      "case": "fresh-retreat-180",
+      "check": "actual_confirmed_retreat_at_bound",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "complete_no_failure",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "one_fresh_seed250_nonhuman_run",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "genuinely_fresh_initial_state",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "source_hashes_stable",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "executed_sample_archived",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "baseline_runtime_and_driver",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "normal_engine_speed",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "real_saved_result",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "actual_offerings_and_points",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "earned_lost_awarded",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "real_live_and_disk_reload",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "unchanged_final_budget_no_shopping",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "earned_lifetime_unlocks",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "no_engine_errors",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "input_release_observed",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "intentional_probe_labeled",
+      "passed": true
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "check": "actual_defeat_before_bound",
+      "passed": true
+    }
+  ],
+  "summary": [
+    {
+      "case": "fresh-retreat-90",
+      "outcome_probe": "ordinary_controller_with_confirmed_retreat_bound",
+      "active_seconds": 90.0166666666628,
+      "wall_seconds": 107.187742,
+      "choice_wall_seconds": 17.041036,
+      "active_wall_drift_seconds": 0.10866433333720238,
+      "kills": 90,
+      "points_spent": 11,
+      "earned": 111,
+      "lost": 23,
+      "awarded": 88,
+      "final_balance": 88,
+      "input_stop_active_seconds": null,
+      "budget_after_first_rank20_and_ember24": 44,
+      "second_rank_affordable_after_same44_spend": {
+        "35": true,
+        "70": false,
+        "105": false
+      },
+      "raw_sha256": "5e9bfadd84d327cc20565c2646ac51e0e0c8eab8c9e92d7e41997f42db44124d",
+      "executed_sample_archive": "executed-fresh-sample.gd.txt"
+    },
+    {
+      "case": "fresh-retreat-180",
+      "outcome_probe": "ordinary_controller_with_confirmed_retreat_bound",
+      "active_seconds": 180.000000000035,
+      "wall_seconds": 212.862264,
+      "choice_wall_seconds": 32.541336,
+      "active_wall_drift_seconds": 0.29400999996499877,
+      "kills": 226,
+      "points_spent": 21,
+      "earned": 304,
+      "lost": 61,
+      "awarded": 243,
+      "final_balance": 243,
+      "input_stop_active_seconds": null,
+      "budget_after_first_rank20_and_ember24": 199,
+      "second_rank_affordable_after_same44_spend": {
+        "35": true,
+        "70": true,
+        "105": true
+      },
+      "raw_sha256": "8cde87fd9d0d04326ecdbee9346b6dcecf0da190b03810fe1537690c0cb09c98",
+      "executed_sample_archive": "executed-fresh-sample.gd.txt"
+    },
+    {
+      "case": "fresh-stopped-input-loss-180-retry",
+      "outcome_probe": "intentional_stopped_input_loss_probe",
+      "active_seconds": 208.500000000058,
+      "wall_seconds": 244.340665,
+      "choice_wall_seconds": 35.556164,
+      "active_wall_drift_seconds": 0.2845009999419972,
+      "kills": 263,
+      "points_spent": 23,
+      "earned": 354,
+      "lost": 177,
+      "awarded": 177,
+      "final_balance": 177,
+      "input_stop_active_seconds": 180.016666666702,
+      "budget_after_first_rank20_and_ember24": 133,
+      "second_rank_affordable_after_same44_spend": {
+        "35": true,
+        "70": true,
+        "105": true
+      },
+      "raw_sha256": "7f3432cecaa73403ef73d87cc5403aaf972ffc46cb5c3b4d81f8ad3171d36c37",
+      "executed_sample_archive": "executed-fresh-sample-final.gd.txt"
+    }
+  ],
+  "interpretation": "Three independent fresh single-run budgets at fixed seed250. First-rank20 + A_EMBER24 arithmetic is counterfactual fixed-budget affordability only; no purchases occurred in these probes. Not a human or novice distribution; intentional stopped-input loss is not normal failure play. No candidate-price closed-loop balance claim."
+}

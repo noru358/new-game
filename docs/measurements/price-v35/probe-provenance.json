@@ -1,0 +1,49 @@
+{
+  "base_commit": "65eab98f3cc476556d49637f883bef05542d8bf8",
+  "accepted_reports": [
+    "fresh-retreat-90.json",
+    "fresh-retreat-180.json",
+    "fresh-stopped-input-loss-180-retry.json"
+  ],
+  "source_archives": {
+    "executed-fresh-sample.gd.txt": "9dacc15d0bc042455386f2d32a2bf03ab809956cc721ec1d3a336edb421bc43b",
+    "executed-fresh-sample-final.gd.txt": "9e332e28c0e62bfdfeb610c5efc31bfcf0647e0c5763d6ccbf31c6921738a63d",
+    "final-fresh-sample.gd.txt": "d6e2005a70975279258710b410fcd0b5b31ecec18dc9ee932593b0f59a48fc57"
+  },
+  "final_repository_helper_sha256": "d6e2005a70975279258710b410fcd0b5b31ecec18dc9ee932593b0f59a48fc57",
+  "executed_helper_versions": {
+    "executed-fresh-sample.gd.txt": "Both accepted retreats plus the failed immediate-release-state assertion attempt",
+    "executed-fresh-sample-final.gd.txt": "Only the same-seed loss-probe retry, with one awaited frame before observing Input state",
+    "final-fresh-sample.gd.txt": "After all outcome runs finished, clarified purchase-policy metadata that shopping only occurs between requested runs; report-only change, validated against all accepted raw ledgers"
+  },
+  "failed_attempt_retained": {
+    "report": "fresh-stopped-input-loss-180.json",
+    "sha256": "7971e4283108913cc78c199264a6e0e80dae57e021d8157b8b2b51942fcc6d2e",
+    "failure": "Input-stop probe failed to release player movement/combat",
+    "actual_outcome": {
+      "awarded": 174,
+      "earned": 349,
+      "first_clear": false,
+      "lost": 175,
+      "result": "DEFEAT",
+      "save_pending": false
+    },
+    "active_seconds": 202.783333333387,
+    "excluded_from_primary_budget_comparison": true,
+    "reason": "Release events were issued, but the immediate Input.is_action_pressed assertion observed the previous frame. The separate input-release-timing.json reproduces this API timing; a single unchanged-seed/controller/threshold retry validated the next-frame check."
+  },
+  "validation": {
+    "current_helper_accepts_v34_three_run_ledger": true,
+    "ledger_and_mutation_checks": 17,
+    "outcome_provenance_checks": 47,
+    "isolation_and_bounds_checks": 7,
+    "all_passed": true
+  },
+  "limitations": [
+    "Independent fixed-seed input-controller probes, not human/novice play or an outcome distribution.",
+    "The stopped-input loss deliberately ceases player combat/movement at180s; automatic companions and real enemy simulation continue, and actual offered card choices continue to prevent modal deadlock.",
+    "No shopping occurs after the only requested run. Old raw purchase_policy text described the default between-run policy; actual empty purchase ledgers are authoritative.",
+    "Fixed-budget affordability arithmetic does not model different upgrades changing later income, survival, player choices, fun, or saving pressure.",
+    "No gameplay, price, XP, recovery, card, enemy, runtime, project or workflow changes were made by this worker. No commit or push."
+  ]
+}
