@@ -1,0 +1,262 @@
+{
+  "active_limit_per_run": 2.0,
+  "choice_dwell_seconds": 1.5,
+  "complete": true,
+  "controller": "Unmodified sample_run_baseline input driver and fixed card priority; actual offerings and outcomes; no forced XP, health, cards, gear, currency or victory",
+  "controller_hz": 10,
+  "failure": "",
+  "human_playtest": false,
+  "initial_state": {
+    "accessory": "",
+    "attack_branch": "",
+    "awakenings": [],
+    "currency": 0,
+    "growth": {
+      "FINISH": 0,
+      "GUARD": 0,
+      "MOBILITY": 0,
+      "POWER": 0,
+      "SLASH": 0,
+      "SPEED": 0,
+      "VITALITY": 0,
+      "WISP": 0
+    },
+    "lifetime_levelups": 0,
+    "owned_gear": {
+
+    },
+    "owned_mods": [],
+    "owned_outposts": [],
+    "profile_load_error": false,
+    "slotted_mods": {
+
+    },
+    "weapon": "W_START"
+  },
+  "isolation": {
+    "normal_save_prefixes": true,
+    "root": "/tmp/new-game-fresh-economy-final-smoke",
+    "user_data_dir": "/tmp/new-game-fresh-economy-final-smoke/data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03"
+  },
+  "purchase_policy": "After run 1 buy affordable VITALITY 1 for +10 maximum HP. Then prioritize W_FLOW only after a real temple clear; otherwise buy A_EMBER when affordable. Buy and equip with separate button activations. After run 2 buy affordable POWER 1 if no new gear is available. Save the remainder; no consumables or hidden rewards required.",
+  "retry_policy": "Use the existing boss retry once if offered before 330 active seconds; otherwise decline. At the active limit finish any current choice, request G retreat, and activate its confirm button.",
+  "runs": [
+    {
+      "after_settlement": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 0,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "SLASH": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 0,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "after_shopping": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 0,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "SLASH": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 0,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 2,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": false,
+        "lifetime_levelups": 0,
+        "max_health": 100.0,
+        "slash_cooldown_reduction": 0.0,
+        "slash_distance_multiplier": 1.0,
+        "wisp_damage_bonus": 0.0
+      },
+      "before_departure": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 0,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "SLASH": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 0,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "camp_reload_state": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 0,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "SLASH": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 0,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "card_choices": [],
+      "departure_reload_stable": true,
+      "diagnostics": {
+        "accessory": "",
+        "active_seconds": 2.01666666666666,
+        "active_wall_seconds": 1.915783,
+        "attack_branch": "",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+
+        },
+        "choice_wall_seconds": 0.0,
+        "choice_windows": 0,
+        "damage_events": 0,
+        "damage_taken_actual": 0.0,
+        "earned_currency": 0,
+        "health": 100.0,
+        "kills": 0,
+        "level": 1,
+        "level_heal_actual": 0.0,
+        "level_heal_events": 0,
+        "max_health": 100.0,
+        "pause_wall_seconds": 0.013362,
+        "permanent_growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "SLASH": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "points_earned": 0,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 0,
+        "region": "O_TEMPLE",
+        "result": "RETREAT",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 1.929145,
+        "weapon": "W_START",
+        "xp_remainder": 0
+      },
+      "disk_reload_stable": true,
+      "distance_travelled": 541.895712852478,
+      "input_events": 22,
+      "purchases": [],
+      "result_text": "런 종료 · 귀환\n생존 시간 00:02  ·  처치 0\n획득 0  ·  손실 0  ·  정산 +0  ·  누적 0\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다.",
+      "result_to_camp_stable": true,
+      "retry_decisions": [],
+      "run": 1,
+      "settlement": {
+        "awarded": 0,
+        "earned": 0,
+        "first_clear": false,
+        "lost": 0,
+        "result": "RETREAT",
+        "save_pending": false
+      },
+      "stop_reason": "active_limit_confirmed_retreat"
+    }
+  ],
+  "sample": "fresh_economy_input_journey_v1",
+  "seed": 250,
+  "smoke_only": true,
+  "source_hashes_end": {
+    "game/hub.gd": "ae6d4acb1b8af5968e33d1f3336c3c7707d3e33880f595509fa82fe551d617a8",
+    "game/hybrid_region.gd": "fa8af958ec45e6cb8250cfbd3a9352966ca2c4c61d0b46be842f946461f290f9",
+    "game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "game/run_diagnostics.gd": "418c96719ea551259383dbc4afd82be44786788053e459c66a366d5c3a880436",
+    "game/run_growth.gd": "bf2894753d4be03e8795d54434c7ee79478d832727c124d7839c8b765b2a27d1",
+    "game/run_profile.gd": "aff25a54581e6bc93f602f828f6c2799c5312e82fbf73aab515868e949fc769c",
+    "game/temple_section.gd": "f4a4f7bcb1edeb7ef85b0023837612c4de7df47986650c023177a1533d39bab5",
+    "game/travel_camp.gd": "8ecb0a4d74972c43d1a033fde39f56b1cc7b43cf68da3aa4dd4dfd9808ceaee4",
+    "game/unlock_progress.gd": "b3fd0e0fca1cbc234a7f48c43c6f9edab758283fe74d12dff9a6051d17c6ae5b",
+    "tests/sample_fresh_economy.gd": "93f9ddee3efa641d452ed1c7a5b61a02b6280e60ef6c0faa89d4812623aebf6e",
+    "tests/sample_run_baseline.gd": "628e99ac19b4a0c6eb6165fbba822e4533419da435426cd2e0859028a5022718"
+  },
+  "source_hashes_start": {
+    "game/hub.gd": "ae6d4acb1b8af5968e33d1f3336c3c7707d3e33880f595509fa82fe551d617a8",
+    "game/hybrid_region.gd": "fa8af958ec45e6cb8250cfbd3a9352966ca2c4c61d0b46be842f946461f290f9",
+    "game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "game/run_diagnostics.gd": "418c96719ea551259383dbc4afd82be44786788053e459c66a366d5c3a880436",
+    "game/run_growth.gd": "bf2894753d4be03e8795d54434c7ee79478d832727c124d7839c8b765b2a27d1",
+    "game/run_profile.gd": "aff25a54581e6bc93f602f828f6c2799c5312e82fbf73aab515868e949fc769c",
+    "game/temple_section.gd": "f4a4f7bcb1edeb7ef85b0023837612c4de7df47986650c023177a1533d39bab5",
+    "game/travel_camp.gd": "8ecb0a4d74972c43d1a033fde39f56b1cc7b43cf68da3aa4dd4dfd9808ceaee4",
+    "game/unlock_progress.gd": "b3fd0e0fca1cbc234a7f48c43c6f9edab758283fe74d12dff9a6051d17c6ae5b",
+    "tests/sample_fresh_economy.gd": "93f9ddee3efa641d452ed1c7a5b61a02b6280e60ef6c0faa89d4812623aebf6e",
+    "tests/sample_run_baseline.gd": "628e99ac19b4a0c6eb6165fbba822e4533419da435426cd2e0859028a5022718"
+  },
+  "total_wall_seconds": 4.750113
+}

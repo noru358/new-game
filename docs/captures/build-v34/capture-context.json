@@ -1,0 +1,12 @@
+{
+  "engine": "Godot 4.6.3 official",
+  "renderer": "GL Compatibility / llvmpipe",
+  "inspection": "Actual UI. Gear rendering uses a synthetic loadout; retreat CUA input uses fixture earnings8. These are not economy samples or human play.",
+  "keyboard_flow": "Actual CUA Tab -> Enter -> result8earned/2lost/6award -> R -> camp",
+  "render_source_sha256": {
+    "game/hub.gd": "ae6d4acb1b8af5968e33d1f3336c3c7707d3e33880f595509fa82fe551d617a8",
+    "game/run_profile.gd": "aff25a54581e6bc93f602f828f6c2799c5312e82fbf73aab515868e949fc769c",
+    "game/hybrid_region.gd": "fa8af958ec45e6cb8250cfbd3a9352966ca2c4c61d0b46be842f946461f290f9"
+  },
+  "sample_provenance": "Long samples used v33 gameplay before the GUI/input fixes. Runtime numeric rules are unchanged. Per-report source hashes and original executed harness snapshots are retained."
+}

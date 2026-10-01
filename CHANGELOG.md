@@ -1,3 +1,10 @@
+## 2026-10-01 — three-build and first-three-run assessment v34
+
+- Explain the moving-slash weapon's empowered next basic attack and once-per-attack cooldown refund; use ability names rather than a legacy key shorthand.
+- Restore Tab/Enter interaction in retreat confirmation while preserving Escape, underlying hotkey blocking and single settlement. The new keyboard regression fails before the fix and passes after it.
+- Reuse existing manual input/diagnostic tools for seven equal-investment build samples and a genuinely fresh three-run camp/purchase/equip journey. Preserve raw evidence and exact executed harness versions; distinguish controller assumptions from human play.
+- Record the main unresolved issues: major card families converge late, and one successful fresh run already funds all available permanent ranks. No prices, XP, healing, density or combat values changed.
+
 ## 2026-10-01 — partial temple environment kit v33
 
 - Replace four existing corridor/approach visuals with batched worked stone, paving, restrained relief/weathering and edge growth; preserve every ground barrier and gameplay contract.

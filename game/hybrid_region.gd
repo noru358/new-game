@@ -985,8 +985,11 @@ func _input(event: InputEvent) -> void:
 			if event.keycode == KEY_R: _return_to_hub()
 			return
 		if retreat_overlay.visible:
-			if event.keycode == KEY_ESCAPE: _cancel_retreat()
-			get_viewport().set_input_as_handled()
+			if event.keycode == KEY_ESCAPE:
+				_cancel_retreat()
+				get_viewport().set_input_as_handled()
+			# Tab/Enter/Space must reach the modal's focused buttons.
+			# Returning here still prevents underlying run hotkeys.
 			return
 		if event.keycode == KEY_R:
 			get_viewport().set_input_as_handled()

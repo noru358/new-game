@@ -1,3 +1,13 @@
+# Loop Conquest — Build and Economy Check v34
+
+This checkpoint keeps v33's game and environment, explains the moving-slash weapon's +25% follow-up and 0.22s cooldown refund, and repairs keyboard focus/confirmation in the retreat dialog. No combat or economy values changed.
+
+Run Godot 4.6.x with `godot --path .`. Use WASD, J/click, Space moving slash, Shift dash, E interaction and G retreat. The retreat dialog now supports Tab and Enter; Escape cancels. Buying gear and equipping it remain separate camp actions.
+
+The normal-speed samples in `docs/measurements/build-v34/` test existing mechanics and persistence. They are scripted input, not human fun, art or balance acceptance. The three fresh temple runs are actual earned progression; the three equal-investment grown loadouts use explicitly synthetic prior history. See `docs/PRODUCTION_NEXT.md` section14 for results and the next bounded comparison.
+
+Manual sample tools require a fresh explicitly isolated user-data directory and refuse existing campaign slots. They are not player-facing save presets. See each script's invocation contract: `tests/sample_build_comparison.gd` and `tests/sample_fresh_economy.gd`. Do not use ordinary saves for diagnostic fixtures.
+
 # Loop Conquest — Temple Environment Sample v33
 
 This package includes the v32 canal-town synthesis and the next **partial temple environment kit**. The existing temple corridor and sanctuary entrance now use worked stone, paving and restrained growth, with one taller ruined threshold member. This is a small production sample; the full temple art, sound and vertical slice remain in progress.

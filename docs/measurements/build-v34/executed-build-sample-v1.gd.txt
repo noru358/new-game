@@ -1,0 +1,363 @@
+extends "res://tests/sample_run_baseline.gd"
+## Manual Stage C sample, excluded from verify_*.gd. Never a human playtest.
+## Uses the baseline input/route helpers and the existing opt-in run diagnostics.
+## Required: fresh XDG_DATA_HOME/CONFIG_HOME/CACHE_HOME under one isolated root,
+## with BUILD_COMPARISON_ISOLATED pointing to it. Existing profiles are refused.
+## godot --headless --path . --script res://tests/sample_build_comparison.gd -- \
+##   --build=gather --policy=common --seconds=330 --seed=250 --report-path=/tmp/run.json
+
+const BUILD_PRIORITIES := {
+	"gather": ["U_TEMPO", "U_REACH", "U_EDGE", "S_WISP_FOLLOWUP", "S_WISP_COUNT", "S_WISP_DAMAGE", "S_WISP_CHAIN", "S_WISP_CADENCE", "U_SLASH_SWEEP", "U_SLASH_CADENCE", "S_WISP_SWEEP", "S_WISP_REPLY", "U_STEP", "S_WISP_ORBIT", "S_SEAL"],
+	"movement": ["U_SLASH_CADENCE", "U_SLASH_SWEEP", "S_WISP_REPLY", "S_WISP_SWEEP", "U_TEMPO", "U_EDGE", "U_REACH", "S_WISP_FOLLOWUP", "S_WISP_COUNT", "S_WISP_DAMAGE", "S_WISP_CADENCE", "S_WISP_CHAIN", "U_STEP", "S_WISP_ORBIT", "S_SEAL"],
+	"companion": ["S_WISP_COUNT", "S_WISP_CADENCE", "S_WISP_DAMAGE", "S_WISP_CHAIN", "S_WISP_FOLLOWUP", "S_WISP_SWEEP", "S_WISP_REPLY", "S_WISP_ORBIT", "U_REACH", "U_TEMPO", "U_SLASH_SWEEP", "U_SLASH_CADENCE", "U_EDGE", "U_STEP", "S_SEAL"],
+}
+const POLICY_TEXT := {
+	"common": "Inherited baseline: common 70s route, close pursuit, held basic, Q polls every 1.3s, close dash every 1.8s. Build-specific legal-card priorities; no rerolls.",
+	"gather": "Same route; approach 85 units, hold position through gather/fourth. Q only as entry outside basic range and between complete combos. Emergency dash only below 30% HP between combos.",
+	"movement": "Same route; approach 75 units. Poll actual Q readiness at 10Hz, preserve the pending empowered basic until hit/refund, then reuse Q. Emergency dash only below 30% HP outside an attack.",
+	"companion": "Same route; maintain 160-220 units when possible, basic only inside 190. Q/dash when crowded below 75/65 units. Spacing is an artificial tactical assumption, not human behavior.",
+}
+const HASH_PATHS := ["tests/sample_build_comparison.gd", "tests/sample_run_baseline.gd", "game/player.gd", "game/wisp.gd", "game/wisp_projectile.gd", "game/run_growth.gd", "game/run_profile.gd", "game/run_diagnostics.gd", "game/hybrid_region.gd", "game/hybrid_height.gd", "game/temple_section.gd"]
+var build := "gather"
+var policy := "common"
+var initial_fixture: Dictionary = {}
+var choices: Array = []
+var checkpoints: Array = []
+var previous_metrics: Dictionary = {}
+var seen_attacks: Dictionary = {}
+var seen_slashes: Dictionary = {}
+var seen_refunds: Dictionary = {}
+var observed_wisps: Dictionary = {}
+var pending_requests := {"moving_slash": [], "dash": []}
+var metrics := {
+	"attack_presses": 0, "basic_attacks_started": 0, "basic_attacks_hitting": 0, "basic_hit_targets": 0,
+	"third_attacks_started": 0, "third_attacks_hitting": 0, "third_hit_targets": 0,
+	"fourth_attacks_started": 0, "fourth_attacks_hitting": 0, "fourth_hit_targets": 0,
+	"empowered_basics_started": 0, "empowered_basics_hitting": 0, "empowered_basic_hit_targets": 0,
+	"flow_refund_events": 0, "slash_requests": 0, "slashes_performed": 0,
+	"slashes_hitting": 0, "slash_hit_targets": 0, "slash_requests_failed": 0,
+	"dash_requests": 0, "dashes_performed": 0, "dash_requests_failed": 0,
+	"wisp_shots": 0, "wisp_hit_events": 0, "proximity_samples": 0,
+	"nearest_enemy_distance_sum": 0.0, "close_samples_under_120": 0,
+	"distance_travelled": 0.0,
+}
+var last_attack := 0
+var last_slash := 0
+var last_dash_elapsed := 0.0
+var was_dashing := false
+var last_checkpoint_points := 0
+var last_checkpoint_time := 0.0
+var next_heartbeat := 30.0
+var fatal_error := ""
+
+
+func _action(action: String, strength: float) -> void:
+	if strength > 0.0 and float(held.get(action, 0.0)) <= 0.0:
+		if action == "attack": metrics.attack_presses += 1
+		if action in ["moving_slash", "dash"]:
+			metrics["slash_requests" if action == "moving_slash" else "dash_requests"] += 1
+			pending_requests[action].append(scene.run_time)
+	super._action(action, strength)
+
+
+func _choose_card() -> void:
+	var offered: Array = scene.growth.current_choices.duplicate()
+	var index := 0
+	for id in BUILD_PRIORITIES[build]:
+		if offered.has(id):
+			index = offered.find(id)
+			break
+	var before: int = scene.growth.points_spent
+	for pressed in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = KEY_1 + index
+		event.pressed = pressed
+		root.push_input(event, true)
+		actions_sent += 1
+	choices.append({"active_seconds": scene.run_time, "points_before": before, "points_after": scene.growth.points_spent, "offered": offered, "chosen": offered[index], "key": index + 1})
+	if scene.growth.points_spent != before + 1:
+		fatal_error = "Legal card key did not spend exactly one earned point"
+	_sync_wisp_observers()
+	if scene.growth.points_spent in [3, 6, 9]: _checkpoint("after_%d_points" % scene.growth.points_spent)
+
+
+func _nearest() -> Dictionary:
+	var position: Vector2 = scene.player.global_position
+	var nearest: Node2D
+	var distance := 700.0
+	for enemy in get_nodes_in_group("training_enemies"):
+		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.health <= 0.0: continue
+		var candidate: float = position.distance_to(enemy.global_position)
+		if candidate < distance and scene.clear_attack(position, enemy.global_position):
+			nearest = enemy
+			distance = candidate
+	return {"enemy": nearest, "distance": distance}
+
+
+func _drive() -> void:
+	var nearby := _nearest()
+	var nearest: Node2D = nearby.enemy
+	var distance: float = nearby.distance
+	if nearest != null:
+		metrics.proximity_samples += 1
+		metrics.nearest_enemy_distance_sum += distance
+		if distance < 120.0: metrics.close_samples_under_120 += 1
+	if policy == "common":
+		super._drive()
+		return
+	_action("dash", 0.0)
+	_action("moving_slash", 0.0)
+	var player: SandboxPlayer = scene.player
+	var position: Vector2 = player.global_position
+	var goal: Vector2 = ROUTE[mini(3, floori(scene.run_time / 70.0))]
+	if nearest != null and (distance < 380.0 or scene.temple_section.boss_active):
+		var toward := position.direction_to(nearest.global_position)
+		if build == "companion":
+			goal = nearest.global_position - toward * 190.0
+			if distance >= 160.0 and distance <= 220.0: goal = position
+		elif build == "gather":
+			goal = nearest.global_position - toward * 85.0
+			if distance < 125.0 and (player.attack_step > 0 or player.next_combo_step != 1): goal = position
+		else:
+			goal = nearest.global_position - toward * 75.0
+	var direction := Vector2.ZERO
+	if position.distance_to(goal) > 18.0:
+		var path: PackedVector2Array = scene.navigation.find_path(position, goal)
+		if path.size() >= 2:
+			var next := 1
+			while next < path.size() - 1 and position.distance_to(path[next]) < 24.0: next += 1
+			direction = position.direction_to(path[next])
+	var input_direction: Vector2 = direction.rotated(-player.input_rotation)
+	_action("move_left", maxf(0.0, -input_direction.x))
+	_action("move_right", maxf(0.0, input_direction.x))
+	_action("move_up", maxf(0.0, -input_direction.y))
+	_action("move_down", maxf(0.0, input_direction.y))
+	_action("attack", 1.0 if nearest != null and distance < 190.0 else 0.0)
+	var slash_ready: bool = player.moving_slash_enabled and player.moving_slash_cooldown <= 0.0 and player.moving_slash_time <= 0.0 and player.dash_time <= 0.0 and player._can_link_moving_slash()
+	var between_combos: bool = player.attack_step == 0 and player.next_combo_step == 1
+	var use_slash := false
+	if nearest != null and slash_ready:
+		if build == "gather": use_slash = between_combos and distance > 125.0 and distance < 225.0
+		elif build == "movement":
+			var waiting_for_basic: bool = player.flow_weave_ready or (player.flow_weave_attack and not player.flow_weave_refund_used and player.attack_step > 0)
+			use_slash = distance < 210.0 and not waiting_for_basic
+		else: use_slash = distance < 75.0
+	if use_slash: _action("moving_slash", 1.0)
+	var use_dash: bool = nearest != null and distance < (65.0 if build == "companion" else 50.0) and player.dash_charges > 0 and player.dash_time <= 0.0 and player.moving_slash_time <= 0.0
+	if build != "companion": use_dash = use_dash and player.health < player.max_health * 0.3 and (between_combos if build == "gather" else player.attack_step == 0)
+	if use_dash and not use_slash: _action("dash", 1.0)
+
+
+func _on_basic_hit(_point: Vector2, _direction: Vector2, step: int, _finisher: bool) -> void:
+	var player: SandboxPlayer = scene.player
+	var sequence := player.attack_sequence
+	metrics.basic_hit_targets += 1
+	if step == 3: metrics.third_hit_targets += 1
+	if step == 4: metrics.fourth_hit_targets += 1
+	if player.flow_weave_attack: metrics.empowered_basic_hit_targets += 1
+	if not seen_attacks.has(sequence):
+		seen_attacks[sequence] = true
+		metrics.basic_attacks_hitting += 1
+		if step == 3: metrics.third_attacks_hitting += 1
+		if step == 4: metrics.fourth_attacks_hitting += 1
+		if player.flow_weave_attack: metrics.empowered_basics_hitting += 1
+	if player.flow_weave_refund_used and not seen_refunds.has(sequence):
+		seen_refunds[sequence] = true
+		metrics.flow_refund_events += 1
+
+
+func _on_slash_hit(_point: Vector2) -> void:
+	metrics.slash_hit_targets += 1
+	var sequence: int = scene.player.moving_slash_sequence
+	if not seen_slashes.has(sequence):
+		seen_slashes[sequence] = true
+		metrics.slashes_hitting += 1
+
+
+func _sync_wisp_observers() -> void:
+	for wisp in scene.growth.wisps:
+		if observed_wisps.has(wisp.get_instance_id()): continue
+		observed_wisps[wisp.get_instance_id()] = true
+		wisp.shot_fired.connect(func(_target): metrics.wisp_shots += 1)
+		wisp.enemy_hit.connect(func(_enemy): metrics.wisp_hit_events += 1)
+
+
+func _observe_actions() -> void:
+	var player: SandboxPlayer = scene.player
+	if player.attack_sequence > last_attack:
+		metrics.basic_attacks_started += player.attack_sequence - last_attack
+		if player.attack_step == 3: metrics.third_attacks_started += 1
+		if player.attack_step == 4: metrics.fourth_attacks_started += 1
+		if player.flow_weave_attack: metrics.empowered_basics_started += 1
+		last_attack = player.attack_sequence
+	if player.moving_slash_sequence > last_slash:
+		metrics.slashes_performed += player.moving_slash_sequence - last_slash
+		last_slash = player.moving_slash_sequence
+		if not pending_requests.moving_slash.is_empty(): pending_requests.moving_slash.pop_front()
+	var dashing: bool = player.dash_time > 0.0
+	if dashing and (not was_dashing or player.dash_elapsed < last_dash_elapsed):
+		metrics.dashes_performed += 1
+		if not pending_requests.dash.is_empty(): pending_requests.dash.pop_front()
+	was_dashing = dashing
+	last_dash_elapsed = player.dash_elapsed
+	for action in pending_requests:
+		while not pending_requests[action].is_empty() and scene.run_time - float(pending_requests[action][0]) > 0.4:
+			pending_requests[action].pop_front()
+			metrics["slash_requests_failed" if action == "moving_slash" else "dash_requests_failed"] += 1
+	metrics.distance_travelled = distance_walked
+
+
+func _checkpoint(label: String) -> void:
+	_observe_actions()
+	var span: Dictionary = {}
+	for key in metrics: span[key] = metrics[key] - previous_metrics.get(key, 0)
+	var diagnostics: Dictionary = scene.diagnostics.snapshot(scene)
+	var shots_counter := 0
+	for wisp in scene.growth.wisps: shots_counter += wisp.shots_fired
+	var point := {
+		"label": label, "active_seconds": scene.run_time, "points_spent": scene.growth.points_spent,
+		"span_from_points": last_checkpoint_points, "span_active_seconds": scene.run_time - last_checkpoint_time,
+		"cards": scene.growth.selected_card_ranks.duplicate(), "cumulative": metrics.duplicate(true), "span": span,
+		"diagnostics": diagnostics, "wisp_shots_counter_crosscheck": shots_counter,
+		"q_requests_pending": pending_requests.moving_slash.size(), "dash_requests_pending": pending_requests.dash.size(),
+		"active_wall_drift_seconds": diagnostics.active_wall_seconds - diagnostics.active_seconds,
+		"position": {"x": scene.player.global_position.x, "y": scene.player.global_position.y},
+	}
+	checkpoints.append(point)
+	previous_metrics = metrics.duplicate(true)
+	last_checkpoint_points = scene.growth.points_spent
+	last_checkpoint_time = scene.run_time
+	print("BUILD_CHECKPOINT ", JSON.stringify(point))
+
+
+func _isolated() -> bool:
+	var isolated_root := OS.get_environment("BUILD_COMPARISON_ISOLATED").simplify_path()
+	if not (isolated_root.begins_with("/tmp/lc-build-comparison-") or isolated_root.begins_with("/workspace/shared/build-v34-evidence/isolated-")): return false
+	for variable in ["XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"]:
+		if not OS.get_environment(variable).simplify_path().begins_with(isolated_root + "/"): return false
+	return OS.get_user_data_dir().simplify_path().begins_with(OS.get_environment("XDG_DATA_HOME").simplify_path() + "/")
+
+
+func _prepare_fixture() -> bool:
+	# Refuse reuse, without ever deleting even an isolated profile.
+	for prefix in ["user://loop_conquest_profile", "user://loop_conquest_1d_unlocks"]:
+		for suffix in ["_a.json", "_b.json"]:
+			if FileAccess.file_exists(prefix + suffix): return false
+	var profile := RunProfile.new()
+	var unlocks := UnlockProgress.new()
+	for i in 6: unlocks.add_levelup()
+	if not profile.settle("synthetic-comparison-temple", "SUCCESS", 100, RunProfile.TEMPLE_REGION): return false
+	if not profile.settle("synthetic-comparison-jungle", "SUCCESS", 100, RunProfile.JUNGLE_REGION): return false
+	if profile.currency != 300: return false
+	for id in ["W_FLOW", "W_ECHO", "A_EMBER"]:
+		if not profile.buy_gear(id): return false
+	var axis: String = {"gather": "FINISH", "movement": "SLASH", "companion": "WISP"}[build]
+	for id in ["VITALITY", "POWER", "POWER", axis, axis]:
+		if not profile.buy_growth(id, unlocks.lifetime_levelups): return false
+	if not profile.buy_attack_branch("COMPANION" if build == "companion" else "DIRECT"): return false
+	if not profile.equip({"gather": "W_ECHO", "movement": "W_FLOW", "companion": "W_START"}[build]): return false
+	if not profile.equip("A_EMBER"): return false
+	investment = 300 - profile.currency
+	initial_fixture = {
+		"synthetic_prior_history": true, "fresh_earned": false, "lifetime_levelups": unlocks.lifetime_levelups,
+		"history": "Six prior levelups through add_levelup; temple SUCCESS earned100 then jungle SUCCESS earned100 through settle; each awards150 including success20/first-clear30.",
+		"equality_basis": "Equal cumulative expenditure and prior history, not equal equipped price. Shared inventory W_FLOW/W_ECHO/A_EMBER costs104; VITALITY1 costs20; two offensive axes at rank2 cost110; branch costs60.",
+		"total_currency_awarded": 300, "cumulative_expenditure": investment, "bank": profile.currency,
+		"owned_gear": profile.owned_gear.duplicate(), "equipped_weapon": profile.equipped_weapon, "equipped_accessory": profile.equipped_accessory,
+		"growth_ranks": profile.growth_ranks.duplicate(), "attack_branch": profile.attack_branch,
+		"supplies": profile.supply_count, "owned_mods": profile.owned_mods.duplicate(), "slotted_mods": profile.slotted_mods.duplicate(), "awakenings": profile.awakenings.duplicate(),
+	}
+	return investment == 294 and profile.currency == 6 and profile.owned_mods.is_empty() and profile.awakenings.is_empty()
+
+
+func _run() -> void:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--build="): build = argument.trim_prefix("--build=")
+		elif argument.begins_with("--policy="): policy = argument.trim_prefix("--policy=")
+		elif argument.begins_with("--seed="): seed_value = int(argument.trim_prefix("--seed="))
+		elif argument.begins_with("--seconds="): limit_seconds = float(argument.trim_prefix("--seconds="))
+		elif argument.begins_with("--report-path="): report_path = argument.trim_prefix("--report-path=")
+	if not BUILD_PRIORITIES.has(build) or not policy in ["common", "tailored"] or limit_seconds <= 0.0 or limit_seconds > 330.0 or not _isolated():
+		printerr("BUILD_COMPARISON refused: require build=gather|movement|companion, policy=common|tailored, 0<seconds<=330, and fresh fully isolated XDG roots")
+		quit(1)
+		return
+	Engine.time_scale = 1.0
+	Engine.physics_ticks_per_second = 60
+	seed(seed_value)
+	if not _prepare_fixture():
+		printerr("BUILD_COMPARISON refused: existing profile or fixture API/investment mismatch")
+		quit(1)
+		return
+	scene = load("res://game/hybrid_region.tscn").instantiate()
+	scene.diagnostics_enabled = true
+	root.add_child(scene)
+	await process_frame
+	scene.rng.seed = seed_value
+	scene.growth.rng.seed = seed_value + 1
+	scene.player.attack_landed.connect(_on_basic_hit)
+	scene.player.moving_slash_landed.connect(_on_slash_hit)
+	_sync_wisp_observers()
+	previous_position = scene.player.global_position
+	_checkpoint("initial")
+	var started := Time.get_ticks_usec()
+	var reason := "active_window_complete"
+	while scene.run_time < limit_seconds:
+		await physics_frame
+		var now := Time.get_ticks_usec()
+		distance_walked += previous_position.distance_to(scene.player.global_position)
+		previous_position = scene.player.global_position
+		_observe_actions()
+		if not fatal_error.is_empty():
+			reason = "sample_error"
+			break
+		if scene.run_ended:
+			reason = scene.end_result
+			break
+		if scene.temple_section.retry_pending:
+			reason = "boss_death_retry_available"
+			break
+		if float(now - started) / 1000000.0 > limit_seconds + 180.0:
+			reason = "wall_time_guard"
+			break
+		if scene.growth.choosing:
+			_release()
+			if choice_started < 0: choice_started = now
+			if now - choice_started >= 1500000:
+				_choose_card()
+				choice_started = now if scene.growth.choosing else -1
+			continue
+		choice_started = -1
+		if scene.paused: continue
+		if scene.run_time >= next_control:
+			_drive()
+			next_control = scene.run_time + 0.10
+		if scene.run_time >= next_heartbeat:
+			print("BUILD_PROGRESS ", JSON.stringify({"build": build, "policy": policy, "active_seconds": scene.run_time, "points": scene.growth.points_spent, "kills": scene.kills, "health": scene.player.health}))
+			next_heartbeat += 30.0
+	_release()
+	_checkpoint("final")
+	var hashes := {}
+	for path in HASH_PATHS: hashes[path] = FileAccess.get_sha256("res://" + path)
+	var report := {
+		"sample": "equal_investment_build_comparison_v1", "human_playtest": false, "build": build, "policy": policy,
+		"seed": seed_value, "fixture": initial_fixture, "source_sha256": hashes, "engine": Engine.get_version_info().string,
+		"controller": POLICY_TEXT["common" if policy == "common" else build], "card_priority": BUILD_PRIORITIES[build],
+		"time_scale": Engine.time_scale, "physics_hz": Engine.physics_ticks_per_second, "controller_hz": 10,
+		"choice_dwell_seconds": 1.5, "active_window_limit": limit_seconds, "stop_reason": reason,
+		"result": scene.end_result if scene.run_ended else "IN_PROGRESS", "error": fatal_error,
+		"input_events": actions_sent, "choices": choices, "checkpoints": checkpoints,
+		"diagnostics": scene.diagnostics.snapshot(scene),
+		"measurement_notes": "Attack/slash starts use existing sequence counters. Hitting actions and refunds are deduplicated per sequence; hit_targets count target events, not attacks. Wisp hits include projectile/chain/orbit events and are not shot accuracy. Requests failing to produce an action within0.4 active seconds are separate from actions; end-pending requests remain separate. No forced cards/XP, rerolls, damage tuning, health restoration or growth caps. First life only. Tactical policies are scripted assumptions. Unsettled limits are IN_PROGRESS, never economy settlement proof.",
+	}
+	print("BUILD_COMPARISON ", JSON.stringify(report))
+	if not report_path.is_empty():
+		var file := FileAccess.open(report_path, FileAccess.WRITE)
+		if file == null:
+			printerr("Could not write requested report path")
+			quit(1)
+			return
+		file.store_string(JSON.stringify(report, "  ") + "\n")
+	paused = false
+	scene.queue_free()
+	await process_frame
+	quit(0 if fatal_error.is_empty() else 1)
