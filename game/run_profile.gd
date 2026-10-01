@@ -1,6 +1,7 @@
 class_name RunProfile
 extends RefCounted
 
+const SAVE_VERSION := 6
 const SUCCESS_BONUS := 20
 const FIRST_CLEAR_BONUS := 30
 const DEFEAT_LOSS_RATE := 0.50
@@ -31,6 +32,7 @@ var jungle_owned: bool:
 	get: return owned_outpost_ids.has(JUNGLE_REGION)
 var last_run_id := ""
 var load_error := false
+var unsupported_save_format := false
 var recovered_backup := false
 var last_award := 0
 var last_lost := 0
@@ -117,6 +119,7 @@ func load_state() -> void:
 	acquired_relic_ids.clear()
 	last_run_id = ""
 	load_error = false
+	unsupported_save_format = false
 	recovered_backup = false
 	last_award = 0
 	last_lost = 0
@@ -149,6 +152,10 @@ func load_state() -> void:
 			continue
 		valid_count += 1
 		if best.is_empty() or int(data.generation) > int(best.generation): best = data
+	# A future slot is newer-format data, never a corrupt backup to replace.
+	if unsupported_save_format:
+		load_error = true
+		return
 	if best.is_empty():
 		load_error = found_any
 		return
@@ -188,6 +195,12 @@ func load_state() -> void:
 		else:
 			owned_mods.assign(best.owned_mods)
 			slotted_mods = (best.slotted_mods as Dictionary).duplicate(true)
+
+
+func save_block_reason() -> String:
+	if unsupported_save_format:
+		return "더 최신 버전에서 만든 저장 기록입니다. 게임을 업데이트한 뒤 다시 실행하세요. 저장 파일은 보존했으며 출정과 정산을 차단했습니다."
+	return "저장 기록과 정상 백업을 읽을 수 없습니다. 기존 파일은 보존했습니다. 저장 폴더에서 백업을 확인하세요." if load_error else ""
 
 
 func buy_gear(id: String) -> bool:
@@ -367,7 +380,7 @@ func settle(run_id: String, result: String, earned: int, region_id: String = TEM
 
 func _snapshot() -> Dictionary:
 	return {
-		"version": 6, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
+		"version": SAVE_VERSION, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
 		"owned_outpost_ids": owned_outpost_ids.duplicate(), "acquired_relic_ids": acquired_relic_ids.duplicate(),
 		"last_run_id": last_run_id, "owned_gear": owned_gear.duplicate(true),
 		"owned_mods": owned_mods.duplicate(), "slotted_mods": slotted_mods.duplicate(true),
@@ -379,6 +392,7 @@ func _snapshot() -> Dictionary:
 
 
 func _commit(candidate: Dictionary) -> bool:
+	if load_error or unsupported_save_format: return false
 	var suffix := "_a.json" if int(candidate.generation) % 2 == 1 else "_b.json"
 	var path := save_prefix + suffix
 	var file := FileAccess.open(path, FileAccess.WRITE)
@@ -417,6 +431,13 @@ func _read(path: String) -> Dictionary:
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary: return {}
 	var data: Dictionary = parser.data
+	# Only the version header is known for a future format; do not validate its
+	# body against today's schema or classify it as corruption.
+	var version: Variant = data.get("version")
+	if version is float and is_finite(version) and version == floor(version) and version > SAVE_VERSION:
+		unsupported_save_format = true
+		load_error = true
+		return {}
 	if not [1.0, 2.0, 3.0, 4.0, 5.0, 6.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
 		return {}
 	if int(data.generation) < 1 or int(data.currency) < 0 or not data.get("owned_outpost_ids") is Array or not data.get("acquired_relic_ids") is Array or not data.get("last_run_id") is String:
