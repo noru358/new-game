@@ -1,3 +1,11 @@
+## 2026-10-01 — sanctuary destination environment sample v37
+
+- Extend the existing Southeast-Asian ruined temple approach with a side sanctuary chamber, short corbel crown, stepped plinth, broken gallery and quiet court paving.
+- Keep every ground barrier, route, camera and encounter contract; new background structure stays inside the already sealed east strip.
+- Fade coherent structures only when their physical volume obscures an actor or boss warning boundary, restore afterward, and handle freed bosses before typed access.
+- Preserve a sanctuary-only v33 comparison toggle alongside the original full environment baseline. Verify actual input travel and live boss warning/counter behavior with explicitly isolated observation fixtures.
+- Keep final actor/boss art, close actor overlap, sound, human place/fun acceptance and device performance open. This remains a partial environment production step.
+
 ## 2026-10-01 — exclude development documents from exports v36
 
 - Confirm documentation screenshots/maps/JSON and their imported textures in the prior Windows release pack, despite no runtime references.

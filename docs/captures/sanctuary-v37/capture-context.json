@@ -1,0 +1,169 @@
+{
+  "engine": "Godot 4.6.3 stable official, Linux Compatibility/llvmpipe",
+  "baseline": "--sanctuary-baseline preserves v33 kit; default adds only the new sanctuary ensemble",
+  "camera": {
+    "size": 9.0,
+    "offset": [
+      14,
+      13.864,
+      14
+    ]
+  },
+  "static_capture": "tests/capture_temple_environment.gd; held simulation and explicit boss poses; 7 viewpoints at 1280x720 and 960x540 for each variant; no human play or performance claim",
+  "static_fixture_limit": "The reused scene retains the earlier five-minute HUD in 960px non-boss views, equally for both variants. Ring pose is manually held, not proof of natural phase progression.",
+  "static_helper_sha256": "03603606ac95d2e1a12ee31470eb46974e80d3448cca81c3eaad2b13c3433ee7",
+  "live_capture": "live-helper-final.gd.txt: normal-time actual input actions and unmodified boss AI; initial position/time/phase/HP/ambient/growth fixtures disclosed in live-inspection.json",
+  "live_retry": "First complete=false because arrival was tested after queued movement-release advanced one more frame. Retain its report and executed helper. Final helper records target arrival and stopped distance separately; one same-policy rerun passes all 9 checks, source and private normal-slot guards.",
+  "remaining": "Human place/art/fun acceptance, device GPU/performance/audio; boss/player overlap can still hide the player in close counter-hit poses.",
+  "source_hashes": {
+    "res://game/gate_boss.gd": "28195644b4f60de1d2d1bb1e74ba2d1187eddeba922172da782510ebb2361739",
+    "res://game/hybrid_region.gd": "f6c824e50f92391adf1698246854649c30401d8508150ede518753d94e64ddd9",
+    "res://game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "res://game/temple_environment_kit.gd": "4ae0dafc113926b7dc870e8d2552ee8aa88fa0eba72eff030b82587cc2fe2c4d",
+    "res://game/temple_hybrid_terrain.gd": "991680f9715bae9ea09dc14de8c9e70da7367ef0a83a88a2362bc42405d392a3",
+    "res://game/temple_sanctuary_environment.gd": "c65b77e1d16ff26502b5f65d4c47957e01368b67541d8fb83e04f402018bb213",
+    "res://game/temple_section.gd": "f4a4f7bcb1edeb7ef85b0023837612c4de7df47986650c023177a1533d39bab5"
+  },
+  "all_static_pngs": [
+    {
+      "file": "sanctuary-01-approach-1280x720.png",
+      "sha256": "21ae9de26b4494a96a159336227e7ab1646628abc0aaf61499bdaa72fad5f341",
+      "captured_utc": "2026-10-01T12:53:58.267200+00:00"
+    },
+    {
+      "file": "sanctuary-01-approach-960x540.png",
+      "sha256": "6b76d6532b6e947a58db0f881d58282a42316fdeeffdbaa423aa5be26579601d",
+      "captured_utc": "2026-10-01T12:54:05.835414+00:00"
+    },
+    {
+      "file": "sanctuary-02-arrival-1280x720.png",
+      "sha256": "5aee28d122e820cedc57f7ccd416403b10eefc010d5f0371f5b391f303d21ac0",
+      "captured_utc": "2026-10-01T12:53:59.304710+00:00"
+    },
+    {
+      "file": "sanctuary-02-arrival-960x540.png",
+      "sha256": "9bc6792a90ee4dd82dc58aa6e41adb8482388b5967f34a22d9215ea960d983f3",
+      "captured_utc": "2026-10-01T12:54:06.639142+00:00"
+    },
+    {
+      "file": "sanctuary-03-far-court-1280x720.png",
+      "sha256": "3c0596c634bfb58e3b612a6f407de9f9453275c9689ce47fc159540b0f28b530",
+      "captured_utc": "2026-10-01T12:54:00.235633+00:00"
+    },
+    {
+      "file": "sanctuary-03-far-court-960x540.png",
+      "sha256": "67f80960390e6cb43978f748f4acb3df1be4e856b4d7796381f1460d4af9bf1d",
+      "captured_utc": "2026-10-01T12:54:07.360171+00:00"
+    },
+    {
+      "file": "sanctuary-04-boss-charge-1280x720.png",
+      "sha256": "9d57fdcc722da64d9c14e121011a5452b43bffcf200a00dcc45a67e222f2550c",
+      "captured_utc": "2026-10-01T12:54:01.347246+00:00"
+    },
+    {
+      "file": "sanctuary-04-boss-charge-960x540.png",
+      "sha256": "27966d6685590489b77e2ca64c67a93b9a273085441f5e18bd34ffc423004e39",
+      "captured_utc": "2026-10-01T12:54:08.277627+00:00"
+    },
+    {
+      "file": "sanctuary-05-boss-ring-1280x720.png",
+      "sha256": "8aa32ff6be61356363f226cf0397f56ee5e007e46d79db36801476833cea7639",
+      "captured_utc": "2026-10-01T12:54:02.705850+00:00"
+    },
+    {
+      "file": "sanctuary-05-boss-ring-960x540.png",
+      "sha256": "babcb5c73f9a5c063751df8a9a74e11bf3bb1fa2855f443d5dc95a2bc8005f8c",
+      "captured_utc": "2026-10-01T12:54:09.394559+00:00"
+    },
+    {
+      "file": "sanctuary-06-boss-counter-1280x720.png",
+      "sha256": "c4090ed6a0ac840a53992a61fba47ac39509d0c41b3b249f720fd68c6698b723",
+      "captured_utc": "2026-10-01T12:54:03.774458+00:00"
+    },
+    {
+      "file": "sanctuary-06-boss-counter-960x540.png",
+      "sha256": "62792f374f37a1c84220e8670fc6b94a11d441a939dbcb10e622f69509d35304",
+      "captured_utc": "2026-10-01T12:54:10.252912+00:00"
+    },
+    {
+      "file": "sanctuary-07-remnant-sight-1280x720.png",
+      "sha256": "d0377dd3b0cd4d40fbc9ba424669627ebced7200a9a89c1c438ba80527b40d4e",
+      "captured_utc": "2026-10-01T12:54:04.957520+00:00"
+    },
+    {
+      "file": "sanctuary-07-remnant-sight-960x540.png",
+      "sha256": "7ac8095fc0e96fbe5c71077682c85bf1f5f21104fc7ac278366eb8b643fed1c6",
+      "captured_utc": "2026-10-01T12:54:11.188584+00:00"
+    },
+    {
+      "file": "v33-01-approach-1280x720.png",
+      "sha256": "6208ffcef358a3dae1ef6aabf6910537e850a8972f4635ad632f8a519db57a69",
+      "captured_utc": "2026-10-01T12:53:45.470816+00:00"
+    },
+    {
+      "file": "v33-01-approach-960x540.png",
+      "sha256": "f01feff29f4a6119ec11fdd1c4c212911128c2abb365afde6905cb9281de1497",
+      "captured_utc": "2026-10-01T12:53:51.522122+00:00"
+    },
+    {
+      "file": "v33-02-arrival-1280x720.png",
+      "sha256": "825f5258328ea67d3de0fcd3602e0e3ccc3fc435921008fe6bb51fc661a01878",
+      "captured_utc": "2026-10-01T12:53:46.362980+00:00"
+    },
+    {
+      "file": "v33-02-arrival-960x540.png",
+      "sha256": "e170589d6b0b41e38743b38f882886c39d11cd37247aa66c318ea3ac53f2243a",
+      "captured_utc": "2026-10-01T12:53:52.171451+00:00"
+    },
+    {
+      "file": "v33-03-far-court-1280x720.png",
+      "sha256": "45a2c539d0d6be24759767e6b643a5971bb3cdda56b69173f12be3e0731cac69",
+      "captured_utc": "2026-10-01T12:53:47.084807+00:00"
+    },
+    {
+      "file": "v33-03-far-court-960x540.png",
+      "sha256": "8f14c46f517fdf1ceb580637014597d34f302426da2568f6022e5bd261fa2ac8",
+      "captured_utc": "2026-10-01T12:53:52.691110+00:00"
+    },
+    {
+      "file": "v33-04-boss-charge-1280x720.png",
+      "sha256": "4374bf2dfa04f4df4dc73c6e5ca198dfdcbce861d3c1ef102d55a762d8337852",
+      "captured_utc": "2026-10-01T12:53:48.075342+00:00"
+    },
+    {
+      "file": "v33-04-boss-charge-960x540.png",
+      "sha256": "d9205ed06d62e757967dfa6b22d5dfa5fb942fd691d7fb2e47028893ee84e909",
+      "captured_utc": "2026-10-01T12:53:53.342564+00:00"
+    },
+    {
+      "file": "v33-05-boss-ring-1280x720.png",
+      "sha256": "32028d0468765be9d9ea4c73c804e605a0c54d0b96660d5c9ebb17ee6cbc50a1",
+      "captured_utc": "2026-10-01T12:53:49.067740+00:00"
+    },
+    {
+      "file": "v33-05-boss-ring-960x540.png",
+      "sha256": "73cc77cd18a0fc32a1a904452bb0347a4f93dd429306474b3f29c6cb425da07b",
+      "captured_utc": "2026-10-01T12:53:54.130153+00:00"
+    },
+    {
+      "file": "v33-06-boss-counter-1280x720.png",
+      "sha256": "4e2e39f8072614ece12deeb82cff418f9d2c8145f50fe6a068d35de9e065105f",
+      "captured_utc": "2026-10-01T12:53:50.042891+00:00"
+    },
+    {
+      "file": "v33-06-boss-counter-960x540.png",
+      "sha256": "8675c9b04b9162681b34eb9c3e78dfaaf12bf5f05b7fd281ffdfc930aa250f12",
+      "captured_utc": "2026-10-01T12:53:54.768581+00:00"
+    },
+    {
+      "file": "v33-07-remnant-sight-1280x720.png",
+      "sha256": "030a9277f0a278b3a52cd5c1a4a8686fef090e04da60b6c3efeefc97761e1a0e",
+      "captured_utc": "2026-10-01T12:53:50.750360+00:00"
+    },
+    {
+      "file": "v33-07-remnant-sight-960x540.png",
+      "sha256": "7f9681c287fbec8a8d2b072c7e071289bbdb3387cad6a018c20ff371413daad6",
+      "captured_utc": "2026-10-01T12:53:55.353098+00:00"
+    }
+  ]
+}
