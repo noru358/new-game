@@ -1,0 +1,111 @@
+{
+  "river-check-v1": {
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_river_sentries",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_pass",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_section",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_warden",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_growth_rewards",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_encounter_variation",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true
+  },
+  "river-render-v2": {
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "baseline-960",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "candidate-960",
+        "exit_code": 1,
+        "passed": false
+      },
+      {
+        "name": "baseline-1280",
+        "exit_code": 1,
+        "passed": false
+      },
+      {
+        "name": "candidate-1280",
+        "exit_code": 1,
+        "passed": false
+      }
+    ],
+    "ordinary_save_and_source_preserved": true
+  },
+  "river-render-v3": {
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "baseline-960",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "candidate-960",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "baseline-1280",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "candidate-1280",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true
+  },
+  "final_sources": {
+    "tests/jungle_river_sentries.gd": "b38db8deb97cce72bbfadb65960f2b0578c848beadb36854afaed15a8e39c80a",
+    "tests/jungle_river_fixture.gd": "d93ed8dd749338a13b5c0d0aef36679679d423e5a4f4b3b092a933c59c1d7768",
+    "tests/verify_jungle_river_sentries.gd": "8d8d5d275e6478ac77c7c46198bab694ad6b135e337ad308f260c1d885815878",
+    "tests/capture_jungle_river_sentries.gd": "1b52e6545108815a5e6069e67c2e6c3f5ea3b5790969b3abc186eac8c5586e7a",
+    "patches/jungle-river-sentry-mount.patch": "af35f7ecaec94b8c5ecb0b6ab73b75a3dc4cfe5db303631750bf282d64f7debf"
+  },
+  "candidate_helper_sha256_before_and_after_relocation": "b38db8deb97cce72bbfadb65960f2b0578c848beadb36854afaed15a8e39c80a",
+  "ordinary_save_snapshot_final_matches_render_guard": true
+}
