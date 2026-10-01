@@ -1,9 +1,11 @@
 extends "res://game/hybrid_terrain.gd"
-## Authored v2 layout coordinates, shared by collision, navigation and rendering.
+## China south > Jiangnan reference region > canal town > market / cargo quay.
+## Authored v2 connections, shared by collision, navigation and rendering.
 ## Background architecture remains outside the playable rectangle.
 const ENTRY := Vector2(6200, 4000)
 const MARKET := Vector2(1600, 1550)
 const WATERFRONT := Vector2(4540, 2630)
+const WAREHOUSE := Vector2(4300, 2910)
 const SLUICE := Vector2(6650, 1500)
 const LOADING_BARRELS := [Vector2(4440, 2770), Vector2(4490, 2790), Vector2(4710, 2710)]
 const CART := Vector2(4470, 3080)
@@ -27,6 +29,10 @@ const BUILDINGS := [
 	{"area": Rect2(900, 820, 330, 450), "background": false, "kind": "shop"},
 	{"area": Rect2(1750, 800, 570, 420), "background": false, "kind": "shop"},
 	{"area": Rect2(160, 1520, 680, 340), "background": false, "kind": "shop"},
+	# South-facing rows meet these north-facing premises around the selling
+	# lane. The open west bridge mouth and east turning court remain clear.
+	{"area": Rect2(1740, 1730, 450, 120), "background": false, "kind": "shop"},
+	{"area": Rect2(2360, 1720, 320, 130), "background": false, "kind": "shop"},
 	{"area": Rect2(3500, 150, 560, 600), "background": false, "kind": "shop"},
 	{"area": Rect2(4200, 150, 620, 600), "background": false, "kind": "shop"},
 	{"area": Rect2(4980, 150, 590, 600), "background": false, "kind": "shop"},
@@ -66,13 +72,25 @@ func _init() -> void:
 		floor_areas.append({"area": area, "height": 2.0, "color": Color("b7b7a2")})
 	for source in BUILDINGS:
 		var record: Dictionary = source.duplicate()
-		record["height"] = 145.0 if record.kind == "shop" else 190.0
+		# Low plaster shop rows and slightly taller working storehouses. These
+		# remain the v2 footprints; A's roof language replaces B's blank caps.
+		record["height"] = 180.0 if record.kind == "shop" else 215.0
+		if record.background: record["height"] = 235.0 + float(int(record.area.position.x) % 3) * 18.0
+		record["front"] = "north" if (record.kind == "warehouse" or (record.area.position.y > 1500 and record.area.position.y < 1950)) else "south"
 		buildings.append(record)
 		if not record.background:
 			wall_areas.append({"area": record.area, "height": record.height, "color": Color("e4d9bf"), "visual": false})
 	# Stall counters belong to each shop frontage and share their blocker record.
-	for x in [1190, 1440, 1910, 2170]:
-		_add_prop(Rect2(x, 1320, 130, 90), "stall")
+	# West market: produce, pottery and cloth fronts face one shared selling
+	# lane, with stock tucked back against the shops rather than scattered.
+	for entry in [[1190, "produce"], [1450, "produce"], [1910, "pottery"], [2180, "textile"]]:
+		_add_prop(Rect2(entry[0], 1320, 140, 90), "stall", entry[1])
+	# East commercial approach repeats the same craft vocabulary at a smaller
+	# scale; the continuous north lane still reaches the water-control court.
+	_add_prop(Rect2(4490, 1290, 150, 85), "stall", "textile")
+	_add_prop(Rect2(5130, 1290, 140, 85), "stall", "produce")
+	for entry in [[Vector2(1940, 1265), "pottery"], [Vector2(2200, 1265), "textile"], [Vector2(4515, 1240), "textile"]]:
+		_add_prop(Rect2(entry[0], Vector2(75, 45)), "stock", entry[1])
 	for x in [3660, 3990, 4390, 4660, 5080, 5370]:
 		_add_prop(Rect2(x, 2730 if x > 4600 else 3120, 95, 75), "cargo")
 	for x in [6650, 6850]:
@@ -87,8 +105,8 @@ func _init() -> void:
 	for y in [3780, 4210]:
 		_add_prop(Rect2(6480, y, 100, 100), "gate")
 
-func _add_prop(area: Rect2, kind: String) -> void:
-	props.append({"area": area, "kind": kind})
+func _add_prop(area: Rect2, kind: String, trade: String = "") -> void:
+	props.append({"area": area, "kind": kind, "trade": trade})
 	wall_areas.append({"area": area, "height": 65.0, "color": Color("a18557"), "visual": false})
 
 func height_at(_point: Vector2) -> float:

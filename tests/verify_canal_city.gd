@@ -27,7 +27,7 @@ func _run() -> void:
 	_check(scene.terrain.map_size == Vector2(7200, 4800), "authoring-layout v2 scale retained")
 	_check(scene.actors.size() == 1 and scene.growth.growth_ended, "starts scenery-only with progression disabled")
 	_check(scene.growth.unlocks.save_prefix != "user://loop_conquest_1d_unlocks", "trial never reads the live progression prefix")
-	for point in [scene.CityTerrain.ENTRY, scene.CityTerrain.MARKET, scene.CityTerrain.WATERFRONT, scene.CityTerrain.SLUICE]:
+	for point in [scene.CityTerrain.ENTRY, scene.CityTerrain.MARKET, scene.CityTerrain.WAREHOUSE, scene.CityTerrain.WATERFRONT, scene.CityTerrain.SLUICE]:
 		_check(scene.navigation.is_open(point, 30), "landmark is unobstructed: %s" % point)
 		_check(scene.navigation.find_path(scene.CityTerrain.ENTRY, point).size() > 0, "connected landmark route: %s" % point)
 	for bridge in scene.CityTerrain.BRIDGES:
@@ -37,6 +37,50 @@ func _run() -> void:
 	_check(not scene.clear_attack(Vector2(2100, 1920), Vector2(2100, 2500)), "water blocks combat")
 	_check(scene.clear_attack(Vector2(1400, 1920), Vector2(1400, 2500)), "bridge permits combat")
 	_check(scene.building_visuals.size() == scene.terrain.buildings.size(), "every building collision record has a visual cluster")
+	# The new facing shop row cannot close the market selling lane or its
+	# alternate connections to the east quarter and cargo quay.
+	for point in [Vector2(2500, 1570), Vector2(3020, 1060), Vector2(5500, 1510), scene.CityTerrain.WAREHOUSE]:
+		_check(scene.navigation.is_open(point, 30) and scene.navigation.find_path(scene.CityTerrain.MARKET, point).size() > 0, "market/cargo connections remain open: %s" % point)
+	# Compatibility ignores GeometryInstance transparency. Check the actual
+	# alpha-material path and its restoration, not that unsupported property.
+	for point in [scene.CityTerrain.ENTRY, scene.CityTerrain.MARKET, scene.CityTerrain.WATERFRONT]:
+		scene.teleport(point)
+		await _frames(3)
+		await process_frame
+		await process_frame
+		var faded_count := 0
+		for item in scene.building_visuals + scene.landmark_visuals:
+			for mesh in item.root.get_children():
+				if mesh is MeshInstance3D and mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA:
+					faded_count += 1
+					_check(mesh.material_override.albedo_color.a <= 0.2, "foreground architecture gives clear actor sight")
+		_check(faded_count > 0, "foreground facade/gate fades at the real checkpoint")
+	scene.overview = true
+	await _frames(3)
+	await process_frame
+	await process_frame
+	for item in scene.building_visuals + scene.landmark_visuals:
+		for mesh in item.root.get_children():
+			if mesh is MeshInstance3D:
+				_check(mesh.material_override == mesh.get_meta("solid_material"), "overview restores solid architecture without changing collision")
+	scene.overview = false
+	# The east market enemy sits behind a new shop from the camera while the
+	# player does not. Its visible attack area needs the same protection.
+	scene.teleport(scene.CityTerrain.MARKET)
+	scene.combat_enabled = true
+	scene._spawn_enemy_at(Vector2(2480, 1690), TrainingEnemy.Role.FRAGMENT, 100.0)
+	await _frames(3)
+	await process_frame
+	await process_frame
+	var east_shop: Dictionary = scene.building_visuals.filter(func(item): return item.area.position == Vector2(2360, 1720))[0]
+	_check(east_shop.root.get_child(0).material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "on-screen enemy occluder fades even when it does not cover the player")
+	scene.set_combat_enabled(false)
+	await _frames(3)
+	await process_frame
+	await process_frame
+	_check(east_shop.root.get_child(0).material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "enemy-only fade restores after combat clears")
+	scene.teleport(scene.CityTerrain.ENTRY)
+	await _frames(3)
 	for point in scene.ENCOUNTERS:
 		_check(scene.navigation.is_open(point, 30), "limited enemy point stays off water/buildings")
 		scene.navigation.find_path(point, scene.CityTerrain.MARKET)
@@ -48,6 +92,15 @@ func _run() -> void:
 	scene.set_combat_enabled(false)
 	await _frames(3)
 	_check(scene.actors.size() == 1 and get_nodes_in_group("enemy_bolts").is_empty() and get_nodes_in_group("enemy_zones").is_empty(), "scenery toggle clears enemies and combat residue")
+	# A 150-unit rear towpath leaves real grid space as well as player space.
+	# The initial 70-unit gap admitted the player but stranded enemy navigation.
+	scene.teleport(Vector2(1660, 1925))
+	for action in ["move_right", "move_down"]: Input.action_press(action)
+	await _frames(70)
+	for action in ["move_right", "move_down"]: Input.action_release(action)
+	await _frames(2)
+	_check(scene.player.position.x > 2000 and scene.navigation.find_path(scene.player.position, scene.CityTerrain.MARKET).size() > 0, "physical market rear-lane travel stays connected to pursuit navigation")
+	_check(scene.navigation.find_path(Vector2(2530, 1960), scene.CityTerrain.MARKET).size() > 0, "east shop rear edge is not a player-only safe pocket")
 	# Actual input and physics: walk across the western bridge, then back.
 	scene.teleport(Vector2(1400, 1850))
 	for action in ["move_left", "move_down"]: Input.action_press(action)
