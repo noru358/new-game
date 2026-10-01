@@ -1,3 +1,19 @@
+# Loop Conquest — Temple Environment Sample v33
+
+This package includes the v32 canal-town synthesis and the next **partial temple environment kit**. The existing temple corridor and sanctuary entrance now use worked stone, paving and restrained growth, with one taller ruined threshold member. This is a small production sample; the full temple art, sound and vertical slice remain in progress.
+
+Run normally, then enter the existing temple from camp. To compare the original visual baseline in a new process:
+
+```sh
+godot --path . res://game/hybrid_region.tscn -- --temple-baseline
+```
+
+Without that developer argument, the kit is enabled. Camera, movement, terrain barriers, hidden-field routes and saved progression follow the existing game. The taller member selectively fades for the player and visible enemies; other masonry stays solid. No new progression/menu option is added.
+
+`tests/verify_temple_environment.gd` checks actual route/attack/field/boss contracts. `tests/capture_temple_environment.gd` needs a graphical display and records matched inspection frames; simulation and existing warning poses are held for comparison, so these are not human play/performance recordings. Set `TEMPLE_CAPTURE_DIR` to an absolute output path. Windows runner export/startup results are linked from the PR; interactive device, audio and sustained GPU acceptance remain separate.
+
+---
+
 # Loop Conquest — Jiangnan Canal Town v32
 
 A bounded, playable **place-authoring experiment**, not finished vertical-slice art or a new campaign region. The v25 temple/jungle implementation and v26 production direction are preserved. The closed, unmerged v27 camera experiment is not included.

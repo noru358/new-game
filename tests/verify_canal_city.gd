@@ -92,6 +92,16 @@ func _run() -> void:
 	scene.set_combat_enabled(false)
 	await _frames(3)
 	_check(scene.actors.size() == 1 and get_nodes_in_group("enemy_bolts").is_empty() and get_nodes_in_group("enemy_zones").is_empty(), "scenery toggle clears enemies and combat residue")
+	# A real enemy may be freed before the visual dictionary cleanup tick.
+	# Both trial loops must validate it before inspecting its script type.
+	var expired = scene._spawn_enemy_at(Vector2(2700, 1550), TrainingEnemy.Role.FRAGMENT, 100.0)
+	expired.free()
+	scene.combat_enabled = true
+	scene._process(0.0)
+	scene._physics_process(0.0)
+	scene.set_combat_enabled(false)
+	await _frames(3)
+	_check(scene.actors.size() == 1, "canal visibility and simulation safely clear a freed actor")
 	# A 150-unit rear towpath leaves real grid space as well as player space.
 	# The initial 70-unit gap admitted the player but stranded enemy navigation.
 	scene.teleport(Vector2(1660, 1925))
