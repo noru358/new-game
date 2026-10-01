@@ -1,6 +1,7 @@
 extends "res://game/hybrid_height.gd"
 ## Isolated place-authoring experiment. No RunProfile, rewards or settlement.
 const CityTerrain = preload("res://game/canal_city_terrain.gd")
+const OverheadOcclusion = preload("res://game/canal_overhead_occlusion.gd")
 const ENCOUNTERS := [
 	Vector2(1730, 1590), Vector2(2100, 1630), Vector2(2480, 1690),
 	Vector2(3460, 2830), Vector2(3990, 2850), Vector2(4330, 2770),
@@ -15,6 +16,8 @@ var building_visuals: Array[Dictionary] = []
 var landmark_visuals: Array[Dictionary] = []
 var material_cache: Dictionary = {}
 var faded_material_cache: Dictionary = {}
+var overhead_occlusion_enabled := not OS.get_cmdline_user_args().has("--occlusion-baseline")
+var overhead_occlusion = OverheadOcclusion.new()
 
 func _init() -> void:
 	terrain = CityTerrain.new()
@@ -322,6 +325,10 @@ func _process(delta: float) -> void:
 	if overview:
 		camera.position = terrain.world_point(display_bounds().get_center(), 80) + camera_offset.normalized() * 120.0
 	if not is_instance_valid(player): return
+	if overhead_occlusion_enabled:
+		overhead_occlusion.update(self, delta)
+	elif not overhead_occlusion.entries.is_empty():
+		overhead_occlusion.restore()
 	var visible_targets: Array[Vector2] = [player.position]
 	if combat_enabled:
 		for actor in actors:
@@ -332,6 +339,7 @@ func _process(delta: float) -> void:
 	# Fade only near-side architecture crossing the camera-to-actor ray.
 	# Collision never changes with visibility, preserving solid silhouettes.
 	for item in building_visuals + landmark_visuals:
+		if overhead_occlusion_enabled and overhead_occlusion.owns(item.root): continue
 		var obscures := false
 		if not overview and not item.background:
 			for target in visible_targets:

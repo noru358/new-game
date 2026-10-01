@@ -20,6 +20,8 @@ func _run() -> void:
 	# Read-only guard: never seed, overwrite or remove a real player's saves.
 	var original_saves := _save_bytes()
 	var scene = load("res://game/canal_city_trial.tscn").instantiate()
+	# Retain direct coverage of the original alpha comparison.
+	scene.overhead_occlusion_enabled = false
 	root.add_child(scene)
 	current_scene = scene
 	await _frames(4)

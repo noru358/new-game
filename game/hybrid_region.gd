@@ -6,6 +6,7 @@ const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const DiagnosticsScript = preload("res://game/run_diagnostics.gd")
 const TempleEnvironmentScript = preload("res://game/temple_environment_kit.gd")
 const TempleSanctuaryScript = preload("res://game/temple_sanctuary_environment.gd")
+const TempleOcclusionCandidateScript = preload("res://game/temple_occlusion_candidate.gd")
 const TempleOpeningScript = preload("res://game/temple_opening_environment.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 72
@@ -19,6 +20,8 @@ var temple_sanctuary_enabled := not OS.get_cmdline_user_args().has("--sanctuary-
 var temple_sanctuary_root: Node3D
 var temple_opening_enabled := not OS.get_cmdline_user_args().has("--opening-baseline")
 var temple_opening_root: Node3D
+var temple_occlusion_candidate_enabled := not OS.get_cmdline_user_args().has("--occlusion-baseline")
+var temple_occlusion_candidate = TempleOcclusionCandidateScript.new()
 
 var practice_mode := false
 var region_id := RunProfile.TEMPLE_REGION
@@ -309,10 +312,15 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	if is_instance_valid(temple_environment_root):
 		temple_environment_root.visible = temple_section == null or not temple_section.in_garden
-		_update_temple_environment_visibility()
 	if is_instance_valid(temple_sanctuary_root):
 		temple_sanctuary_root.visible = temple_section == null or not temple_section.in_garden
-		TempleSanctuaryScript.update_visibility(temple_sanctuary_root, self)
+	if temple_occlusion_candidate_enabled and region_id == RunProfile.TEMPLE_REGION:
+		temple_occlusion_candidate.update(self, delta)
+	else:
+		# Restore solid source materials before the legacy path reads or fades them.
+		if not temple_occlusion_candidate.members.is_empty(): temple_occlusion_candidate.restore()
+		if is_instance_valid(temple_environment_root): _update_temple_environment_visibility()
+		if is_instance_valid(temple_sanctuary_root): TempleSanctuaryScript.update_visibility(temple_sanctuary_root, self)
 	if is_instance_valid(temple_opening_root):
 		temple_opening_root.visible = temple_section == null or not temple_section.in_garden
 		TempleOpeningScript.update_visibility(temple_opening_root, self)
@@ -711,6 +719,7 @@ func _show_result() -> void:
 	var heading := boss_name + " 격파 · 성공" if end_result == "SUCCESS" else "런 종료 · 사망" if end_result == "DEFEAT" else "런 종료 · 귀환"
 	if settlement_pending:
 		result_text.text = "%s\n정산 저장에 실패했습니다. 저장을 재시도하세요.\n종료하면 미저장 화폐가 사라집니다.\n현재 획득 화폐 %d" % [heading, run_currency]
+		preload("res://game/run_result_presenter.gd").present(self)
 		return
 	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다." % [
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
@@ -719,6 +728,8 @@ func _show_result() -> void:
 	if not profile.last_mod_award.is_empty():
 		var option_gear := RunProfile.gear_for_affix(profile.last_mod_award)
 		result_text.text += "\n%s 옵션 획득: %s\n야영지 장비창에서 장착할 수 있습니다." % [RunProfile.gear_name(option_gear), RunProfile.affix_description(profile.last_mod_award)]
+
+	preload("res://game/run_result_presenter.gd").present(self)
 
 
 func _retry_settlement() -> void:
@@ -867,6 +878,7 @@ func _build_run_ui() -> void:
 	retry_button.pressed.connect(_retry_settlement)
 	result_overlay.add_child(retry_button)
 	var quit_button := Button.new()
+	quit_button.name = "ResultQuit"
 	quit_button.text = "게임 종료"
 	quit_button.position = Vector2(475, 595)
 	quit_button.size = Vector2(330, 54)

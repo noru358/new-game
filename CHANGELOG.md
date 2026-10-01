@@ -1,3 +1,11 @@
+## 2026-10-02 — readable occlusion, results and isolated cap comparison v40
+
+- Keep opaque temple lower masonry while removing actual upper obstructions, with immediate entry,350ms clear hold and180ms restoration; preserve a legacy comparison switch.
+- Apply overhead-only handling to canal gate/sluice landmarks. Keep houses explicitly unchanged where their tall box walls lack a proper low cut cap.
+- Prioritize banked net reward and exact purchase/equip availability in results; preserve failed-save blocking/retry and single settlement.
+- Add opt-in fourth ranks to two existing damage cards with half-sized final increments; expose independent cap/offer flags only through isolated copies with bound resume identity.
+- Retain ordinary saves, prices, combat, camera and all other rank caps. Preserve the delivered v38 Mac while extending the verified v39 source.
+
 ## 2026-10-01 — preserve player visibility during boss overlap v38
 
 - Draw the existing player sprite in front only when a visible animated temple/jungle boss mesh covers its face/body; restore ordinary depth on separation or invalid/hidden/offscreen states.

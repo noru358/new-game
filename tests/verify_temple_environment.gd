@@ -15,6 +15,8 @@ func _frames(count: int) -> void:
 
 func _fresh(enabled: bool, suffix: String, path: String = "res://game/hybrid_region.tscn", sanctuary_enabled: bool = true):
 	var scene = load(path).instantiate()
+	# Keep the retained alpha comparison covered independently of the new default.
+	scene.temple_occlusion_candidate_enabled = false
 	scene.temple_environment_enabled = enabled
 	scene.temple_sanctuary_enabled = sanctuary_enabled
 	scene.profile_save_prefix = "user://verify_temple_environment_profile_" + suffix

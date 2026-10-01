@@ -1,23 +1,27 @@
-# Loop Conquest — Parallel Production v39
+# Loop Conquest — Playtest Feedback v40
 
-Run the ordinary game with Godot 4.6.x: `godot --path .`. The source starts at camp and keeps baseline prices20/35 and existing saves. The native Mac archive already delivered to the user is the separate, frozen v38 source `b4e9bf256c47a11e2ce396df6569f8f108bf2337`; it does not contain this later batch. Unzip that archive and open its app without installing Godot or Python.
+Run the ordinary game with Godot4.6.x: `godot --path .`. Start at camp; existing saves, prices20/35 and ordinary card caps/offers remain unchanged. The already delivered native Mac archive remains the separate v38 `b4e9bf2` checkpoint and does not silently include this newer source.
 
-This batch combines the stone-fragment/horned-beast bodies, a clearer combat HUD, accurate card scope/range text and the existing temple waterfront approach. It retains the canal synthesis, corridor/sanctuary kit, boss visibility fix and ordinary gameplay. See `DEV_STATUS.md` for exact implementation and verification state.
+This batch clears only obstructing upper temple masonry while retaining solid lower courses, reduces repeated visibility switching, and makes actual banked rewards and next purchase/equip steps clear. Canal gate/sluice overheads follow the same principle; canal houses still use legacy alpha. Use `--occlusion-baseline` after `--` to compare the previous handling. Other existing environment baseline flags remain available.
 
-Use WASD, J/click, Space moving slash, Shift dash, E interaction and G retreat. Tab opens the map and Esc opens pause/gear/card details. The camp's “개발 시험 · 수로도시 장소 경험 (저장·보상 없음)” button opens the isolated canal experience. Buying gear and equipping it remain separate actions.
+Use WASD, J/click, Space moving slash, Shift dash, E interaction and G retreat. Tab opens the map; Esc opens pause/gear/card details. Camp has an isolated canal-development button with no rewards/saves. Buying gear and equipping it remain separate actions.
+
+Optional isolated growth comparison (Godot on PATH):
+
+```sh
+python3 scripts/launch_price_trial.py baseline --damage-cap-trial
+```
+
+This creates a fresh private copy/profile. Only direct and companion damage cards gain a fourth rank, at half the ordinary increment. `--offer-family-trial` independently prefers an unrepresented action family in the third offer. Both default off; the printed resume command includes the exact curve and flags. Legacy both-off copies remain resumable. Choose baseline20/35, late2 20/70 or late3 20/105 only when comparing prices. No permanent menu or ordinary-profile experiment is added.
 
 Human playtest agenda:
-1. Are the opening waterfront, raised court, gallery and sanctuary distinct places while moving?
-2. Can you distinguish the stone fragment and horned charge enemy, and read hits/warnings in a crowd?
-3. Are HP/dash, XP, the next objective and card effects understandable without stopping to search?
-4. Do direct-combo, moving-slash and companion choices change what you actually do?
-5. Does reward→purchase→equip→next run make the previous result useful and invite another choice?
+1. Is the upper cutaway calmer than the old ghosting, while feet/depth and attack warnings remain understandable?
+2. Do the opening court, stone/horn enemies and compact HUD read together during combat?
+3. Does the result clearly explain what was banked, what became available, and what to buy/equip next?
+4. In a deliberately separate growth trial, does one more specialized damage choice feel useful?
+5. Does the existing reward→preparation→next run lead to a different intended action?
 
-Comparison options are optional developer tools. `--opening-baseline` hides only the new waterfront kit, `--sanctuary-baseline` hides the later sanctuary ensemble, and `--temple-baseline` hides all temple environment additions. Pass them after `--` when launching the temple scene. The third-card action-family candidate exists only as an explicit in-memory test property and is disabled in ordinary play.
-
-For a **fresh isolated price comparison** only: `python3 scripts/launch_price_trial.py late3` (Godot on PATH; use `python` on Windows). Options are baseline20/35, late2 20/70, late3 20/105. The launcher creates a private copy/profile, prints a resume command and refuses moved/edited or cross-curve resumes. It does not modify the original game or ordinary saves. Prices are candidates, not accepted final balance; Godot/Python are not needed for the delivered native app.
-
-Engine checks establish state, inputs, save preservation and rendering mechanics. Human art/place/fun/economy acceptance, audio, real-device graphics/input and long-session performance remain open. Hosted native Mac startup applies to the exact v38 archive; Windows runner smoke is headless. Neither is a complete interactive device playtest.
+The environment and actor assets remain representative samples. Human art/place/fun/economy acceptance, sound, interactive hardware, long sessions and the complete first region remain open. See `DEV_STATUS.md` and the exact-head PR checks for what was actually tested. Hosted startup checks are not an interactive device playtest.
 
 # Loop Conquest — Build and Economy Check v34
 

@@ -1,0 +1,366 @@
+{
+  "total": 60,
+  "passed": 60,
+  "results": [
+    {
+      "script": "tests/verify_1a.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 9.79
+    },
+    {
+      "script": "tests/verify_1b.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.78
+    },
+    {
+      "script": "tests/verify_1c.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.29
+    },
+    {
+      "script": "tests/verify_1d.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.76
+    },
+    {
+      "script": "tests/verify_1d_contact_ai.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.89
+    },
+    {
+      "script": "tests/verify_1d_feedback.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 7.85
+    },
+    {
+      "script": "tests/verify_1d_play_feedback.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 6.1
+    },
+    {
+      "script": "tests/verify_1e.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 15.87
+    },
+    {
+      "script": "tests/verify_1f.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 7.85
+    },
+    {
+      "script": "tests/verify_1g.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.42
+    },
+    {
+      "script": "tests/verify_1g_combat_feel.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.45
+    },
+    {
+      "script": "tests/verify_1g_soak.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 40.25
+    },
+    {
+      "script": "tests/verify_audit_feedback.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.63
+    },
+    {
+      "script": "tests/verify_behavior_mods.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.88
+    },
+    {
+      "script": "tests/verify_boss_counterplay.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 21.96
+    },
+    {
+      "script": "tests/verify_boss_encounter.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 21.82
+    },
+    {
+      "script": "tests/verify_boss_phases.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.69
+    },
+    {
+      "script": "tests/verify_boss_visibility.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.75
+    },
+    {
+      "script": "tests/verify_canal_city.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 24.55
+    },
+    {
+      "script": "tests/verify_card_choice_trial.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.56
+    },
+    {
+      "script": "tests/verify_card_diversity.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.08
+    },
+    {
+      "script": "tests/verify_counter_reward.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.87
+    },
+    {
+      "script": "tests/verify_damage_cap_trial.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 7.01
+    },
+    {
+      "script": "tests/verify_discovery_ui.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 3.95
+    },
+    {
+      "script": "tests/verify_encounter_variation.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.62
+    },
+    {
+      "script": "tests/verify_enemy_rewards.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.77
+    },
+    {
+      "script": "tests/verify_enemy_role_visual.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.16
+    },
+    {
+      "script": "tests/verify_garden_transition.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.94
+    },
+    {
+      "script": "tests/verify_gather_safety.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.13
+    },
+    {
+      "script": "tests/verify_growth_expansion.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.93
+    },
+    {
+      "script": "tests/verify_growth_rewards.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.37
+    },
+    {
+      "script": "tests/verify_hub_layout.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 7.75
+    },
+    {
+      "script": "tests/verify_hud_clarity.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 8.58
+    },
+    {
+      "script": "tests/verify_hybrid_combat_feedback.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.38
+    },
+    {
+      "script": "tests/verify_hybrid_corner_ai.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 31.06
+    },
+    {
+      "script": "tests/verify_hybrid_feedback.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 21.44
+    },
+    {
+      "script": "tests/verify_hybrid_growth.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.15
+    },
+    {
+      "script": "tests/verify_hybrid_height.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 29.63
+    },
+    {
+      "script": "tests/verify_hybrid_region.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 19.29
+    },
+    {
+      "script": "tests/verify_hybrid_roles.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.76
+    },
+    {
+      "script": "tests/verify_jungle_pass.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.32
+    },
+    {
+      "script": "tests/verify_jungle_section.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.5
+    },
+    {
+      "script": "tests/verify_jungle_warden.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.63
+    },
+    {
+      "script": "tests/verify_meta_expansion.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.11
+    },
+    {
+      "script": "tests/verify_meta_preparation.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 3.37
+    },
+    {
+      "script": "tests/verify_moving_slash_lab.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.51
+    },
+    {
+      "script": "tests/verify_opening_temple_environment.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 21.2
+    },
+    {
+      "script": "tests/verify_result_clarity.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 20.72
+    },
+    {
+      "script": "tests/verify_run_diagnostics.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 3.19
+    },
+    {
+      "script": "tests/verify_run_profile.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 0.51
+    },
+    {
+      "script": "tests/verify_stage2_loop.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.3
+    },
+    {
+      "script": "tests/verify_surface_overlap.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 4.05
+    },
+    {
+      "script": "tests/verify_temple_environment.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 9.67
+    },
+    {
+      "script": "tests/verify_temple_occlusion_candidate.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.16
+    },
+    {
+      "script": "tests/verify_temple_section.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.01
+    },
+    {
+      "script": "tests/verify_terrain_coherence.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 9.02
+    },
+    {
+      "script": "tests/verify_travel_camp.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 1.95
+    },
+    {
+      "script": "tests/verify_unlock_notice.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 5.98
+    },
+    {
+      "script": "tests/verify_v25_feedback.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 3.28
+    },
+    {
+      "script": "tests/verify_variety_trial.gd",
+      "exit_code": 0,
+      "passed": true,
+      "seconds": 2.89
+    }
+  ]
+}

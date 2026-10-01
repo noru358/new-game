@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -200,6 +201,137 @@ class PriceTrialTests(unittest.TestCase):
         with self.assertRaises(trial.TrialError):
             trial.verify_copy(moved, "late2")
         self.assertEqual((destination / trial.MANIFEST).read_bytes(), manifest_data)
+
+    def test_card_flags_patch_only_copies_and_bind_resume_identity(self):
+        source = self.fixture_source("card switch source")
+        growth = (SOURCE / "game/run_growth.gd").read_bytes()
+        (source / "game/run_growth.gd").write_bytes(growth)
+        identities = set()
+        for cap in (False, True):
+            for offers in (False, True):
+                flags = trial.trial_flags(cap, offers)
+                destination = self.work / f"cards-{int(cap)}-{int(offers)}"
+                manifest = trial.prepare(source, destination, "baseline", **flags)
+                self.assertEqual(manifest["card_trials"], flags)
+                identities.add(manifest["custom_user_dir_name"])
+                copied = (destination / "game/run_growth.gd").read_bytes()
+                for key, variable in trial.TRIAL_SWITCHES.items():
+                    expected = b"true" if flags[key] else b"false"
+                    self.assertIn(b"var " + variable + b" := " + expected, copied)
+                self.assertEqual((source / "game/run_growth.gd").read_bytes(), growth)
+                self.assertEqual(trial.prepare(source, destination, "baseline", resume=True, **flags), manifest)
+                for other in (trial.trial_flags(not cap, offers), trial.trial_flags(cap, not offers)):
+                    with self.assertRaises(trial.TrialError):
+                        trial.prepare(source, destination, "baseline", resume=True, **other)
+                data = (destination / trial.MANIFEST).read_bytes()
+                receipt = trial.user_directory(destination, manifest["custom_user_dir_name"]) / trial.RECEIPT
+                for invalid in (None, [], {"damage_cap_trial": cap}, dict(flags, damage_cap_trial=int(cap)), dict(flags, unexpected=True)):
+                    changed = dict(manifest, card_trials=invalid)
+                    (destination / trial.MANIFEST).write_bytes(trial.json_bytes(changed))
+                    receipt.write_bytes(trial.json_bytes(changed))
+                    with self.assertRaises(trial.TrialError):
+                        trial.verify_copy(destination, "baseline", **flags)
+                (destination / trial.MANIFEST).write_bytes(data)
+                receipt.write_bytes(data)
+                if cap or offers:
+                    with self.assertRaises(trial.TrialError):
+                        trial.verify_copy(destination, "baseline")  # Dropping flags is not a mode switch.
+        self.assertEqual(len(identities), 4)
+
+    def test_legacy_both_off_copy_resumes_without_rewriting_manifest(self):
+        source = self.fixture_source("legacy card source")
+        (source / "game/run_growth.gd").write_bytes(b"extends Node\n")
+        destination = self.work / "legacy both off"
+        manifest = trial.prepare(source, destination, "late2")
+        manifest.pop("card_trials")  # Existing format-1 copies predate card-trial metadata.
+        data = trial.json_bytes(manifest)
+        (destination / trial.MANIFEST).write_bytes(data)
+        receipt = trial.user_directory(destination, manifest["custom_user_dir_name"]) / trial.RECEIPT
+        receipt.write_bytes(data)
+        self.assertEqual(trial.prepare(source, destination, "late2", resume=True), manifest)
+        self.assertEqual((destination / trial.MANIFEST).read_bytes(), data)
+        self.assertEqual(receipt.read_bytes(), data)
+        with self.assertRaises(trial.TrialError):
+            trial.prepare(source, destination, "late2", resume=True, damage_cap_trial=True)
+
+    def test_malformed_card_switches_fail_before_copying(self):
+        source = self.fixture_source("malformed card source")
+        original = (SOURCE / "game/run_growth.gd").read_bytes()
+        cases = []
+        for variable in trial.TRIAL_SWITCHES.values():
+            anchor = b"var " + variable + b" := false"
+            cases.extend([
+                original.replace(anchor, b"var " + variable + b" := true"),
+                original + b"\n" + anchor + b"\n",
+                original.replace(anchor, b"var " + variable + b": bool = false"),
+                original.replace(anchor, b"@export " + anchor),
+            ])
+        for index, content in enumerate(cases):
+            (source / "game/run_growth.gd").write_bytes(content)
+            destination = self.work / f"invalid-card-source-{index}"
+            with self.assertRaises(trial.TrialError):
+                trial.prepare(source, destination, "baseline")
+            self.assertFalse(destination.exists())
+        (source / "game/run_growth.gd").write_bytes(b"extends Node\n")
+        with self.assertRaises(trial.TrialError):
+            trial.prepare(source, self.work / "missing-card-switch", "baseline", damage_cap_trial=True)
+        self.assertFalse((self.work / "missing-card-switch").exists())
+
+    def test_cli_card_flags_and_resume_hint(self):
+        destination = self.work / "CLI card flags with spaces"
+        command = [sys.executable, str(SOURCE / "scripts/launch_price_trial.py"), "baseline",
+                   "--destination", str(destination), "--prepare-only"]
+        flags = ["--damage-cap-trial", "--offer-family-trial"]
+        prepared = subprocess.run(command + flags, text=True, capture_output=True, check=False)
+        self.assertEqual(prepared.returncode, 0, prepared.stdout + prepared.stderr)
+        hint = next(line for line in prepared.stdout.splitlines() if line.startswith("Resume:"))
+        self.assertIn("--damage-cap-trial", hint)
+        self.assertIn("--offer-family-trial", hint)
+        manifest = trial.verify_copy(destination, "baseline", damage_cap_trial=True, offer_family_trial=True)
+        self.assertEqual(manifest["card_trials"], trial.trial_flags(True, True))
+        mismatch = subprocess.run(command + ["--resume", "--damage-cap-trial"], text=True, capture_output=True, check=False)
+        self.assertNotEqual(mismatch.returncode, 0)
+        self.assertIn("Card-trial flags differ", mismatch.stderr)
+        resumed = subprocess.run(command + ["--resume", *flags], text=True, capture_output=True, check=False)
+        self.assertEqual(resumed.returncode, 0, resumed.stdout + resumed.stderr)
+
+    def test_real_engine_card_flags_are_independent_and_copy_scoped(self):
+        if OPTIONS.unit_only:
+            self.skipTest("--unit-only: no real engine checks requested")
+        godot = trial.find_godot(OPTIONS.godot)
+        results = []
+        for cap in (False, True):
+            for offers in (False, True):
+                flags = trial.trial_flags(cap, offers)
+                destination = self.work / f"card flags engine {int(cap)} {int(offers)}"
+                manifest = trial.prepare(SOURCE, destination, "baseline", **flags)
+                save_dir = trial.user_directory(destination, manifest["custom_user_dir_name"])
+                self.assertEqual({p.name for p in save_dir.iterdir()}, {trial.RECEIPT})
+                version = trial.import_copy(godot, destination, "baseline", **flags)
+                config_path = destination / "project.godot"
+                config_bytes = config_path.read_bytes()
+                probe = destination / "price_trial_probe.gd"
+                probe.write_bytes((SOURCE / "tests/price_trial_probe.gd").read_bytes())
+                try:
+                    config_path.write_bytes(config_bytes + b'\n[autoload]\nPriceTrialProbe="*res://price_trial_probe.gd"\n')
+                    output = trial.checked_engine(godot, destination, [
+                        "--headless", "--path", str(destination), "--", "--synthetic-price-check",
+                        "35", str(save_dir), f"cards-{int(cap)}{int(offers)}",
+                    ], timeout=30)
+                finally:
+                    config_path.write_bytes(config_bytes)
+                    probe.unlink()
+                (destination / "card-flags.log").write_text(output, encoding="utf-8")
+                lines = [line.removeprefix("PRICE_TRIAL_CHECK ") for line in output.splitlines() if line.startswith("PRICE_TRIAL_CHECK ")]
+                self.assertEqual(len(lines), 1, output)
+                result = json.loads(lines[0])
+                self.assertTrue(result["passed"], output)
+                self.assertEqual(result["card_trials"], flags)
+                results.append(dict(card_trials=flags, engine=version, passed=True, fresh_camp_and_actual_modal=True))
+                self.assertEqual(trial.prepare(SOURCE, destination, "baseline", resume=True, **flags), manifest)
+                self.assertEqual(trial.project_files(SOURCE), self.source_before)
+        (self.work / "card-flags-engine-summary.json").write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
+        print("Real engine: four independent cap/offer modes passed fresh camp, actual run/modal and immutable resume checks", flush=True)
 
     def test_real_engine_prices_transactions_restart_and_save_isolation(self):
         if OPTIONS.unit_only:

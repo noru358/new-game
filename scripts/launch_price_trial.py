@@ -2,10 +2,13 @@
 
     python scripts/launch_price_trial.py late2 --godot /path/to/godot
     python scripts/launch_price_trial.py late2 --destination /path/to/trial --resume
+    python scripts/launch_price_trial.py baseline --damage-cap-trial
+    python scripts/launch_price_trial.py baseline --offer-family-trial
 
 baseline = [20, 35], late2 = [20, 70], late3 = [20, 105].
 Use --prepare-only to create a fresh copy without starting Godot. Keep the copy
-at its original path and resume through this launcher, using the same curve.
+at its original path and resume through this launcher, using the same curve
+and the same independent optional card-trial flags. Both flags default off.
 """
 
 import argparse
@@ -26,6 +29,10 @@ RUNTIME = ".price-trial-runtime"
 RECEIPT = "price-trial-owner.json"
 GROWTH_ANCHOR = b"const GROWTH_COST := [20, 35]"
 SAVE_ANCHOR = b'config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"'
+TRIAL_SWITCHES = {
+    "damage_cap_trial": b"damage_cap_trial_enabled",
+    "offer_family_trial": b"choice_family_trial_enabled",
+}
 ENGINE_ERRORS = re.compile(r"(?m)^\s*(?:SCRIPT ERROR:|ERROR:|Parse Error:|FAIL:)")
 
 
@@ -126,14 +133,45 @@ def validate_settings(root, config):
             raise TrialError("Duplicate or malformed user-directory setting")
 
 
-def patched_files(files, curve, trial_id):
+def trial_flags(damage_cap_trial=False, offer_family_trial=False):
+    flags = {"damage_cap_trial": damage_cap_trial, "offer_family_trial": offer_family_trial}
+    if any(type(value) is not bool for value in flags.values()):
+        raise TrialError("Card-trial switches must be explicit booleans")
+    return flags
+
+
+def patched_switches(files, flags, restore=False):
+    changed = dict(files)
+    name = "game/run_growth.gd"
+    if name not in files:
+        if any(flags.values()):
+            raise TrialError("This source has no run-growth card-trial switches")
+        return changed  # Legacy both-off copies may predate these experiments.
+    growth = files[name]
+    for key, variable in TRIAL_SWITCHES.items():
+        enabled = flags[key]
+        declarations = re.findall(rb"\bvar\s+" + variable + rb"\b", growth)
+        if enabled or declarations:
+            value = b"true" if restore and enabled else b"false"
+            anchor = b"var " + variable + b" := " + value
+            require_once(growth, anchor)
+            if len(declarations) != 1:
+                raise TrialError("Duplicate or malformed card-trial switch")
+            if enabled:
+                replacement = b"false" if restore else b"true"
+                growth = growth.replace(anchor, b"var " + variable + b" := " + replacement)
+    changed[name] = growth
+    return changed
+
+
+def patched_files(files, curve, trial_id, flags=None):
     config = files["project.godot"]
     profile = files["game/run_profile.gd"]
     require_once(config, SAVE_ANCHOR)
     require_once(profile, GROWTH_ANCHOR)
     if len(re.findall(rb"(?m)^\s*const\s+GROWTH_COST\b", profile)) != 1:
         raise TrialError("Duplicate or malformed growth-cost constant")
-    changed = dict(files)
+    changed = patched_switches(files, trial_flags() if flags is None else flags)
     custom_name = f"LoopConquestPriceTrials/{trial_id}"
     changed["project.godot"] = config.replace(
         SAVE_ANCHOR, f'config/custom_user_dir_name="{custom_name}"'.encode()
@@ -175,7 +213,8 @@ def user_directory(destination, custom_name):
     return path
 
 
-def prepare(source, destination, curve, resume=False):
+def prepare(source, destination, curve, resume=False, *, damage_cap_trial=False, offer_family_trial=False):
+    flags = trial_flags(damage_cap_trial, offer_family_trial)
     source = Path(os.path.abspath(source))
     destination = Path(os.path.abspath(destination))
     reject_links(source)
@@ -183,7 +222,7 @@ def prepare(source, destination, curve, resume=False):
     if source == destination or source in destination.parents or destination in source.parents:
         raise TrialError("Destination must be outside the source project and its ancestors")
     if resume:
-        return verify_copy(destination, curve)
+        return verify_copy(destination, curve, **flags)
     if destination.exists():
         raise TrialError("Destination already exists; choose a new path or use --resume")
     files = project_files(source)
@@ -191,11 +230,12 @@ def prepare(source, destination, curve, resume=False):
         raise TrialError("Cannot create another trial from a prepared trial copy")
     validate_settings(source, files["project.godot"])
     trial_id = uuid.uuid4().hex
-    changed, custom_name = patched_files(files, curve, trial_id)
+    changed, custom_name = patched_files(files, curve, trial_id, flags)
     manifest = {
         "format": 1, "trial_id": trial_id, "curve": curve, "growth_cost": CURVES[curve],
         "source": str(source), "destination": str(destination), "platform": sys.platform,
         "custom_user_dir_name": custom_name,
+        "card_trials": flags,
         "source_sha256": {name: digest(data) for name, data in files.items()},
         "copy_sha256": {name: digest(data) for name, data in changed.items()},
     }
@@ -214,15 +254,23 @@ def prepare(source, destination, curve, resume=False):
     # No profile/gear/currency fixtures belong in a user-playable copy.
     if {name: digest(data) for name, data in project_files(source).items()} != manifest["source_sha256"]:
         raise TrialError("Source changed while copying; discard this incomplete trial and retry")
-    return verify_copy(destination, curve)
+    return verify_copy(destination, curve, **flags)
 
 
-def verify_copy(destination, curve):
+def verify_copy(destination, curve, *, damage_cap_trial=False, offer_family_trial=False):
+    flags = trial_flags(damage_cap_trial, offer_family_trial)
     destination = Path(os.path.abspath(destination))
     reject_links(destination)
     try:
         data = (destination / MANIFEST).read_bytes()
         manifest = json.loads(data)
+        if not isinstance(manifest, dict):
+            raise TrialError("Trial manifest must be an object")
+        stored_flags = manifest.get("card_trials", trial_flags())
+        if (not isinstance(stored_flags, dict) or set(stored_flags) != set(TRIAL_SWITCHES)
+                or any(type(value) is not bool for value in stored_flags.values())
+                or stored_flags != flags):
+            raise TrialError("Card-trial flags differ from the immutable trial manifest")
         if (manifest["format"] != 1 or manifest["curve"] != curve
                 or manifest["growth_cost"] != CURVES[curve]
                 or manifest["destination"] != str(destination)
@@ -245,7 +293,7 @@ def verify_copy(destination, curve):
             f'config/custom_user_dir_name="{custom_name}"'.encode(), SAVE_ANCHOR
         )
         validate_settings(destination, original_config)
-        reconstructed = dict(files)
+        reconstructed = patched_switches(files, stored_flags, restore=True)
         reconstructed["project.godot"] = original_config
         reconstructed["game/run_profile.gd"] = files["game/run_profile.gd"].replace(
             f"const GROWTH_COST := {CURVES[curve]}".encode(), GROWTH_ANCHOR
@@ -292,13 +340,14 @@ def checked_engine(godot, destination, arguments, timeout=180):
     return result.stdout
 
 
-def import_copy(godot, destination, curve):
-    verify_copy(destination, curve)
+def import_copy(godot, destination, curve, *, damage_cap_trial=False, offer_family_trial=False):
+    flags = trial_flags(damage_cap_trial, offer_family_trial)
+    verify_copy(destination, curve, **flags)
     version = checked_engine(godot, destination, ["--version"], timeout=20).strip()
     if not re.match(r"^4\.6(?:\.\d+)?\.stable\.", version):
         raise TrialError(f"This launcher requires stable Godot 4.6.x; found {version}")
     checked_engine(godot, destination, ["--headless", "--editor", "--path", str(destination), "--quit"])
-    verify_copy(destination, curve)
+    verify_copy(destination, curve, **flags)
     return version
 
 
@@ -309,6 +358,8 @@ def main():
     parser.add_argument("--godot", help="Godot 4.6 executable, or Godot.app on macOS")
     parser.add_argument("--resume", action="store_true", help="resume this same immutable copy and curve")
     parser.add_argument("--prepare-only", action="store_true", help="copy only; do not start Godot")
+    parser.add_argument("--damage-cap-trial", action="store_true", help="isolated copy only: fourth direct/wisp damage rank with half-sized final increase")
+    parser.add_argument("--offer-family-trial", action="store_true", help="isolated copy only: diverse third-card family, with fewer duplicate companion offers")
     args = parser.parse_args()
     source = Path(__file__).resolve().parents[1]
     if args.resume and args.destination is None:
@@ -317,13 +368,16 @@ def main():
     destination = Path(os.path.abspath(destination.expanduser()))
     try:
         godot = None if args.prepare_only else find_godot(args.godot)
-        manifest = prepare(source, destination, args.curve, args.resume)
+        flags = trial_flags(args.damage_cap_trial, args.offer_family_trial)
+        manifest = prepare(source, destination, args.curve, args.resume, **flags)
         print(f"Price trial {args.curve}: {manifest['growth_cost']}\nCopy: {destination}\nSaves: {user_directory(destination, manifest['custom_user_dir_name'])}", flush=True)
+        print(f"Card trials: damage cap {'ON (rank 4, half final increase)' if args.damage_cap_trial else 'OFF'}; offer families {'ON (fewer duplicate companion offers)' if args.offer_family_trial else 'OFF'}", flush=True)
         engine_option = f' --godot "{godot}"' if godot else ""
-        print(f'Resume: python "{Path(__file__).resolve()}" {args.curve} --destination "{destination}" --resume{engine_option}', flush=True)
+        trial_options = (" --damage-cap-trial" if args.damage_cap_trial else "") + (" --offer-family-trial" if args.offer_family_trial else "")
+        print(f'Resume: python "{Path(__file__).resolve()}" {args.curve} --destination "{destination}" --resume{trial_options}{engine_option}', flush=True)
         if args.prepare_only:
             return 0
-        version = import_copy(godot, destination, args.curve)
+        version = import_copy(godot, destination, args.curve, **flags)
         print(f"Starting Godot {version}; close the game to return", flush=True)
         return subprocess.run([str(godot), "--path", str(destination)], cwd=destination,
                               env=runtime_environment(destination), check=False).returncode
