@@ -15,6 +15,13 @@ func _check(ok: bool, message: String) -> void:
 		failures += 1
 		printerr("FAIL: ", message)
 
+func _key(code: Key) -> void:
+	for pressed in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = code
+		event.pressed = pressed
+		root.push_input(event, true)
+
 func _new_scene() -> Node3D:
 	var scene = load("res://game/hybrid_region.tscn").instantiate()
 	scene.profile_save_prefix = PROFILE_PREFIX
@@ -147,11 +154,27 @@ func _run() -> void:
 	restart_key.keycode = KEY_G
 	third._input(restart_key)
 	_check(not third.run_ended and third.retreat_overlay.visible and paused, "G pauses for confirmation before settlement")
-	third._cancel_retreat()
+	_key(KEY_ENTER)
+	await process_frame
 	_check(not third.paused and not third.run_ended, "cancel resumes the original live run")
-	third._request_retreat()
-	third._finish_run("RETREAT")
+	_key(KEY_G)
+	_key(KEY_TAB)
+	_key(KEY_R)
+	_key(KEY_G)
+	_check(third.retreat_overlay.visible and not third.run_ended and third.profile.currency == after_success + 2, "run hotkeys cannot bypass the focused confirmation")
+	_key(KEY_ESCAPE)
+	await process_frame
+	_check(not third.paused and not third.retreat_overlay.visible and not third.run_ended, "Escape cancels after keyboard focus moves to confirmation")
+	_key(KEY_G)
+	_key(KEY_TAB)
+	await process_frame
+	_check(root.gui_get_focus_owner() is Button and root.gui_get_focus_owner().text == "귀환하기", "Tab reaches the retreat confirmation button")
+	_key(KEY_ENTER)
+	await process_frame
 	_check(third.end_result == "RETREAT" and third.profile.currency == after_success + 5 and third.profile.last_lost == 1 and third.profile.temple_relic, "confirmed retreat settles after a smaller loss")
+	var retreat_generation: int = third.profile.generation
+	_key(KEY_ENTER)
+	_check(third.profile.generation == retreat_generation, "repeated Enter does not settle the same retreat twice")
 	third.queue_free()
 	paused = false
 	await process_frame

@@ -1,0 +1,26 @@
+{
+  "base_commit_for_long_sample": "425326e4a2e851a028036e19f7cacd3e2ad70ef1",
+  "long_sample_source_authority": "fresh-economy.json source_hashes_start/end, identical throughout; parent hub wording edits were already present",
+  "executed_harness": "fresh-economy.executed.gd",
+  "executed_harness_sha256": "4996298a5aebc37ae3406e05ce622009ea4404b7ad4645c79153dd3fa49195f4",
+  "final_harness_sha256": "93f9ddee3efa641d452ed1c7a5b61a02b6280e60ef6c0faa89d4812623aebf6e",
+  "final_integration_commit": "31f9272",
+  "post_sample_changes": [
+    "Fail completion on false reload/card/purchase/equip postconditions",
+    "Wait for real delayed result display before recording result_text",
+    "Correct A_EMBER purchase rationale to avoid a false locked-weapon claim"
+  ],
+  "validation": [
+    "58 post-hoc consistency checks passed on the raw three-run ledger",
+    "Final helper accepted all actual run ledgers and rejected seven deliberately corrupted ledger copies",
+    "Final integrated real camp/departure/G/mouse-confirm/R/camp smoke passed with all three reload flags true",
+    "Existing campaign and mismatched XDG root refused; all four campaign save slots byte-identical"
+  ],
+  "limitations": [
+    "Input controller is not a human playtest; fun, perceived balance and saving pressure remain unaccepted",
+    "All three long runs succeeded; natural defeat and boss retry were not encountered",
+    "Raw result_text is empty for delayed success displays; raw A_EMBER rationale incorrectly says W_FLOW locked. Numeric state and input ledgers remain verified; correction is documented in fresh-economy-validation.json",
+    "No long replay performed for validator/report-only changes"
+  ],
+  "repository_executed_harness": "executed-fresh-sample.gd.txt"
+}

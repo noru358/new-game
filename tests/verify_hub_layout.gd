@@ -60,6 +60,7 @@ func _run() -> void:
 	for gear_id in RunProfile.GEAR_AFFIXES:
 		hub._select_gear(gear_id)
 		await process_frame
+		_check(hub.gear_effects_label.get_content_height() <= hub.gear_effects_label.size.y + 1.0, "equipment effects remain readable above option controls: %s" % gear_id)
 		var gear_behavior_y: float = hub.mod_behavior_label.global_position.y
 		var gear_numeric_y: float = hub.mod_numeric_label.global_position.y
 		_check(hub.gear_detail_scroll.get_child(0).size.y <= hub.gear_detail_scroll.size.y, "all %s option rows fit without scrolling" % gear_id)

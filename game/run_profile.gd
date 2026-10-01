@@ -89,7 +89,7 @@ static func affix_title(affix: String) -> String:
 		"EMBER_STRIKE": return "여우불·평타 연계"
 		"KEEN": return "이동 베기 피해 +4%"
 		"SWIFT": return "이동 베기 재사용 -4%p"
-		"WEAVE": return "강화 평타 Q 환급 +0.10초"
+		"WEAVE": return "강화 평타 베기 환급 +0.10초"
 		"WIDE": return "4타 폭발 범위 +10%"
 		"HEAVY": return "4타 폭발 피해 +8%"
 		"DRAW": return "3타 사거리 +8%"

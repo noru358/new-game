@@ -1,0 +1,334 @@
+{
+  "scope": "Post-hoc validation of actual recorded inputs, effects, reloads, purchases and earned outcomes; no replay or fabricated gameplay",
+  "passed": true,
+  "checks_count": 58,
+  "checks": [
+    {
+      "check": "Journey reports completion with no failure",
+      "passed": true
+    },
+    {
+      "check": "Three input-controller runs, explicitly not human or smoke",
+      "passed": true
+    },
+    {
+      "check": "Genuine fresh initial state",
+      "passed": true
+    },
+    {
+      "check": "Source hashes remained identical throughout the sample",
+      "passed": true
+    },
+    {
+      "check": "Archived executed harness matches recorded source hash",
+      "passed": true
+    },
+    {
+      "check": "Run 1: exact previous camp state at departure",
+      "passed": true
+    },
+    {
+      "check": "Run 1: departure_reload_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 1: result_to_camp_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 1: disk_reload_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 1: normal engine time scale",
+      "passed": true
+    },
+    {
+      "check": "Run 1: bounded actual settled outcome",
+      "passed": true
+    },
+    {
+      "check": "Run 1: every real card offering and actual point spend agrees",
+      "passed": true
+    },
+    {
+      "check": "Run 1: lifetime unlocks came from earned levelups",
+      "passed": true
+    },
+    {
+      "check": "Run 1: settlement currency conservation",
+      "passed": true
+    },
+    {
+      "check": "Run 1: successful reward ledger arithmetic",
+      "passed": true
+    },
+    {
+      "check": "Run 1: VITALITY starts from current camp balance/state",
+      "passed": true
+    },
+    {
+      "check": "Run 1: VITALITY growth actually bought for 20",
+      "passed": true
+    },
+    {
+      "check": "Run 1: W_FLOW starts from current camp balance/state",
+      "passed": true
+    },
+    {
+      "check": "Run 1: W_FLOW actually purchased for 35",
+      "passed": true
+    },
+    {
+      "check": "Run 1: purchasing W_FLOW did not auto-equip",
+      "passed": true
+    },
+    {
+      "check": "Run 1: separate W_FLOW equip activation took effect without extra cost",
+      "passed": true
+    },
+    {
+      "check": "Run 1: final camp state equals the purchase/equip sequence",
+      "passed": true
+    },
+    {
+      "check": "Run 1: purchased health applied on next departure",
+      "passed": true
+    },
+    {
+      "check": "Run 1: equipped movement weapon applied its real effects",
+      "passed": true
+    },
+    {
+      "check": "Run 1: equipped accessory damage bonus applied",
+      "passed": true
+    },
+    {
+      "check": "Run 2: exact previous camp state at departure",
+      "passed": true
+    },
+    {
+      "check": "Run 2: departure_reload_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 2: result_to_camp_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 2: disk_reload_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 2: normal engine time scale",
+      "passed": true
+    },
+    {
+      "check": "Run 2: bounded actual settled outcome",
+      "passed": true
+    },
+    {
+      "check": "Run 2: every real card offering and actual point spend agrees",
+      "passed": true
+    },
+    {
+      "check": "Run 2: lifetime unlocks came from earned levelups",
+      "passed": true
+    },
+    {
+      "check": "Run 2: settlement currency conservation",
+      "passed": true
+    },
+    {
+      "check": "Run 2: successful reward ledger arithmetic",
+      "passed": true
+    },
+    {
+      "check": "Run 2: A_EMBER starts from current camp balance/state",
+      "passed": true
+    },
+    {
+      "check": "Run 2: A_EMBER actually purchased for 24",
+      "passed": true
+    },
+    {
+      "check": "Run 2: purchasing A_EMBER did not auto-equip",
+      "passed": true
+    },
+    {
+      "check": "Run 2: separate A_EMBER equip activation took effect without extra cost",
+      "passed": true
+    },
+    {
+      "check": "Run 2: final camp state equals the purchase/equip sequence",
+      "passed": true
+    },
+    {
+      "check": "Run 2: purchased health applied on next departure",
+      "passed": true
+    },
+    {
+      "check": "Run 2: equipped movement weapon applied its real effects",
+      "passed": true
+    },
+    {
+      "check": "Run 2: equipped accessory damage bonus applied",
+      "passed": true
+    },
+    {
+      "check": "Run 3: exact previous camp state at departure",
+      "passed": true
+    },
+    {
+      "check": "Run 3: departure_reload_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 3: result_to_camp_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 3: disk_reload_stable",
+      "passed": true
+    },
+    {
+      "check": "Run 3: normal engine time scale",
+      "passed": true
+    },
+    {
+      "check": "Run 3: bounded actual settled outcome",
+      "passed": true
+    },
+    {
+      "check": "Run 3: every real card offering and actual point spend agrees",
+      "passed": true
+    },
+    {
+      "check": "Run 3: lifetime unlocks came from earned levelups",
+      "passed": true
+    },
+    {
+      "check": "Run 3: settlement currency conservation",
+      "passed": true
+    },
+    {
+      "check": "Run 3: successful reward ledger arithmetic",
+      "passed": true
+    },
+    {
+      "check": "Run 3: final camp state equals the purchase/equip sequence",
+      "passed": true
+    },
+    {
+      "check": "Run 3: purchased health applied on next departure",
+      "passed": true
+    },
+    {
+      "check": "Run 3: equipped movement weapon applied its real effects",
+      "passed": true
+    },
+    {
+      "check": "Run 3: equipped accessory damage bonus applied",
+      "passed": true
+    },
+    {
+      "check": "No Godot script, parse or engine ERROR lines in full sample log",
+      "passed": true
+    }
+  ],
+  "warnings": [
+    "Raw run 1 result_text was captured before the delayed success UI appeared; actual numeric settlement and result-to-camp transition are verified.",
+    "Raw run 2 A_EMBER rationale says temple weapon remains locked; snapshots prove W_FLOW was already owned/equipped. Correct rationale: affordable companion improvement after the movement-link weapon.",
+    "Raw run 2 result_text was captured before the delayed success UI appeared; actual numeric settlement and result-to-camp transition are verified.",
+    "Raw run 3 result_text was captured before the delayed success UI appeared; actual numeric settlement and result-to-camp transition are verified."
+  ],
+  "summary": [
+    {
+      "run": 1,
+      "result": "SUCCESS",
+      "active_seconds": 313.950000000043,
+      "wall_seconds": 363.768827,
+      "active_wall_drift_seconds": 0.3445209999569556,
+      "choice_wall_seconds": 49.474306,
+      "kills": 467,
+      "earned": 649,
+      "lost": 0,
+      "awarded": 699,
+      "purchase_spend": 55,
+      "camp_balance": 644,
+      "card_choices": 32,
+      "lifetime_levelups": 32,
+      "retry_decisions": [],
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 2,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": false,
+        "lifetime_levelups": 0,
+        "max_health": 100.0,
+        "slash_cooldown_reduction": 0.0,
+        "slash_distance_multiplier": 1.0,
+        "wisp_damage_bonus": 0.0
+      }
+    },
+    {
+      "run": 2,
+      "result": "SUCCESS",
+      "active_seconds": 320.316666666704,
+      "wall_seconds": 371.673206,
+      "active_wall_drift_seconds": 0.32100933329599,
+      "choice_wall_seconds": 51.03553,
+      "kills": 466,
+      "earned": 665,
+      "lost": 0,
+      "awarded": 685,
+      "purchase_spend": 24,
+      "camp_balance": 1305,
+      "card_choices": 33,
+      "lifetime_levelups": 65,
+      "retry_decisions": [],
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 4,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": true,
+        "lifetime_levelups": 32,
+        "max_health": 110.0,
+        "slash_cooldown_reduction": 0.1,
+        "slash_distance_multiplier": 1.2,
+        "wisp_damage_bonus": 0.0
+      }
+    },
+    {
+      "run": 3,
+      "result": "SUCCESS",
+      "active_seconds": 313.71666666671,
+      "wall_seconds": 363.535504,
+      "active_wall_drift_seconds": 0.32827933328997005,
+      "choice_wall_seconds": 49.490558,
+      "kills": 464,
+      "earned": 650,
+      "lost": 0,
+      "awarded": 670,
+      "purchase_spend": 0,
+      "camp_balance": 1975,
+      "card_choices": 32,
+      "lifetime_levelups": 97,
+      "retry_decisions": [],
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 4,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": true,
+        "lifetime_levelups": 65,
+        "max_health": 110.0,
+        "slash_cooldown_reduction": 0.1,
+        "slash_distance_multiplier": 1.2,
+        "wisp_damage_bonus": 0.15
+      }
+    }
+  ],
+  "total_wall_seconds": 1109.791056,
+  "raw_report_sha256": "35da1f14f5fe2997bc171397d7f6879818b6cb635e4879cc9b7bc016cef57d7e",
+  "executed_source_sha256": "4996298a5aebc37ae3406e05ce622009ea4404b7ad4645c79153dd3fa49195f4"
+}
