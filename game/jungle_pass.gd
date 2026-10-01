@@ -113,8 +113,8 @@ func _choose_spawn_point(for_boss: bool) -> Vector2:
 	return chosen
 
 
-func _process(delta: float) -> void:
-	super._process(delta)
+func _animate_boss_figure() -> void:
+	super._animate_boss_figure()
 	if not is_instance_valid(boss) or not boss is JungleWarden or not actors.has(boss): return
 	var figure: Node3D = actors[boss].get_node("BossFigure")
 	(figure.get_node("BossCore").material_override as StandardMaterial3D).albedo_color = Color.WHITE if boss.hit_flash > 0.0 else Color("d6bc73") if boss.phase == 2 else Color("707d72")

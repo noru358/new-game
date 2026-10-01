@@ -1,3 +1,10 @@
+## 2026-10-01 — preserve player visibility during boss overlap v38
+
+- Draw the existing player sprite in front only when a visible animated temple/jungle boss mesh covers its face/body; restore ordinary depth on separation or invalid/hidden/offscreen states.
+- Keep one sprite and preserve its pose/facing/hit color, the boss silhouette/material, warning geometry and all gameplay values. Evaluate jungle's final pose before the shared visibility check.
+- Verify both resolutions/regions with matched frozen captures, restoration/free-node checks and separate normal-time input fixtures with isolated save/source guards.
+- Close this bounded presentation defect and return the production queue to existing enemy-role silhouettes and first-encounter presentation; no new mechanics or balance policy.
+
 ## 2026-10-01 — sanctuary destination environment sample v37
 
 - Extend the existing Southeast-Asian ruined temple approach with a side sanctuary chamber, short corbel crown, stepped plinth, broken gallery and quiet court paving.
