@@ -7,6 +7,7 @@ signal level_healed(amount: float)
 
 const WispScript = preload("res://game/wisp.gd")
 const SealScript = preload("res://game/seal_attack.gd")
+const CHOICE_FAMILY_TRIAL_NOTICE := "개발 후보 비교 · 셋째 카드는 다른 행동군 우선 · 동행 중복 후보 감소"
 
 const CARDS := {
 	"U_EDGE": {"name": "마력 날", "detail": "평타 피해 +15%", "max": 3, "group": "BASIC"},
@@ -65,6 +66,9 @@ var permanent_wisp_cadence_reduction := 0.0
 var permanent_wisp_chain_bonus := 0.0
 var last_followup_attack := -1
 var last_followup_slash := -1
+# Developer fixtures may opt in. Ordinary runs and saved profiles stay unchanged.
+var choice_family_trial_enabled := false
+var choice_family_trial_label: Label
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -166,6 +170,7 @@ func end_run() -> void:
 
 func _refresh_choices() -> void:
 	choice_title.text = "레벨 %d  ·  강화 선택  ·  남은 %dpt" % [level, pending_choices]
+	choice_family_trial_label.visible = choice_family_trial_enabled
 	unlock_notice_label.visible = not unlock_notice.is_empty()
 	unlock_notice_label.text = unlock_notice + "\n강화 후보에 추가됨 · 직접 선택해야 이번 런에 적용" if not unlock_notice.is_empty() else ""
 	for i in range(choice_buttons.size()):
@@ -189,23 +194,29 @@ func _refresh_choices() -> void:
 func describe_card(card_id: String, next_rank: int) -> String:
 	var old_rank := next_rank - 1
 	match card_id:
-		"U_EDGE": return "평타 피해 %d%% → %d%%" % [roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * old_rank, roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * next_rank]
-		"U_TEMPO": return "평타가 더 빨라집니다\n공격 속도 +%d%% → +%d%%" % [roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
-		"U_REACH": return "평타가 더 멀리 닿습니다\n기본 사거리 %d → %d" % [100 + 15 * old_rank, 100 + 15 * next_rank]
+		"U_EDGE": return "%s 피해\n%d%% → %d%%" % [_basic_attack_scope(), roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * old_rank, roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * next_rank]
+		"U_TEMPO": return "%s 속도\n+%d%% → +%d%%" % [_basic_attack_scope(), roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
+		"U_REACH": return "%s 범위\n+%d%% → +%d%%" % [_basic_attack_scope(), 15 * old_rank, 15 * next_rank]
 		"U_CHAIN": return "앞의 적을 모으는 3타 추가" if next_rank == 1 else "모인 적을 터뜨리는 4타 추가"
 		"S_WISP_DAMAGE": return "여우불 한 발이 더 강해집니다\n기본 피해 %.1f → %.1f" % [10.0 * (1.0 + wisps[0].permanent_damage_bonus) + 2.0 * old_rank, 10.0 * (1.0 + wisps[0].permanent_damage_bonus) + 2.0 * next_rank]
 		"S_WISP_CADENCE": return "여우불이 더 자주 쏩니다\n발사 간격 %.2f초 → %.2f초" % [1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * old_rank), 1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * next_rank)]
 		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
 		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
 		"S_WISP_CHAIN": return "연쇄 대상 %d명 → %d명" % [old_rank + int(permanent_wisp_chain_bonus), next_rank + int(permanent_wisp_chain_bonus)]
-		"S_WISP_FOLLOWUP": return "평타 적중 한 동작당\n여우불 발사 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
-		"S_WISP_SWEEP": return "이동 베기 한 동작당 첫 적중\n여우불 대기 %.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
-		"S_WISP_REPLY": return "여우불 적중마다\n이동 베기 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
+		"S_WISP_FOLLOWUP": return "평타 적중 → 여우불 발사\n한 동작당 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
+		"S_WISP_SWEEP": return "이동 베기 적중 → 여우불 발사\n한 동작당 대기\n%.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
+		"S_WISP_REPLY": return "여우불 적중 → 이동 베기\n적중마다 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
 		"S_SEAL": return "적 위치에 자동 마력진 추가" if next_rank == 1 else "마력진 범위 %d → %d" % [66 + 10 * (old_rank - 1), 66 + 10 * (next_rank - 1)]
 		"U_STEP": return "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 %.2f초 → %.2f초" % [1.2 * (1.0 - (0.15 if old_rank > 0 else 0.0) - player.permanent_dash_cooldown_reduction), 1.2 * (1.0 - (0.30 if next_rank >= 3 else 0.15) - player.permanent_dash_cooldown_reduction)]
 		"U_SLASH_SWEEP": return "이동 베기 폭 %d → %d" % [110 + 40 * old_rank, 110 + 40 * next_rank]
 		"U_SLASH_CADENCE": return "이동 베기 재사용 %.2f초 → %.2f초" % [1.1 * (1.0 - 0.15 * old_rank - player.permanent_slash_cooldown_reduction), 1.1 * (1.0 - 0.15 * next_rank - player.permanent_slash_cooldown_reduction)]
 	return String(CARDS[card_id].detail)
+
+
+func _basic_attack_scope() -> String:
+	if player.combo_limit() >= 4: return "평타·집결·마무리"
+	if player.combo_limit() >= 3: return "평타·3타 집결"
+	return "평타"
 
 
 func _available_card_count() -> int:
@@ -263,8 +274,26 @@ func roll_choices() -> Array[String]:
 	remaining.append_array(wisp_cards)
 	remaining.append_array(others)
 	while result.size() < 3 and not remaining.is_empty():
-		result.append(_take_random(remaining))
+		var different_family: Array[String] = []
+		if choice_family_trial_enabled and result.size() == 2:
+			for card_id in remaining:
+				var represented := false
+				for offered_id in result:
+					if _offer_family(card_id) == _offer_family(offered_id): represented = true
+				if not represented: different_family.append(card_id)
+		if not different_family.is_empty():
+			var card_id := _take_random(different_family)
+			remaining.erase(card_id)
+			result.append(card_id)
+		else:
+			result.append(_take_random(remaining))
 	return result
+
+
+func _offer_family(card_id: String) -> String:
+	if card_id.begins_with("U_SLASH_"): return "SLASH"
+	if card_id.begins_with("S_WISP_"): return "WISP"
+	return String(CARDS[card_id].group)
 
 
 func _take_random(cards: Array[String]) -> String:
@@ -503,6 +532,15 @@ func _build_ui() -> void:
 		button.pressed.connect(choose_index.bind(i))
 		overlay.add_child(button)
 		choice_buttons.append(button)
+	choice_family_trial_label = Label.new()
+	choice_family_trial_label.text = CHOICE_FAMILY_TRIAL_NOTICE
+	choice_family_trial_label.position = Vector2(140, 500)
+	choice_family_trial_label.size = Vector2(1000, 30)
+	choice_family_trial_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	choice_family_trial_label.add_theme_font_size_override("font_size", 16)
+	choice_family_trial_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	choice_family_trial_label.hide()
+	overlay.add_child(choice_family_trial_label)
 	reroll_button = Button.new()
 	reroll_button.position = Vector2(456, 535)
 	reroll_button.size = Vector2(368, 48)

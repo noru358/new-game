@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Loop Conquest - Consolidated Playtest v38"
+config/name="Loop Conquest - Parallel Production v39"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"
 run/main_scene="res://game/travel_camp.tscn"

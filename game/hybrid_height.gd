@@ -6,6 +6,7 @@ const EnemyScene = preload("res://game/enemy.tscn")
 const GrowthScript = preload("res://game/run_growth.gd")
 const MinimapScript = preload("res://game/hybrid_minimap.gd")
 const ActorTexture = preload("res://game/hybrid_actor.svg")
+const EnemyRoleVisual = preload("res://game/enemy_role_visual.gd")
 const COMBAT_CAMERA_SIZE := 10.8
 const OVERVIEW_CAMERA_SIZE := 30.0
 const ACTOR_CLEARANCE := 30.0
@@ -558,7 +559,7 @@ func _sphere(radius: float, color: Color) -> MeshInstance3D:
 	node.material_override = _material(color, true)
 	return node
 
-func _actor_visual(color: Color) -> Node3D:
+func _actor_visual(color: Color, role: int = -1) -> Node3D:
 	var root := Node3D.new()
 	root.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	var sprite := Sprite3D.new()
@@ -572,6 +573,7 @@ func _actor_visual(color: Color) -> Node3D:
 	sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
 	sprite.modulate = color
 	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
+	if EnemyRoleVisual.supports(role): EnemyRoleVisual.configure(sprite, role)
 	root.add_child(sprite)
 	var shadow := MeshInstance3D.new()
 	shadow.name = "Shadow"
@@ -592,7 +594,7 @@ func _warm_enemy_rendering() -> void:
 	# Compile the first enemy body/health-bar render path while the region opens,
 	# instead of hitching on the first live spawn during player movement.
 	var sample := TrainingEnemy.new()
-	var visual := _actor_visual(_enemy_color(TrainingEnemy.Role.FRAGMENT))
+	var visual := _actor_visual(_enemy_color(TrainingEnemy.Role.FRAGMENT), TrainingEnemy.Role.FRAGMENT)
 	_add_health_bar(visual, sample)
 	visual.position = terrain.world_point(start_point, -60.0)
 	sample.free()
@@ -665,9 +667,9 @@ func _spawn_enemy_at(point: Vector2, role: TrainingEnemy.Role, health: float) ->
 	enemy.projectile_parent = simulation
 	enemy.zone_path_filter = clear_attack
 	simulation.add_child(enemy)
-	var visual := _actor_visual(_enemy_color(enemy.role))
+	var visual := _actor_visual(_enemy_color(enemy.role), enemy.role)
 	_add_health_bar(visual, enemy)
-	if enemy.role != TrainingEnemy.Role.FRAGMENT:
+	if not EnemyRoleVisual.supports(enemy.role):
 		var marker := _sphere(0.14 if enemy.role == TrainingEnemy.Role.BEAST else 0.11, _enemy_color(enemy.role).lightened(0.25))
 		marker.position.y = 0.86
 		visual.add_child(marker)
@@ -849,7 +851,8 @@ func _process(delta: float) -> void:
 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
 			body.scale = Vector3.ONE
 		elif actor is TrainingEnemy:
-			visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
+			if not EnemyRoleVisual.update(visual.get_node("Body"), actor, delta):
+				visual.get_node("Body").modulate = Color.WHITE if actor.hit_flash > 0.0 else _enemy_color(actor.role)
 			_update_health_bar(visual, actor)
 		var dx: float = (terrain.height_at(point + Vector2(1, 0)) - terrain.height_at(point - Vector2(1, 0))) * 0.5
 		var dz: float = (terrain.height_at(point + Vector2(0, 1)) - terrain.height_at(point - Vector2(0, 1))) * 0.5
@@ -1216,6 +1219,7 @@ func _build_ui() -> void:
 	canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(canvas)
 	var panel := ColorRect.new()
+	panel.name = "StatusPanel"
 	panel.position = Vector2(16, 16)
 	panel.size = Vector2(445, 172) if show_practice_controls else Vector2(385, 102)
 	panel.color = Color(0.05, 0.12, 0.14, 0.88)
@@ -1256,6 +1260,7 @@ func _build_ui() -> void:
 	minimap.setup(self)
 	canvas.add_child(minimap)
 	var help := Label.new()
+	help.name = "ControlsHint"
 	help.text = "WASD 이동   J / 클릭 평타   Space 이동 베기   Shift 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls and moving_slash_practice else "WASD 이동   J / 클릭 평타   Shift 대시   Tab 전체 보기   N 적 재배치   R 재시작   Esc 일시정지" if show_practice_controls else "WASD 이동   J / 클릭 평타   Space 이동 베기   Shift 대시   Tab 전체 보기   G 귀환   Esc 일시정지"
 	help.position = Vector2(20, 681)
 	help.add_theme_font_size_override("font_size", 17)

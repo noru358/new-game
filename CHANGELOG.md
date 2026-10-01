@@ -470,3 +470,10 @@
 - 경험치 막대를 전투 HUD에 표시하고 카드 요약과 겹치지 않게 조정. 4타의 본체 확대 제거.
 - 정글 히든과 사원 정원의 카메라 앞쪽 벽을 낮추되 충돌 보존. 정글 히든에 낮은 돌·식생 추가. 보스 마당의 가리는 기둥·벽·처마를 이동/축소.
 - 일반 적 상한 72, 스폰율 1.5배와 가까운 생성 거리로 난이도 시험. 정글 숲·석교 폐허·강변의 바닥/장식/적 역할 차별화. 난이도와 탐험 체감은 실제 플레이 검증 전.
+## 2026-10-01 — parallel first-encounter production v39
+
+- Combine independent existing-role silhouettes, HUD hierarchy, accurate card scope/range descriptions and the temple opening environment in one production batch.
+- Give the stone fragment and horned beast their own grounded body, warning/charge pose and visible hit flash while preserving all gameplay values and the opening spawn schedule.
+- Dress the existing waterfront-to-raised-court approach using blocked edges, masonry, water-bank remnants and low growth; retain routes, heights and camera.
+- Keep an alternate third-card family distribution opt-in and in memory only. Baseline runs and save data retain the existing offer policy and prices.
+- Preserve the delivered v38 Mac checkpoint independently; native arm64/Intel startup is evidence for that exact archive, not automatic certification of later code or human play quality.

@@ -1,31 +1,23 @@
-# Loop Conquest — Consolidated Playtest v38
+# Loop Conquest — Parallel Production v39
 
-Includes the canal synthesis, corridor and sanctuary environment sample, movement-link/retreat-keyboard fixes, close-boss player visibility, export cleanup, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
+Run the ordinary game with Godot 4.6.x: `godot --path .`. The source starts at camp and keeps baseline prices20/35 and existing saves. The native Mac archive already delivered to the user is the separate, frozen v38 source `b4e9bf256c47a11e2ce396df6569f8f108bf2337`; it does not contain this later batch. Unzip that archive and open its app without installing Godot or Python.
 
-Start a **fresh separate trial** (Godot 4.6.x on PATH):
+This batch combines the stone-fragment/horned-beast bodies, a clearer combat HUD, accurate card scope/range text and the existing temple waterfront approach. It retains the canal synthesis, corridor/sanctuary kit, boss visibility fix and ordinary gameplay. See `DEV_STATUS.md` for exact implementation and verification state.
 
-```sh
-python3 scripts/launch_price_trial.py late3
-```
+Use WASD, J/click, Space moving slash, Shift dash, E interaction and G retreat. Tab opens the map and Esc opens pause/gear/card details. The camp's “개발 시험 · 수로도시 장소 경험 (저장·보상 없음)” button opens the isolated canal experience. Buying gear and equipping it remain separate actions.
 
-Use `python` on Windows if that is its Python command. Choose `baseline` (20/35), `late2` (20/70), or `late3` (20/105). These are first/second-rank permanent-growth costs; first weapons, XP, healing and combat are unchanged. `late3` is the sharper specialization comparison, not a final balance decision. If Godot is not on PATH, add `--godot "/path/to/Godot"`; macOS may pass the actual Godot.app path.
+Human playtest agenda:
+1. Are the opening waterfront, raised court, gallery and sanctuary distinct places while moving?
+2. Can you distinguish the stone fragment and horned charge enemy, and read hits/warnings in a crowd?
+3. Are HP/dash, XP, the next objective and card effects understandable without stopping to search?
+4. Do direct-combo, moving-slash and companion choices change what you actually do?
+5. Does reward→purchase→equip→next run make the previous result useful and invite another choice?
 
-The launcher prints the copy/save locations and a complete resume command. Keep the trial copy at that location; resume with the same curve and printed `--destination ... --resume`. Each candidate starts without money, gear or unlocks. Use the launcher to resume, so its private environment and profile identity stay consistent. It never edits the source project or reuses ordinary campaign saves. A changed/moved copy or different curve is refused; choose a new destination for another trial.
+Comparison options are optional developer tools. `--opening-baseline` hides only the new waterfront kit, `--sanctuary-baseline` hides the later sanctuary ensemble, and `--temple-baseline` hides all temple environment additions. Pass them after `--` when launching the temple scene. The third-card action-family candidate exists only as an explicit in-memory test property and is disabled in ordinary play.
 
-Use WASD, J/click, Space moving slash, Shift dash, E interaction, G retreat. Buying gear and equipping it remain separate actions; retreat supports Tab/Enter and Escape.
+For a **fresh isolated price comparison** only: `python3 scripts/launch_price_trial.py late3` (Godot on PATH; use `python` on Windows). Options are baseline20/35, late2 20/70, late3 20/105. The launcher creates a private copy/profile, prints a resume command and refuses moved/edited or cross-curve resumes. It does not modify the original game or ordinary saves. Prices are candidates, not accepted final balance; Godot/Python are not needed for the delivered native app.
 
-Batch playtest agenda (human judgment remains open):
-1. Does the canal market→warehouse→waterfront read as connected, distinct places during combat?
-2. Does the gallery→sanctuary reveal read as a place while keeping the boss, attack warnings and escape space clear?
-3. Is moving slash→empowered basic→cooldown refund understandable and useful?
-4. Do second-rank prices70/105 create worthwhile priorities while first improvements and weapons remain accessible?
-5. After success or return, is the reward→purchase→equip→next-run difference clear and worth repeating?
-
-During close boss overlap, the existing player sprite is temporarily drawn in front so its position and pose remain visible. Temple and jungle restore normal depth as soon as that occlusion clears; boss silhouettes, warnings and combat rules stay the same.
-
-The sanctuary adds a side chamber and ruined gallery beyond the existing sealed court edge, quiet paving, and selective sight protection. It is a representative environment step; final actor/boss art, sound and the complete first-region presentation remain unfinished. A developer comparison keeps the previous corridor kit: `godot --path . res://game/hybrid_region.tscn -- --sanctuary-baseline`. The older `--temple-baseline` still removes the whole environment kit.
-
-The engine checks establish isolation, displayed/charged prices, respec and reload. The budget study combines actual scripted success/retreat/loss awards with fixed-budget arithmetic; it does not establish human saving pressure or a closed-loop winning price. See `docs/PRODUCTION_NEXT.md` section15 and `docs/measurements/price-v35/`. Native macOS device/audio/long-session GPU validation remains pending; Windows runner evidence is headless and linked from the PR.
+Engine checks establish state, inputs, save preservation and rendering mechanics. Human art/place/fun/economy acceptance, audio, real-device graphics/input and long-session performance remain open. Hosted native Mac startup applies to the exact v38 archive; Windows runner smoke is headless. Neither is a complete interactive device playtest.
 
 # Loop Conquest — Build and Economy Check v34
 

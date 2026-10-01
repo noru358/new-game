@@ -1,0 +1,30 @@
+{
+  "active_seconds": 60.0166666666645,
+  "camp_departure": true,
+  "checks_passed": true,
+  "distance_travelled": 16214.8047315963,
+  "frozen_pose": false,
+  "human_playtest": false,
+  "input_controller": "existing sample_run_baseline controller and real card-choice input",
+  "input_events": 918,
+  "observations": {
+    "beast_charge": 53.2999999999983,
+    "beast_hit": 53.7333333333316,
+    "beast_spawn": 48.5333333333319,
+    "beast_visible": 48.5333333333319,
+    "beast_warning": 52.8666666666649,
+    "fragment_hit": 2.05,
+    "fragment_spawn": 1.11666666666667,
+    "fragment_visible": 1.11666666666667,
+    "other_spawn": 55.5999999999981
+  },
+  "opening_nonfragment": false,
+  "player_health": 85.0,
+  "profile_prefix": "user://sample_enemy_roles_profile_549700",
+  "sample": "fresh_ordinary_enemy_encounter",
+  "seed": 3901,
+  "stop_reason": "first_beast_encounter_observed",
+  "time_scale": 1.0,
+  "unlocks_prefix": "user://sample_enemy_roles_unlocks_549704",
+  "wall_seconds": 71.052267
+}
