@@ -1,3 +1,9 @@
+## 2026-10-01 — exclude development documents from exports v36
+
+- Confirm documentation screenshots/maps/JSON and their imported textures in the prior Windows release pack, despite no runtime references.
+- Add docs/* to the six existing export exclusions; retain all repository evidence and the consolidated playtest source.
+- Make the existing Windows startup smoke reject direct documentation resources and imported texture payloads found in actual export records. Keep gameplay, saves and prices unchanged.
+
 ## 2026-10-01 — isolated permanent-price comparison v35
 
 - Keep ordinary growth prices20/35 and campaign saves unchanged; add one-command fresh project copies for baseline, rank-two70, and rank-two105.

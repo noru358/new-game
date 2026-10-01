@@ -56,6 +56,28 @@ def checked_run(arguments, cwd, environment, log_path, timeout):
     return {"exit_code": result.returncode, "seconds": round(time.monotonic() - started, 3)}
 
 
+def verify_release_contents(workspace, export_log):
+    """Reject documentation and its remapped textures in the engine's pack log."""
+    packed = {path.strip() for path in
+              re.findall(r"Storing File: (res://[^\r\n\x1b]+)", export_log)}
+    if not packed:
+        raise RuntimeError("Export log contains no packed-resource evidence")
+    documentation_imports = set()
+    for sidecar in (workspace / "docs").rglob("*.import"):
+        documentation_imports.update(re.findall(
+            r'"(res://\.godot/imported/[^"\r\n]+)"',
+            sidecar.read_text(encoding="utf-8"),
+        ))
+    leaked = sorted(path for path in packed
+                    if path.startswith("res://docs/") or path in documentation_imports)
+    if leaked:
+        raise RuntimeError(f"Documentation leaked into the release pack: {leaked}")
+    return {"packed_resources": len(packed),
+            "documentation_imports_checked": len(documentation_imports),
+            "documentation_resources_packed": 0,
+            "evidence": "Godot export Storing File records and documentation import remaps"}
+
+
 def smoke(args, report):
     if os.name != "nt":
         raise RuntimeError("This smoke must execute on native Windows, not Wine or Linux")
@@ -123,6 +145,9 @@ def smoke(args, report):
     report["export"] = checked_run(
         [editor, "--headless", "--path", workspace, "--export-release", "Windows", executable],
         workspace, editor_env, args.report / "export.log", 180,
+    )
+    report["release_contents"] = verify_release_contents(
+        workspace, (args.report / "export.log").read_text(encoding="utf-8"),
     )
     if not executable.is_file() or executable.stat().st_size < 1024 * 1024:
         raise RuntimeError("Windows release executable is missing or unexpectedly small")
