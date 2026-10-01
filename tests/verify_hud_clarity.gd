@@ -42,7 +42,8 @@ func _run() -> void:
 			var state_before := _state(scene)
 			# On the isolated v38 base these are the same three mount operations
 			# supplied separately for the scene-file owner to integrate.
-			var presenter: Node = scene.get_node_or_null("RunHudPresenter")
+			var presenter: Node = scene.get_node_or_null("RunFlowHudPresenter")
+			if presenter == null: presenter = scene.get_node_or_null("RunHudPresenter")
 			if presenter == null:
 				var canvas: CanvasLayer = scene.hud.get_parent()
 				(canvas.get_child(0) as ColorRect).name = "StatusPanel"
@@ -126,6 +127,9 @@ func _state(scene) -> String:
 	return JSON.stringify([scene.player.health, scene.player.max_health, scene.player.dash_charges, scene.player.moving_slash_cooldown, scene.run_time, scene.run_currency, scene.growth.xp, scene.growth.card_ranks, scene.profile._snapshot(), scene.growth.unlocks.lifetime_levelups])
 
 func _assert_layout(scene, presenter, context: String) -> void:
+	if presenter.name == "RunFlowHudPresenter":
+		_assert_flow_layout(scene, presenter, context)
+		return
 	var viewport := Rect2(0, 0, 1280, 720)
 	for item in presenter.passive_controls:
 		check(item.mouse_filter == Control.MOUSE_FILTER_IGNORE and item.focus_mode == Control.FOCUS_NONE, context + " HUD cannot intercept clicks/focus: " + item.name)
@@ -176,3 +180,16 @@ func _normal_slots() -> Dictionary:
 			var path: String = stem + suffix
 			records[path] = FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "absent"
 	return records
+
+func _assert_flow_layout(scene, presenter, context: String) -> void:
+	var bounds := Rect2(0, 0, 1280, 720)
+	for control in presenter.passive_controls:
+		check(control.mouse_filter == Control.MOUSE_FILTER_IGNORE and control.focus_mode == Control.FOCUS_NONE, context + " passive input")
+		if control.is_visible_in_tree(): check(bounds.encloses(control.get_global_rect()), context + " canvas bounds")
+	for label in [presenter.health, presenter.mobility, presenter.objective, presenter.progress, presenter.help, presenter.notice]:
+		if label.is_visible_in_tree(): check(label.get_line_count() <= label.get_visible_line_count(), context + " readable text")
+	check(not scene.run_hud.visible and not scene.temple_section.section_hud.visible and not scene.build_summary_label.visible, context + " duplicate objective/build details stay hidden")
+	check(presenter.objective.text == presenter.destination_text(scene), context + " destination uses section source")
+	check(scene.growth.xp_bar.size.y <= 5 and scene.player_health_bar.size.y <= 12, context + " explicit meter heights")
+	check(not presenter.health.get_global_rect().intersects(scene.player_health_bar.get_global_rect()), context + " health and meter separated")
+	check(presenter.help.get_global_rect().end.y < scene.growth.xp_bar.get_global_rect().position.y, context + " help clears XP track")
