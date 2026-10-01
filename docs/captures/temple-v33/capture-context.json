@@ -1,0 +1,36 @@
+{
+  "engine": "Godot 4.6.3 stable official",
+  "renderer": "GL Compatibility / Mesa llvmpipe",
+  "camera_size": 9.0,
+  "region_hierarchy": [
+    "동남아",
+    "청록 폐사원",
+    "회랑·성소 접근"
+  ],
+  "method": "Matched real-engine viewport captures. Simulation is held; the existing beast/boss warning poses are fixed for inspection. Not human play, audio or performance evidence. Baseline startup switch restores the original visuals.",
+  "baseline_argument": "-- --temple-baseline",
+  "inspection_points": {
+    "approach": [
+      3900,
+      1120
+    ],
+    "foreground": [
+      3980,
+      850
+    ],
+    "sanctuary": [
+      4320,
+      1150
+    ]
+  },
+  "resource_counts": {
+    "mesh_instances": 4,
+    "vertices": 31536
+  },
+  "source_sha256": {
+    "game/temple_environment_kit.gd": "4ae0dafc113926b7dc870e8d2552ee8aa88fa0eba72eff030b82587cc2fe2c4d",
+    "game/hybrid_region.gd": "500fcb7709fb53bbdcdcf889b6687077b789edf2b0af14afdcbe7c7366b58445",
+    "tests/capture_temple_environment.gd": "0e52664790aeb99cb43bdfcaf0081372c5840d7a5188729b7e120228ec5d1af7",
+    "tests/verify_temple_environment.gd": "3390661ee241da54a513772a62236013cedbf6221797509a095032be68f196d5"
+  }
+}

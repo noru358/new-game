@@ -310,7 +310,7 @@ func _physics_process(delta: float) -> void:
 				if navigation.is_open(point, ACTOR_CLEARANCE):
 					_spawn_enemy_at(point, ENEMY_ROLES[i], ENEMY_HEALTH[i])
 	for actor in actors:
-		if actor is TrainingEnemy and is_instance_valid(actor):
+		if is_instance_valid(actor) and actor is TrainingEnemy:
 			actor.set_physics_process(actor.position.distance_to(player.position) < 1050.0 and player.health > 0.0)
 	super._physics_process(delta)
 
@@ -325,7 +325,7 @@ func _process(delta: float) -> void:
 	var visible_targets: Array[Vector2] = [player.position]
 	if combat_enabled:
 		for actor in actors:
-			if not actor is TrainingEnemy or not is_instance_valid(actor): continue
+			if not is_instance_valid(actor) or not actor is TrainingEnemy: continue
 			if actor.position.distance_to(player.position) > 1050.0: continue
 			var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
 			if get_viewport().get_visible_rect().grow(40).has_point(screen): visible_targets.append(actor.position)

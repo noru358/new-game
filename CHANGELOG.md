@@ -1,3 +1,10 @@
+## 2026-10-01 — partial temple environment kit v33
+
+- Replace four existing corridor/approach visuals with batched worked stone, paving, restrained relief/weathering and edge growth; preserve every ground barrier and gameplay contract.
+- Frame the sanctuary opening with one taller ruined rear member and a broken high corbel, paired with the low opposite member. Fade only the complete rear member when it covers the player or a visible enemy.
+- Add a reversible developer baseline start option, matched real-engine inspection captures and route/attack/garden/boss/jungle-isolation checks.
+- This closes a small material/geometry/composition sample, not the full Southeast-Asian temple art or the whole vertical slice.
+
 ## 2026-10-01 — Jiangnan canal-town A+B synthesis v32
 
 - Preserve both comparison branches; combine A's tiled roofs, white plaster and striped shop fronts with B's connected streets, trade clusters and working quay.

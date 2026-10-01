@@ -4,12 +4,15 @@ const RegionTerrain = preload("res://game/temple_hybrid_terrain.gd")
 const ProfileScript = preload("res://game/run_profile.gd")
 const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const DiagnosticsScript = preload("res://game/run_diagnostics.gd")
+const TempleEnvironmentScript = preload("res://game/temple_environment_kit.gd")
 const BOSS_TIME := 300.0
 const MAX_ENEMIES := 72
 const TempleSectionScript = preload("res://game/temple_section.gd")
 var temple_section: Node
 var garden_terrain_mesh: MeshInstance3D
 var garden_awakening_applied := false
+var temple_environment_enabled := not OS.get_cmdline_user_args().has("--temple-baseline")
+var temple_environment_root: Node3D
 
 var practice_mode := false
 var region_id := RunProfile.TEMPLE_REGION
@@ -296,6 +299,9 @@ func _tick_grotto_blasts(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	super._process(delta)
+	if is_instance_valid(temple_environment_root):
+		temple_environment_root.visible = temple_section == null or not temple_section.in_garden
+		_update_temple_environment_visibility()
 	if practice_mode: return
 	if diagnostics != null: diagnostics.observe(self)
 	if ending_remaining > 0.0:
@@ -316,6 +322,37 @@ func _process(delta: float) -> void:
 			visual.get_node("BossFigure").rotation.z += sin(boss.counter_flash * 65.0) * 0.13
 			(core.material_override as StandardMaterial3D).albedo_color = Color("fff0bd")
 	_draw_boss_warning()
+
+
+func _update_temple_environment_visibility() -> void:
+	if not temple_environment_root.visible or not is_instance_valid(player): return
+	var spec: Dictionary = temple_environment_root.get_meta("elevated_threshold", {})
+	if spec.is_empty(): return
+	var targets: Array[Vector2] = [player.position]
+	for actor in actors:
+		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.health <= 0.0: continue
+		if actor.position.distance_to(player.position) > 1500.0: continue
+		var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
+		if get_viewport().get_visible_rect().grow(40).has_point(screen): targets.append(actor.position)
+	var obscures := false
+	if not overview:
+		for target in targets:
+			if navigation._segment_hits_rect(target, target + Vector2.ONE * float(spec.height), (spec.visual_bounds as Rect2).grow(25.0)):
+				obscures = true
+				break
+	# Only the complete far threshold fades; other masonry/paving stays solid.
+	# Alpha materials work in Compatibility, unlike instance transparency.
+	for item in temple_environment_root.get_meta("threshold_meshes", []):
+		var instance := item as MeshInstance3D
+		if not instance.has_meta("solid_material"):
+			var solid := instance.material_override as StandardMaterial3D
+			var faded := solid.duplicate() as StandardMaterial3D
+			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			faded.albedo_color.a = 0.16
+			instance.set_meta("solid_material", solid)
+			instance.set_meta("faded_material", faded)
+		instance.material_override = instance.get_meta("faded_material" if obscures else "solid_material")
+		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if obscures else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 
 
 func _warning_strength(remaining: float, duration: float) -> float:
@@ -976,6 +1013,10 @@ func display_bounds() -> Rect2:
 
 func _build_terrain(render_bounds := Rect2()) -> void:
 	var layout = region_layout()
+	var use_temple_kit := region_id == RunProfile.TEMPLE_REGION and temple_environment_enabled
+	if region_id == RunProfile.TEMPLE_REGION:
+		for wall in terrain.wall_areas:
+			if TempleEnvironmentScript.replaces_wall(wall): wall["visual"] = not use_temple_kit
 	super._build_terrain(layout.MAIN_BOUNDS)
 	var main_mesh := terrain_mesh
 	var main_faces := resolved_vertical_faces.duplicate(true)
@@ -986,3 +1027,6 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	terrain_mesh = main_mesh
 	resolved_vertical_faces = main_faces
 	resolved_lips = main_lips
+	if use_temple_kit:
+		temple_environment_root = TempleEnvironmentScript.build(self)
+		add_child(temple_environment_root)
