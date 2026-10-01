@@ -46,7 +46,7 @@ func _run() -> void:
 		"active_limit_per_run": limit_seconds, "choice_dwell_seconds": 1.5,
 		"controller": "Unmodified sample_run_baseline input driver and fixed card priority; actual offerings and outcomes; no forced XP, health, cards, gear, currency or victory",
 		"stopped_input_policy": "When explicitly enabled, release all player movement/combat at the threshold and leave real enemies and automatic companions running. Continue actual offered card choices to avoid modal deadlock. This is an intentional stopped-input loss probe, not novice play or a normal failure distribution. If no loss occurs, use the real retreat confirmation at the active limit.",
-		"purchase_policy": "Between requested runs only: after run 1 buy affordable VITALITY 1 for +10 maximum HP. Then prioritize W_FLOW only after a real temple clear; otherwise buy A_EMBER when affordable. Buy and equip with separate button activations. After run 2 buy affordable POWER 1 if no new gear is available. No shopping after the final requested run. Save the remainder; no consumables or hidden rewards required.",
+		"purchase_policy": "After run 1 buy affordable VITALITY 1 for +10 maximum HP. Then prioritize W_FLOW only after a real temple clear; otherwise buy A_EMBER when affordable. Buy and equip with separate button activations. After run 2 buy affordable POWER 1 if no new gear is available. Save the remainder; no consumables or hidden rewards required.",
 		"retry_policy": "Use the existing boss retry once if offered before the active limit and before an enabled input-stop threshold; otherwise decline. At the active limit finish any current choice, request G retreat, and activate its confirm button.",
 		"isolation": {"root": isolation_root, "user_data_dir": OS.get_user_data_dir(), "normal_save_prefixes": true},
 		"source_hashes_start": _source_hashes(), "runs": [], "complete": false,
@@ -262,8 +262,6 @@ func _play_run(entry: Dictionary) -> void:
 			continue
 		if stop_input_at > 0.0 and scene.run_time >= stop_input_at and input_stop.is_empty():
 			_release()
-			# Input.parse_input_event applies the queued releases on the next frame.
-			await process_frame
 			input_stop = {"active_seconds": scene.run_time, "diagnostics": scene.diagnostics.snapshot(scene), "player_position": {"x": scene.player.global_position.x, "y": scene.player.global_position.y}, "all_actions_released": true}
 			for action in ACTIONS:
 				if Input.is_action_pressed(action): input_stop.all_actions_released = false

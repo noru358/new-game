@@ -1,0 +1,83 @@
+[
+  {
+    "curve": "baseline",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 35,
+    "passed": true,
+    "phase": "purchase",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/baseline engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/bd59383c6fd44cc8af356a4982a98b30"
+  },
+  {
+    "curve": "baseline",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 35,
+    "passed": true,
+    "phase": "reset",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/baseline engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/bd59383c6fd44cc8af356a4982a98b30"
+  },
+  {
+    "curve": "baseline",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 35,
+    "passed": true,
+    "phase": "reload",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/baseline engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/bd59383c6fd44cc8af356a4982a98b30"
+  },
+  {
+    "curve": "late2",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 70,
+    "passed": true,
+    "phase": "purchase",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/late2 engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/30cccc7189044747bb1d220ec9a3211a"
+  },
+  {
+    "curve": "late2",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 70,
+    "passed": true,
+    "phase": "reset",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/late2 engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/30cccc7189044747bb1d220ec9a3211a"
+  },
+  {
+    "curve": "late2",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 70,
+    "passed": true,
+    "phase": "reload",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/late2 engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/30cccc7189044747bb1d220ec9a3211a"
+  },
+  {
+    "curve": "late3",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 105,
+    "passed": true,
+    "phase": "purchase",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/late3 engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/b5dc206b9f45436d9aa85dd719691724"
+  },
+  {
+    "curve": "late3",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 105,
+    "passed": true,
+    "phase": "reset",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/late3 engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/b5dc206b9f45436d9aa85dd719691724"
+  },
+  {
+    "curve": "late3",
+    "engine": "4.6.3.stable.official.7d41c59c4",
+    "late_cost": 105,
+    "passed": true,
+    "phase": "reload",
+    "synthetic_fixture": true,
+    "user_dir": "/tmp/price-trial-v35-final-closure/late3 engine copy with spaces/.price-trial-runtime/data/LoopConquestPriceTrials/b5dc206b9f45436d9aa85dd719691724"
+  }
+]

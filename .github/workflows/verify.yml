@@ -42,8 +42,13 @@ jobs:
             fi
           done
           exit "$failed"
+      - name: Verify isolated price-trial copies
+        run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: verification-logs
-          path: verification-logs/
+          path: |
+            verification-logs/
+            ${{ runner.temp }}/price-trial-checks/engine-summary.json
+            ${{ runner.temp }}/price-trial-checks/*/*.log

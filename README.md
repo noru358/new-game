@@ -1,3 +1,28 @@
+# Loop Conquest — Consolidated Playtest v35
+
+Includes the v32 canal synthesis, v33 partial temple kit, v34 movement-link/retreat-keyboard fixes, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
+
+Start a **fresh separate trial** (Godot 4.6.x on PATH):
+
+```sh
+python3 scripts/launch_price_trial.py late3
+```
+
+Use `python` on Windows if that is its Python command. Choose `baseline` (20/35), `late2` (20/70), or `late3` (20/105). These are first/second-rank permanent-growth costs; first weapons, XP, healing and combat are unchanged. `late3` is the sharper specialization comparison, not a final balance decision. If Godot is not on PATH, add `--godot "/path/to/Godot"`; macOS may pass the actual Godot.app path.
+
+The launcher prints the copy/save locations and a complete resume command. Keep the trial copy at that location; resume with the same curve and printed `--destination ... --resume`. Each candidate starts without money, gear or unlocks. Use the launcher to resume, so its private environment and profile identity stay consistent. It never edits the source project or reuses ordinary campaign saves. A changed/moved copy or different curve is refused; choose a new destination for another trial.
+
+Use WASD, J/click, Space moving slash, Shift dash, E interaction, G retreat. Buying gear and equipping it remain separate actions; retreat supports Tab/Enter and Escape.
+
+Batch playtest agenda (human judgment remains open):
+1. Does the canal market→warehouse→waterfront read as connected, distinct places during combat?
+2. Does the temple threshold help the approach while preserving character/attack visibility?
+3. Is moving slash→empowered basic→cooldown refund understandable and useful?
+4. Do second-rank prices70/105 create worthwhile priorities while first improvements and weapons remain accessible?
+5. After success or return, is the reward→purchase→equip→next-run difference clear and worth repeating?
+
+The engine checks establish isolation, displayed/charged prices, respec and reload. The budget study combines actual scripted success/retreat/loss awards with fixed-budget arithmetic; it does not establish human saving pressure or a closed-loop winning price. See `docs/PRODUCTION_NEXT.md` section15 and `docs/measurements/price-v35/`. Native macOS device/audio/long-session GPU validation remains pending; Windows runner evidence is headless and linked from the PR.
+
 # Loop Conquest — Build and Economy Check v34
 
 This checkpoint keeps v33's game and environment, explains the moving-slash weapon's +25% follow-up and 0.22s cooldown refund, and repairs keyboard focus/confirmation in the retreat dialog. No combat or economy values changed.
