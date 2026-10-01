@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="80" viewBox="0 0 64 80">
+<!-- Existing violet diamond motif: a tall faceted crown and narrow stone attendant. -->
+<path d="M32 3L46 18L36 33H27L18 18Z" fill="#514667"/>
+<path d="M32 8L41 18L32 28L23 18Z" fill="#c3a1ed"/>
+<path d="M32 8L32 18L23 18Z" fill="#f2d5ff"/>
+<path d="M32 18H41L32 28Z" fill="#956fc6"/>
+<path d="M22 31L32 27L41 32L46 36L52 47L48 55L43 54L43 63L46 74H35L31 67L27 74H16L20 61L19 53L14 55L10 47L16 36Z" fill="#514667"/>
+<path d="M23 35L32 31L40 35L40 52L37 61H26L22 51Z" fill="#af90cf"/>
+<path d="M23 35L32 31L34 41L28 51L22 51Z" fill="#dac1ed"/>
+<path d="M34 41L40 35V52L37 61L31 57Z" fill="#8d72ac"/>
+<path d="M16 40L21 36L20 48L15 50L14 47Z M42 37L46 40L49 47L46 50L42 47Z" fill="#b298cd"/>
+<path d="M25 40L30 41L29 45H25Z M34 41H39L39 45L34 45Z" fill="#55456e"/>
+<path d="M26 41L29 42L28 44H26Z M35 42H38V44H35Z" fill="#f2d5ff"/>
+<path d="M31 47L37 53L31 59L26 53Z" fill="#ecd0ff"/>
+<path d="M31 47V59L26 53Z" fill="#c69ae9"/>
+<path d="M24 62L29 64L24 71H21Z M35 64L39 62L41 71H38Z" fill="#ba9bd4"/>
+</svg>

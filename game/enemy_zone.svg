@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="80" viewBox="0 0 72 80">
+<!-- Existing teal ring motif: an open stone ring on a broad, low caster body. -->
+<path fill-rule="evenodd" d="M36 5L48 9L54 19L53 30L44 39H28L19 31L17 20L23 10ZM35 14L28 18L26 25L30 30H41L45 25L44 19Z" fill="#245c61"/>
+<path fill-rule="evenodd" d="M36 9L45 12L50 20L49 28L42 35H30L23 28L21 21L26 13ZM35 14L28 18L26 25L30 30H41L45 25L44 19Z" fill="#8eebe0"/>
+<path d="M26 13L36 9L45 12L43 16L35 14L28 18L24 23L21 21Z" fill="#d0fff0"/>
+<path d="M23 33L34 30L47 34L58 44L62 55L55 63L52 74H39L35 66L31 74H17L16 62L9 54L12 43Z" fill="#245c61"/>
+<path d="M16 44L25 37L34 34L46 38L54 46L57 54L48 60L24 61L15 53Z" fill="#62bdb4"/>
+<path d="M16 44L25 37L34 34L39 39L31 46L22 48L15 53Z" fill="#a0e7d6"/>
+<path d="M39 39L46 38L54 46L57 54L48 60L41 54Z" fill="#418f90"/>
+<path d="M25 44L31 44L30 48L24 48Z M39 44L46 45L45 49L39 48Z" fill="#e1ffec"/>
+<path d="M23 52L32 54L48 51L47 56L34 59L24 56Z" fill="#aaffec"/>
+<path d="M12 46L17 48L18 56L14 54Z M53 47L58 50L59 54L55 57Z" fill="#83d5c6"/>
+<path d="M21 63L29 65L27 71H21Z M40 65L48 62L48 71H43Z" fill="#68b4aa"/>
+</svg>

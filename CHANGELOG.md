@@ -1,3 +1,11 @@
+## 2026-10-02 — existing enemy roles and basic play settings v41
+
+- Complete lamp, zone and support bodies from their existing motifs, retaining the stone/horn bodies, grounded depth, hit flash, actual attack cues and all enemy rules.
+- Add master gain/mute and window/fullscreen choices to walking camp and the existing pause menu; preserve station closing, modal pause/focus and input blocking.
+- Store only a separate local ConfigFile, preserve authored relative sound levels, validate bad values and show write failure without changing progression files.
+- Verify actual scene mounts,62 integrated scripts,9 isolated-copy tests, real X11 controls and short explicitly injected combat fixtures. Keep audio listening, other-platform interactive modes and human acceptance open.
+- Prepare one separate v41 Mac checkpoint after exact-head validation; preserve the user's existing v38 app and baseline gameplay.
+
 ## 2026-10-02 — readable occlusion, results and isolated cap comparison v40
 
 - Keep opaque temple lower masonry while removing actual upper obstructions, with immediate entry,350ms clear hold and180ms restoration; preserve a legacy comparison switch.

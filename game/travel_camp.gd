@@ -10,6 +10,8 @@ var growth_save_prefix := "user://loop_conquest_1d_unlocks"
 var player_visual: Node3D
 var camera: Camera3D
 var preparation: Control
+var settings_panel: CanvasLayer
+var settings_button: Button
 var prompt: Label
 var stations := [
 	{"name": "출정", "position": Vector3(-3.5, 0.0, -1.5), "tab": 0, "color": Color("72d3c7")},
@@ -49,9 +51,13 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if settings_panel != null and settings_panel.is_open(): return
 	if not event is InputEventKey or not event.pressed or event.echo: return
 	if event.keycode == KEY_ESCAPE and preparation.visible:
 		preparation.hide()
+		get_viewport().set_input_as_handled()
+	elif event.keycode == KEY_ESCAPE:
+		settings_panel.open(settings_button)
 		get_viewport().set_input_as_handled()
 	elif event.keycode == KEY_E and not preparation.visible:
 		var station := _nearest_station()
@@ -72,6 +78,7 @@ func _nearest_station() -> Dictionary:
 
 
 func _update_prompt() -> void:
+	settings_button.visible = not preparation.visible
 	if preparation.visible:
 		prompt.hide()
 		return
@@ -205,3 +212,13 @@ func _build_overlay() -> void:
 	preparation.growth_save_prefix = growth_save_prefix
 	canvas.add_child(preparation)
 	preparation.hide()
+	settings_panel = preload("res://game/play_settings_panel.gd").new()
+	settings_panel.setup(self)
+	settings_button = Button.new()
+	settings_button.name = "PlaySettingsButton"
+	settings_button.text = "설정  [Esc]"
+	settings_button.position = Vector2(1112, 16)
+	settings_button.size = Vector2(144, 44)
+	settings_button.add_theme_font_size_override("font_size", 20)
+	settings_button.pressed.connect(func(): settings_panel.open(settings_button))
+	canvas.add_child(settings_button)

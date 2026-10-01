@@ -1,8 +1,10 @@
-# Loop Conquest — Playtest Feedback v40
+# Loop Conquest — Readable Playtest v41
 
 Run the ordinary game with Godot4.6.x: `godot --path .`. Start at camp; existing saves, prices20/35 and ordinary card caps/offers remain unchanged. The already delivered native Mac archive remains the separate v38 `b4e9bf2` checkpoint and does not silently include this newer source.
 
-This batch clears only obstructing upper temple masonry while retaining solid lower courses, reduces repeated visibility switching, and makes actual banked rewards and next purchase/equip steps clear. Canal gate/sluice overheads follow the same principle; canal houses still use legacy alpha. Use `--occlusion-baseline` after `--` to compare the previous handling. Other existing environment baseline flags remain available.
+This checkpoint also gives all five ordinary enemy roles distinct bodies and adds master volume/mute plus window/fullscreen controls. Open Settings from walking camp (button or Esc), or from the combat pause menu. Closing combat settings returns to pause. Preferences use a separate local ConfigFile; progression saves are unchanged.
+
+The previous feedback batch clears only obstructing upper temple masonry while retaining solid lower courses, reduces repeated visibility switching, and makes actual banked rewards and next purchase/equip steps clear. Canal gate/sluice overheads follow the same principle; canal houses still use legacy alpha. Use `--occlusion-baseline` after `--` to compare the previous handling. Other existing environment baseline flags remain available.
 
 Use WASD, J/click, Space moving slash, Shift dash, E interaction and G retreat. Tab opens the map; Esc opens pause/gear/card details. Camp has an isolated canal-development button with no rewards/saves. Buying gear and equipping it remain separate actions.
 
@@ -18,8 +20,10 @@ Human playtest agenda:
 1. Is the upper cutaway calmer than the old ghosting, while feet/depth and attack warnings remain understandable?
 2. Do the opening court, stone/horn enemies and compact HUD read together during combat?
 3. Does the result clearly explain what was banked, what became available, and what to buy/equip next?
-4. In a deliberately separate growth trial, does one more specialized damage choice feel useful?
+4. Do volume/mute and window/fullscreen controls work as expected without losing pause or focus?
 5. Does the existing reward→preparation→next run lead to a different intended action?
+
+The separate v41 native package is built from an immutable validated source. Keep the v38 app if desired, but close it before opening the new app because ordinary save storage is shared. Native runner startup does not certify interactive macOS/Windows window behavior or audio listening.
 
 The environment and actor assets remain representative samples. Human art/place/fun/economy acceptance, sound, interactive hardware, long sessions and the complete first region remain open. See `DEV_STATUS.md` and the exact-head PR checks for what was actually tested. Hosted startup checks are not an interactive device playtest.
 

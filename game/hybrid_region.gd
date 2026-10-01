@@ -62,6 +62,8 @@ var grotto_awakening_applied := false
 var echo_grotto_fired_sequence := -1
 var echo_grotto_blasts: Array[Dictionary] = []
 var pause_menu: ColorRect
+var settings_panel: CanvasLayer
+var settings_button: Button
 var build_details_label: RichTextLabel
 var pause_equipment_label: RichTextLabel
 var awakening_overlay: ColorRect
@@ -921,13 +923,23 @@ func _build_pause_menu(canvas: CanvasLayer) -> void:
 	var resume := Button.new()
 	resume.text = "계속  [Esc]"
 	resume.position = Vector2(32, 490)
-	resume.size = Vector2(342, 50)
+	resume.size = Vector2(220, 50)
 	resume.pressed.connect(func(): _set_paused(false))
 	pause_menu.add_child(resume)
+	settings_panel = preload("res://game/play_settings_panel.gd").new()
+	settings_panel.setup(self)
+	settings_panel.can_resume = func(): return not run_ended and not growth.choosing and not awakening_overlay.visible and not retreat_overlay.visible and not (temple_section != null and temple_section.retry_pending)
+	settings_button = Button.new()
+	settings_button.name = "PlaySettingsButton"
+	settings_button.text = "설정"
+	settings_button.position = Vector2(280, 490)
+	settings_button.size = Vector2(220, 50)
+	settings_button.pressed.connect(func(): settings_panel.open(settings_button))
+	pause_menu.add_child(settings_button)
 	var retreat := Button.new()
 	retreat.text = "귀환…  [G]"
-	retreat.position = Vector2(406, 490)
-	retreat.size = Vector2(342, 50)
+	retreat.position = Vector2(528, 490)
+	retreat.size = Vector2(220, 50)
 	retreat.pressed.connect(_request_retreat)
 	pause_menu.add_child(retreat)
 	pause_menu.hide()
@@ -1058,6 +1070,9 @@ func _return_to_hub() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if settings_panel != null and settings_panel.is_open():
+		settings_panel.handle_input(event)
+		return
 	if awakening_overlay != null and awakening_overlay.visible:
 		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE: _close_awakening_receipt()
 		# Leave mouse/keyboard focus activation to the receipt's own button.

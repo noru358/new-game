@@ -8,6 +8,7 @@ var failures := 0
 var checks := 0
 var capture_dir := ""
 var normal_saves: Dictionary = {}
+const ROLE_NAMES := ["fragment", "beast", "lamp", "zone", "support"]
 
 func _initialize() -> void: call_deferred("_run")
 
@@ -27,6 +28,7 @@ func _save_bytes() -> Dictionary:
 
 func _run() -> void:
 	normal_saves = _save_bytes()
+	_check(not RoleVisual.supports(-1) and not RoleVisual.supports(5), "hero and unknown roles keep the fallback render path")
 	capture_dir = OS.get_environment("ENEMY_ROLE_CAPTURE_DIR")
 	if not capture_dir.is_empty(): DirAccess.make_dir_recursive_absolute(capture_dir)
 	for jungle in [false, true]:
@@ -59,14 +61,13 @@ func _run() -> void:
 			_check(enemy.health == TrainingEnemy.Definitions.ROLES[role].health and enemy.xp_reward() == TrainingEnemy.Definitions.ROLES[role].xp and enemy.currency_reward() == TrainingEnemy.Definitions.ROLES[role].currency, "existing role stats and rewards preserved")
 			_check(not body.no_depth_test and body.alpha_cut == SpriteBase3D.ALPHA_CUT_DISCARD, "ordinary bodies retain terrain depth")
 			if RoleVisual.supports(role):
-				_check(body.texture != OriginalTexture and body.has_meta("enemy_role_body"), "stone/horn body replaces the ordinary hero clone")
+				_check(body.texture != OriginalTexture and body.has_meta("enemy_role_body"), "authored role body replaces the ordinary hero clone")
 				_check(visual.get_child_count() == 3, "role silhouette does not need the former floating role orb")
 				_check(body.texture.get_image().get_used_rect().size.x * body.pixel_size <= enemy.collision_radius * 0.02 + 0.01, "visible role width fits the existing hitbox diameter")
 				_verify_pose(scene, enemy, body)
 			else:
-				_check(body.texture == OriginalTexture and not body.has_meta("enemy_role_body") and visual.get_child_count() == 4, "three remaining roles keep their previous texture and marker")
-		# Fragments and beast have different silhouettes, not only a palette swap.
-		_check(RoleVisual.FRAGMENT_TEXTURE.get_image().get_data() != RoleVisual.BEAST_TEXTURE.get_image().get_data() and RoleVisual.FRAGMENT_TEXTURE.get_width() != RoleVisual.BEAST_TEXTURE.get_width(), "two authored silhouettes are independent")
+				_check(body.texture == OriginalTexture and not body.has_meta("enemy_role_body") and visual.get_child_count() == 4, "unsupported roles keep the fallback texture and marker")
+		_verify_silhouettes(scene, spawned)
 		if not capture_dir.is_empty(): await _capture_poses(scene, spawned, label)
 		# Bosses still use their existing mesh figure with the unused old sprite hidden.
 		scene._spawn_now(scene.temple_section.boss_point, TrainingEnemy.Role.BEAST, true)
@@ -106,48 +107,99 @@ func _verify_pose(scene, enemy: TrainingEnemy, body: Sprite3D) -> void:
 		scene._process(0)
 		_check(is_equal_approx(body.scale.y, 0.84) and body.position == Vector3.ZERO and body.offset.y == 34.0, "charge pose remains anchored")
 		enemy.charge_time = 0.0
+	if enemy.role == TrainingEnemy.Role.LAMP:
+		enemy.locked_direction = Vector2(-1, 0)
+		enemy.warning_time = TrainingEnemy.LAMP_WARNING * 0.10
+		scene._process(0)
+		_check(body.flip_h and body.scale.y > 1.0 and scene.warning_vertex_count > 0, "lamp braces toward its locked shot and preserves the ground warning")
+		enemy.warning_time = 0.0
+		enemy._fire_bolt()
+		var bolt: EnemyBolt = get_nodes_in_group("enemy_bolts").back()
+		_check(bolt.global_position == enemy.global_position + enemy.locked_direction * 24.0 and bolt.direction == enemy.locked_direction, "bolt still originates at the existing actor offset and locked aim")
+		scene._physics_process(0)
+		scene._process(0)
+		_check(not scene.shots.is_empty() and body.scale.y < 0.94, "real lamp fire creates the existing projectile and a grounded recoil")
+		for shot in scene.shots:
+			_check(not scene.shots[shot].material_override.no_depth_test, "original projectile material retains depth")
+	if enemy.role == TrainingEnemy.Role.ZONE:
+		var previous_position := enemy.global_position
+		enemy.global_position = scene.player.global_position + Vector2(80, 0)
+		enemy.attack_cooldown = 0.0
+		enemy._zone_velocity(0)
+		scene._process(0)
+		_check(not get_nodes_in_group("enemy_zones").is_empty() and scene.warning_vertex_count > 0 and body.scale.y < 0.94, "real zone cast preserves its original ground warning and recoils after firing")
+		enemy.global_position = previous_position
+	if enemy.role in [TrainingEnemy.Role.LAMP, TrainingEnemy.Role.ZONE]:
+		var fired := enemy.attacks_fired
+		var cooldown := enemy.attack_cooldown
+		scene._process(RoleVisual.FIRE_RECOIL)
+		_check(body.scale == Vector3.ONE and enemy.attacks_fired == fired and enemy.attack_cooldown == cooldown, "recoil ends without changing attack or cooldown state")
 	# Use the real damage path rather than directly assigning a flash flag.
 	enemy.take_hit(1.0, Vector2.RIGHT, false)
 	scene._process(0)
 	_check(enemy.hit_flash > 0.0 and body.texture != ordinary, "actual damage produces a distinct pale flash texture")
-	var base_pixel := ordinary.get_image().get_pixel(32, 50)
-	var flash_pixel := body.texture.get_image().get_pixel(32, 50)
-	_check(flash_pixel.r > base_pixel.r + 0.20 and flash_pixel.a == base_pixel.a, "hit flash brightens authored color while preserving silhouette alpha")
+	var base_image := ordinary.get_image()
+	var flash_image := body.texture.get_image()
+	var opaque_pixels := 0
+	var brightness_gain := 0.0
+	var alpha_preserved := true
+	for y in base_image.get_height():
+		for x in base_image.get_width():
+			var base_pixel := base_image.get_pixel(x, y)
+			var flash_pixel := flash_image.get_pixel(x, y)
+			alpha_preserved = alpha_preserved and base_pixel.a == flash_pixel.a
+			if base_pixel.a >= 0.9:
+				opaque_pixels += 1
+				brightness_gain += flash_pixel.get_luminance() - base_pixel.get_luminance()
+	_check(alpha_preserved and brightness_gain / maxf(1.0, opaque_pixels) > 0.20, "actual hit clearly brightens the body while preserving every silhouette alpha")
 	enemy.hit_flash = 0.0
 	scene._process(0)
 	_check(body.texture == ordinary and body.scale == Vector3.ONE, "hit/charge ends restore the ordinary body")
 	_check(enemy.health == original_health - 1.0 and enemy.collision_radius == original_radius, "presentation update does not alter damage or hitbox")
 
+func _verify_silhouettes(scene, enemies: Array[TrainingEnemy]) -> void:
+	var masks: Array[PackedByteArray] = []
+	for enemy in enemies:
+		var body: Sprite3D = scene.actors[enemy].get_node("Body")
+		_check(RoleVisual.supports(enemy.role), "all five existing ordinary roles have authored bodies")
+		var image := body.texture.get_image()
+		var used := image.get_used_rect()
+		_check(used.end.y == int(RoleVisual.FOOT_Y) and image.get_pixel(image.get_width() / 2, 72).a == 0.0, "two separated feet meet the shared terrain anchor")
+		# Normalize to one canvas so this checks silhouette, not texture width or color.
+		var mask := PackedByteArray()
+		for y in 80:
+			for x in 80:
+				var ix := x - (80 - image.get_width()) / 2
+				mask.append(1 if ix >= 0 and ix < image.get_width() and image.get_pixel(ix, y).a > 0.5 else 0)
+		for other in masks: _check(mask != other, "every role has a distinct silhouette at identical ground scale")
+		masks.append(mask)
+
 func _capture_poses(scene, enemies: Array[TrainingEnemy], label: String) -> void:
-	for i in range(2, 5): (scene.actors[enemies[i]] as Node3D).hide()
-	var beast := enemies[1]
-	var fragment := enemies[0]
+	# All five bodies appear together. Lamp line and zone circle use their actual
+	# existing effect nodes, not illustrations baked into the authored texture.
 	for size in [Vector2i(1280, 720), Vector2i(960, 540)]:
 		root.size = size
 		root.content_scale_size = Vector2i(1280, 720)
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-		for pose in ["walk", "warning", "charge", "hit"]:
-			fragment.velocity = Vector2(100, 0) if pose == "walk" else Vector2.ZERO
-			beast.velocity = Vector2(-100, 0) if pose == "walk" else Vector2.ZERO
-			beast.locked_direction = beast.position.direction_to(scene.player.position)
-			beast.warning_time = 0.15 if pose == "warning" else 0.0
-			beast.charge_time = 0.20 if pose == "charge" else 0.0
-			fragment.hit_flash = 0.10 if pose == "hit" else 0.0
-			beast.hit_flash = fragment.hit_flash
+		for pose in ["walk", "warning", "hit"]:
+			for enemy in enemies:
+				enemy.velocity = Vector2(100, 0) if pose == "walk" else Vector2.ZERO
+				enemy.locked_direction = enemy.position.direction_to(scene.player.position)
+				enemy.warning_time = 0.15 if pose == "warning" and enemy.role in [TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP] else 0.0
+				enemy.hit_flash = 0.10 if pose == "hit" else 0.0
 			for i in 30:
 				scene._process(1.0 / 60.0)
 				await process_frame
 			await _capture("%s-%s-%dx%d" % [label, pose, size.x, size.y])
-		fragment.hit_flash = 0.0
-		beast.hit_flash = 0.0
-	# Deliberately posed close spacing stresses overlapping silhouettes/telegraphs.
+		for enemy in enemies: enemy.hit_flash = 0.0
+	# Close spacing stresses overlaps between different silhouettes and warnings.
 	var extras: Array[TrainingEnemy] = []
 	for offset in [Vector2(-70, -70), Vector2(0, -100), Vector2(70, -90), Vector2(40, 90), Vector2(-80, 80), Vector2(135, 65), Vector2(-160, 40), Vector2(175, -60)]:
-		var role := TrainingEnemy.Role.BEAST if extras.size() % 3 == 0 else TrainingEnemy.Role.FRAGMENT
+		var role := extras.size() % 5
 		var enemy: TrainingEnemy = scene._spawn_enemy_at(scene.start_point + offset, role, TrainingEnemy.Definitions.ROLES[role].health)
 		enemy.set_physics_process(false)
 		enemy.locked_direction = enemy.position.direction_to(scene.player.position)
-		enemy.warning_time = 0.20 if role == TrainingEnemy.Role.BEAST else 0.0
+		enemy.warning_time = 0.20 if role in [TrainingEnemy.Role.BEAST, TrainingEnemy.Role.LAMP] else 0.0
 		extras.append(enemy)
 	scene.player.attack_step = 2
 	scene.player.attack_elapsed = 0.1
