@@ -1,0 +1,75 @@
+name: Windows v41 playable package
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/windows-playtest.yml'
+      - 'scripts/windows_package_playtest.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-playtest-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: 93674fdb64dc1251e4de0d991cd34b47422576fe
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          path: source
+          persist-credentials: false
+      - name: Export and start the exact source on Windows
+        shell: pwsh
+        run: >-
+          python source/scripts/windows_export_smoke.py
+          --workspace "$env:GITHUB_WORKSPACE/source"
+          --scratch "$env:RUNNER_TEMP/new-game-windows-playtest"
+          --report "$env:RUNNER_TEMP/new-game-windows-report"
+          --commit "$env:SOURCE_SHA"
+      - name: Package the exact tested executable
+        shell: pwsh
+        run: >-
+          python tooling/scripts/windows_package_playtest.py
+          --executable "$env:RUNNER_TEMP/new-game-windows-playtest/standalone/LoopConquest.exe"
+          --report "$env:RUNNER_TEMP/new-game-windows-report/summary.json"
+          --output "$env:RUNNER_TEMP/new-game-windows-delivery"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LoopConquest-v41-Windows
+          path: ${{ runner.temp }}/new-game-windows-delivery/LoopConquest-v41-Windows.zip
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-v41-transfer-01
+          path: ${{ runner.temp }}/new-game-windows-delivery/parts/part-01
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-v41-transfer-02
+          path: ${{ runner.temp }}/new-game-windows-delivery/parts/part-02
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-v41-manifest
+          path: ${{ runner.temp }}/new-game-windows-delivery/manifest.json
+          retention-days: 7
+          if-no-files-found: error
