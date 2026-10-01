@@ -1,3 +1,9 @@
+## 2026-10-01 — independent Windows export/startup smoke
+
+- Add bounded Windows Actions release export/startup verification using official checksum-verified Godot4.6 editor/templates and the existing Windows preset.
+- Run the exported EXE with isolated temporary user data; require a clean exit, camp scene loading and no engine/script errors. Retain logs, source commit and executable hash for three days.
+- No game, save, map or art changes. This checks a headless Windows runner, not interactive device play, GPU performance or release readiness.
+
 ## 2026-10-01 — independent Stage A diagnostics / truthful jungle cues
 
 - Add opt-in local-only activity/card/pause wall times, effective healing/damage, income and boss event measurements without changing gameplay or save data.

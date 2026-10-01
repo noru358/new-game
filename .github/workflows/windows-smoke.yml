@@ -1,0 +1,46 @@
+name: Windows export startup smoke
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/windows-smoke.yml'
+      - 'scripts/windows_export_smoke.py'
+      - 'project.godot'
+      - 'export_presets.cfg'
+      - 'game/**'
+      - 'assets/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-smoke-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  export-startup:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          persist-credentials: false
+      - name: Export and start the Windows release executable
+        shell: pwsh
+        run: >-
+          python scripts/windows_export_smoke.py
+          --workspace "$env:GITHUB_WORKSPACE"
+          --scratch "$env:RUNNER_TEMP/new-game-windows-smoke"
+          --report "$env:RUNNER_TEMP/new-game-windows-smoke-report"
+          --commit "$env:SOURCE_SHA"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-smoke-${{ env.SOURCE_SHA }}
+          path: ${{ runner.temp }}/new-game-windows-smoke-report/
+          retention-days: 3
+          if-no-files-found: error
