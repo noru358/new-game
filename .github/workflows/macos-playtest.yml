@@ -49,6 +49,42 @@ jobs:
           retention-days: 3
           compression-level: 0
           if-no-files-found: error
+      - name: Prepare bounded transfer parts for Library delivery
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          folder = Path(os.environ["RUNNER_TEMP"]) / "macos-v38-report"
+          with (folder / "LoopConquest-v38-macOS.zip").open("rb") as source:
+              for index in range(1, 4):
+                  chunk = source.read(24 * 1024 * 1024)
+                  if not chunk:
+                      raise RuntimeError("Unexpectedly missing transfer part")
+                  (folder / f"macos-v38.part-{index:03}").write_bytes(chunk)
+              if source.read(1):
+                  raise RuntimeError("App archive exceeds the three-part transfer bound")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-v38-transfer-001
+          path: ${{ runner.temp }}/macos-v38-report/macos-v38.part-001
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-v38-transfer-002
+          path: ${{ runner.temp }}/macos-v38-report/macos-v38.part-002
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-v38-transfer-003
+          path: ${{ runner.temp }}/macos-v38-report/macos-v38.part-003
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         if: always()
         with:
