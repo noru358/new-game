@@ -1,6 +1,6 @@
-# Loop Conquest — Consolidated Playtest v37
+# Loop Conquest — Consolidated Playtest v38
 
-Includes the canal synthesis, corridor and sanctuary environment sample, movement-link/retreat-keyboard fixes, export cleanup, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
+Includes the canal synthesis, corridor and sanctuary environment sample, movement-link/retreat-keyboard fixes, close-boss player visibility, export cleanup, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
 
 Start a **fresh separate trial** (Godot 4.6.x on PATH):
 
@@ -20,6 +20,8 @@ Batch playtest agenda (human judgment remains open):
 3. Is moving slash→empowered basic→cooldown refund understandable and useful?
 4. Do second-rank prices70/105 create worthwhile priorities while first improvements and weapons remain accessible?
 5. After success or return, is the reward→purchase→equip→next-run difference clear and worth repeating?
+
+During close boss overlap, the existing player sprite is temporarily drawn in front so its position and pose remain visible. Temple and jungle restore normal depth as soon as that occlusion clears; boss silhouettes, warnings and combat rules stay the same.
 
 The sanctuary adds a side chamber and ruined gallery beyond the existing sealed court edge, quiet paving, and selective sight protection. It is a representative environment step; final actor/boss art, sound and the complete first-region presentation remain unfinished. A developer comparison keeps the previous corridor kit: `godot --path . res://game/hybrid_region.tscn -- --sanctuary-baseline`. The older `--temple-baseline` still removes the whole environment kit.
 

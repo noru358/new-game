@@ -1,0 +1,189 @@
+{
+  "engine": "Godot 4.6.3 stable official, Linux Compatibility/llvmpipe",
+  "static_capture": "tests/verify_boss_visibility.gd, final source, two regions × two resolutions × four frozen poses × before/after =32 PNGs; physics disabled for matched comparison",
+  "static_helper_sha256": "05c370d3aa3f13d1b30b69fda131af675e9ec7ef1866dbb8408b6902e5ef2229",
+  "live_capture": "live-helper.gd.txt uses actual input events/AI at normal time scale, with artificial time300/phase2/1000HP and ambient/growth disabled, only in private saves. Not normal progression/balance/performance evidence.",
+  "live_summary": {
+    "temple": {
+      "route_checks": 11,
+      "foreground_frames": {
+        "foreground": 564,
+        "normal_depth": 857
+      },
+      "wall_seconds": 51.998694
+    },
+    "jungle": {
+      "route_checks": 11,
+      "foreground_frames": {
+        "foreground": 834,
+        "normal_depth": 591
+      },
+      "wall_seconds": 70.95344
+    }
+  },
+  "development_fixture_corrections": "Before graphical acceptance, a headless helper check exposed a typed conditional-array error and a guessed rim waypoint inside the authored jungle column Rect2(4380,590,210,300). Corrected the helper array and chose open (4690,740), adding explicit navigation preflight. No game change or balance-policy search.",
+  "remaining": "Intentional draw priority makes the occluded sprite appear in front at its same projected position. Human preference, real device/GPU/audio and final actor art remain unverified.",
+  "all_static_pngs": [
+    {
+      "file": "jungle-front-counter-1280x720-after.png",
+      "sha256": "a78156844fda81e522f69ee01358d91d994d5babad5a518b01f1946c84988fde",
+      "captured_utc": "2026-10-01T13:42:36.382556+00:00"
+    },
+    {
+      "file": "jungle-front-counter-1280x720-before.png",
+      "sha256": "a78156844fda81e522f69ee01358d91d994d5babad5a518b01f1946c84988fde",
+      "captured_utc": "2026-10-01T13:42:36.303771+00:00"
+    },
+    {
+      "file": "jungle-front-counter-960x540-after.png",
+      "sha256": "ac10fed5ed1e6df4d54adec127e858d919ae68aaa3b253f0319233cb11fb8d11",
+      "captured_utc": "2026-10-01T13:42:36.991616+00:00"
+    },
+    {
+      "file": "jungle-front-counter-960x540-before.png",
+      "sha256": "d9baac7808269acb919c80bfe3b45f8e9960ee9590af9e7ef29ec1576dc19bd2",
+      "captured_utc": "2026-10-01T13:42:36.945090+00:00"
+    },
+    {
+      "file": "jungle-rear-counter-1280x720-after.png",
+      "sha256": "af48c209218bd5f87ec0507a48e9c8f7703e9c11cbe69ff8b5d02495c66915df",
+      "captured_utc": "2026-10-01T13:42:36.211084+00:00"
+    },
+    {
+      "file": "jungle-rear-counter-1280x720-before.png",
+      "sha256": "12c3ca692f37dc4af61ef84f43f1f19c8c7545e1a587603d224f4a98752e3da4",
+      "captured_utc": "2026-10-01T13:42:36.129860+00:00"
+    },
+    {
+      "file": "jungle-rear-counter-960x540-after.png",
+      "sha256": "a0b61df9e9767f7f33a4e32844aeeb7642aa14376d7ad739538b3bf9b6fe8290",
+      "captured_utc": "2026-10-01T13:42:36.887149+00:00"
+    },
+    {
+      "file": "jungle-rear-counter-960x540-before.png",
+      "sha256": "141b85d88e4a8627dab7fac2c093182c784b950e834ae70c3df0a670e1a7bbc1",
+      "captured_utc": "2026-10-01T13:42:36.833552+00:00"
+    },
+    {
+      "file": "jungle-rear-warning-1280x720-after.png",
+      "sha256": "31b77ca2e4f89328ccb89130b0946d344e68e98931d2869c94e06de4a4698873",
+      "captured_utc": "2026-10-01T13:42:36.693105+00:00"
+    },
+    {
+      "file": "jungle-rear-warning-1280x720-before.png",
+      "sha256": "36bc9a399c917130e239ad206352b92c64db2f26c7163064c4b2c173ccab4902",
+      "captured_utc": "2026-10-01T13:42:36.610339+00:00"
+    },
+    {
+      "file": "jungle-rear-warning-960x540-after.png",
+      "sha256": "aa7c9a65698a978a4313c76fa6f03d5e05a4ac7cd23130e0d4125cb32553a0cd",
+      "captured_utc": "2026-10-01T13:42:37.209244+00:00"
+    },
+    {
+      "file": "jungle-rear-warning-960x540-before.png",
+      "sha256": "1df556aa7244198ddbf76e94a6cb030e8bcbce754775cf1102cc41fb05bf4505",
+      "captured_utc": "2026-10-01T13:42:37.154959+00:00"
+    },
+    {
+      "file": "jungle-side-counter-1280x720-after.png",
+      "sha256": "7175138bc93e3857279e9387004455ec93332e567bc2af364e3ca40f752f2b64",
+      "captured_utc": "2026-10-01T13:42:36.528237+00:00"
+    },
+    {
+      "file": "jungle-side-counter-1280x720-before.png",
+      "sha256": "d4b893d4c7f8640df41c128b9c5dcddde2e828943ca6e5691b47747fed35b0c6",
+      "captured_utc": "2026-10-01T13:42:36.457437+00:00"
+    },
+    {
+      "file": "jungle-side-counter-960x540-after.png",
+      "sha256": "3f41a9b9455acaa4ed5da8f13e328d9ce680684d7db10729085f25a1a85fea6d",
+      "captured_utc": "2026-10-01T13:42:37.098763+00:00"
+    },
+    {
+      "file": "jungle-side-counter-960x540-before.png",
+      "sha256": "c5a6539817e95465fbb8c5503c45ac1b6458ff0a597ace187c8e868bae0abc70",
+      "captured_utc": "2026-10-01T13:42:37.047479+00:00"
+    },
+    {
+      "file": "temple-front-counter-1280x720-after.png",
+      "sha256": "fb2382553d080475a4bb961a5be554d36825d00f78827cb7581be454697ba476",
+      "captured_utc": "2026-10-01T13:42:32.861890+00:00"
+    },
+    {
+      "file": "temple-front-counter-1280x720-before.png",
+      "sha256": "fb2382553d080475a4bb961a5be554d36825d00f78827cb7581be454697ba476",
+      "captured_utc": "2026-10-01T13:42:32.780676+00:00"
+    },
+    {
+      "file": "temple-front-counter-960x540-after.png",
+      "sha256": "e7c83430b8dc000dd0680f864bbfdd6e51cb7466eee75431be598251f60931e2",
+      "captured_utc": "2026-10-01T13:42:33.593097+00:00"
+    },
+    {
+      "file": "temple-front-counter-960x540-before.png",
+      "sha256": "e615ec3b71c25ec1b267826796f6251460c2d60af40d03f43593f26acab88096",
+      "captured_utc": "2026-10-01T13:42:33.535277+00:00"
+    },
+    {
+      "file": "temple-rear-counter-1280x720-after.png",
+      "sha256": "69d31a263a643a1cca0d94ec421c8715b3d0c95766d9713d1862625b91470382",
+      "captured_utc": "2026-10-01T13:42:32.703658+00:00"
+    },
+    {
+      "file": "temple-rear-counter-1280x720-before.png",
+      "sha256": "ea766aec6b68c93b8fcf88635169c59cbb89d7b8533594ccb979ad9c2488f441",
+      "captured_utc": "2026-10-01T13:42:32.612724+00:00"
+    },
+    {
+      "file": "temple-rear-counter-960x540-after.png",
+      "sha256": "45749a108ac2f2478b42b25b1baa34d89be684e94b12e3402bf890ab40a1f59f",
+      "captured_utc": "2026-10-01T13:42:33.472670+00:00"
+    },
+    {
+      "file": "temple-rear-counter-960x540-before.png",
+      "sha256": "850c106207001921ab0b86873e2655eba6453b4739cc97e017787127cbf28ff8",
+      "captured_utc": "2026-10-01T13:42:33.406539+00:00"
+    },
+    {
+      "file": "temple-rear-warning-1280x720-after.png",
+      "sha256": "94608270fcf4a789ca0c136016fcfe2fc561d1e588cc29d76861f093a0af6c89",
+      "captured_utc": "2026-10-01T13:42:33.246644+00:00"
+    },
+    {
+      "file": "temple-rear-warning-1280x720-before.png",
+      "sha256": "cb508568a121fe6d46078d963ecb3bf26413cd791536d5e8414b7fd362ca78b2",
+      "captured_utc": "2026-10-01T13:42:33.151683+00:00"
+    },
+    {
+      "file": "temple-rear-warning-960x540-after.png",
+      "sha256": "b058fca598e14ee75e6d673a92a043a0891ce79fc7930514e0c05164ae429fb2",
+      "captured_utc": "2026-10-01T13:42:33.844615+00:00"
+    },
+    {
+      "file": "temple-rear-warning-960x540-before.png",
+      "sha256": "59ca8aa24b71b7291fbe0a0fbe5df3ad3d8ce019a719a7a11c1bf7d09f714ddb",
+      "captured_utc": "2026-10-01T13:42:33.761524+00:00"
+    },
+    {
+      "file": "temple-side-counter-1280x720-after.png",
+      "sha256": "123d85ceb88cb33eadb0a6449e13fbda7c5e5f43b9eff2045ad307b8a5e74f76",
+      "captured_utc": "2026-10-01T13:42:33.023185+00:00"
+    },
+    {
+      "file": "temple-side-counter-1280x720-before.png",
+      "sha256": "123d85ceb88cb33eadb0a6449e13fbda7c5e5f43b9eff2045ad307b8a5e74f76",
+      "captured_utc": "2026-10-01T13:42:32.943569+00:00"
+    },
+    {
+      "file": "temple-side-counter-960x540-after.png",
+      "sha256": "cffb7869503b2ad1661e79d3ec5fda3d5ad097b1839f86529cda18b4f93493ea",
+      "captured_utc": "2026-10-01T13:42:33.695309+00:00"
+    },
+    {
+      "file": "temple-side-counter-960x540-before.png",
+      "sha256": "70575b3322364efc1ea17d22efd9b588d2d2a7cee643ced7ffb3f8f3b5fd2544",
+      "captured_utc": "2026-10-01T13:42:33.642631+00:00"
+    }
+  ],
+  "public_report_minimization": "Absolute temporary machine profile paths are omitted from public reports. Relative game resource paths, source hashes, fixture semantics and validation results are retained."
+}

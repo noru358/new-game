@@ -1,0 +1,183 @@
+{
+  "captures": {
+    "01-approach": {
+      "player_position": {
+        "x": 4250.0,
+        "y": 1100.0
+      },
+      "run_time": 301.533333333332
+    },
+    "02-live-sweep-warning": {
+      "player_position": {
+        "x": 4524.24365234375,
+        "y": 1145.5263671875
+      },
+      "run_time": 302.333333333331
+    },
+    "04-live-gust-warning": {
+      "player_position": {
+        "x": 4524.201171875,
+        "y": 1167.11096191406
+      },
+      "run_time": 302.983333333331
+    },
+    "05-live-counter-hit": {
+      "player_position": {
+        "x": 4781.384765625,
+        "y": 976.792846679688
+      },
+      "run_time": 304.816666666662
+    },
+    "06-live-far-court": {
+      "player_position": {
+        "x": 5018.2822265625,
+        "y": 1286.93237304688
+      },
+      "run_time": 333.566666666636
+    },
+    "07-live-player-preserved": {
+      "player_position": {
+        "x": 4570.82421875,
+        "y": 921.620239257812
+      },
+      "run_time": 303.93333333333
+    }
+  },
+  "complete": true,
+  "error": "",
+  "fixture": "Private saves; initial position at approach; elapsed time set to 300 for ordinary spawn; phase 2 selected; player 1000 HP; ambient spawn and growth disabled. Attack definitions, AI, terrain and camera remain unchanged. Not normal progression, balance or performance evidence.",
+  "foreground_frames": {
+    "foreground": 834,
+    "normal_depth": 591
+  },
+  "human_playtest": false,
+  "input_events": 546,
+  "kind": "live_input_boss_visibility_fixture",
+  "observed_live_states_frames": {
+    "counter_flash": 232,
+    "gust_burst_time": 79,
+    "gust_warning": 459,
+    "recovery_time": 511,
+    "sweep_burst_time": 81,
+    "sweep_warning": 322
+  },
+  "private_normal_slot_and_source_guards_preserved": true,
+  "region": "jungle",
+  "route_checks": [
+    {
+      "arrival_distance": 25.9717636108398,
+      "dash_requested": true,
+      "label": "approach_into_court",
+      "passed": true,
+      "position": {
+        "x": 4524.0966796875,
+        "y": 1139.92834472656
+      },
+      "stopped_distance": 20.4854602813721
+    },
+    {
+      "arrival_distance": 27.2082939147949,
+      "dash_requested": true,
+      "label": "leave_court",
+      "passed": true,
+      "position": {
+        "x": 4246.978515625,
+        "y": 1075.6572265625
+      },
+      "stopped_distance": 24.5295734405518
+    },
+    {
+      "label": "suspended_outside",
+      "passed": true
+    },
+    {
+      "arrival_distance": 29.0842304229736,
+      "dash_requested": true,
+      "label": "reenter_court",
+      "passed": true,
+      "position": {
+        "x": 4765.2763671875,
+        "y": 1391.96533203125
+      },
+      "stopped_distance": 26.5226440429688
+    },
+    {
+      "label": "resumed_inside",
+      "passed": true
+    },
+    {
+      "arrival_distance": 27.5119132995605,
+      "dash_requested": true,
+      "label": "circle_(4970.0, 1740.0)",
+      "passed": true,
+      "position": {
+        "x": 4961.9248046875,
+        "y": 1719.52673339844
+      },
+      "stopped_distance": 22.0082569122314
+    },
+    {
+      "arrival_distance": 29.2153911590576,
+      "dash_requested": true,
+      "label": "circle_(5040.0, 1300.0)",
+      "passed": true,
+      "position": {
+        "x": 5018.2822265625,
+        "y": 1286.93237304688
+      },
+      "stopped_distance": 25.3460960388184
+    },
+    {
+      "arrival_distance": 26.2074584960938,
+      "dash_requested": true,
+      "label": "circle_(4910.0, 680.0)",
+      "passed": true,
+      "position": {
+        "x": 4929.51904296875,
+        "y": 673.346862792969
+      },
+      "stopped_distance": 20.6217670440674
+    },
+    {
+      "arrival_distance": 28.9005260467529,
+      "dash_requested": true,
+      "label": "circle_(4690.0, 740.0)",
+      "passed": true,
+      "position": {
+        "x": 4702.41943359375,
+        "y": 716.838989257812
+      },
+      "stopped_distance": 26.2806911468506
+    },
+    {
+      "arrival_distance": 28.9969444274902,
+      "dash_requested": true,
+      "label": "final_exit",
+      "passed": true,
+      "position": {
+        "x": 4275.43505859375,
+        "y": 1092.55651855469
+      },
+      "stopped_distance": 26.5018405914307
+    },
+    {
+      "label": "normal_depth_restored_after_exit",
+      "passed": true
+    }
+  ],
+  "source_hashes": {
+    "res://game/gate_boss.gd": "28195644b4f60de1d2d1bb1e74ba2d1187eddeba922172da782510ebb2361739",
+    "res://game/hybrid_height.gd": "fd8f326fa873f1f99daa90a0b7766c6ffe826290bcfa844b87e964339fb5cc82",
+    "res://game/hybrid_region.gd": "59df8ade6974729b1537e14a7759bd45914f2aaba09afe8b0b716fb5cf6eb6eb",
+    "res://game/jungle_pass.gd": "fde2f95ef7b4ec0748862bc4900dd5f340baaadaa171f3cafb2a9463bb093a7f",
+    "res://game/jungle_warden.gd": "671610cd875347710950a620488415e05e02f120ac010bc4a63ebe31f2af52a1",
+    "res://game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "res://game/temple_environment_kit.gd": "4ae0dafc113926b7dc870e8d2552ee8aa88fa0eba72eff030b82587cc2fe2c4d",
+    "res://game/temple_hybrid_terrain.gd": "991680f9715bae9ea09dc14de8c9e70da7367ef0a83a88a2362bc42405d392a3",
+    "res://game/temple_sanctuary_environment.gd": "c65b77e1d16ff26502b5f65d4c47957e01368b67541d8fb83e04f402018bb213",
+    "res://game/temple_section.gd": "f4a4f7bcb1edeb7ef85b0023837612c4de7df47986650c023177a1533d39bab5"
+  },
+  "time_scale": 1.0,
+  "wall_seconds": 70.95344,
+  "profile_isolation": "Fresh private temporary profile; absolute machine path omitted from public evidence"
+}

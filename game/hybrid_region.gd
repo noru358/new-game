@@ -313,6 +313,12 @@ func _process(delta: float) -> void:
 	if ending_remaining > 0.0:
 		ending_remaining = maxf(0.0, ending_remaining - delta)
 		if ending_remaining <= 0.0: _show_result()
+	_animate_boss_figure()
+	_update_player_boss_visibility()
+	_draw_boss_warning()
+
+
+func _animate_boss_figure() -> void:
 	if is_instance_valid(boss) and actors.has(boss):
 		var visual: Node3D = actors[boss]
 		var core: MeshInstance3D = visual.get_node("BossFigure/BossCore")
@@ -327,7 +333,62 @@ func _process(delta: float) -> void:
 		if boss.counter_flash > 0.0:
 			visual.get_node("BossFigure").rotation.z += sin(boss.counter_flash * 65.0) * 0.13
 			(core.material_override as StandardMaterial3D).albedo_color = Color("fff0bd")
-	_draw_boss_warning()
+
+
+func _update_player_boss_visibility() -> void:
+	if not is_instance_valid(player) or not actors.has(player): return
+	var visual: Node3D = actors[player]
+	if not is_instance_valid(visual): return
+	var body := visual.get_node_or_null("Body") as Sprite3D
+	if body == null: return
+	var obscured := _boss_covers_player(body)
+	# Render the same posed sprite, never a second ghost or a permanent marker.
+	# Alpha blending puts this exceptional pass after the opaque boss geometry;
+	# ordinary cliff/actor depth returns as soon as the overlap clears.
+	body.no_depth_test = obscured
+	body.alpha_cut = SpriteBase3D.ALPHA_CUT_DISABLED if obscured else SpriteBase3D.ALPHA_CUT_DISCARD
+	body.render_priority = 1 if obscured else 0
+
+
+func _boss_covers_player(body: Sprite3D) -> bool:
+	if player.health <= 0.0 or not body.is_visible_in_tree() or overview: return false
+	if not is_instance_valid(boss) or boss.is_queued_for_deletion(): return false
+	if boss.health <= 0.0 or not actors.has(boss): return false
+	var visual: Node3D = actors[boss]
+	if not is_instance_valid(visual) or not visual.is_visible_in_tree(): return false
+	var figure := visual.get_node_or_null("BossFigure") as Node3D
+	if figure == null or not figure.is_visible_in_tree(): return false
+	if temple_section != null and temple_section.in_garden: return false
+	# Enter on the face or torso; retain while an outer body sample is still
+	# covered. This small spatial band avoids flicker at an animated arm edge.
+	var samples := [Vector2(0.5, 0.27), Vector2(0.5, 0.62)]
+	if body.no_depth_test:
+		samples.append_array([Vector2(0.36, 0.62), Vector2(0.64, 0.62), Vector2(0.5, 0.89), Vector2(0.5, 0.12)])
+	var sprite_rect := body.get_item_rect()
+	var meshes := figure.find_children("*", "MeshInstance3D", true, false)
+	for sample in samples:
+		var pixel: Vector2 = sprite_rect.position + sprite_rect.size * sample
+		# BILLBOARD_ENABLED aligns the sprite plane to the camera, keeping scale.
+		var offset := Vector3(pixel.x * body.scale.x, -pixel.y * body.scale.y, 0) * body.pixel_size
+		var target := body.global_position + camera.global_basis * offset
+		if camera.is_position_behind(target): continue
+		var screen := camera.unproject_position(target)
+		if not get_viewport().get_visible_rect().has_point(screen): continue
+		var near_point := camera.project_ray_origin(screen)
+		for item in meshes:
+			var mesh_instance := item as MeshInstance3D
+			if not mesh_instance.is_visible_in_tree() or mesh_instance.mesh == null: continue
+			var local_target := mesh_instance.to_local(target)
+			var local_near := mesh_instance.to_local(near_point)
+			if mesh_instance.get_aabb().intersects_segment(local_target, local_near) == null: continue
+			# Stable triangle resources only: animated node transforms are sampled
+			# each frame, and no actor/visual references survive a boss free.
+			var mesh := mesh_instance.mesh
+			if not mesh.has_meta("player_sight_triangles"):
+				mesh.set_meta("player_sight_triangles", mesh.generate_triangle_mesh())
+			var triangles: TriangleMesh = mesh.get_meta("player_sight_triangles")
+			if not triangles.intersect_segment(local_target, local_near).is_empty(): return true
+	return false
 
 
 func _update_temple_environment_visibility() -> void:
