@@ -1,0 +1,124 @@
+name: macOS v38 playable package
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/macos-playtest.yml'
+      - 'scripts/macos_export_playtest.py'
+      - 'scripts/macos_playtest_README_KO.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-playtest-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  V38_SOURCE_SHA: b4e9bf256c47a11e2ce396df6569f8f108bf2337
+  V38_SOURCE_TREE: c4746f7bd6ff61dc8e482897c67996128ef0344a
+  TOOLING_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  export-apple-silicon:
+    runs-on: macos-14
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TOOLING_SHA }}
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.V38_SOURCE_SHA }}
+          path: game-source
+          persist-credentials: false
+      - name: Export Universal 2 app and start the exact distributed ZIP
+        run: >-
+          python3 scripts/macos_export_playtest.py
+          --workspace "$GITHUB_WORKSPACE/game-source"
+          --scratch "$RUNNER_TEMP/macos-v38-build"
+          --report "$RUNNER_TEMP/macos-v38-report"
+          --commit "$V38_SOURCE_SHA" --tree "$V38_SOURCE_TREE"
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: macos-v38-playable
+          path: ${{ runner.temp }}/macos-v38-report/LoopConquest-v38-macOS.zip
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - name: Prepare bounded transfer parts for Library delivery
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          folder = Path(os.environ["RUNNER_TEMP"]) / "macos-v38-report"
+          with (folder / "LoopConquest-v38-macOS.zip").open("rb") as source:
+              for index in range(1, 4):
+                  chunk = source.read(24 * 1024 * 1024)
+                  if not chunk:
+                      raise RuntimeError("Unexpectedly missing transfer part")
+                  (folder / f"macos-v38.part-{index:03}").write_bytes(chunk)
+              if source.read(1):
+                  raise RuntimeError("App archive exceeds the three-part transfer bound")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-v38-transfer-001
+          path: ${{ runner.temp }}/macos-v38-report/macos-v38.part-001
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-v38-transfer-002
+          path: ${{ runner.temp }}/macos-v38-report/macos-v38.part-002
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-v38-transfer-003
+          path: ${{ runner.temp }}/macos-v38-report/macos-v38.part-003
+          retention-days: 3
+          compression-level: 0
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macos-v38-arm64-logs
+          path: |
+            ${{ runner.temp }}/macos-v38-report/*.log
+            ${{ runner.temp }}/macos-v38-report/summary.json
+          retention-days: 3
+          if-no-files-found: error
+
+  verify-intel:
+    needs: export-apple-silicon
+    runs-on: macos-15-intel
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TOOLING_SHA }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: macos-v38-playable
+          path: ${{ runner.temp }}/macos-v38-delivery
+      - name: Start the same distributed ZIP natively on Intel
+        run: >-
+          python3 scripts/macos_export_playtest.py
+          --verify-archive "$RUNNER_TEMP/macos-v38-delivery/LoopConquest-v38-macOS.zip"
+          --scratch "$RUNNER_TEMP/macos-v38-intel"
+          --report "$RUNNER_TEMP/macos-v38-intel-report"
+          --commit "$V38_SOURCE_SHA" --tree "$V38_SOURCE_TREE"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macos-v38-intel-logs
+          path: ${{ runner.temp }}/macos-v38-intel-report/
+          retention-days: 3
+          if-no-files-found: error
