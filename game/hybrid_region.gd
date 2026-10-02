@@ -7,6 +7,7 @@ const DiagnosticsScript = preload("res://game/run_diagnostics.gd")
 const TempleEnvironmentScript = preload("res://game/temple_environment_kit.gd")
 const TempleSanctuaryScript = preload("res://game/temple_sanctuary_environment.gd")
 const TempleOcclusionCandidateScript = preload("res://game/temple_occlusion_candidate.gd")
+const EnvironmentOpacity = preload("res://game/environment_opacity.gd")
 const TempleOpeningScript = preload("res://game/temple_opening_environment.gd")
 const BOSS_TIME := 240.0
 const MAX_ENEMIES := 72
@@ -20,7 +21,7 @@ var temple_sanctuary_enabled := not OS.get_cmdline_user_args().has("--sanctuary-
 var temple_sanctuary_root: Node3D
 var temple_opening_enabled := not OS.get_cmdline_user_args().has("--opening-baseline")
 var temple_opening_root: Node3D
-var temple_occlusion_candidate_enabled := not OS.get_cmdline_user_args().has("--occlusion-baseline")
+var temple_occlusion_candidate_enabled := false # Sight-based asset removal is disabled.
 var temple_occlusion_candidate = TempleOcclusionCandidateScript.new()
 
 var practice_mode := false
@@ -309,16 +310,10 @@ func _process(delta: float) -> void:
 		temple_environment_root.visible = temple_section == null or not temple_section.in_garden
 	if is_instance_valid(temple_sanctuary_root):
 		temple_sanctuary_root.visible = temple_section == null or not temple_section.in_garden
-	if temple_occlusion_candidate_enabled and region_id == RunProfile.TEMPLE_REGION:
-		temple_occlusion_candidate.update(self, delta)
-	else:
-		# Restore solid source materials before the legacy path reads or fades them.
-		if not temple_occlusion_candidate.members.is_empty(): temple_occlusion_candidate.restore()
-		if is_instance_valid(temple_environment_root): _update_temple_environment_visibility()
-		if is_instance_valid(temple_sanctuary_root): TempleSanctuaryScript.update_visibility(temple_sanctuary_root, self)
+	# Architecture stays fully opaque. Legacy flags cannot re-enable removal.
+	if not temple_occlusion_candidate.members.is_empty(): temple_occlusion_candidate.restore()
 	if is_instance_valid(temple_opening_root):
 		temple_opening_root.visible = temple_section == null or not temple_section.in_garden
-		TempleOpeningScript.update_visibility(temple_opening_root, self)
 	if practice_mode: return
 	if diagnostics != null: diagnostics.observe(self)
 	if ending_remaining > 0.0:
@@ -403,34 +398,7 @@ func _boss_covers_player(body: Sprite3D) -> bool:
 
 
 func _update_temple_environment_visibility() -> void:
-	if not temple_environment_root.visible or not is_instance_valid(player): return
-	var spec: Dictionary = temple_environment_root.get_meta("elevated_threshold", {})
-	if spec.is_empty(): return
-	var targets: Array[Vector2] = [player.position]
-	for actor in actors:
-		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.health <= 0.0: continue
-		if actor.position.distance_to(player.position) > 1500.0: continue
-		var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
-		if get_viewport().get_visible_rect().grow(40).has_point(screen): targets.append(actor.position)
-	var obscures := false
-	if not overview:
-		for target in targets:
-			if navigation._segment_hits_rect(target, target + Vector2.ONE * float(spec.height), (spec.visual_bounds as Rect2).grow(25.0)):
-				obscures = true
-				break
-	# Only the complete far threshold fades; other masonry/paving stays solid.
-	# Alpha materials work in Compatibility, unlike instance transparency.
-	for item in temple_environment_root.get_meta("threshold_meshes", []):
-		var instance := item as MeshInstance3D
-		if not instance.has_meta("solid_material"):
-			var solid := instance.material_override as StandardMaterial3D
-			var faded := solid.duplicate() as StandardMaterial3D
-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			faded.albedo_color.a = 0.16
-			instance.set_meta("solid_material", solid)
-			instance.set_meta("faded_material", faded)
-		instance.material_override = instance.get_meta("faded_material" if obscures else "solid_material")
-		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if obscures else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	EnvironmentOpacity.restore(temple_environment_root)
 
 
 func _warning_strength(remaining: float, duration: float) -> float:

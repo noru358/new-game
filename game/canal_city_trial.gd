@@ -1,6 +1,7 @@
 extends "res://game/hybrid_height.gd"
 ## Isolated place-authoring experiment. No RunProfile, rewards or settlement.
 const CityTerrain = preload("res://game/canal_city_terrain.gd")
+const EnvironmentOpacity = preload("res://game/environment_opacity.gd")
 const OverheadOcclusion = preload("res://game/canal_overhead_occlusion.gd")
 const ENCOUNTERS := [
 	Vector2(1730, 1590), Vector2(2100, 1630), Vector2(2480, 1690),
@@ -16,7 +17,7 @@ var building_visuals: Array[Dictionary] = []
 var landmark_visuals: Array[Dictionary] = []
 var material_cache: Dictionary = {}
 var faded_material_cache: Dictionary = {}
-var overhead_occlusion_enabled := not OS.get_cmdline_user_args().has("--occlusion-baseline")
+var overhead_occlusion_enabled := false # Full opaque source assets remain visible.
 var overhead_occlusion = OverheadOcclusion.new()
 
 func _init() -> void:
@@ -325,51 +326,11 @@ func _process(delta: float) -> void:
 	if overview:
 		camera.position = terrain.world_point(display_bounds().get_center(), 80) + camera_offset.normalized() * 120.0
 	if not is_instance_valid(player): return
-	if overhead_occlusion_enabled:
-		overhead_occlusion.update(self, delta)
-	elif not overhead_occlusion.entries.is_empty():
-		overhead_occlusion.restore()
-	var visible_targets: Array[Vector2] = [player.position]
-	if combat_enabled:
-		for actor in actors:
-			if not is_instance_valid(actor) or not actor is TrainingEnemy: continue
-			if actor.position.distance_to(player.position) > 1050.0: continue
-			var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
-			if get_viewport().get_visible_rect().grow(40).has_point(screen): visible_targets.append(actor.position)
-	# Fade only near-side architecture crossing the camera-to-actor ray.
-	# Collision never changes with visibility, preserving solid silhouettes.
-	for item in building_visuals + landmark_visuals:
-		if overhead_occlusion_enabled and overhead_occlusion.owns(item.root): continue
-		var obscures := false
-		if not overview and not item.background:
-			for target in visible_targets:
-				var end := target + Vector2.ONE * float(item.height)
-				if navigation._segment_hits_rect(target, end, (item.area as Rect2).grow(35.0)):
-					obscures = true
-					break
-		_set_architecture_fade(item.root, obscures)
+	# Keep the original roofs, beams and houses; actor position changes nothing.
+	if not overhead_occlusion.entries.is_empty(): overhead_occlusion.restore()
 
-func _set_architecture_fade(root: Node3D, obscures: bool) -> void:
-	# GeometryInstance3D.transparency is not implemented by Compatibility.
-	# Switch to a cached alpha material instead, without mutating shared colors
-	# or removing collision. This also covers the tiled gate and pavilion.
-	if root.has_meta("fade_state") and root.get_meta("fade_state") == obscures: return
-	root.set_meta("fade_state", obscures)
-	for child in root.get_children():
-		if not child is MeshInstance3D: continue
-		if not child.has_meta("solid_material"):
-			child.set_meta("solid_material", child.material_override)
-		var solid: StandardMaterial3D = child.get_meta("solid_material")
-		if not obscures:
-			child.material_override = solid
-			continue
-		var key := solid.get_instance_id()
-		if not faded_material_cache.has(key):
-			var faded := solid.duplicate() as StandardMaterial3D
-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			faded.albedo_color.a = 0.16
-			faded_material_cache[key] = faded
-		child.material_override = faded_material_cache[key]
+func _set_architecture_fade(root: Node3D, _obscures: bool) -> void:
+	EnvironmentOpacity.restore(root)
 
 func _build_ui() -> void:
 	trial_canvas = CanvasLayer.new()
