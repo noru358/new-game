@@ -37,3 +37,14 @@ Two independent focused failures were reproduced:
 The original temple's sampled unattached points went2→0 (one still disconnected); jungle15→6 with10 disconnected; candidate circuit19→0 with0 disconnected. Do not claim whole-map navigation solved or that either defect caused the unlocated run3 stall.
 
 A previous hybrid-height test assumed the second route waypoint must already be belowy1670. The candidate takes additional safe waypoints before going around the water. The assertion now checks every point/segment against physical clearance and verifies the lower dry detour, rather than assuming a particular waypoint index. Focused/full regression outcomes belong in DEV_STATUS after they finish.
+
+
+## Three build behavior samples
+
+Pinned source8353c91, the existing normal-speed `sample_build_comparison.gd`, three separate fresh XDG roots run in parallel. Each uses synthetic prior history and294 cumulative expenditure; these are not fresh-earned economic runs. Gather/movement use their tailored policies; companion uses the existing single-hit/reposition link policy. Same seed250,270-active-second bound; different controllers and card offerings prevent causal build-strength ranking.
+
+- Gather reached the boss retry offer at250.23active seconds,341kills,27choices. The diagnostic deliberately stops at that offer, so this is neither settled defeat nor victory. Fourth hits75; movement-slash hits46.
+- Movement succeeded at252.63active seconds,346kills,28choices. Fourth hits38; movement-slash hits174; empowered-basic refund events114. These counters show the intended action patterns are exercised under their different policies, not proof of human preference.
+- Companion link policy died at60.73active seconds,46kills,6choices. It had no S_WISP_COUNT choice. Third/fourth hit counts2/0 reflect its deliberate single-hit retreat controller, so do not infer that the companion branch itself is weak. A bounded common-controller companion comparison is pending.
+
+Time scale1 and source hashes/fixture/input details are recorded in each raw JSON. Headless concurrent runs do not validate frame-rate performance or art.
