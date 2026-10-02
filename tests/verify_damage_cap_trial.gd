@@ -173,11 +173,11 @@ func _verify_permanent_caps() -> void:
 	profile.load_state()
 	_check(profile.settle("damage-cap-disposable-fixture", "SUCCESS", 1000), "disposable profile funds the existing permanent purchase check")
 	for id in ["POWER", "WISP"]:
-		_check(profile.buy_growth(id) and profile.buy_growth(id) and not profile.buy_growth(id) and int(profile.growth_ranks[id]) == 2, "permanent growth remains capped at two: " + id)
+		_check(profile.buy_growth(id) and profile.buy_growth(id) and int(profile.growth_ranks[id]) == 2, "first two permanent purchases stay unchanged: " + id)
 	var reloaded := RunProfile.new()
 	reloaded.save_prefix = PROFILE
 	reloaded.load_state()
-	_check(not reloaded.load_error and int(reloaded.growth_ranks.POWER) == 2 and int(reloaded.growth_ranks.WISP) == 2 and RunProfile.GROWTH_COST == [20, 35], "existing profile schema, prices and permanent ranks reload unchanged")
+	_check(not reloaded.load_error and int(reloaded.growth_ranks.POWER) == 2 and int(reloaded.growth_ranks.WISP) == 2 and RunProfile.GROWTH_COST.slice(0, 2) == [20, 35], "existing profile schema, prices and permanent ranks reload unchanged")
 	var growth := RunGrowth.new()
 	_check(not growth.damage_cap_trial_enabled and growth.card_max_rank("U_EDGE") == 3, "a new run never inherits the experiment from profile data")
 	growth.free()

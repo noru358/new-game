@@ -226,6 +226,8 @@ def prepare(source, destination, curve, resume=False, *, damage_cap_trial=False,
     if destination.exists():
         raise TrialError("Destination already exists; choose a new path or use --resume")
     files = project_files(source)
+    if b"const SAVE_VERSION := 7" in files.get("game/run_profile.gd", b""):
+        raise TrialError("The retired two-rank price experiment cannot create v7 five-rank copies; use launch_flow_sample.py for isolated current-source checks. Existing immutable copies may still resume.")
     if MANIFEST in {p.name for p in source.iterdir()}:
         raise TrialError("Cannot create another trial from a prepared trial copy")
     validate_settings(source, files["project.godot"])

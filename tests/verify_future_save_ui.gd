@@ -13,7 +13,7 @@ func _run():
  var valid = RunProfile.new()._snapshot()
  valid.currency = 17
  var future = valid.duplicate(true)
- future.version = 7
+ future.version = RunProfile.SAVE_VERSION + 1
  future.generation = 2
  future.currency = 101
  for suffix in ["_a.json", "_b.json"]:

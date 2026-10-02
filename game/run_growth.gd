@@ -9,6 +9,7 @@ const WispScript = preload("res://game/wisp.gd")
 const SealScript = preload("res://game/seal_attack.gd")
 const CHOICE_FAMILY_TRIAL_NOTICE := "개발 후보 비교 · 셋째 카드는 다른 행동군 우선 · 동행 중복 후보 감소"
 const DAMAGE_CAP_TRIAL_NOTICE := "개발 상한 비교 · 평타·여우불 피해만 4등급 · 추가 증가량 절반 · 선택 상한 +2"
+const SLASH_CHAIN_CAP_TRIAL_NOTICE := "개발 상한 비교 · 이동 베기 재사용·연쇄 불꽃만 3등급 · 선택 상한 +2"
 
 const CARDS := {
 	"U_EDGE": {"name": "마력 날", "detail": "평타 피해 +15%", "max": 3, "group": "BASIC"},
@@ -39,6 +40,7 @@ var level := 1
 var xp := 0
 var pending_choices := 0
 var heal_on_levelup := false
+var level_heal_fraction := 0.20
 var points_earned := 0
 var points_spent := 0
 var exhausted_points := 0
@@ -70,6 +72,7 @@ var last_followup_slash := -1
 # Developer fixtures may opt in. Ordinary runs and saved profiles stay unchanged.
 var choice_family_trial_enabled := false
 var damage_cap_trial_enabled := false
+var slash_chain_cap_trial_enabled := false
 var choice_family_trial_label: Label
 
 
@@ -111,7 +114,7 @@ func gain_xp(amount: int) -> void:
 		level += 1
 		pending_choices += 1
 		points_earned += 1
-		if heal_on_levelup: _heal(0.20)
+		if heal_on_levelup: _heal(level_heal_fraction)
 		var newly_unlocked := unlocks.add_levelup()
 		if not newly_unlocked.is_empty():
 			var names: Array[String] = []
@@ -156,7 +159,7 @@ func _prepare_next_choice() -> void:
 	# No recursive UI openings when the whole card pool is exhausted.
 	if pending_choices > 0 and current_choices.is_empty():
 		if not heal_on_levelup:
-			_heal(0.20 * pending_choices)
+			_heal(level_heal_fraction * pending_choices)
 		exhausted_points += pending_choices
 		pending_choices = 0
 	_update_hud()
@@ -172,7 +175,7 @@ func end_run() -> void:
 
 func _refresh_choices() -> void:
 	choice_title.text = "레벨 %d  ·  강화 선택  ·  남은 %dpt" % [level, pending_choices]
-	choice_family_trial_label.visible = choice_family_trial_enabled or damage_cap_trial_enabled
+	choice_family_trial_label.visible = choice_family_trial_enabled or damage_cap_trial_enabled or slash_chain_cap_trial_enabled
 	choice_family_trial_label.text = _choice_trial_notice()
 	unlock_notice_label.visible = not unlock_notice.is_empty()
 	unlock_notice_label.text = unlock_notice + "\n강화 후보에 추가됨 · 직접 선택해야 이번 런에 적용" if not unlock_notice.is_empty() else ""
@@ -227,6 +230,7 @@ func _basic_attack_scope() -> String:
 func card_max_rank(card_id: String) -> int:
 	if not CARDS.has(card_id): return 0
 	var base_max := int(CARDS[card_id].max)
+	if slash_chain_cap_trial_enabled and card_id in ["U_SLASH_CADENCE", "S_WISP_CHAIN"]: return base_max + 1
 	return base_max + 1 if damage_cap_trial_enabled and card_id in ["U_EDGE", "S_WISP_DAMAGE"] else base_max
 
 
@@ -246,6 +250,11 @@ func _damage_rank_detail(detail: String, rank: int) -> String:
 
 
 func _choice_trial_notice() -> String:
+	if slash_chain_cap_trial_enabled:
+		var notices: Array[String] = [SLASH_CHAIN_CAP_TRIAL_NOTICE]
+		if choice_family_trial_enabled: notices.append(CHOICE_FAMILY_TRIAL_NOTICE)
+		if damage_cap_trial_enabled: notices.append(DAMAGE_CAP_TRIAL_NOTICE)
+		return "\n".join(notices)
 	if choice_family_trial_enabled and damage_cap_trial_enabled:
 		return "개발 비교 · 다른 행동군 우선/동행 중복 감소 · 피해 2종만 4등급/추가 증가량 절반"
 	return DAMAGE_CAP_TRIAL_NOTICE if damage_cap_trial_enabled else CHOICE_FAMILY_TRIAL_NOTICE
@@ -347,7 +356,7 @@ func choose_index(index: int) -> bool:
 	if permanent_combo_progression: _sync_permanent_moves()
 	pending_choices -= 1
 	points_spent += 1
-	if not heal_on_levelup: _heal(0.20)
+	if not heal_on_levelup: _heal(level_heal_fraction)
 	player.require_attack_release()
 	_prepare_next_choice()
 	if pending_choices > 0:

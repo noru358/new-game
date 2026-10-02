@@ -1,0 +1,95 @@
+{
+  "final": {
+    "active_seconds": 77.0666666666636,
+    "cards": {
+      "S_WISP_CADENCE": 1,
+      "S_WISP_FOLLOWUP": 1,
+      "U_EDGE": 2,
+      "U_REACH": 3,
+      "U_TEMPO": 2
+    },
+    "choice_windows": 9,
+    "combo_limit": 4,
+    "currency": 81,
+    "diagnostics": {
+      "accessory": "",
+      "active_seconds": 77.0666666666636,
+      "active_wall_seconds": 76.89857,
+      "attack_branch": "",
+      "boss_engagements": 0,
+      "boss_first_times": {
+
+      },
+      "cards": {
+        "S_WISP_CADENCE": 1,
+        "S_WISP_FOLLOWUP": 1,
+        "U_EDGE": 2,
+        "U_REACH": 3,
+        "U_TEMPO": 2
+      },
+      "choice_wall_seconds": 13.712887,
+      "choice_windows": 9,
+      "damage_events": 28,
+      "damage_taken_actual": 280.0,
+      "earned_currency": 81,
+      "health": 0.0,
+      "kills": 69,
+      "level": 10,
+      "level_heal_actual": 180.0,
+      "level_heal_events": 9,
+      "max_health": 100.0,
+      "pause_wall_seconds": 0.0,
+      "permanent_growth": {
+        "FINISH": 0,
+        "GUARD": 0,
+        "MOBILITY": 0,
+        "POWER": 0,
+        "RECOVERY": 0,
+        "SLASH": 0,
+        "SLASH_POWER": 0,
+        "SPEED": 0,
+        "VITALITY": 0,
+        "WISP": 0
+      },
+      "points_earned": 9,
+      "points_exhausted": 0,
+      "points_pending": 0,
+      "points_spent": 9,
+      "region": "O_TEMPLE",
+      "result": "DEFEAT",
+      "schema": "local_run_diagnostics_v1",
+      "time_scale_max": 1.0,
+      "time_scale_min": 1.0,
+      "wall_seconds": 90.611457,
+      "weapon": "W_START",
+      "xp_remainder": 18
+    },
+    "health": 0.0,
+    "kills": 69,
+    "ledger": {
+      "combat": 51.5333333333311,
+      "destination_wait_without_target": 0.0,
+      "stationary_without_visible_target": 10.8166666666664,
+      "travel_without_visible_target": 14.6333333333327
+    },
+    "moving_slash_enabled": true,
+    "points_earned": 9,
+    "points_spent": 9,
+    "position": {
+      "x": 389.167449951172,
+      "y": 1423.376953125
+    }
+  },
+  "first_destination_arrival": -1.0,
+  "human_playtest": false,
+  "investment": 0,
+  "notes": "Same inherited70s route/input/card priority and1.5s synthetic choice dwell. No forced XP, damage, health, boss or clock writes. Combat means reachable visible target within380; it can include travel. No-target movement is a proxy, not proof of meaningless travel. Repeated fighting cannot be identified from this aggregate.210 proposal is superseded; marks180/210/240/300 remain observation only. Missing marks mean the controller died/stopped before them.",
+  "preset": "fresh",
+  "sample": "flow_observation_v1",
+  "samples": [],
+  "seed": 250,
+  "slash_chain_cap_trial": false,
+  "source_boss_time": 240.0,
+  "stop_reason": "DEFEAT",
+  "time_scale": 1.0
+}

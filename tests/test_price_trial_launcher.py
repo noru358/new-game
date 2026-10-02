@@ -37,6 +37,10 @@ class PriceTrialTests(unittest.TestCase):
             cls.temporary = tempfile.TemporaryDirectory(prefix="price-trial-tests-")
             cls.work = Path(cls.temporary.name).resolve()
         cls.source_before = trial.project_files(SOURCE)
+        cls.real_slots = {}
+        # v7 creation is intentionally refused before any save path is touched.
+        if b"const SAVE_VERSION := 7" in cls.source_before["game/run_profile.gd"]:
+            return
         # Read-only snapshot of the actual normal slots, including their absence.
         if sys.platform == "darwin":
             normal_root = Path.home() / "Library/Application Support"
@@ -67,6 +71,10 @@ class PriceTrialTests(unittest.TestCase):
         (path / "game").mkdir(parents=True)
         for name in ("project.godot", "game/run_profile.gd"):
             (path / name).write_bytes((SOURCE / name).read_bytes())
+        # Historical price guards deliberately use the pre-v7 source contract.
+        profile_path = path / "game/run_profile.gd"
+        data = profile_path.read_bytes().replace(b"const SAVE_VERSION := 7", b"const SAVE_VERSION := 6").replace(b"const GROWTH_COST := [20, 35, 60, 95, 140]", trial.GROWTH_ANCHOR)
+        profile_path.write_bytes(data)
         return path
 
     def test_malformed_anchors_and_overrides_fail_before_copying(self):
@@ -279,6 +287,11 @@ class PriceTrialTests(unittest.TestCase):
 
     def test_cli_card_flags_and_resume_hint(self):
         destination = self.work / "CLI card flags with spaces"
+        if b"const SAVE_VERSION := 7" in (SOURCE / "game/run_profile.gd").read_bytes():
+            with self.assertRaisesRegex(trial.TrialError, "retired two-rank"):
+                trial.prepare(SOURCE, destination, "baseline")
+            self.assertFalse(destination.exists())
+            return
         command = [sys.executable, str(SOURCE / "scripts/launch_price_trial.py"), "baseline",
                    "--destination", str(destination), "--prepare-only"]
         flags = ["--damage-cap-trial", "--offer-family-trial"]
@@ -296,6 +309,8 @@ class PriceTrialTests(unittest.TestCase):
         self.assertEqual(resumed.returncode, 0, resumed.stdout + resumed.stderr)
 
     def test_real_engine_card_flags_are_independent_and_copy_scoped(self):
+        if b"const SAVE_VERSION := 7" in (SOURCE / "game/run_profile.gd").read_bytes():
+            self.skipTest("Historical two-rank engine trials retired for v7; current isolated tests live in verify_permanent_growth_v7.gd")
         if OPTIONS.unit_only:
             self.skipTest("--unit-only: no real engine checks requested")
         godot = trial.find_godot(OPTIONS.godot)
@@ -334,6 +349,8 @@ class PriceTrialTests(unittest.TestCase):
         print("Real engine: four independent cap/offer modes passed fresh camp, actual run/modal and immutable resume checks", flush=True)
 
     def test_real_engine_prices_transactions_restart_and_save_isolation(self):
+        if b"const SAVE_VERSION := 7" in (SOURCE / "game/run_profile.gd").read_bytes():
+            self.skipTest("Historical two-rank engine trials retired for v7; current isolated tests live in verify_permanent_growth_v7.gd")
         if OPTIONS.unit_only:
             self.skipTest("--unit-only: no real engine checks requested")
         godot = trial.find_godot(OPTIONS.godot)
