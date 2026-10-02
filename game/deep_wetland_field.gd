@@ -19,7 +19,7 @@ func _place_encounters() -> Array:
 	]
 func _build_terrain(render_bounds := Rect2()) -> void:
 	super._build_terrain(render_bounds)
-	for area in Field.INNER_RUINS:
+	for area in _inner_ruins():
 		_stone(area.get_center(), Vector3(area.size.x / 200.0, 0.55, area.size.y / 200.0), Color("85927a"))
 	# The inner temple silhouette lives on the blocked far bank; its combat floor stays clear.
 	for x in [4740, 4940, 5140]:
@@ -37,3 +37,6 @@ func _far_bank_groves() -> Array:
 	points.erase(Vector2(3670, 1000))
 	points.append(Vector2(4130, 300))
 	return points
+
+func _inner_ruins() -> Array:
+	return Field.INNER_RUINS
