@@ -1,6 +1,17 @@
 extends "res://game/hybrid_height.gd"
 ## Standalone construction sample: no profile, XP, settlement or new unlocks.
 const Wetland = preload("res://game/deep_wetland_terrain.gd")
+const PLACE_ENCOUNTERS := [
+	[Vector2(1300, 2180), TrainingEnemy.Role.FRAGMENT, 22.0],
+	[Vector2(1650, 2150), TrainingEnemy.Role.BEAST, 45.0],
+	[Vector2(2200, 1540), TrainingEnemy.Role.ZONE, 32.0],
+	[Vector2(2800, 1510), TrainingEnemy.Role.FRAGMENT, 22.0],
+	[Vector2(1100, 1150), TrainingEnemy.Role.LAMP, 30.0],
+	[Vector2(1650, 990), TrainingEnemy.Role.FRAGMENT, 22.0],
+	[Vector2(3220, 1000), TrainingEnemy.Role.SUPPORT, 36.0],
+	[Vector2(3260, 760), TrainingEnemy.Role.BEAST, 45.0],
+]
+var dormant_place_enemies: Array[TrainingEnemy] = []
 
 func _init() -> void:
 	terrain = Wetland.new()
@@ -156,3 +167,35 @@ func _build_dry_paths() -> void:
 	material.vertex_color_use_as_albedo = true
 	node.material_override = material
 	add_child(node)
+
+func spawn_enemies() -> void:
+	if not terrain is Wetland:
+		super.spawn_enemies()
+		return
+	dormant_place_enemies.clear()
+	for actor in actors.keys():
+		if actor == player: continue
+		if is_instance_valid(actor): actor.queue_free()
+		actors[actor].queue_free()
+		actors.erase(actor)
+		actor_motion.erase(actor)
+	for spec in PLACE_ENCOUNTERS:
+		var enemy := _spawn_enemy_at(spec[0], spec[1], spec[2])
+		enemy.set_physics_process(false)
+		dormant_place_enemies.append(enemy)
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if paused or get_tree().paused or not terrain is Wetland: return
+	for enemy in dormant_place_enemies.duplicate():
+		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
+			dormant_place_enemies.erase(enemy)
+			continue
+		if enemy.position.distance_to(player.position) > 650: continue
+		var path := navigation.find_path(enemy.position, player.position)
+		var distance := 0.0
+		for i in range(1, path.size()): distance += path[i - 1].distance_to(path[i])
+		if path.is_empty() or distance > 900: continue
+		# Once engaged, retreat never freezes a warning or resets the enemy.
+		enemy.set_physics_process(true)
+		dormant_place_enemies.erase(enemy)

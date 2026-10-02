@@ -21,6 +21,7 @@ func _run() -> void:
 		samples = [{"name": "entry", "point": scene.Circuit.ENTRY}, {"name": "court", "point": scene.Circuit.CENTRAL_COURT}, {"name": "cloister", "point": scene.Circuit.CLOISTER}, {"name": "sanctuary", "point": scene.Circuit.SANCTUARY}, {"name": "overview", "point": scene.Circuit.CENTRAL_COURT}]
 	if circuit_run:
 		samples = [{"name": "entry", "point": Vector2(650, 3000)}, {"name": "court", "point": Vector2(2450, 2100)}, {"name": "cloister", "point": Vector2(1450, 1350)}, {"name": "sanctuary", "point": Vector2(2800, 900)}, {"name": "overview", "point": Vector2(2450, 2100)}]
+	scene.set_physics_process(false) # Static render/navigation fixture only; no encounter activation.
 	scene.wisp.set_physics_process(false)
 	for size in [Vector2i(1280, 720), Vector2i(960, 540)]:
 		root.size = size

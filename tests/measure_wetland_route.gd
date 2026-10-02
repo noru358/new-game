@@ -8,6 +8,7 @@ func _run() -> void:
 	for i in 4: await physics_frame
 	for actor in scene.actors:
 		if actor != scene.player: actor.set_physics_process(false)
+	scene.set_physics_process(false) # Static render/navigation fixture only; no encounter activation.
 	scene.wisp.set_physics_process(false)
 	Engine.time_scale = 6.0
 	var visited := 0

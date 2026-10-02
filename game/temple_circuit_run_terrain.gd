@@ -3,6 +3,9 @@ const Original = preload("res://game/temple_hybrid_terrain.gd")
 const Layout = preload("res://game/temple_circuit_run_layout.gd")
 func _init() -> void:
 	super._init()
+	for wall in wall_areas:
+		wall["circuit_masonry"] = true
+		wall["visual"] = false
 	map_size = Vector2(8700, 3500)
 	var original = Original.new()
 	for record in original.floor_areas:

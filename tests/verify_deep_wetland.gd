@@ -14,7 +14,11 @@ func _run() -> void:
 	for i in 4: await physics_frame
 	check(scene.growth.growth_ended, "no XP or unlock progression")
 	check(scene.growth.unlocks.save_prefix == "user://deep_wetland_trial_unused_unlocks", "separate trial prefix")
-	check(scene.actors.size() == 5, "player and four bounded existing-role enemies")
+	check(scene.actors.size() == 9, "player and eight place-bound existing-role enemies")
+	check(scene.dormant_place_enemies.size() == 8, "distant groups wait at their places")
+	for spec in scene.PLACE_ENCOUNTERS:
+		check(scene.navigation.is_open(spec[0], 30), "encounter on dry ground")
+		check(not scene.navigation.find_path(scene.Wetland.ENTRY, spec[0]).is_empty(), "encounter reachable")
 	check(scene.camera.size == 9.0, "existing camera scale")
 	for points in [scene.Wetland.WAYPOINTS, scene.Wetland.SIDE_ROUTE]:
 		for p in points:
@@ -28,6 +32,13 @@ func _run() -> void:
 	var xp: int = scene.growth.xp
 	scene._on_enemy_defeated(null)
 	check(scene.growth.level == level and scene.growth.xp == xp, "trial kill grants no XP")
+	scene.teleport(scene.Wetland.PROCESSION)
+	scene._physics_process(0.0)
+	var remaining: int = scene.dormant_place_enemies.size()
+	check(remaining < 8 and remaining > 0, "nearby place activates without waking entire field")
+	scene.teleport(scene.Wetland.ENTRY)
+	scene._physics_process(0.0)
+	check(scene.dormant_place_enemies.size() <= remaining, "retreat does not put active enemies back to sleep")
 	scene._set_paused(true)
 	check(paused, "pause works")
 	scene._set_paused(false)

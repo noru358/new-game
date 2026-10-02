@@ -97,6 +97,20 @@ func _ready() -> void:
 
 # Opt-in first-region pacing comparison. Live scenes keep the default curve.
 var late_xp_slope_trial := false
+# Separate alternative: keep XP, earned points, unlocks and level healing exactly.
+# Only the interruption schedule changes after the first six immediate choices.
+var choice_batch_trial_enabled := false
+var choice_batch_wait := 0.0
+const CHOICE_BATCH_MAX_WAIT := 18.0
+
+func _process(delta: float) -> void:
+	if not choice_batch_trial_enabled or growth_ended or choosing or pending_choices <= 0 or get_tree().paused: return
+	choice_batch_wait += delta
+	if choice_batch_wait >= CHOICE_BATCH_MAX_WAIT: flush_pending_choices()
+
+func flush_pending_choices() -> void:
+	if pending_choices > 0 and not choosing and not growth_ended: _start_choice()
+
 
 func next_xp() -> int:
 	var earned := level - 1
@@ -111,7 +125,7 @@ func gain_xp(amount: int) -> void:
 	if amount <= 0 or growth_ended:
 		return
 	# Keep every unlock earned during this choice window, including overflow XP.
-	if not choosing: unlock_notice = ""
+	if not choosing and pending_choices == 0: unlock_notice = ""
 	xp += amount
 	while xp >= next_xp():
 		xp -= next_xp()
@@ -129,7 +143,7 @@ func gain_xp(amount: int) -> void:
 	_update_hud()
 	if choosing:
 		_refresh_choices()
-	elif pending_choices > 0:
+	elif pending_choices > 0 and (not choice_batch_trial_enabled or points_earned <= 6 or pending_choices >= 2):
 		_start_choice()
 
 
@@ -143,6 +157,7 @@ func _sync_permanent_moves() -> void:
 func _start_choice() -> void:
 	if pending_choices <= 0 or growth_ended or choosing:
 		return
+	choice_batch_wait = 0.0
 	paused_before_choice = get_tree().paused
 	last_choice_label.text = ""
 	_prepare_next_choice()

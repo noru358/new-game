@@ -1,5 +1,5 @@
 extends SceneTree
-## Deterministic accelerated bot comparison. Not human difficulty or timing evidence.
+## Accelerated bot comparison with seeded scene/card RNG; global RNG is not locked. Not human difficulty or timing evidence.
 func _initialize() -> void: call_deferred("_run")
 func _run() -> void:
 	var reports := []

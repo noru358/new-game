@@ -32,6 +32,7 @@ func _create_region_section() -> Node:
 func _ready() -> void:
 	super._ready()
 	growth.late_xp_slope_trial = OS.get_cmdline_user_args().has("--circuit-xp-trial")
+	growth.choice_batch_trial_enabled = OS.get_cmdline_user_args().has("--circuit-choice-batch")
 	growth._update_hud()
 
 func _place_weights(point: Vector2) -> Array[float]:
@@ -65,3 +66,8 @@ func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> vo
 	for p in [area.position, Vector2(area.end.x, area.position.y), area.end, Vector2(area.position.x, area.end.y)]:
 		points.append(Vector3(p.x, elevation.call(p), p.y))
 	_quad(st, points, color)
+
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if growth != null and growth.choice_batch_trial_enabled and boss_announced and not run_ended:
+		growth.flush_pending_choices()
