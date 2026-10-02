@@ -34,6 +34,9 @@ func _run()->void:
 	scene.teleport(Vector2(4770,1480))
 	scene.temple_section.tick(0)
 	check(scene.boss.encounter_active,"destination entry starts duel")
+	scene._update_run_hud()
+	check(scene.boss_health_bar.visible and not scene.actors[scene.boss].get_node("HealthBar").visible,"one boss health bar during the duel")
+	check(scene.minimap.title_text=="습지 지도" and not "테라스" in scene.minimap.legend_override,"wetland-specific map labels")
 	scene.boss.set_physics_process(false)
 	scene.boss.attack_cooldown=0
 	scene.boss._beast_velocity(0.01)

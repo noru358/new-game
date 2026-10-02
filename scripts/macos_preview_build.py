@@ -89,8 +89,10 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     if text.count(old) != 1:
         raise RuntimeError("Unexpected original save-path contract")
     title = f"Loop Conquest - {label} Field Preview"
+    user_directory_name = f"LoopConquest-FieldPreview-{label}"
+    bundle_id = "com.noru358.loopconquest.preview." + label.replace(".", "-")
     text = re.sub(r'^config/name="[^"]+"$', f'config/name="{title}"', text, count=1, flags=re.M)
-    text = text.replace(old, 'config/custom_user_dir_name="LoopConquest-FieldPreview-v44"')
+    text = text.replace(old, f'config/custom_user_dir_name="{user_directory_name}"')
     old_main = 'run/main_scene="res://game/travel_camp.tscn"'
     if text.count(old_main) != 1:
         raise RuntimeError("Unexpected ordinary main-scene contract")
@@ -99,12 +101,12 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     presets = workspace / "export_presets.cfg"
     config = presets.read_text()
     config = config.replace('application/bundle_identifier="com.noru358.loopconquest1a"',
-                            'application/bundle_identifier="com.noru358.loopconquest.preview.v44"', 1)
+                            f'application/bundle_identifier="{bundle_id}"', 1)
     # Official 4.6 macOS templates contain the universal binary only.
     # Produce that valid bundle first, then thin/re-sign on this native Mac when requested.
     config = config.replace('binary_format/architecture="universal"', 'binary_format/architecture="universal"', 1)
     presets.write_text(config)
-    report["packaging_changes"] = {"title": title, "separate_user_data": "LoopConquest-FieldPreview-v44", "bundle_id": "com.noru358.loopconquest.preview.v44", "source_commit": commit, "entry": "res://game/field_preview_entry.tscn"}
+    report["packaging_changes"] = {"title": title, "separate_user_data": user_directory_name, "bundle_id": bundle_id, "source_commit": commit, "entry": "res://game/field_preview_entry.tscn"}
     checked([editor, "--headless", "--editor", "--path", workspace, "--quit"], scratch, output / "import.log", 240)
     deployment = scratch / "deployment"
     deployment.mkdir()
@@ -143,10 +145,27 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
             if len(fields) == 4:
                 aliases.setdefault(fields[0], []).append(fields[3])
     report["startup"] = []
+    expected_data = Path.home() / "Library/Application Support" / user_directory_name
     for name, scene in [("camp", "res://game/travel_camp.tscn"),
                         ("temple-circuit", "res://game/temple_circuit_run.tscn"),
                         ("jungle-south", "res://game/jungle_south_circuit.tscn"),
-                        ("deep-wetland", "res://game/deep_wetland_trial.tscn")]:
+                        ("deep-wetland", "res://game/deep_wetland_trial.tscn"),
+                        ("wetland-run", "res://game/deep_wetland_run.tscn")]:
+        if name == "wetland-run":
+            slots = list(expected_data.glob("first_region_shared_v45_profile_?.json"))
+            if not slots:
+                raise RuntimeError("Earlier preview startup did not create the shared fixture profile")
+            for slot in slots:
+                data = json.loads(slot.read_text())
+                if data.get("version") != 7:
+                    raise RuntimeError("Unexpected schema in native startup fixture")
+                for region in ["O_TEMPLE", "O_JUNGLE_PASS"]:
+                    if region not in data["owned_outpost_ids"]:
+                        data["owned_outpost_ids"].append(region)
+                if "RELIC_TEMPLE" not in data["acquired_relic_ids"]:
+                    data["acquired_relic_ids"].append("RELIC_TEMPLE")
+                slot.write_text(json.dumps(data))
+            report["wetland_startup_fixture"] = {"runner_only": True, "preseeded_temple_and_jungle_access": True, "natural_campaign_win": False}
         engine_log = output / f"{name}-engine.log"
         command = [executable, "--headless", "--verbose", "--max-fps", "60", "--quit-after", "120", "--log-file", engine_log]
         if name != "camp": command.extend(["--", "--preview-scene=" + name])
@@ -157,38 +176,9 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
         if not actual: raise RuntimeError(f"Requested packed scene was not loaded: {scene}")
         result.update({"scene": scene, "loaded_resource": actual, "headless_runner_only": True})
         report["startup"].append(result)
-    expected_data = Path.home() / "Library/Application Support/LoopConquest-FieldPreview-v44"
     if not expected_data.is_dir():
         raise RuntimeError("Expected separate preview user-data directory was not created")
     report["verified_user_data_directory"] = str(expected_data)
-    archive = output / f"LoopConquest-{label}-macOS-{architecture}.zip"
-    checked(["ditto", "-c", "-k", "--sequesterRsrc", "--keepParent", app, archive], deployment, output / "package.log", 240)
-    report["package"] = {"name": archive.name, "bytes": archive.stat().st_size, "sha256": digest(archive, "sha256")}
-    # A native compressed disk image avoids chat attachment limits without splitting files.
-    # Validate Apple's available format locally and verify the mounted app, not only the container.
-    formats = subprocess.check_output(["hdiutil", "create", "-help"], stderr=subprocess.STDOUT, text=True)
-    if "ULMO" not in formats:
-        raise RuntimeError("Native hdiutil does not advertise the required LZMA format")
-    image = output / f"LoopConquest-{label}-macOS-{architecture}.dmg"
-    checked(["hdiutil", "create", "-srcfolder", deployment, "-volname", f"Loop Conquest {label}",
-             "-format", "ULMO", image], scratch, output / "dmg-create.log", 300)
-    checked(["hdiutil", "verify", image], scratch, output / "dmg-verify.log", 120)
-    mount = scratch / "mounted-preview"
-    checked(["hdiutil", "attach", "-readonly", "-nobrowse", "-mountpoint", mount, image],
-            scratch, output / "dmg-attach.log", 120)
-    try:
-        mounted_app = mount / app.name
-        mounted_executable = mounted_app / "Contents/MacOS" / info["CFBundleExecutable"]
-        if digest(mounted_executable, "sha256") != digest(executable, "sha256"):
-            raise RuntimeError("Mounted image executable differs from verified export")
-        checked(["codesign", "--verify", "--deep", "--strict", mounted_app], scratch, output / "dmg-signature.log")
-        checked([mounted_executable, "--headless", "--quit-after", "120"],
-                scratch, output / "dmg-startup.log", 90)
-    finally:
-        checked(["hdiutil", "detach", mount], scratch, output / "dmg-detach.log", 120)
-    report["disk_image"] = {"name": image.name, "bytes": image.stat().st_size,
-                            "sha256": digest(image, "sha256"), "format": "ULMO",
-                            "mounted_signature_and_startup_verified": True}
     compact = output / f"LoopConquest-{label}-macOS-{architecture}.tar.xz"
     checked(["tar", "-cJf", compact, "-C", deployment, app.name], scratch, output / "tar-create.log", 300)
     extracted = scratch / "extracted-compact"
@@ -206,11 +196,11 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     report["status"] = "passed"
     (output / "PLAYTEST.txt").write_text(
         f"Loop Conquest {label} 필드 비교판\n소스: {commit}\n\n"
-        "압축을 풀고 .app을 실행하세요. 기존 v43와 별도 저장을 사용합니다.\n"
-        "야영지 → 발견 탭 아래에서 사원 4분 진행 / 정글 남쪽 순환 / 깊은 사원 습지 시험을 선택할 수 있습니다.\n"
-        "정글 시험은 진입용 해금이 있는 별도 개발 기록으로 시작합니다. 습지는 저장·보상 없는 대표 구간입니다.\n"
+        "압축을 풀고 .app을 실행하세요. 이 버전 전용 저장을 사용합니다. 기존 v43/v44 기록을 덮어쓰지 않습니다.\n"
+        "야영지 출정 화면에서 사원 → 정글 → 깊은 사원 습지로 진행합니다. 각 지역4분 이후 목적지 보스가 준비됩니다.\n"
+        "각 지역 성공으로 다음 지역이 열리고, 정산/구매/장착/영구강화가 공통 기록으로 이어집니다. 신규 기록으로 시작합니다.\n"
         "첫 권역 전체 완성판이 아닙니다. 정상속도 재미·미감·장시간 성능은 별도 확인이 필요합니다.\n"
-        "검증 범위: 공식 Godot, 요청 아키텍처, ad-hoc 서명, Mac CI headless에서 앱과 네 씬 초기 실행.\n"
+        "검증 범위: 공식 Godot, 요청 아키텍처, ad-hoc 서명, Mac CI headless에서 앱과 다섯 씬 초기 실행. 습지 런 시작 검사는 Mac CI에만 선행 클리어 fixture를 주입했습니다.\n"
         "사용자 Mac에서의 GUI 첫 실행, Gatekeeper, 사운드와 GPU 플레이는 아직 미검증이며 notarization은 없습니다.\n",
         encoding="utf-8")
 

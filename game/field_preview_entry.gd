@@ -5,6 +5,7 @@ const SCENES := {
 	"temple-circuit": "res://game/temple_circuit_run.tscn",
 	"jungle-south": "res://game/jungle_south_circuit.tscn",
 	"deep-wetland": "res://game/deep_wetland_trial.tscn",
+	"wetland-run": "res://game/deep_wetland_run.tscn",
 }
 static func selected_scene(arguments: PackedStringArray) -> String:
 	var choice := "camp"

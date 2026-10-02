@@ -5,6 +5,7 @@ Example: python3 scripts/launch_flow_sample.py --godot /path/Godot --preset fres
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -55,14 +56,14 @@ def main():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
     hashes = {name: safety.digest(data) for name, data in files.items()}
-    manifest = {'token': token, 'source': str(source), 'destination': str(destination), 'save_dir': str(save_dir), 'source_sha256': hashes, 'copy_sha256': {name: safety.digest(data) for name, data in changed.items()}, 'preset': args.preset, 'slash_chain_cap_trial': args.slash_chain_cap_trial, 'engine_time_scale': 1, 'price': [20, 35], 'script': args.script}
+    manifest = {'token': token, 'source': str(source), 'destination': str(destination), 'save_dir': str(save_dir), 'source_sha256': hashes, 'copy_sha256': {name: safety.digest(data) for name, data in changed.items()}, 'preset': args.preset, 'slash_chain_cap_trial': args.slash_chain_cap_trial, 'engine_time_scale': 1, 'growth_price_source': 'unchanged game/run_profile.gd', 'script': args.script}
     save_dir.mkdir(parents=True, exist_ok=False)
     for path in [destination / 'flow-sample.json', save_dir / 'flow-sample-owner.json']:
         path.write_text(json.dumps(manifest, indent=2) + '\n')
     godot = safety.find_godot(args.godot)
     engine = safety.checked_engine(godot, destination, ['--version'], timeout=20).strip()
-    if not engine.startswith('4.6.stable.'):
-        raise safety.TrialError('require stableGodot4.6')
+    if not re.match(r'^4\.6(?:\.\d+)?\.stable\.', engine):
+        raise safety.TrialError('require a stable Godot4.6 family engine')
     (destination / 'import.log').write_text(safety.checked_engine(godot, destination, ['--headless', '--editor', '--path', str(destination), '--quit']))
     report = destination / 'report.json'
     arguments = ['--headless', '--path', str(destination), '--script', 'res://tests/' + args.script, '--', '--preset=' + args.preset, '--seconds=' + str(args.seconds), '--seed=' + str(args.seed), '--report-path=' + str(report), '--expected-user-dir=' + str(save_dir), '--runs=' + str(args.runs), '--run-diagnostics']

@@ -35,6 +35,8 @@ func _ready() -> void:
 		get_tree().call_deferred("change_scene_to_file","res://game/travel_camp.tscn")
 		return
 	super._ready()
+	minimap.title_text="습지 지도"
+	minimap.legend_override="참배길 · 얼굴 유적 · 안쪽 성소"
 func region_layout(): return Layout
 func _create_region_section() -> Node:
 	var section=preload("res://game/wetland_section.gd").new()

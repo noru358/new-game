@@ -1,0 +1,397 @@
+{
+  "final": {
+    "active_seconds": 251.966666666759,
+    "cards": {
+      "S_WISP_CADENCE": 3,
+      "S_WISP_COUNT": 2,
+      "S_WISP_DAMAGE": 3,
+      "S_WISP_FOLLOWUP": 2,
+      "S_WISP_REPLY": 1,
+      "S_WISP_SWEEP": 2,
+      "U_EDGE": 3,
+      "U_REACH": 3,
+      "U_SLASH_CADENCE": 2,
+      "U_SLASH_SWEEP": 2,
+      "U_TEMPO": 3
+    },
+    "choice_windows": 26,
+    "combo_limit": 4,
+    "currency": 455,
+    "diagnostics": {
+      "accessory": "A_EMBER",
+      "active_seconds": 251.966666666759,
+      "active_wall_seconds": 291.139676,
+      "attack_branch": "DIRECT",
+      "boss_engagements": 1,
+      "boss_first_times": {
+        "arrive": {
+          "active_seconds": 216.966666666731,
+          "wall_seconds": 271.924829
+        },
+        "engage": {
+          "active_seconds": 241.200000000084,
+          "wall_seconds": 313.396509
+        },
+        "kill": {
+          "active_seconds": 251.966666666759,
+          "wall_seconds": 331.917097
+        },
+        "ready": {
+          "active_seconds": 241.200000000084,
+          "wall_seconds": 313.396453
+        }
+      },
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_REPLY": 1,
+        "S_WISP_SWEEP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "choice_wall_seconds": 40.778021,
+      "choice_windows": 26,
+      "damage_events": 40,
+      "damage_taken_actual": 475.0,
+      "earned_currency": 455,
+      "health": 2.0,
+      "kills": 325,
+      "level": 27,
+      "level_heal_actual": 367.0,
+      "level_heal_events": 26,
+      "max_health": 110.0,
+      "pause_wall_seconds": 0.0,
+      "permanent_growth": {
+        "FINISH": 0.0,
+        "GUARD": 0.0,
+        "MOBILITY": 0.0,
+        "POWER": 2.0,
+        "RECOVERY": 0.0,
+        "SLASH": 0.0,
+        "SLASH_POWER": 0.0,
+        "SPEED": 0.0,
+        "VITALITY": 1.0,
+        "WISP": 2.0
+      },
+      "points_earned": 26,
+      "points_exhausted": 0,
+      "points_pending": 0,
+      "points_spent": 26,
+      "region": "O_DEEP_WETLAND",
+      "result": "SUCCESS",
+      "schema": "local_run_diagnostics_v1",
+      "time_scale_max": 1.0,
+      "time_scale_min": 1.0,
+      "wall_seconds": 331.917697,
+      "weapon": "W_FLOW",
+      "xp_remainder": 52
+    },
+    "health": 2.0,
+    "kills": 325,
+    "ledger": {
+      "combat": 166.20000000006,
+      "destination_wait_without_target": 7.76666666667285,
+      "stationary_without_visible_target": 21.9333333333395,
+      "travel_without_visible_target": 55.9500000000207
+    },
+    "moving_slash_enabled": true,
+    "points_earned": 26,
+    "points_spent": 26,
+    "position": {
+      "x": 4975.68310546875,
+      "y": 1104.38452148438
+    }
+  },
+  "first_destination_arrival": 216.966666666731,
+  "human_playtest": false,
+  "investment": 249,
+  "notes": "Wetland70s route, inherited combat/card priority and1.5s synthetic choice dwell. No forced XP, damage, health, boss or clock writes. Combat means reachable visible target within380; it can include travel. No-target movement is a proxy, not proof of meaningless travel. Repeated fighting cannot be identified from this aggregate.210 proposal is superseded; marks180/210/240/300 remain observation only. Missing marks mean the controller died/stopped before them.",
+  "preset": "grown",
+  "sample": "wetland_full_run_v45",
+  "samples": [
+    {
+      "active_seconds": 180.000000000035,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 2,
+        "S_WISP_FOLLOWUP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 2,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 1,
+        "U_TEMPO": 3
+      },
+      "choice_windows": 20,
+      "combo_limit": 4,
+      "currency": 288,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 180.000000000035,
+        "active_wall_seconds": 185.343877,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 2,
+          "S_WISP_FOLLOWUP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 2,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 1,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 31.262195,
+        "choice_windows": 20,
+        "damage_events": 30,
+        "damage_taken_actual": 320.0,
+        "earned_currency": 288,
+        "health": 100.0,
+        "kills": 216,
+        "level": 21,
+        "level_heal_actual": 310.0,
+        "level_heal_events": 20,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 20,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 20,
+        "region": "O_DEEP_WETLAND",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 216.606072,
+        "weapon": "W_FLOW",
+        "xp_remainder": 36
+      },
+      "health": 100.0,
+      "kills": 216,
+      "ledger": {
+        "combat": 118.533333333355,
+        "destination_wait_without_target": 0.0,
+        "stationary_without_visible_target": 19.0666666666706,
+        "travel_without_visible_target": 42.2833333333432
+      },
+      "moving_slash_enabled": true,
+      "points_earned": 20,
+      "points_spent": 20,
+      "position": {
+        "x": 3354.97802734375,
+        "y": 911.999755859375
+      }
+    },
+    {
+      "active_seconds": 210.000000000059,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "choice_windows": 23,
+      "combo_limit": 4,
+      "currency": 367,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 210.000000000059,
+        "active_wall_seconds": 225.330277,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 36.006756,
+        "choice_windows": 23,
+        "damage_events": 32,
+        "damage_taken_actual": 345.0,
+        "earned_currency": 367,
+        "health": 110.0,
+        "kills": 267,
+        "level": 24,
+        "level_heal_actual": 345.0,
+        "level_heal_events": 23,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 23,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 23,
+        "region": "O_DEEP_WETLAND",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 261.337033,
+        "weapon": "W_FLOW",
+        "xp_remainder": 44
+      },
+      "health": 110.0,
+      "kills": 267,
+      "ledger": {
+        "combat": 136.950000000036,
+        "destination_wait_without_target": 0.0,
+        "stationary_without_visible_target": 21.8833333333395,
+        "travel_without_visible_target": 51.0500000000168
+      },
+      "moving_slash_enabled": true,
+      "points_earned": 23,
+      "points_spent": 23,
+      "position": {
+        "x": 3343.384765625,
+        "y": 1113.12060546875
+      }
+    },
+    {
+      "active_seconds": 240.000000000083,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_REPLY": 1,
+        "S_WISP_SWEEP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "choice_windows": 26,
+      "combo_limit": 4,
+      "currency": 452,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 240.000000000083,
+        "active_wall_seconds": 268.318413,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+          "arrive": {
+            "active_seconds": 216.966666666731,
+            "wall_seconds": 271.924829
+          }
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_REPLY": 1,
+          "S_WISP_SWEEP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 40.778021,
+        "choice_windows": 26,
+        "damage_events": 34,
+        "damage_taken_actual": 367.0,
+        "earned_currency": 452,
+        "health": 110.0,
+        "kills": 322,
+        "level": 27,
+        "level_heal_actual": 367.0,
+        "level_heal_events": 26,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 26,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 26,
+        "region": "O_DEEP_WETLAND",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 309.096434,
+        "weapon": "W_FLOW",
+        "xp_remainder": 46
+      },
+      "health": 110.0,
+      "kills": 322,
+      "ledger": {
+        "combat": 154.666666666717,
+        "destination_wait_without_target": 7.33333333333917,
+        "stationary_without_visible_target": 21.9333333333395,
+        "travel_without_visible_target": 55.9500000000207
+      },
+      "moving_slash_enabled": true,
+      "points_earned": 26,
+      "points_spent": 26,
+      "position": {
+        "x": 4995.4755859375,
+        "y": 1391.82800292969
+      }
+    }
+  ],
+  "seed": 250,
+  "slash_chain_cap_trial": false,
+  "source_boss_time": 240.0,
+  "stop_reason": "SUCCESS",
+  "time_scale": 1.0
+}

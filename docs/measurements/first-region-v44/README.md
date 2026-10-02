@@ -64,3 +64,12 @@ The latest courtyard render exposed a new decorative paving surface coplanar wit
 The first southern render succeeded at960/1280 and showed the landing/transit court/return in the same field. The corrected temple paving now renders a round unobstructed fake shadow. The new southern descent still inherited large raised rock slabs, so the candidate alone replaces those with slope-following stone bands below the shadow bottom. The candidate also removes the construction checker pattern, retaining actual terrain boundaries. Updated images remain pending.
 
 A fixed-seed spawn audit found100/100 reachable spawn candidates at the old bank, new transit court and new landing. With the companion disabled and a stationary player, one enemy from an actual valid bank spawn physically followed the route and dealt10contact damage (137frames at4× time scale). This rules out the sampled landing being completely disconnected/safe from pursuit; it does not establish pressure balance or prevent every possible exploit.
+
+## v45 습지 정상속도 한 판
+- 실제 게임파일205개를 원격 `baa68b5740a84e3a3974ea8ae4f28c2119143678`와 바이트 비교해 일치 확인. UUID 격리 복사본, Godot4.6.3, seed250, time_scale1.0이며 실행 후 source/copy 해시 가드 통과.
+- 선행 사원/정글 성공과6누적레벨은 합성 준비값이다.249투자(POWER2/WISP2/VITALITY1, W_FLOW/A_EMBER, DIRECT) 이후 습지 안의 XP/피해/회복/시계/보스/승리는 주입하지 않았다. 자연스러운 신규3맵 캠페인 완주 증거는 아니다.
+- 실제 입력 컨트롤러:70초 단위 목표 경로, 가까운 적 직접 공격/베기/대시, 제시된 카드 중 기존 선호순위, 선택마다 합성1.5초 읽기 대기. 사람 플레이가 아니다.
+- 성공251.97 active초 /331.92 wall초, 보스진입241.20→처치251.97, HP2/110. 325킬·455획득·505실정산, 잔액251→756 및 O_DEEP_WETLAND 저장 확인.
+-26선택/40.78초 카드 정지, 누적 피격475/레벨회복367. no-target이동55.95·정지21.93은 컨트롤러/시야 기준 proxy이며 무의미한 이동·버그 확정이 아니다. 고정70초 목표에 도착해 기다리는 정책도 포함된다.
+-4분은 보스 준비 active시간이다. 실제 총 wall시간에는 카드 정지/보스전/이 실행기의 처리 지연이 포함된다. 이 headless 호스트 시간을 사용자Mac 프레임/체감으로 일반화하지 않는다.26회 중단과 회복·경제의 연결은 후속 체감 검증 과제다.
+- 원자료: `wetland-normal-speed-grown.json`. 재현 fixture `tests/sample_wetland_run.gd`, UUID 복사본 launcher `scripts/launch_flow_sample.py`.

@@ -710,6 +710,9 @@ func _update_run_hud() -> void:
 		if boss_health_bar.visible:
 			boss_health_bar.max_value = boss.max_health
 			boss_health_bar.value = boss.health
+		if is_instance_valid(boss) and actors.has(boss):
+			var world_bar: Node3D = actors[boss].get_node_or_null("HealthBar")
+			if world_bar != null: world_bar.visible = not boss_health_bar.visible
 
 
 func _encounter_cue() -> String:
