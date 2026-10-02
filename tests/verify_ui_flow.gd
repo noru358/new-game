@@ -36,15 +36,13 @@ func _preparation(dimensions: Vector2i):
 	await process_frame
 	await process_frame
 	check(scene.profile._snapshot() == before, "preparation mounting is read-only")
-	_check_layout(presenter.columns, dimensions)
-	for control in [presenter.gear_link, presenter.growth_link, scene.supply_buy_button, scene.supply_toggle_button, scene.canal_trial_button]:
-		check(Rect2(Vector2.ZERO, Vector2(dimensions)).encloses(control.get_global_rect()), "preparation action visible without scrolling: " + control.text)
-	await _click(presenter.gear_link)
-	check(scene.tabs.current_tab == 1, "gear shortcut opens existing tab")
-	scene.open_section(0)
-	await process_frame
-	await _click(presenter.growth_link)
-	check(scene.tabs.current_tab == 2, "growth shortcut opens existing tab")
+	_check_layout(presenter.summary, dimensions)
+	check(not scene.supply_buy_button.is_visible_in_tree() and not scene.canal_trial_button.is_visible_in_tree(), "optional purchases and development entry absent from departure")
+	check(not scene.currency_label.visible and not scene.progress_label.is_visible_in_tree(), "currency and reward detail absent from departure")
+	await _tab(scene, 1)
+	check(scene.tabs.current_tab == 1, "equipment tab remains accessible by mouse")
+	await _tab(scene, 2)
+	check(scene.tabs.current_tab == 2, "growth tab remains accessible by mouse")
 	scene.open_section(0)
 	presenter.refresh()
 	check(scene.start_button.visible and not scene.start_button.disabled, "one existing departure action remains available")
@@ -57,7 +55,7 @@ func _preparation(dimensions: Vector2i):
 	scene.profile.load_error = true
 	scene._refresh()
 	presenter.refresh()
-	check(scene.start_button.disabled and presenter.gate_reason.text.contains("저장"), "load error blocks departure near action")
+	check(scene.start_button.disabled and scene.status_label.text.contains("저장"), "load error blocks departure near action")
 	scene.profile.load_error = false
 	scene.profile.currency = 100
 	scene.profile.owned_outpost_ids.append(RunProfile.TEMPLE_REGION)
@@ -71,15 +69,30 @@ func _preparation(dimensions: Vector2i):
 	check(scene.profile.equipped_weapon == "W_FLOW" and presenter.weapon.text.contains("흐름의 마력장"), "explicit equip updates loadout")
 	var bank: int = scene.profile.currency
 	for i in 3:
-		scene.open_section(0)
-		await _click(presenter.gear_link)
+		await _tab(scene, 0)
+		await _tab(scene, 1)
 	check(scene.profile.currency == bank and scene.profile.equipped_weapon == "W_FLOW", "repeated shortcut does not buy/equip")
 	scene.open_section(0)
 	await process_frame
 	await process_frame
-	_check_layout(presenter.columns, dimensions)
-	for control in [presenter.gear_link, presenter.growth_link, scene.supply_buy_button, scene.supply_toggle_button, scene.canal_trial_button]:
-		check(Rect2(Vector2.ZERO, Vector2(dimensions)).encloses(control.get_global_rect()), "preparation action visible without scrolling: " + control.text)
+	_check_layout(presenter.summary, dimensions)
+	await _tab(scene, 1)
+	scene.gear_list_scroll.ensure_control_visible(scene.supply_buy_button)
+	await _click(scene.supply_buy_button)
+	check(scene.profile.supply_count == 1 and scene.profile.currency == bank - RunProfile.SUPPLY_COST, "moved supply purchase remains accessible and costs exactly once")
+	check(scene.profile.supply_selected, "supply purchase retains existing selection rule")
+	scene.gear_list_scroll.ensure_control_visible(scene.supply_toggle_button)
+	await _click(scene.supply_toggle_button)
+	check(not scene.profile.supply_selected, "moved supply choice remains accessible")
+	var supply_bank: int = scene.profile.currency
+	for i in 2: await _click(scene.supply_toggle_button)
+	check(not scene.profile.supply_selected and scene.profile.currency == supply_bank, "repeated supply selection changes no currency")
+	await _click(scene.supply_toggle_button)
+	await _tab(scene, 3)
+	check(scene.canal_trial_button.is_visible_in_tree() and scene.progress_label.is_visible_in_tree(), "reward and developer paths survive in supplementary tab")
+	await _tab(scene, 0)
+	presenter.refresh()
+	check(presenter.supply_summary.visible and presenter.supply_summary.text.contains("사용"), "selected supply exception shown on departure")
 	await _capture("preparation-%d" % dimensions.x)
 	await _release(scene)
 func _camp_back(dimensions: Vector2i):
@@ -124,7 +137,7 @@ func _hud(region: String, dimensions: Vector2i):
 	await process_frame
 	check(scene.profile._snapshot() == before, "HUD mounting is read-only")
 	check(not scene.run_hud.visible and not scene.temple_section.section_hud.visible, "one destination readout replaces duplicates")
-	check(presenter.objective.text.contains("보스까지"), "exploration countdown")
+	check(presenter.objective.text.is_empty() and not presenter.objective.visible and not presenter.help.visible, "free exploration has no permanent goal or control help")
 	for item in presenter.passive_controls:
 		check(item.mouse_filter == Control.MOUSE_FILTER_IGNORE and item.focus_mode == Control.FOCUS_NONE, "HUD input transparent")
 		if item.visible: check(Rect2(0,0,1280,720).encloses(item.get_global_rect()), "HUD fits scaled canvas")
@@ -137,12 +150,14 @@ func _hud(region: String, dimensions: Vector2i):
 	scene.temple_section.boss_ready = true
 	scene.temple_section._update_hud()
 	presenter.refresh()
-	check(not presenter.objective.text.contains("보스까지") and presenter.objective.text.contains("깨어났"), "section ready state replaces countdown")
+	check(not presenter.objective.text.contains("보스까지") and (presenter.objective.text.contains("성소") or presenter.objective.text.contains("관문")), "section ready state replaces countdown")
 	scene.temple_section.in_garden = true
 	scene.temple_section.garden_message = "보상을 저장하지 못했습니다 · 실패"
 	scene.temple_section._update_hud()
 	presenter.refresh()
-	check(presenter.objective.text.contains("실패"), "garden save failure never hidden")
+	check(presenter.notice.text.contains("실패"), "garden save failure never hidden")
+	presenter._process(8.0)
+	check(presenter.notice.text.contains("실패"), "save failure persists until resolved")
 	scene.temple_section.in_garden = false
 	scene.temple_section.garden_message = ""
 	scene.temple_section._update_hud()
@@ -172,19 +187,28 @@ func _hud(region: String, dimensions: Vector2i):
 	scene._update_run_hud()
 	scene.temple_section._update_hud()
 	presenter.refresh()
-	check(presenter.boss_title.visible and scene.boss_health_bar.visible and presenter.objective.text.contains("교전 중"), "boss HP and single encounter objective remain visible")
-	check(presenter.boss_title.get_global_rect().end.y < scene.boss_health_bar.get_global_rect().position.y, "boss title and HP never overlap")
+	check(not presenter.boss_title.visible and scene.boss_health_bar.visible and presenter.objective.text.contains(scene.boss_name), "single boss identity above HP replaces encounter rules")
+	check(presenter.objective.get_global_rect().end.y < scene.boss_health_bar.get_global_rect().position.y, "single boss identity and HP never overlap")
+	presenter._process(8.0)
+	check(not presenter.notice.visible, "resolved transient notices expire and do not republish")
+	check(not presenter.progress.text.contains("화폐"), "combat progression omits currency")
 	await _capture("combat-%s-%d" % [region, dimensions.x])
 	await _release(scene)
+func _tab(scene: Control, index: int):
+	await process_frame
+	var bar: TabBar = scene.tabs.get_tab_bar()
+	await _click_point(bar.global_position + bar.get_tab_rect(index).get_center())
 func _click(control: Control):
 	await process_frame
 	await process_frame
+	await _click_point(control.get_global_rect().get_center())
+func _click_point(point: Vector2):
 	var motion := InputEventMouseMotion.new()
-	motion.position = control.get_global_rect().get_center()
+	motion.position = point
 	motion.global_position = motion.position
 	root.push_input(motion, true)
 	var event := InputEventMouseButton.new()
-	event.position = control.get_global_rect().get_center()
+	event.position = point
 	event.global_position = event.position
 	event.button_index = MOUSE_BUTTON_LEFT
 	event.pressed = true
@@ -210,16 +234,14 @@ func _key(code: Key):
 	Input.parse_input_event(event)
 	await process_frame
 func _check_layout(control: Control, dimensions: Vector2i):
-	print("Preparation geometry ", dimensions, " rect=", control.get_global_rect())
-	check(control.get_global_rect().end.x <= dimensions.x and control.get_global_rect().position.x >= 0, "preparation columns fit actual width")
-	for child in control.get_children():
-		for item in child.get_children():
-			if item is Label: check(item.get_line_count() <= item.get_visible_line_count(), "preparation text visible")
+	check(Rect2(Vector2.ZERO, Vector2(dimensions)).encloses(control.get_global_rect()), "preparation summary fits actual viewport")
+	for item in control.get_children():
+		if item is Label and item.is_visible_in_tree(): check(item.get_line_count() <= item.get_visible_line_count(), "preparation text visible")
 func _capture(tag: String):
 	if DisplayServer.get_name() == "headless": return
 	await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../evidence/") + tag + ".png")
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../simplify-evidence/") + tag + ".png")
 func _release(scene: Node):
 	paused = false
 	scene.queue_free()

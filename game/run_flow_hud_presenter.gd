@@ -15,6 +15,9 @@ var survival_surface: ColorRect
 var objective_surface: ColorRect
 var notice_surface: ColorRect
 var passive_controls: Array[Control] = []
+var seen_notices: Dictionary = {}
+var transient_notice := ""
+var notice_seconds := 0.0
 
 func setup(scene: Node3D) -> void:
 	arena = scene
@@ -33,11 +36,11 @@ func setup(scene: Node3D) -> void:
 	for label in [scene.hud, scene.growth.hud, scene.moving_slash_status, scene.build_summary_label, scene.run_hud]: label.hide()
 	if scene.temple_section != null: scene.temple_section.section_hud.hide()
 	survival_surface = _surface(base, "Survival", Rect2(20, 556, 376, 132))
-	objective_surface = _surface(base, "Destination", Rect2(20, 20, 650, 104))
+	objective_surface = _surface(base, "Destination", Rect2(20, 20, 480, 46))
 	notice_surface = _surface(base, "EventNotice", Rect2(420, 568, 572, 95))
 	health = _label(base, "Health", Rect2(34, 566, 346, 31), 24)
 	mobility = _label(base, "Mobility", Rect2(34, 620, 346, 60), 20)
-	objective = _label(base, "DestinationState", Rect2(34, 28, 622, 88), 21)
+	objective = _label(base, "DestinationState", Rect2(34, 28, 452, 30), 21)
 	progress = _label(base, "GrowthProgress", Rect2(420, 666, 572, 27), 19, MUTED)
 	notice = _label(base, "EventText", Rect2(434, 574, 544, 86), 19)
 	help = _label(base, "ContextHelp", Rect2(1020, 594, 240, 96), 18, MUTED)
@@ -54,27 +57,34 @@ func setup(scene: Node3D) -> void:
 	_passive(scene.minimap)
 	refresh()
 
-func _process(_delta: float) -> void:
-	if is_instance_valid(arena): refresh()
+func _process(delta: float) -> void:
+	if not is_instance_valid(arena): return
+	if not get_tree().paused: notice_seconds = maxf(0, notice_seconds - delta)
+	refresh()
 
 func refresh() -> void:
 	var player = arena.player
 	health.text = "HP %d / %d" % [ceili(player.health), ceili(player.max_health)]
-	mobility.text = "Shift 대시 %d / %d\n%s" % [player.dash_charges, player.dash_max_charges, arena.moving_slash_status.text.replace("누적 첫 레벨업 때 영구 습득", "첫 레벨업 때 습득")]
-	progress.text = "LV %d · XP %d / %d · 이번 런 화폐 %d" % [arena.growth.level, arena.growth.xp, arena.growth.next_xp(), arena.run_currency]
+	var slash := "미습득" if not player.moving_slash_enabled else "진행 중" if player.moving_slash_time > 0 else "%.1f초" % player.moving_slash_cooldown if player.moving_slash_cooldown > 0 else "준비"
+	mobility.text = "대시 %d / %d\n이동 베기 · %s" % [player.dash_charges, player.dash_max_charges, slash]
+	progress.text = "LV %d · XP %d / %d" % [arena.growth.level, arena.growth.xp, arena.growth.next_xp()]
 	objective.text = destination_text(arena)
-	var lines: Array[String] = []
-	var cue: String = arena._encounter_cue()
-	if not cue.is_empty() and not arena.run_ended: lines.append(cue)
-	if arena.boss_announced and not arena.boss_spawned: lines.append(arena.boss_name + " 등장 예고")
-	if is_instance_valid(arena.boss) and arena.boss.health > 0 and arena.temple_section != null and arena.temple_section.boss_active:
-		var combat: String = arena.boss.combat_cue()
-		if not combat.is_empty(): lines.append(combat)
-	if not arena.growth.unlock_notice.is_empty(): lines.append(arena.growth.unlock_notice)
-	if arena.profile != null and arena.profile.recovered_backup: lines.append("이전 정상 기록을 복구했습니다.")
-	if arena.run_hud.text.contains("회복 부적 발동"): lines.append("회복 부적 발동 · HP +30")
-	notice.text = "\n".join(lines)
-	notice.visible = not lines.is_empty()
+	objective.visible = not objective.text.is_empty()
+	objective_surface.visible = objective.visible
+	var active: bool = arena.temple_section != null and arena.temple_section.boss_active
+	objective_surface.position = Vector2(400, 120) if active else Vector2(20, 20)
+	objective_surface.size.x = 480
+	objective.position = objective_surface.position + Vector2(14, 8)
+	if not arena.growth.unlock_notice.is_empty(): _publish("unlock:" + arena.growth.unlock_notice, arena.growth.unlock_notice)
+	if arena.profile != null and arena.profile.recovered_backup: _publish("backup", "이전 정상 기록을 복구했습니다.")
+	if arena.profile != null and arena.profile.last_launch_supply_used: _publish("supply", "회복 부적 발동 · HP +30")
+	var failure := ""
+	if arena.temple_section != null:
+		var message: String = arena.temple_section.garden_message
+		if message.contains("실패"): failure = message
+		elif message.contains("저장 완료"): _publish("reward:" + message, message)
+	notice.text = failure if not failure.is_empty() else transient_notice if notice_seconds > 0 else ""
+	notice.visible = not notice.text.is_empty()
 	notice_surface.visible = notice.visible
 	notice_surface.size.y = maxf(40, notice.get_minimum_size().y + 12)
 	notice_surface.position.y = 656 - notice_surface.size.y
@@ -82,28 +92,34 @@ func refresh() -> void:
 	notice.size.y = notice_surface.size.y - 12
 	objective_surface.size.y = maxf(46, objective.get_minimum_size().y + 16)
 	objective.size.y = objective_surface.size.y - 16
-	var initial: bool = arena.growth.unlocks.lifetime_levelups == 0 and arena.run_time < 20
-	help.text = "WASD 이동\nJ / 클릭 평타\nTab 지도 · Esc 상세" if initial else "Tab 지도\nEsc 카드 · 장비 · 조작"
-	boss_title.visible = arena.boss_health_bar.visible
-	boss_title.text = "%s · %d단계" % [arena.boss_name, arena.boss.phase] if is_instance_valid(arena.boss) else ""
+	help.hide()
+	boss_title.hide() # The single objective names the active boss above its HP.
 	# Preserve existing visibility gates during death/result/map; never unpause.
 	var ended: bool = arena.run_ended
-	for item in [survival_surface, objective_surface, health, mobility, objective, progress, help, arena.player_health_bar, arena.growth.xp_bar]: item.visible = not ended
+	for item in [survival_surface, health, mobility, progress, arena.player_health_bar, arena.growth.xp_bar]: item.visible = not ended
 	if ended:
+		objective.hide()
+		objective_surface.hide()
 		notice.hide()
 		notice_surface.hide()
 		boss_title.hide()
 
+func _publish(key: String, value: String) -> void:
+	if seen_notices.has(key): return
+	seen_notices[key] = true
+	transient_notice += "\n" + value if notice_seconds > 0 else value
+	notice_seconds = 6.0
+
 static func destination_text(scene: Node3D) -> String:
 	var section: Node = scene.temple_section
-	if section == null: return scene._run_hud_text()
-	# The existing section is the one authority for exploration/ready/engaged.
-	# Keep its full failure and retry instructions, never publish hidden places.
-	var text: String = section.section_hud.text
-	if not section.in_garden and not section.boss_ready:
-		var remaining := maxi(0, ceili(scene.BOSS_TIME - scene.run_time))
-		text = "%s · 보스까지 %02d:%02d\n%s" % [scene.scene_hud_title, remaining / 60, remaining % 60, text]
-	return text
+	if section == null: return ""
+	if section.in_garden:
+		return String(section.section_hud.text).split("\n")[0]
+	if section.boss_active and is_instance_valid(scene.boss):
+		return "%s · %d단계" % [scene.boss_name, scene.boss.phase]
+	var jungle: bool = scene.region_id == RunProfile.JUNGLE_REGION
+	if section.boss_ready: return "관문 안쪽으로" if jungle else "동쪽 성소로"
+	return "" # Free exploration needs no permanent instruction or timer.
 
 func _surface(canvas: CanvasLayer, title: String, rect: Rect2) -> ColorRect:
 	var control := ColorRect.new()
