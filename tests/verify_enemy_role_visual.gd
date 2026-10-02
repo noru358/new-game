@@ -90,7 +90,7 @@ func _verify_pose(scene, enemy: TrainingEnemy, body: Sprite3D) -> void:
 	enemy.velocity = Vector2(-100, 0)
 	scene._process(0.10)
 	_check(body.flip_h and body.scale.y < 1.0, "moving stone turns toward screen-left and shows a small grounded stride")
-	_check(body.position == Vector3.ZERO and is_equal_approx(body.offset.y, 34.0), "billboard pixel anchor stays at the terrain sample")
+	_check(body.position == Vector3.UP * RoleVisual.GROUND_CLEARANCE and is_equal_approx(body.offset.y, 34.0), "billboard feet clear the painted terrain while shadow stays grounded")
 	enemy.velocity = Vector2(100, 0)
 	scene._process(0.10)
 	_check(not body.flip_h, "moving stone turns toward screen-right")
@@ -105,7 +105,7 @@ func _verify_pose(scene, enemy: TrainingEnemy, body: Sprite3D) -> void:
 		enemy.warning_time = 0.0
 		enemy.charge_time = 0.2
 		scene._process(0)
-		_check(is_equal_approx(body.scale.y, 0.84) and body.position == Vector3.ZERO and body.offset.y == 34.0, "charge pose remains anchored")
+		_check(is_equal_approx(body.scale.y, 0.84) and body.position == Vector3.UP * RoleVisual.GROUND_CLEARANCE and body.offset.y == 34.0, "charge pose retains ground clearance")
 		enemy.charge_time = 0.0
 	if enemy.role == TrainingEnemy.Role.LAMP:
 		enemy.locked_direction = Vector2(-1, 0)

@@ -11,7 +11,7 @@ const CANOPY_POINTS := [
 	Vector2(350, 1880), Vector2(820, 2070), Vector2(1250, 1790),
 	Vector2(1820, 600), Vector2(2310, 570), Vector2(3180, 590),
 	Vector2(1810, 1790), Vector2(2450, 2160), Vector2(3470, 2200),
-	Vector2(3980, 640), Vector2(5140, 480), Vector2(4060, 1390), Vector2(5200, 2160),
+	Vector2(3980, 640), Vector2(5140, 480), Vector2(4250, 1390), Vector2(5200, 2160),
 ]
 
 var gate_columns: Array[Dictionary] = []

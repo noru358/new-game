@@ -8,6 +8,7 @@ const ZONE_TEXTURE := preload("res://game/enemy_zone.svg")
 const SUPPORT_TEXTURE := preload("res://game/enemy_support.svg")
 const PIXEL_SIZE := 0.01
 const FOOT_Y := 74.0
+const GROUND_CLEARANCE := 0.04
 const FIRE_RECOIL := 0.18
 static var hit_textures: Dictionary = {}
 
@@ -69,9 +70,10 @@ static func update(body: Sprite3D, enemy: TrainingEnemy, delta: float) -> bool:
 
 
 static func _anchor(body: Sprite3D) -> void:
-	# Sprite offset is in billboard pixels: the bottom stone corners are at the
-	# local origin for every camera pitch and stay there during pose scaling.
-	body.position = Vector3.ZERO
+	# The painted stone tread and floor finish can sit a few map units above
+	# the shared walkable height. Keep the shadow on that height and raise only
+	# the body enough for its feet to remain visible on every opaque surface.
+	body.position = Vector3.UP * GROUND_CLEARANCE
 	body.offset = Vector2(0.0, FOOT_Y - float(body.texture.get_height()) * 0.5)
 
 
