@@ -32,7 +32,15 @@ func _run() -> void:
 	if not scene.boss_spawned or not is_instance_valid(scene.boss):
 		printerr("FAIL: four-minute destination boss")
 		failures += 1
-	scene._finish_run("retreat")
+	scene.run_currency = 50
+	scene._finish_run("RETREAT")
+	if scene.settlement_pending or scene.profile.currency != 40:
+		printerr("FAIL: candidate retreat settlement")
+		failures += 1
+	var restored := RunProfile.new()
+	restored.save_prefix = scene.profile_save_prefix
+	restored.load_state()
+	if restored.load_error or restored.currency != 40: failures += 1
 	for i in 70: await physics_frame
 	for path in paths:
 		var after := FileAccess.get_file_as_bytes(path) if FileAccess.file_exists(path) else PackedByteArray()
