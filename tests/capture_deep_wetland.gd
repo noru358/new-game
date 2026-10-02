@@ -8,16 +8,20 @@ func _run() -> void:
 		return
 	DirAccess.make_dir_recursive_absolute(output)
 	var circuit := OS.get_environment("CAPTURE_TEMPLE_CIRCUIT") == "1"
-	var scene = load("res://game/temple_circuit_trial.tscn" if circuit else "res://game/deep_wetland_trial.tscn").instantiate()
+	var circuit_run := OS.get_environment("CAPTURE_CIRCUIT_RUN") == "1"
+	var scene = load("res://game/temple_circuit_run.tscn" if circuit_run else "res://game/temple_circuit_trial.tscn" if circuit else "res://game/deep_wetland_trial.tscn").instantiate()
 	root.add_child(scene)
 	current_scene = scene
 	for i in 5: await physics_frame
 	# Static camera evidence; navigation/combat state tests are separate.
 	for enemy in scene.actors:
 		if enemy != scene.player: enemy.set_physics_process(false)
-	var samples := [{"name": "entry", "point": scene.Wetland.ENTRY}, {"name": "procession", "point": scene.Wetland.PROCESSION}, {"name": "face-bank", "point": scene.Wetland.FACE_BANK}, {"name": "court", "point": scene.Wetland.TEMPLE_COURT}, {"name": "overview", "point": scene.Wetland.FACE_BANK}]
+	var samples := [] if circuit_run else [{"name": "entry", "point": scene.Wetland.ENTRY}, {"name": "procession", "point": scene.Wetland.PROCESSION}, {"name": "face-bank", "point": scene.Wetland.FACE_BANK}, {"name": "court", "point": scene.Wetland.TEMPLE_COURT}, {"name": "overview", "point": scene.Wetland.FACE_BANK}]
 	if circuit:
 		samples = [{"name": "entry", "point": scene.Circuit.ENTRY}, {"name": "court", "point": scene.Circuit.CENTRAL_COURT}, {"name": "cloister", "point": scene.Circuit.CLOISTER}, {"name": "sanctuary", "point": scene.Circuit.SANCTUARY}, {"name": "overview", "point": scene.Circuit.CENTRAL_COURT}]
+	if circuit_run:
+		samples = [{"name": "entry", "point": Vector2(650, 3000)}, {"name": "court", "point": Vector2(2450, 2100)}, {"name": "cloister", "point": Vector2(1450, 1350)}, {"name": "sanctuary", "point": Vector2(2800, 900)}, {"name": "overview", "point": Vector2(2450, 2100)}]
+	scene.wisp.set_physics_process(false)
 	for size in [Vector2i(1280, 720), Vector2i(960, 540)]:
 		root.size = size
 		root.content_scale_size = Vector2i(1280, 720)

@@ -35,9 +35,6 @@ func _init() -> void:
 			water_areas.append(Rect2(basin.position.x + inset, z, basin.size.x - inset * 2.0, depth))
 			z += depth
 	floor_areas = [
-		{"area": Rect2(200, 2240, 780, 470), "color": Color("61755c"), "height": 0.5},
-		{"area": Rect2(1000, 1910, 920, 370), "color": Color("8b9274"), "height": 0.5},
-		{"area": Rect2(1960, 1350, 1050, 360), "color": Color("778b75"), "height": 0.5},
 		{"area": Rect2(2860, 540, 530, 670), "color": Color("b0ad8a"), "height": 0.5},
 	]
 	wall_areas = []

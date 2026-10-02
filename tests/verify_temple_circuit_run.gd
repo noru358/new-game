@@ -16,6 +16,8 @@ func _run() -> void:
 	for i in 5: await physics_frame
 	var failures := 0
 	if scene.player.arena_bounds != scene.CircuitLayout.MAIN_BOUNDS: failures += 1
+	if not scene.temple_sanctuary_root.has_node("SteppedSanctuary"): failures += 1
+	if scene.navigation.is_open(Vector2(2800, 100), 30): failures += 1
 	if scene.BOSS_TIME != 240.0 or scene.profile.load_error: failures += 1
 	for p in [scene.start_point, Vector2(2450, 2100), scene.CircuitLayout.RETURN_POINT, scene.temple_section.boss_point, scene.temple_section.retry_point]:
 		if not scene.navigation.is_open(p, 30) or scene.navigation.find_path(scene.start_point, p).is_empty():

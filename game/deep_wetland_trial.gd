@@ -62,6 +62,7 @@ func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> vo
 
 func _build_terrain(render_bounds := Rect2()) -> void:
 	super._build_terrain(render_bounds)
+	_build_dry_paths()
 	# Broad irregular stone facets, not noisy pebble carpets.
 	for i in 12:
 		var p := Vector2(1050 + i * 70, 2080 + sin(i * 0.7) * 55)
@@ -119,3 +120,38 @@ func _input(event: InputEvent) -> void:
 		get_tree().change_scene_to_file("res://game/travel_camp.tscn")
 		return
 	super._input(event)
+
+func _build_dry_paths() -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var count := 0
+	for route in [Wetland.WAYPOINTS, Wetland.SIDE_ROUTE]:
+		for i in range(route.size() - 1):
+			var a: Vector2 = route[i]
+			var b: Vector2 = route[i + 1]
+			var along: Vector2 = a.direction_to(b)
+			var side := along.orthogonal()
+			var steps := maxi(1, ceili(a.distance_to(b) / 90.0))
+			for j in steps:
+				var first := a.lerp(b, float(j) / steps)
+				var last := a.lerp(b, float(j + 1) / steps)
+				var width := 72.0 + 18.0 * sin(float(i * 7 + j) * 0.5)
+				var corners := [first + side * width, last + side * width, last - side * width, first - side * width]
+				var dry := true
+				var footprint := Rect2(corners[0], Vector2.ZERO)
+				for corner in corners: footprint = footprint.expand(corner)
+				for water in terrain.water_areas:
+					if water.grow(20).intersects(footprint): dry = false
+				if not dry: continue
+				var points: Array = []
+				for corner in corners: points.append(Vector3(corner.x, 0.7, corner.y))
+				_quad(st, points, Color("7c8868"))
+				count += 1
+	if count == 0: return
+	st.generate_normals()
+	var node := MeshInstance3D.new()
+	node.mesh = st.commit()
+	var material := _material(Color.WHITE)
+	material.vertex_color_use_as_albedo = true
+	node.material_override = material
+	add_child(node)
