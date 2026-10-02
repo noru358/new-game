@@ -1,4 +1,5 @@
-class_name RunProfile
+# Frozen compatibility fixture from 7ea95c6; only class_name removed.
+# Original SHA256: b885bf2c70db22b42cdbf7403773c998401e878448d2a27c7f3c4d47bdc48fd4
 extends RefCounted
 
 const SAVE_VERSION := 7
@@ -15,10 +16,9 @@ const SUPPLY_COST := 12
 const SUPPLY_LIMIT := 3
 const TEMPLE_REGION := "O_TEMPLE"
 const JUNGLE_REGION := "O_JUNGLE_PASS"
-const WETLAND_REGION := "O_DEEP_WETLAND"
 const REGION_GEAR := {"O_TEMPLE": "W_FLOW", "O_JUNGLE_PASS": "W_ECHO"}
 const GEAR_AFFIXES := {"W_FLOW": ["RIPPLE", "KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW"], "A_EMBER": ["EMBER_STRIKE", "BRIGHT", "STEADY", "EMBER_STEP"]}
-const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT", "EMBER_STEP"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"], "O_DEEP_WETLAND": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "BRIGHT", "STEADY", "EMBER_STEP"]}
+const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT", "EMBER_STEP"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"]}
 
 var save_prefix := "user://loop_conquest_profile"
 var generation := 0
@@ -32,8 +32,6 @@ var temple_relic: bool:
 	get: return acquired_relic_ids.has("RELIC_TEMPLE")
 var jungle_owned: bool:
 	get: return owned_outpost_ids.has(JUNGLE_REGION)
-var wetland_owned: bool:
-	get: return owned_outpost_ids.has(WETLAND_REGION)
 var last_run_id := ""
 var load_error := false
 var unsupported_save_format := false
@@ -106,11 +104,10 @@ static func affix_title(affix: String) -> String:
 
 
 static func affix_source(affix: String) -> String:
-	var sources: Array[String] = []
 	for region in REGION_MODS:
 		if REGION_MODS[region].has(affix):
-			sources.append("사원" if region == TEMPLE_REGION else "정글" if region == JUNGLE_REGION else "습지")
-	return "·".join(sources) + " 재클리어 보상 (미보유 1개)" if not sources.is_empty() else ""
+			return ("사원" if region == TEMPLE_REGION else "정글") + " 재클리어 보상 (미보유 1개)"
+	return ""
 
 
 static func affix_kind(affix: String) -> String:
@@ -349,7 +346,7 @@ func begin_run(run_id: String) -> bool:
 
 
 func region_available(region_id: String) -> bool:
-	return region_id == TEMPLE_REGION or (region_id == JUNGLE_REGION and temple_owned) or (region_id == WETLAND_REGION and jungle_owned)
+	return region_id == TEMPLE_REGION or (region_id == JUNGLE_REGION and temple_owned)
 
 
 func settle(run_id: String, result: String, earned: int, region_id: String = TEMPLE_REGION) -> bool:
