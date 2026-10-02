@@ -190,8 +190,8 @@ func _build_ui() -> void:
 	growth.add_child(growth_tabs)
 	var attack_growth: VBoxContainer
 	for group in [
-		{"title": "공격", "ids": ["POWER", "WISP", "SLASH", "FINISH"]},
-		{"title": "방어", "ids": ["VITALITY", "GUARD"]},
+		{"title": "공격", "ids": ["POWER", "WISP", "SLASH", "FINISH", "SLASH_POWER"]},
+		{"title": "방어", "ids": ["VITALITY", "GUARD", "RECOVERY"]},
 		{"title": "기동·편의", "ids": ["MOBILITY", "SPEED"]},
 	]:
 		var group_page := _tab_page(group.title, growth_tabs)
@@ -374,17 +374,17 @@ func _refresh() -> void:
 	mod_behavior_label.visible = false
 	mod_numeric_label.visible = false
 	_update_mod_preview()
-	var growth_names := {"POWER": "평타 피해", "WISP": "여우불 발사 간격", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리", "VITALITY": "최대 HP", "GUARD": "받는 피해", "MOBILITY": "대시 충전 시간", "SPEED": "기본 이동속도"}
+	var growth_names := PermanentGrowthCatalog.NAMES
 	for id in growth_buttons:
 		var rank := int(profile.growth_ranks[id])
-		var cost := int(RunProfile.GROWTH_COST[rank]) if rank < 2 else 0
+		var cost := int(RunProfile.GROWTH_COST[rank]) if rank < PermanentGrowthCatalog.MAX_RANK else 0
 		var button: Button = growth_buttons[id]
 		var before := _growth_value(id, rank)
 		var after := _growth_value(id, rank + 1)
 		var available := profile.growth_available(id, unlocks.lifetime_levelups)
-		var locked_text := "누적 레벨업 1회 뒤 개방" if id == "SLASH" else "누적 레벨업 3회 뒤 개방"
-		button.text = "%s  %d/2  %s" % [growth_names[id], rank, locked_text if not available else "최대 · " + before if rank == 2 else before + " → " + after + " · 구매 %d" % cost]
-		button.disabled = profile.load_error or not available or rank == 2 or profile.currency < cost
+		var locked_text := "누적 레벨업 1회 뒤 개방" if id in ["SLASH", "SLASH_POWER"] else "누적 레벨업 3회 뒤 개방"
+		button.text = "%s  %d/%d  %s" % [growth_names[id], rank, PermanentGrowthCatalog.MAX_RANK, locked_text if not available else "최대 · " + before if rank == PermanentGrowthCatalog.MAX_RANK else before + " → " + after + " · 구매 %d" % cost]
+		button.disabled = profile.load_error or not available or rank == PermanentGrowthCatalog.MAX_RANK or profile.currency < cost
 	for id in attack_branch_buttons:
 		var branch_button: Button = attack_branch_buttons[id]
 		var effect := "직접 공격 · 평타/이동 베기 피해 +10%" if id == "DIRECT" else "동행 공격 · 여우불 피해 +10%"
@@ -452,16 +452,7 @@ func _mod_summary(id: String) -> String:
 
 
 func _growth_value(id: String, rank: int) -> String:
-	match id:
-		"POWER": return "%d%%" % (100 + rank * 5)
-		"WISP": return "%.2f초" % (WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - rank * 0.04))
-		"VITALITY": return "%d" % (100 + rank * 10)
-		"GUARD": return "%d%%" % (100 - rank * 5)
-		"MOBILITY": return "%d%%" % (100 - rank * 4)
-		"SPEED": return "%d%%" % (100 + rank * 4)
-		"SLASH": return "%d%%" % (100 - rank * 3)
-		"FINISH": return "%d%%" % (100 + rank * 5)
-	return ""
+	return PermanentGrowthCatalog.display_value(id, rank)
 
 
 func _select_gear(id: String) -> void:

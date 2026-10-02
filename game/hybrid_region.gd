@@ -158,14 +158,7 @@ func _create_region_section() -> Node:
 
 func _apply_preparation() -> void:
 	var ranks: Dictionary = profile.growth_ranks
-	player.permanent_basic_damage_bonus = 0.05 * int(ranks.POWER)
-	player.max_health += 10.0 * int(ranks.VITALITY)
-	player.permanent_dash_cooldown_reduction = 0.04 * int(ranks.MOBILITY)
-	player.permanent_slash_cooldown_reduction = 0.03 * int(ranks.SLASH)
-	player.permanent_finisher_reach_bonus = 0.05 * int(ranks.FINISH)
-	player.permanent_damage_reduction = 0.05 * int(ranks.GUARD)
-	player.permanent_move_speed_bonus = 0.04 * int(ranks.SPEED)
-	growth.permanent_wisp_cadence_reduction = 0.04 * int(ranks.WISP)
+	PermanentGrowthCatalog.apply_to_run(self)
 	if profile.attack_branch == "DIRECT":
 		player.permanent_basic_damage_bonus += 0.10
 		player.moving_slash_damage_bonus += 0.10
