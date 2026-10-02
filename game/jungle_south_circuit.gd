@@ -36,3 +36,10 @@ func _ready() -> void:
 	var environment := preload("res://game/jungle_south_circuit_environment.gd").build(self)
 	add_child(environment)
 	main_decor.append(environment)
+
+func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> void:
+	# Quiet continuous material on the field candidate, without prototype checker cells.
+	var vertices: Array = []
+	for point in [area.position, Vector2(area.end.x, area.position.y), area.end, Vector2(area.position.x, area.end.y)]:
+		vertices.append(Vector3(point.x, elevation.call(point), point.y))
+	_quad(st, vertices, color)

@@ -1,0 +1,6 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+Hybrid scene ready: Jungle southern circuit — isolated development run
+LANDING_PURSUIT {"accelerated":true,"damage_received":10.0,"frames":137,"spawn":[3167.0966796875,2133.12451171875]}
+SOUTH_SPAWN_SAMPLES [{"point":[3010.0,2130.0],"valid_of_100":100},{"point":[2080.0,2910.0],"valid_of_100":100},{"point":[3540.0,2660.0],"valid_of_100":100}]
+South landing pressure: 0 failures; not a balance or human difficulty test

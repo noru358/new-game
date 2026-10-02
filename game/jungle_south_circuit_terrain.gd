@@ -10,7 +10,7 @@ func _init() -> void:
 	super._init()
 	map_size.y = 3600
 	plateaus[2].openings["south"] = [[2840.0, 3180.0]]
-	ramps.append({"area": SOUTH_DESCENT, "axis": 1, "from": 80.0, "to": 0.0, "base": 0.0, "name": "남쪽 강가 내리막", "kind": "rock_path"})
+	ramps.append({"area": SOUTH_DESCENT, "axis": 1, "from": 80.0, "to": 0.0, "base": 0.0, "name": "남쪽 강가 내리막", "kind": "south_bank_descent"})
 	water_areas.erase(LOW_RIVER)
 	water_areas.append(Rect2(2690, 2260, 150, 140))
 	water_areas.append(Rect2(3180, 2260, 940, 140))

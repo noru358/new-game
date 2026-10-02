@@ -12,6 +12,11 @@ func _run() -> void:
 	root.add_child(scene)
 	for i in 5: await physics_frame
 	scene.set_physics_process(false)
+	var paving = scene.get_node("SouthernRiverPlaces/TransitCourt")
+	var vertices: PackedVector3Array = paving.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	for vertex in vertices:
+		var point := Vector2(vertex.x, vertex.z) / 0.01
+		check(vertex.y <= (scene.terrain.height_at(point) + 0.71) * 0.01, "new southern paving follows actual terrain below shadow bottom")
 	check(scene.player.arena_bounds == scene.SouthLayout.MAIN_BOUNDS, "candidate adds southern play bounds")
 	check(scene.profile.temple_owned and scene.growth.unlocks.lifetime_levelups == 6, "explicit isolated development access, not a fresh campaign")
 	for route in [scene.SouthTerrain.SOUTH_ROUTE, scene.SouthTerrain.RIDGE_RETURN]:
