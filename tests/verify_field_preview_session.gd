@@ -19,6 +19,15 @@ func _add(path: String) -> Node:
 	current_scene = scene
 	for i in 4: await physics_frame
 	return scene
+func _follow_button(button: Button, expected_path: String) -> Node:
+	button.pressed.emit()
+	for i in 20:
+		await physics_frame
+		if current_scene != null and current_scene.scene_file_path == expected_path:
+			for j in 4: await physics_frame
+			return current_scene
+	check(false, "wired scene transition to " + expected_path)
+	return current_scene
 func _run() -> void:
 	check(not Session.active(self), "ordinary launch not overridden")
 	check(Session.region_scene(self,false)=="res://game/hybrid_region.tscn", "ordinary temple retained")
@@ -30,16 +39,18 @@ func _run() -> void:
 	check(camp.preparation.jungle_region_button.disabled, "jungle is genuinely locked before temple")
 	for button in camp.preparation.find_children("*", "Button", true, false):
 		check(not "시험용 해금" in button.text, "development bypass absent in shared campaign")
-	await _clear_scene()
-	var run = await _add(Session.region_scene(self,false))
+	var run = await _follow_button(camp.preparation.start_button, Session.region_scene(self,false))
 	check(run.profile.save_prefix == prefix+"_profile", "candidate run shares camp economy")
 	check(run.growth.unlocks.save_prefix == prefix+"_unlocks", "candidate unlock progression shares camp")
 	run.run_currency = 100
 	run._finish_run("SUCCESS") # State-contract fixture, not a claimed player win.
 	var expected: int = run.profile.currency
 	check(run.profile.temple_owned, "temple settlement unlocks jungle")
-	await _clear_scene()
-	camp = await _add("res://game/travel_camp.tscn")
+	for i in 120:
+		if run.result_overlay.visible: break
+		await physics_frame
+	check(run.result_overlay.visible, "result transition finishes before return")
+	camp = await _follow_button(run.replay_button,"res://game/travel_camp.tscn")
 	var hub = camp.preparation
 	check(hub.profile.currency == expected, "earned settlement visible back in camp")
 	check(not hub.jungle_region_button.disabled, "earned jungle access visible")
@@ -51,8 +62,8 @@ func _run() -> void:
 	check(hub.profile.equipped_weapon == "W_FLOW", "explicit equip recorded")
 	hub._buy_growth("VITALITY")
 	var balance: int = hub.profile.currency
-	await _clear_scene()
-	run = await _add(Session.region_scene(self,true))
+	hub._select_region(RunProfile.JUNGLE_REGION)
+	run = await _follow_button(hub.start_button,Session.region_scene(self,true))
 	check(run.profile.currency == balance, "jungle does not inject synthetic first-clear money")
 	check(run.profile.equipped_weapon == "W_FLOW", "next map uses camp equipment")
 	check(run.player.max_health == 110, "next map uses purchased health growth")

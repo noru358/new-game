@@ -9,10 +9,12 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
 	var circuit := OS.get_environment("CAPTURE_TEMPLE_CIRCUIT") == "1"
 	var circuit_run := OS.get_environment("CAPTURE_CIRCUIT_RUN") == "1"
+	var full_wetland := OS.get_environment("CAPTURE_WETLAND_FIELD") == "1"
 	var jungle_south := OS.get_environment("CAPTURE_JUNGLE_SOUTH") == "1"
 	var scene_path := "res://game/deep_wetland_trial.tscn"
 	if circuit: scene_path = "res://game/temple_circuit_trial.tscn"
 	if circuit_run: scene_path = "res://game/temple_circuit_run.tscn"
+	if full_wetland: scene_path = "res://game/deep_wetland_field.tscn"
 	if jungle_south: scene_path = "res://game/jungle_south_circuit.tscn"
 	var scene = load(scene_path).instantiate()
 	root.add_child(scene)
@@ -28,6 +30,8 @@ func _run() -> void:
 		samples = [{"name": "entry", "point": Vector2(650, 3000)}, {"name": "court", "point": Vector2(2450, 2100)}, {"name": "cloister", "point": Vector2(1450, 1350)}, {"name": "sanctuary", "point": Vector2(2800, 900)}, {"name": "overview", "point": Vector2(2450, 2100)}]
 	if jungle_south:
 		samples = [{"name": "ridge", "point": Vector2(2175, 1800)}, {"name": "descent", "point": Vector2(3010, 2440)}, {"name": "landing", "point": Vector2(3540, 2660)}, {"name": "transit", "point": Vector2(2080, 2910)}, {"name": "overview", "point": Vector2(2450, 2100)}]
+	if full_wetland:
+		samples = [{"name": "causeway", "point": Vector2(3620, 970)}, {"name": "inner-court", "point": scene.Field.INNER_COURT}, {"name": "offering-grove", "point": scene.Field.OFFERING_GROVE}, {"name": "overview", "point": scene.Field.INNER_COURT}]
 	scene.set_physics_process(false) # Static render/navigation fixture only; no encounter activation.
 	scene.wisp.set_physics_process(false)
 	for size in [Vector2i(1280, 720), Vector2i(960, 540)]:

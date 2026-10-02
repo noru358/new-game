@@ -8,6 +8,7 @@ on:
       - 'game/jungle_south_circuit*'
       - 'game/wetland_root_environment.gd'
       - 'tests/capture_deep_wetland.gd'
+      - 'tests/capture_wetland_field_visibility.gd'
       - '.github/workflows/first-region-preview.yml'
 permissions:
   contents: read
@@ -48,23 +49,32 @@ jobs:
           mkdir -p wetland-render
           WETLAND_CAPTURE_DIR="$PWD/wetland-render" LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
-          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
           mkdir -p temple-circuit-render
           WETLAND_CAPTURE_DIR="$PWD/temple-circuit-render" CAPTURE_TEMPLE_CIRCUIT=1 LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
-          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
           test "$(find temple-circuit-render -name '*.png' | wc -l)" -eq 10
           test "$(find wetland-render -name '*.png' | wc -l)" -eq 10
           mkdir -p temple-run-render
           WETLAND_CAPTURE_DIR="$PWD/temple-run-render" CAPTURE_CIRCUIT_RUN=1 LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
-          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
           test "$(find temple-run-render -name '*.png' | wc -l)" -eq 10
           mkdir -p jungle-south-render
           WETLAND_CAPTURE_DIR="$PWD/jungle-south-render" CAPTURE_JUNGLE_SOUTH=1 LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
-          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
           test "$(find jungle-south-render -name '*.png' | wc -l)" -eq 10
+          mkdir -p wetland-field-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-field-render" CAPTURE_WETLAND_FIELD=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find wetland-field-render -name '*.png' | wc -l)" -eq 8
+          mkdir -p wetland-field-visibility
+          WETLAND_CAPTURE_DIR="$PWD/wetland-field-visibility" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_field_visibility.gd
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -74,3 +84,5 @@ jobs:
             temple-circuit-render/
             temple-run-render/
             jungle-south-render/
+            wetland-field-render/
+            wetland-field-visibility/

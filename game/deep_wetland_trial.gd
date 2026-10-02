@@ -85,7 +85,7 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	_build_face()
 	add_child(preload("res://game/wetland_root_environment.gd").build(self))
 	# Silhouettes stay in blocked water along the far bank, not over the route.
-	for p in [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]:
+	for p in _far_bank_groves():
 		_stone(p, Vector3(0.55, 2.4, 0.7), Color("394f44"))
 		_stone(p + Vector2(-35, 25), Vector3(1.45, 0.8, 1.25), Color("355b4a"), 340)
 	# Far-bank canopy clusters grow into blocked water only; the walking bank stays clear.
@@ -137,7 +137,7 @@ func _build_dry_paths() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var count := 0
-	for route in [Wetland.WAYPOINTS, Wetland.SIDE_ROUTE]:
+	for route in _dry_routes():
 		for i in range(route.size() - 1):
 			var a: Vector2 = route[i]
 			var b: Vector2 = route[i + 1]
@@ -179,7 +179,7 @@ func spawn_enemies() -> void:
 		actors[actor].queue_free()
 		actors.erase(actor)
 		actor_motion.erase(actor)
-	for spec in PLACE_ENCOUNTERS:
+	for spec in _place_encounters():
 		var enemy := _spawn_enemy_at(spec[0], spec[1], spec[2])
 		enemy.set_physics_process(false)
 		dormant_place_enemies.append(enemy)
@@ -199,3 +199,12 @@ func _physics_process(delta: float) -> void:
 		# Once engaged, retreat never freezes a warning or resets the enemy.
 		enemy.set_physics_process(true)
 		dormant_place_enemies.erase(enemy)
+
+func _dry_routes() -> Array:
+	return [Wetland.WAYPOINTS, Wetland.SIDE_ROUTE]
+
+func _place_encounters() -> Array:
+	return PLACE_ENCOUNTERS
+
+func _far_bank_groves() -> Array:
+	return [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]
