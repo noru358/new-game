@@ -91,13 +91,17 @@ def smoke(workspace, scratch, output, commit, label, report):
     title = f"Loop Conquest - {label} Field Preview"
     text = re.sub(r'^config/name="[^"]+"$', f'config/name="{title}"', text, count=1, flags=re.M)
     text = text.replace(old, 'config/custom_user_dir_name="LoopConquest-FieldPreview-v44"')
+    old_main = 'run/main_scene="res://game/travel_camp.tscn"'
+    if text.count(old_main) != 1:
+        raise RuntimeError("Unexpected ordinary main-scene contract")
+    text = text.replace(old_main, 'run/main_scene="res://game/field_preview_entry.tscn"')
     project.write_text(text)
     presets = workspace / "export_presets.cfg"
     config = presets.read_text()
     config = config.replace('application/bundle_identifier="com.noru358.loopconquest1a"',
                             'application/bundle_identifier="com.noru358.loopconquest.preview.v44"', 1)
     presets.write_text(config)
-    report["packaging_changes"] = {"title": title, "separate_user_data": "LoopConquest-FieldPreview-v44", "bundle_id": "com.noru358.loopconquest.preview.v44", "source_commit": commit}
+    report["packaging_changes"] = {"title": title, "separate_user_data": "LoopConquest-FieldPreview-v44", "bundle_id": "com.noru358.loopconquest.preview.v44", "source_commit": commit, "entry": "res://game/field_preview_entry.tscn"}
     checked([editor, "--headless", "--editor", "--path", workspace, "--quit"], scratch, output / "import.log", 240)
     deployment = scratch / "deployment"
     deployment.mkdir()
@@ -135,7 +139,7 @@ def smoke(workspace, scratch, output, commit, label, report):
                         ("deep-wetland", "res://game/deep_wetland_trial.tscn")]:
         engine_log = output / f"{name}-engine.log"
         command = [executable, "--headless", "--verbose", "--max-fps", "60", "--quit-after", "120", "--log-file", engine_log]
-        if name != "camp": command.append(scene)
+        if name != "camp": command.extend(["--", "--preview-scene=" + name])
         result = checked(command, deployment, output / f"{name}-process.log", 90)
         contents = engine_log.read_text(errors="replace")
         if ERROR.search(contents): raise RuntimeError(f"Exported scene error: {name}")
