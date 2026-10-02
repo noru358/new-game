@@ -32,7 +32,7 @@ func _run() -> void:
 		if actor != scene.player: scene.actors[actor].hide()
 	scene.wisp.set_physics_process(false)
 	var body: Sprite3D = scene.actors[scene.player].get_node("Body")
-	var meshes := scene.find_children("*", "MeshInstance3D", true, false)
+	var meshes: Array[Node] = scene.find_children("*", "MeshInstance3D", true, false)
 	var visibility: Array = []
 	for mesh in meshes: visibility.append(mesh.visible)
 	for size in [Vector2i(960,540), Vector2i(1280,720)]:
