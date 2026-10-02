@@ -4,6 +4,10 @@ const Circuit = preload("res://game/temple_circuit_trial_terrain.gd")
 
 func _init() -> void:
 	terrain = Circuit.new()
+	combat_camera_size = 9.0
+	camera_offset = Vector3(14, 13.864, 14)
+	show_practice_controls = false
+	moving_slash_practice = true
 	start_point = Circuit.ENTRY
 	enemy_points = [Vector2(2200, 2170), Vector2(1400, 1500), Vector2(3400, 1900), Vector2(2700, 1040)]
 	landmark_points = {"입구": Circuit.ENTRY, "중심 뜰": Circuit.CENTRAL_COURT, "회랑": Circuit.CLOISTER, "성소": Circuit.SANCTUARY}

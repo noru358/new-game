@@ -21,6 +21,19 @@ func _init() -> void:
 		Rect2(1900, 2310, 550, 600), Rect2(750, 2740, 1150, 170),
 		Rect2(3450, 80, 460, 1330), Rect2(2780, 80, 670, 420)
 	]
+	# Rounded bank contours are built from the SAME water records used by navigation.
+	# Narrow strips approximate erosion without a decorative floor/collision mismatch.
+	var basins: Array = water_areas.duplicate()
+	water_areas.clear()
+	for basin in basins:
+		var radius: float = minf(100.0, minf(basin.size.x, basin.size.y) * 0.28)
+		var z: float = basin.position.y
+		while z < basin.end.y:
+			var depth: float = minf(40.0, basin.end.y - z)
+			var edge: float = minf(z + depth * 0.5 - basin.position.y, basin.end.y - z - depth * 0.5)
+			var inset: float = radius - sqrt(maxf(0.0, radius * radius - pow(maxf(0.0, radius - edge), 2.0))) if edge < radius else 0.0
+			water_areas.append(Rect2(basin.position.x + inset, z, basin.size.x - inset * 2.0, depth))
+			z += depth
 	floor_areas = [
 		{"area": Rect2(200, 2240, 780, 470), "color": Color("61755c"), "height": 0.5},
 		{"area": Rect2(1000, 1910, 920, 370), "color": Color("8b9274"), "height": 0.5},

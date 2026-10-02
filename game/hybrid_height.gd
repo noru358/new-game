@@ -900,6 +900,13 @@ func _shot_world_point(shot: Node2D, point: Vector2) -> Vector3:
 	var data: Array = shot_height_data[shot]
 	var progress: float = clampf((data[0] as Vector2).distance_to(point) / float(data[3]), 0.0, 1.0)
 	var elevation: float = lerpf(float(data[1]), float(data[2]), progress)
+	# A homing target may move above its launch-time height, or a bolt may
+	# continue beyond the original target. Keep the visible projectile above
+	# its current walkable surface; collision and damage remain in the 2D ray.
+	# Normal depth testing still hides it behind solid walls and scenery.
+	var previous: Vector2 = shot_motion.get(shot, [data[0], point])[0]
+	if navigation.has_clear_path(previous, point):
+		elevation = maxf(elevation, terrain.height_at(point))
 	return Vector3(point.x, elevation + 55.0, point.y) * Terrain.SCALE
 
 func _update_hud() -> void:

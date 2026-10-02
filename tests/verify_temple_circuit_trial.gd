@@ -11,6 +11,8 @@ func _run() -> void:
 				printerr("FAIL: disconnected circuit point ", p)
 				failures += 1
 	if not scene.growth.growth_ended: failures += 1
+	if scene.camera.size != 9.0 or scene.show_practice_controls: failures += 1
+	if not scene.player.moving_slash_enabled: failures += 1
 	if scene.growth.unlocks.save_prefix == "user://loop_conquest_1d_unlocks": failures += 1
 	scene.queue_free()
 	for i in 3: await process_frame
