@@ -1,0 +1,1742 @@
+{
+  "active_limit_per_run": 270.0,
+  "choice_dwell_seconds": 1.5,
+  "complete": true,
+  "controller": "Unmodified sample_run_baseline input driver and fixed card priority; actual offerings and outcomes; no forced XP, health, cards, gear, currency or victory",
+  "controller_hz": 10,
+  "failure": "",
+  "human_playtest": false,
+  "initial_state": {
+    "accessory": "",
+    "attack_branch": "",
+    "awakenings": [],
+    "currency": 0,
+    "growth": {
+      "FINISH": 0,
+      "GUARD": 0,
+      "MOBILITY": 0,
+      "POWER": 0,
+      "RECOVERY": 0,
+      "SLASH": 0,
+      "SLASH_POWER": 0,
+      "SPEED": 0,
+      "VITALITY": 0,
+      "WISP": 0
+    },
+    "lifetime_levelups": 0,
+    "owned_gear": {
+
+    },
+    "owned_mods": [],
+    "owned_outposts": [],
+    "profile_load_error": false,
+    "slotted_mods": {
+
+    },
+    "weapon": "W_START"
+  },
+  "isolation": {
+    "normal_save_prefixes": true,
+    "root": "/tmp/new-game-fresh-economy-v44-wSVcgs",
+    "user_data_dir": "/tmp/new-game-fresh-economy-v44-wSVcgs/data/Godot/app_userdata/Loop Conquest - 1G Complete Run v03"
+  },
+  "outcome_probe": "ordinary_controller_with_confirmed_retreat_bound",
+  "purchase_policy": "Between requested runs only: after run 1 buy affordable VITALITY 1 for +10 maximum HP. Then prioritize W_FLOW only after a real temple clear; otherwise buy A_EMBER when affordable. Buy and equip with separate button activations. After run 2 buy affordable POWER 1 if no new gear is available. No shopping after the final requested run. Save the remainder; no consumables or hidden rewards required.",
+  "requested_runs": 3,
+  "retry_policy": "Use the existing boss retry once if offered before the active limit and before an enabled input-stop threshold; otherwise decline. At the active limit finish any current choice, request G retreat, and activate its confirm button.",
+  "runs": [
+    {
+      "after_settlement": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 512,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 27,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "after_shopping": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 457,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 27,
+        "owned_gear": {
+          "W_FLOW": true
+        },
+        "owned_mods": [],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 2,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": false,
+        "lifetime_levelups": 0,
+        "max_health": 100.0,
+        "slash_cooldown_reduction": 0.0,
+        "slash_distance_multiplier": 1.0,
+        "wisp_damage_bonus": 0.0
+      },
+      "before_departure": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 0,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 0,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "camp_reload_state": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 512,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "lifetime_levelups": 27,
+        "owned_gear": {
+
+        },
+        "owned_mods": [],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_START"
+      },
+      "card_choices": [
+        {
+          "active_seconds": 13.5666666666669,
+          "chosen": "U_REACH",
+          "key": 1,
+          "lifetime_levelups": 1,
+          "offered": [
+            "U_REACH",
+            "S_WISP_REPLY",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 21.5833333333334,
+          "chosen": "U_EDGE",
+          "key": 3,
+          "lifetime_levelups": 2,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_REPLY",
+            "U_EDGE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 27.2333333333331,
+          "chosen": "S_WISP_FOLLOWUP",
+          "key": 2,
+          "lifetime_levelups": 3,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_FOLLOWUP",
+            "S_WISP_REPLY"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 31.3666666666662,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 4,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_REPLY",
+            "S_WISP_ORBIT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 42.8166666666655,
+          "chosen": "U_REACH",
+          "key": 3,
+          "lifetime_levelups": 5,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CADENCE",
+            "U_REACH"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 49.7333333333318,
+          "chosen": "S_WISP_CADENCE",
+          "key": 3,
+          "lifetime_levelups": 6,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CHAIN",
+            "S_WISP_CADENCE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 55.6333333333315,
+          "chosen": "U_EDGE",
+          "key": 1,
+          "lifetime_levelups": 7,
+          "offered": [
+            "U_EDGE",
+            "S_WISP_COUNT",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 66.0499999999975,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 8,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_CHAIN",
+            "S_WISP_COUNT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 70.466666666664,
+          "chosen": "U_REACH",
+          "key": 1,
+          "lifetime_levelups": 9,
+          "offered": [
+            "U_REACH",
+            "S_WISP_CHAIN",
+            "S_WISP_ORBIT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 73.8833333333304,
+          "chosen": "S_WISP_COUNT",
+          "key": 2,
+          "lifetime_levelups": 10,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_COUNT",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 89.4833333333295,
+          "chosen": "U_EDGE",
+          "key": 1,
+          "lifetime_levelups": 11,
+          "offered": [
+            "U_EDGE",
+            "S_WISP_DAMAGE",
+            "U_STEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 93.8666666666626,
+          "chosen": "S_WISP_DAMAGE",
+          "key": 2,
+          "lifetime_levelups": 12,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_DAMAGE",
+            "S_WISP_CADENCE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 105.233333333329,
+          "chosen": "U_SLASH_CADENCE",
+          "key": 1,
+          "lifetime_levelups": 13,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_REPLY",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 117.233333333328,
+          "chosen": "S_WISP_COUNT",
+          "key": 3,
+          "lifetime_levelups": 14,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CADENCE",
+            "S_WISP_COUNT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 125.566666666661,
+          "chosen": "S_WISP_FOLLOWUP",
+          "key": 3,
+          "lifetime_levelups": 15,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_SWEEP",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 134.749999999999,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 16,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_REPLY",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 140.650000000004,
+          "chosen": "S_WISP_CADENCE",
+          "key": 2,
+          "lifetime_levelups": 17,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CADENCE",
+            "S_WISP_ORBIT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 152.31666666668,
+          "chosen": "S_WISP_CADENCE",
+          "key": 2,
+          "lifetime_levelups": 18,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_CADENCE",
+            "U_STEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 155.333333333349,
+          "chosen": "U_SLASH_CADENCE",
+          "key": 1,
+          "lifetime_levelups": 19,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_CHAIN",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 166.900000000025,
+          "chosen": "U_SLASH_SWEEP",
+          "key": 1,
+          "lifetime_levelups": 20,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_ORBIT",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 181.800000000037,
+          "chosen": "S_WISP_DAMAGE",
+          "key": 3,
+          "lifetime_levelups": 21,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_REPLY",
+            "S_WISP_DAMAGE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 195.350000000048,
+          "chosen": "S_WISP_DAMAGE",
+          "key": 2,
+          "lifetime_levelups": 22,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_DAMAGE",
+            "S_WISP_REPLY"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 201.233333333386,
+          "chosen": "U_SLASH_SWEEP",
+          "key": 1,
+          "lifetime_levelups": 23,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_ORBIT",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 209.366666666725,
+          "chosen": "S_WISP_SWEEP",
+          "key": 1,
+          "lifetime_levelups": 24,
+          "offered": [
+            "S_WISP_SWEEP",
+            "U_STEP",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 220.200000000067,
+          "chosen": "S_WISP_SWEEP",
+          "key": 3,
+          "lifetime_levelups": 25,
+          "offered": [
+            "S_WISP_REPLY",
+            "S_WISP_CHAIN",
+            "S_WISP_SWEEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 225.366666666738,
+          "chosen": "S_WISP_REPLY",
+          "key": 1,
+          "lifetime_levelups": 26,
+          "offered": [
+            "S_WISP_REPLY",
+            "S_WISP_CHAIN",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 239.000000000082,
+          "chosen": "S_WISP_REPLY",
+          "key": 2,
+          "lifetime_levelups": 27,
+          "offered": [
+            "S_WISP_ORBIT",
+            "S_WISP_REPLY",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        }
+      ],
+      "departure_reload_stable": true,
+      "diagnostics": {
+        "accessory": "",
+        "active_seconds": 254.183333333428,
+        "active_wall_seconds": 254.479058,
+        "attack_branch": "",
+        "boss_engagements": 2,
+        "boss_first_times": {
+          "arrive": {
+            "active_seconds": 211.700000000061,
+            "wall_seconds": 249.473573
+          },
+          "engage": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 283.664103
+          },
+          "kill": {
+            "active_seconds": 254.183333333428,
+            "wall_seconds": 296.658439
+          },
+          "ready": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 283.664049
+          }
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_REPLY": 2,
+          "S_WISP_SWEEP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 42.179645,
+        "choice_windows": 27,
+        "damage_events": 33,
+        "damage_taken_actual": 384.0,
+        "earned_currency": 462,
+        "health": 1.0,
+        "kills": 341,
+        "level": 28,
+        "level_heal_actual": 285.0,
+        "level_heal_events": 27,
+        "max_health": 100.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 0,
+          "WISP": 0
+        },
+        "points_earned": 27,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 27,
+        "region": "O_TEMPLE",
+        "result": "SUCCESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 296.658703,
+        "weapon": "W_START",
+        "xp_remainder": 6
+      },
+      "disk_reload_stable": true,
+      "distance_travelled": 76617.6410727102,
+      "input_events": 4673,
+      "input_stop": {
+
+      },
+      "purchases": [
+        {
+          "after": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 492,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 27,
+            "owned_gear": {
+
+            },
+            "owned_mods": [],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_START"
+          },
+          "before": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 512,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 0,
+              "WISP": 0
+            },
+            "lifetime_levelups": 27,
+            "owned_gear": {
+
+            },
+            "owned_mods": [],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_START"
+          },
+          "button": "최대 HP  0/5  100 → 110 · 구매 20",
+          "id": "VITALITY",
+          "kind": "growth",
+          "rationale": "First affordable survival improvement: +10 maximum HP on the next departure"
+        },
+        {
+          "after_buy_before_equip": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 457,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 27,
+            "owned_gear": {
+              "W_FLOW": true
+            },
+            "owned_mods": [],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_START"
+          },
+          "after_equip": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 457,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 27,
+            "owned_gear": {
+              "W_FLOW": true
+            },
+            "owned_mods": [],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_FLOW"
+          },
+          "before": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 492,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 27,
+            "owned_gear": {
+
+            },
+            "owned_mods": [],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_START"
+          },
+          "buy_button": "선택 장비 구매  35",
+          "equip_button": "선택 장비 장착",
+          "id": "W_FLOW",
+          "kind": "gear",
+          "rationale": "Real temple clear unlocked movement-link weapon"
+        }
+      ],
+      "result_text": "문지기 격파 · 성공\n생존 시간 04:14  ·  처치 341\n획득 462  ·  손실 0  ·  정산 +512  ·  누적 512\n첫 지역 완료 · 새 장비 선택 가능\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다.",
+      "result_to_camp_stable": true,
+      "retry_decisions": [],
+      "run": 1,
+      "settlement": {
+        "awarded": 512,
+        "earned": 462,
+        "first_clear": true,
+        "lost": 0,
+        "result": "SUCCESS",
+        "save_pending": false
+      },
+      "stop_reason": "natural_result"
+    },
+    {
+      "after_settlement": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 973,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 55,
+        "owned_gear": {
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "after_shopping": {
+        "accessory": "A_EMBER",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 949,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 55,
+        "owned_gear": {
+          "A_EMBER": true,
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 4,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": true,
+        "lifetime_levelups": 27,
+        "max_health": 110.0,
+        "slash_cooldown_reduction": 0.1,
+        "slash_distance_multiplier": 1.2,
+        "wisp_damage_bonus": 0.0
+      },
+      "before_departure": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 457,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 27,
+        "owned_gear": {
+          "W_FLOW": true
+        },
+        "owned_mods": [],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "camp_reload_state": {
+        "accessory": "",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 973,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 55,
+        "owned_gear": {
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "card_choices": [
+        {
+          "active_seconds": 12.5000000000002,
+          "chosen": "U_EDGE",
+          "key": 3,
+          "lifetime_levelups": 28,
+          "offered": [
+            "U_REACH",
+            "S_WISP_REPLY",
+            "U_EDGE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 24.6999999999999,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 29,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_CADENCE",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 27.633333333333,
+          "chosen": "S_WISP_DAMAGE",
+          "key": 3,
+          "lifetime_levelups": 30,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_ORBIT",
+            "S_WISP_DAMAGE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 36.1833333333326,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 31,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_SWEEP",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 42.7166666666655,
+          "chosen": "S_WISP_FOLLOWUP",
+          "key": 2,
+          "lifetime_levelups": 32,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_FOLLOWUP",
+            "S_WISP_REPLY"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 54.0666666666649,
+          "chosen": "S_WISP_CADENCE",
+          "key": 3,
+          "lifetime_levelups": 33,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CHAIN",
+            "S_WISP_CADENCE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 59.3333333333312,
+          "chosen": "U_EDGE",
+          "key": 1,
+          "lifetime_levelups": 34,
+          "offered": [
+            "U_EDGE",
+            "S_WISP_COUNT",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 66.0333333333309,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 35,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_CHAIN",
+            "S_WISP_COUNT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 74.4833333333304,
+          "chosen": "U_SLASH_SWEEP",
+          "key": 1,
+          "lifetime_levelups": 36,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CHAIN",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 78.7499999999968,
+          "chosen": "S_WISP_COUNT",
+          "key": 2,
+          "lifetime_levelups": 37,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_COUNT",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 81.5666666666633,
+          "chosen": "U_EDGE",
+          "key": 1,
+          "lifetime_levelups": 38,
+          "offered": [
+            "U_EDGE",
+            "S_WISP_DAMAGE",
+            "U_STEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 85.8833333333297,
+          "chosen": "S_WISP_DAMAGE",
+          "key": 2,
+          "lifetime_levelups": 39,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_DAMAGE",
+            "S_WISP_CADENCE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 99.183333333329,
+          "chosen": "U_SLASH_CADENCE",
+          "key": 1,
+          "lifetime_levelups": 40,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_REPLY",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 102.766666666662,
+          "chosen": "S_WISP_COUNT",
+          "key": 3,
+          "lifetime_levelups": 41,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_CADENCE",
+            "S_WISP_COUNT"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 118.833333333328,
+          "chosen": "S_WISP_FOLLOWUP",
+          "key": 3,
+          "lifetime_levelups": 42,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_SWEEP",
+            "S_WISP_FOLLOWUP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 127.216666666661,
+          "chosen": "U_REACH",
+          "key": 1,
+          "lifetime_levelups": 43,
+          "offered": [
+            "U_REACH",
+            "S_WISP_REPLY",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 136.633333333334,
+          "chosen": "S_WISP_CADENCE",
+          "key": 2,
+          "lifetime_levelups": 44,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_CADENCE",
+            "U_STEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 142.800000000006,
+          "chosen": "U_REACH",
+          "key": 1,
+          "lifetime_levelups": 45,
+          "offered": [
+            "U_REACH",
+            "S_WISP_CADENCE",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 151.416666666679,
+          "chosen": "U_SLASH_CADENCE",
+          "key": 1,
+          "lifetime_levelups": 46,
+          "offered": [
+            "U_SLASH_CADENCE",
+            "S_WISP_REPLY",
+            "S_WISP_SWEEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 157.416666666684,
+          "chosen": "S_WISP_CADENCE",
+          "key": 3,
+          "lifetime_levelups": 47,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_SWEEP",
+            "S_WISP_CADENCE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 172.816666666696,
+          "chosen": "S_WISP_DAMAGE",
+          "key": 2,
+          "lifetime_levelups": 48,
+          "offered": [
+            "U_REACH",
+            "S_WISP_DAMAGE",
+            "U_STEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 185.150000000039,
+          "chosen": "U_REACH",
+          "key": 1,
+          "lifetime_levelups": 49,
+          "offered": [
+            "U_REACH",
+            "S_WISP_REPLY",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 191.833333333378,
+          "chosen": "U_SLASH_SWEEP",
+          "key": 1,
+          "lifetime_levelups": 50,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_ORBIT",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 200.400000000052,
+          "chosen": "S_WISP_SWEEP",
+          "key": 3,
+          "lifetime_levelups": 51,
+          "offered": [
+            "S_WISP_REPLY",
+            "S_WISP_CHAIN",
+            "S_WISP_SWEEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 207.900000000058,
+          "chosen": "S_WISP_SWEEP",
+          "key": 2,
+          "lifetime_levelups": 52,
+          "offered": [
+            "S_WISP_REPLY",
+            "S_WISP_SWEEP",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 214.600000000063,
+          "chosen": "S_WISP_REPLY",
+          "key": 2,
+          "lifetime_levelups": 53,
+          "offered": [
+            "S_WISP_ORBIT",
+            "S_WISP_REPLY",
+            "S_SEAL"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 225.633333333405,
+          "chosen": "S_WISP_CHAIN",
+          "key": 1,
+          "lifetime_levelups": 54,
+          "offered": [
+            "S_WISP_CHAIN",
+            "S_WISP_ORBIT",
+            "U_STEP"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 238.800000000082,
+          "chosen": "S_WISP_REPLY",
+          "key": 1,
+          "lifetime_levelups": 55,
+          "offered": [
+            "S_WISP_REPLY",
+            "S_WISP_ORBIT",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        }
+      ],
+      "departure_reload_stable": true,
+      "diagnostics": {
+        "accessory": "",
+        "active_seconds": 254.316666666761,
+        "active_wall_seconds": 254.611389,
+        "attack_branch": "",
+        "boss_engagements": 1,
+        "boss_first_times": {
+          "arrive": {
+            "active_seconds": 223.366666666737,
+            "wall_seconds": 264.140518
+          },
+          "engage": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 285.081199
+          },
+          "kill": {
+            "active_seconds": 254.316666666761,
+            "wall_seconds": 298.209986
+          },
+          "ready": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 285.081174
+          }
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_CHAIN": 1,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_REPLY": 2,
+          "S_WISP_SWEEP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 43.59906,
+        "choice_windows": 28,
+        "damage_events": 43,
+        "damage_taken_actual": 476.0,
+        "earned_currency": 496,
+        "health": 49.0,
+        "kills": 345,
+        "level": 29,
+        "level_heal_actual": 415.0,
+        "level_heal_events": 28,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 0.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 28,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 28,
+        "region": "O_TEMPLE",
+        "result": "SUCCESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 298.210449,
+        "weapon": "W_FLOW",
+        "xp_remainder": 12
+      },
+      "disk_reload_stable": true,
+      "distance_travelled": 79710.9661222463,
+      "input_events": 4763,
+      "input_stop": {
+
+      },
+      "purchases": [
+        {
+          "after_buy_before_equip": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 949,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 55,
+            "owned_gear": {
+              "A_EMBER": true,
+              "W_FLOW": true
+            },
+            "owned_mods": [
+              "BRIGHT"
+            ],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_FLOW"
+          },
+          "after_equip": {
+            "accessory": "A_EMBER",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 949,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 55,
+            "owned_gear": {
+              "A_EMBER": true,
+              "W_FLOW": true
+            },
+            "owned_mods": [
+              "BRIGHT"
+            ],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_FLOW"
+          },
+          "before": {
+            "accessory": "",
+            "attack_branch": "",
+            "awakenings": [],
+            "currency": 973,
+            "growth": {
+              "FINISH": 0,
+              "GUARD": 0,
+              "MOBILITY": 0,
+              "POWER": 0,
+              "RECOVERY": 0,
+              "SLASH": 0,
+              "SLASH_POWER": 0,
+              "SPEED": 0,
+              "VITALITY": 1,
+              "WISP": 0
+            },
+            "lifetime_levelups": 55,
+            "owned_gear": {
+              "W_FLOW": true
+            },
+            "owned_mods": [
+              "BRIGHT"
+            ],
+            "owned_outposts": [
+              "O_TEMPLE"
+            ],
+            "profile_load_error": false,
+            "slotted_mods": {
+
+            },
+            "weapon": "W_FLOW"
+          },
+          "buy_button": "선택 장비 구매  24",
+          "equip_button": "선택 장비 장착",
+          "id": "A_EMBER",
+          "kind": "gear",
+          "rationale": "Affordable companion-damage improvement; this accessory does not require a temple clear"
+        }
+      ],
+      "result_text": "문지기 격파 · 성공\n생존 시간 04:14  ·  처치 345\n획득 496  ·  손실 0  ·  정산 +516  ·  누적 973\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다.\n여우불 장신구 옵션 획득: 여우불 피해 계수 +0.05\n야영지 장비창에서 장착할 수 있습니다.",
+      "result_to_camp_stable": true,
+      "retry_decisions": [],
+      "run": 2,
+      "settlement": {
+        "awarded": 516,
+        "earned": 496,
+        "first_clear": false,
+        "lost": 0,
+        "result": "SUCCESS",
+        "save_pending": false
+      },
+      "stop_reason": "natural_result"
+    },
+    {
+      "after_settlement": {
+        "accessory": "A_EMBER",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 956,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 57,
+        "owned_gear": {
+          "A_EMBER": true,
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "after_shopping": {
+        "accessory": "A_EMBER",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 956,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 57,
+        "owned_gear": {
+          "A_EMBER": true,
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "applied_on_departure": {
+        "basic_damage_bonus": 0.0,
+        "combo_steps": 4,
+        "echo_finisher_enabled": false,
+        "flow_weave_enabled": true,
+        "lifetime_levelups": 55,
+        "max_health": 110.0,
+        "slash_cooldown_reduction": 0.1,
+        "slash_distance_multiplier": 1.2,
+        "wisp_damage_bonus": 0.15
+      },
+      "before_departure": {
+        "accessory": "A_EMBER",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 949,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 55,
+        "owned_gear": {
+          "A_EMBER": true,
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "camp_reload_state": {
+        "accessory": "A_EMBER",
+        "attack_branch": "",
+        "awakenings": [],
+        "currency": 956,
+        "growth": {
+          "FINISH": 0,
+          "GUARD": 0,
+          "MOBILITY": 0,
+          "POWER": 0,
+          "RECOVERY": 0,
+          "SLASH": 0,
+          "SLASH_POWER": 0,
+          "SPEED": 0,
+          "VITALITY": 1,
+          "WISP": 0
+        },
+        "lifetime_levelups": 57,
+        "owned_gear": {
+          "A_EMBER": true,
+          "W_FLOW": true
+        },
+        "owned_mods": [
+          "BRIGHT"
+        ],
+        "owned_outposts": [
+          "O_TEMPLE"
+        ],
+        "profile_load_error": false,
+        "slotted_mods": {
+
+        },
+        "weapon": "W_FLOW"
+      },
+      "card_choices": [
+        {
+          "active_seconds": 11.9833333333335,
+          "chosen": "U_EDGE",
+          "key": 3,
+          "lifetime_levelups": 56,
+          "offered": [
+            "U_REACH",
+            "S_WISP_REPLY",
+            "U_EDGE"
+          ],
+          "point_spent": true
+        },
+        {
+          "active_seconds": 16.7333333333337,
+          "chosen": "U_TEMPO",
+          "key": 1,
+          "lifetime_levelups": 57,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_CADENCE",
+            "S_WISP_CHAIN"
+          ],
+          "point_spent": true
+        }
+      ],
+      "departure_reload_stable": true,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 270.000000000083,
+        "active_wall_seconds": 270.074851,
+        "attack_branch": "",
+        "boss_engagements": 0,
+        "boss_first_times": {
+          "ready": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 244.403475
+          }
+        },
+        "cards": {
+          "U_EDGE": 1,
+          "U_TEMPO": 1
+        },
+        "choice_wall_seconds": 3.128553,
+        "choice_windows": 2,
+        "damage_events": 2,
+        "damage_taken_actual": 20.0,
+        "earned_currency": 9,
+        "health": 110.0,
+        "kills": 9,
+        "level": 3,
+        "level_heal_actual": 20.0,
+        "level_heal_events": 2,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.010582,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 0.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 2,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 2,
+        "region": "O_TEMPLE",
+        "result": "RETREAT",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 273.213986,
+        "weapon": "W_FLOW",
+        "xp_remainder": 0
+      },
+      "disk_reload_stable": true,
+      "distance_travelled": 6487.43115738034,
+      "input_events": 397,
+      "input_stop": {
+
+      },
+      "purchases": [],
+      "result_text": "런 종료 · 귀환\n생존 시간 04:30  ·  처치 9\n획득 9  ·  손실 2  ·  정산 +7  ·  누적 956\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다.",
+      "result_to_camp_stable": true,
+      "retry_decisions": [],
+      "run": 3,
+      "settlement": {
+        "awarded": 7,
+        "earned": 9,
+        "first_clear": false,
+        "lost": 2,
+        "result": "RETREAT",
+        "save_pending": false
+      },
+      "stop_reason": "active_limit_confirmed_retreat"
+    }
+  ],
+  "sample": "fresh_economy_input_journey_v1",
+  "seed": 250,
+  "smoke_only": false,
+  "source_hashes_end": {
+    "game/hub.gd": "20d173bacca7de89dfb71023855bfe08ba5a9ae59744f2f6659797e0c59f7cde",
+    "game/hybrid_region.gd": "d062931d008534a2c7a1b1e82aaba780646a0cbc14f86da86020407330db3770",
+    "game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "game/run_diagnostics.gd": "418c96719ea551259383dbc4afd82be44786788053e459c66a366d5c3a880436",
+    "game/run_growth.gd": "471aaa7ca916622287d20989cbf8b49f6ac57cfadf3dd05542cb7e256a08990b",
+    "game/run_profile.gd": "b885bf2c70db22b42cdbf7403773c998401e878448d2a27c7f3c4d47bdc48fd4",
+    "game/temple_section.gd": "b6533876caef5d523be0827c2520c61dc56a922cb2a23d888ae85a98a228a1dd",
+    "game/travel_camp.gd": "eb84ea32ec8389327a925b9c7f38ae03d8aa5ac2b677ab62a5e8d7da72ac1278",
+    "game/unlock_progress.gd": "b3fd0e0fca1cbc234a7f48c43c6f9edab758283fe74d12dff9a6051d17c6ae5b",
+    "tests/sample_fresh_economy.gd": "d6e2005a70975279258710b410fcd0b5b31ecec18dc9ee932593b0f59a48fc57",
+    "tests/sample_run_baseline.gd": "628e99ac19b4a0c6eb6165fbba822e4533419da435426cd2e0859028a5022718"
+  },
+  "source_hashes_start": {
+    "game/hub.gd": "20d173bacca7de89dfb71023855bfe08ba5a9ae59744f2f6659797e0c59f7cde",
+    "game/hybrid_region.gd": "d062931d008534a2c7a1b1e82aaba780646a0cbc14f86da86020407330db3770",
+    "game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "game/run_diagnostics.gd": "418c96719ea551259383dbc4afd82be44786788053e459c66a366d5c3a880436",
+    "game/run_growth.gd": "471aaa7ca916622287d20989cbf8b49f6ac57cfadf3dd05542cb7e256a08990b",
+    "game/run_profile.gd": "b885bf2c70db22b42cdbf7403773c998401e878448d2a27c7f3c4d47bdc48fd4",
+    "game/temple_section.gd": "b6533876caef5d523be0827c2520c61dc56a922cb2a23d888ae85a98a228a1dd",
+    "game/travel_camp.gd": "eb84ea32ec8389327a925b9c7f38ae03d8aa5ac2b677ab62a5e8d7da72ac1278",
+    "game/unlock_progress.gd": "b3fd0e0fca1cbc234a7f48c43c6f9edab758283fe74d12dff9a6051d17c6ae5b",
+    "tests/sample_fresh_economy.gd": "d6e2005a70975279258710b410fcd0b5b31ecec18dc9ee932593b0f59a48fc57",
+    "tests/sample_run_baseline.gd": "628e99ac19b4a0c6eb6165fbba822e4533419da435426cd2e0859028a5022718"
+  },
+  "stop_input_at_active_seconds": -1.0,
+  "stopped_input_policy": "When explicitly enabled, release all player movement/combat at the threshold and leave real enemies and automatic companions running. Continue actual offered card choices to avoid modal deadlock. This is an intentional stopped-input loss probe, not novice play or a normal failure distribution. If no loss occurs, use the real retreat confirmation at the active limit.",
+  "total_wall_seconds": 882.605901
+}

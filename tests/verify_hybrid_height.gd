@@ -59,7 +59,14 @@ func _run() -> void:
 	_check(not scene.clear_attack(Vector2(420, 1640), Vector2(800, 1640)) and scene.clear_attack(Vector2(420, 1850), Vector2(800, 1850)), "southern water blocks the direct route but leaves a dry lowland detour")
 	_check(not scene.clear_attack(Vector2(1480, 1650), Vector2(1780, 1650)) and scene.clear_attack(Vector2(1480, 1850), Vector2(1780, 1850)), "eastern water also has a lower dry detour")
 	var around_water: PackedVector2Array = scene.navigation.find_path(Vector2(420, 1640), Vector2(880, 1640))
-	_check(around_water.size() > 2 and around_water[1].y > 1670.0, "enemy navigation routes around the same deep-water footprint shown on the map: %s" % [around_water])
+	var uses_dry_detour := false
+	var route_clear := around_water.size() > 2
+	for point in around_water:
+		uses_dry_detour = uses_dry_detour or point.y >= 1800.0
+		route_clear = route_clear and scene.navigation.is_open(point, scene.ACTOR_CLEARANCE)
+	for i in range(1, around_water.size()):
+		route_clear = route_clear and scene.navigation.has_clear_path(around_water[i - 1], around_water[i])
+	_check(route_clear and uses_dry_detour, "every segment follows dry ground around the displayed water: %s" % [around_water])
 	_check(is_equal_approx(scene.terrain.height_at(Vector2(930, 350)), 80) and is_equal_approx(scene.terrain.height_at(Vector2(1000, 1000)), 240), "both levels interpolate continuously on ramps")
 	for route in [[Vector2(930, 1850), Vector2.UP, 120], [Vector2(930, 150), Vector2.DOWN, 100], [Vector2(2200, 1180), Vector2.LEFT, 100]]:
 		scene.teleport(route[0])
