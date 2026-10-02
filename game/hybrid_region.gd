@@ -477,9 +477,9 @@ func _encounter_phase() -> Dictionary:
 		return {"name": "원거리 진형 · 뒤의 적부터 돌파", "rate": 0.30, "weights": [40.0, 15.0, 30.0, 10.0, 5.0]}
 	if run_time >= 155.0 and run_time < 180.0:
 		return {"name": "숨 고르기 · 남은 적 정리", "rate": -0.30, "weights": [70.0, 15.0, 5.0, 5.0, 5.0]}
-	if run_time >= 210.0 and run_time < 235.0:
+	if run_time >= 190.0 and run_time < 215.0:
 		return {"name": "지원 진형 · 지원 적 우선 처치", "rate": 0.35, "weights": [35.0, 20.0, 15.0, 10.0, 20.0]}
-	if run_time >= 235.0 and run_time < 260.0:
+	if run_time >= 215.0 and run_time < BOSS_TIME:
 		return {"name": "숨 고르기 · 보스전 준비", "rate": -0.35, "weights": [65.0, 15.0, 10.0, 5.0, 5.0]}
 	return {}
 

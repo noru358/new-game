@@ -147,11 +147,11 @@ func _run() -> void:
 	await process_frame
 	_check(scene.temple_environment_root.visible, "returning from the garden restores the corridor kit")
 	_check(scene.temple_sanctuary_root.visible, "garden return restores the sanctuary ensemble")
-	scene.run_time = 300.0
+	scene.run_time = scene.BOSS_TIME
 	scene.teleport(Vector2(3900, 1120))
 	scene.temple_section.tick(0.0)
 	scene.temple_section.tick(1.3)
-	_check(scene.boss_spawned and scene.boss.position == scene.temple_section.BOSS_POINT, "same five-minute destination boss can spawn beside the sample")
+	_check(scene.boss_spawned and scene.boss.position == scene.temple_section.BOSS_POINT, "same four-minute destination boss can spawn beside the sample")
 	scene.teleport(scene.temple_section.RETRY_POINT)
 	scene.temple_section.tick(0.0)
 	_check(scene.temple_section.boss_active, "existing sanctuary entry still engages the boss")
