@@ -410,12 +410,16 @@ func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
 func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
 	var area: Rect2 = ramp.area
 	_top(st, area, func(point): return terrain.ramp_height(ramp, point), ramp_color.darkened(0.24))
-	for step in 12:
-		var x0: float = area.position.x + area.size.x * float(step) / 12.0
-		var width: float = area.size.x / 12.0
-		var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
-		_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
-		_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
+	var worn_stone = preload("res://game/jungle_worn_stone_visuals.gd")
+	if worn_stone.enabled():
+		worn_stone.append_treads(st, ramp, func(point): return terrain.ramp_height(ramp, point), ramp_color)
+	else:
+		for step in 12:
+			var x0: float = area.position.x + area.size.x * float(step) / 12.0
+			var width: float = area.size.x / 12.0
+			var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
+			_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
+			_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
 	_ramp_edge_markers(st, ramp)
 
 func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
