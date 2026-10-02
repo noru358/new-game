@@ -405,3 +405,5 @@
 - 7b04b0c 전체 CI37064991774 및 Mac package37064991756 성공. universal두아키텍처/adhoc서명/별도저장/내장4씬 실제 초기실행을 확인했다. 새 field preview 진입으로 release path override를 쓰지 않고 통과했다. 시각적으로 같은0642826의40장 렌더37064353718도 성공하고 부모가 새 정글 내리막/나루/사원 그림자를 확인했다.
 - universalZIP62,972,183bytes, SHA256`6d841f62cbbdc6aceded9a4f6934e175fc27bce3e9f30e5a9c44f56283110ee6`를 로컬에서 바이트·ZIP CRC 확인하고 Library 저장까지 성공했다. 그러나 사용자 대화에 첨부하는 단계에서 용량 한도 오류로 거절돼 실행파일을 전달했다고 기록하지 않는다. 실제 게임 화면3장은 별도로 전달했다.
 - 사용자의M3에 맞는 arm64단일앱을 다시 export/sign/startup 검증하도록 패키지 도구에 아키텍처 옵션을 추가했다. 원래universal도 재현 가능하다. 현재 Mac runner는 job log에서 macos-26-arm64로 확인했다. 게임 런타임 코드는 이번 수정에서 변경하지 않았다. arm64결과와 실제 첨부 성공을 확인한 뒤 전달 완료로 기록한다.
+
+- arm64직접 export시 공식4.6 template에 별도 `godot_macos_release.arm64`가 없다는 오류가 확인됐다(37066747249). 공식universal bundle을 만든 뒤 Mac의lipo로arm64만 남기고 기존metadata를 보존하여adhoc재서명/strict검증/4씬초기실행을 반복하도록 수정했다. 결과 확인 전 전달 완료로 쓰지 않는다.

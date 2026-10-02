@@ -100,7 +100,9 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     config = presets.read_text()
     config = config.replace('application/bundle_identifier="com.noru358.loopconquest1a"',
                             'application/bundle_identifier="com.noru358.loopconquest.preview.v44"', 1)
-    config = config.replace('binary_format/architecture="universal"', f'binary_format/architecture="{architecture}"', 1)
+    # Official 4.6 macOS templates contain the universal binary only.
+    # Produce that valid bundle first, then thin/re-sign on this native Mac when requested.
+    config = config.replace('binary_format/architecture="universal"', 'binary_format/architecture="universal"', 1)
     presets.write_text(config)
     report["packaging_changes"] = {"title": title, "separate_user_data": "LoopConquest-FieldPreview-v44", "bundle_id": "com.noru358.loopconquest.preview.v44", "source_commit": commit, "entry": "res://game/field_preview_entry.tscn"}
     checked([editor, "--headless", "--editor", "--path", workspace, "--quit"], scratch, output / "import.log", 240)
@@ -111,6 +113,13 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
              "--export-release", "macOS", app], scratch, output / "export.log", 300)
     info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
     executable = app / "Contents/MacOS" / info["CFBundleExecutable"]
+    if architecture == "arm64":
+        thin = executable.with_name(executable.name + ".arm64")
+        checked(["lipo", executable, "-thin", "arm64", "-output", thin], deployment, output / "thin-arm64.log")
+        thin.chmod(executable.stat().st_mode)
+        thin.replace(executable)
+        checked(["codesign", "--force", "--deep", "--sign", "-", "--preserve-metadata=identifier,entitlements,flags", app],
+                deployment, output / "codesign-arm64.log")
     architectures = subprocess.check_output(["lipo", "-archs", str(executable)], text=True).strip().split()
     if set(architectures) != ({"arm64", "x86_64"} if architecture == "universal" else {"arm64"}):
         raise RuntimeError(f"Expected {architecture} binary, got {architectures}")
