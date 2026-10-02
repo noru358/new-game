@@ -30,10 +30,6 @@ func _ready() -> void:
 	contact_margin = 5.0
 
 
-func _attack_delay() -> float:
-	return 1.45 if phase == 2 else 1.20
-
-
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	sweep_burst_time = maxf(0.0, sweep_burst_time - delta)
@@ -109,6 +105,12 @@ func suspend_encounter() -> void:
 	gust_burst_time = 0.0
 	combo_gap = 0.0
 	combo_attacks_left = 0
+
+
+func resume_from_boundary() -> void:
+	super.resume_from_boundary()
+	if sweep_warning > 0.0: sweep_warning = maxf(sweep_warning, REENTRY_WARNING_FLOOR)
+	if gust_warning > 0.0: gust_warning = maxf(gust_warning, REENTRY_WARNING_FLOOR)
 
 
 func combat_cue() -> String:

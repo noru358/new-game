@@ -8,7 +8,7 @@ const TempleEnvironmentScript = preload("res://game/temple_environment_kit.gd")
 const TempleSanctuaryScript = preload("res://game/temple_sanctuary_environment.gd")
 const TempleOcclusionCandidateScript = preload("res://game/temple_occlusion_candidate.gd")
 const TempleOpeningScript = preload("res://game/temple_opening_environment.gd")
-const BOSS_TIME := 300.0
+const BOSS_TIME := 240.0
 const MAX_ENEMIES := 72
 const TempleSectionScript = preload("res://game/temple_section.gd")
 var temple_section: Node

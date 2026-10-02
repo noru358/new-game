@@ -29,6 +29,9 @@ var impact_is_ring := false
 var counter_flash := 0.0
 const COUNTER_DAMAGE_MULTIPLIER := 1.30
 const DUEL_CHARGE_SPEED := 1000.0
+const REENTRY_WARNING_FLOOR := 0.35
+
+@export var brisk_cadence := true
 
 
 func _ready() -> void:
@@ -70,8 +73,32 @@ func gather_to(_point: Vector2) -> void:
 	pass
 
 
+func _interrupt_special() -> void:
+	# All ordinary hit paths, including companion projectiles, share this
+	# inherited hook. Only leaving the encounter can pause a boss pattern.
+	pass
+
+
 func charge_reach() -> float:
 	return planned_charge_distance
+
+
+func pause_for_boundary() -> void:
+	# Free exit preserves health and the unfinished pattern. A charge already in
+	# motion needs a fresh visible warning before it can resume on re-entry.
+	encounter_active = false
+	velocity = Vector2.ZERO
+	if charge_time > 0.0:
+		charge_time = 0.0
+		charge_pending = false
+		warning_time = maxf(warning_duration, REENTRY_WARNING_FLOOR)
+
+
+func resume_from_boundary() -> void:
+	encounter_active = true
+	if warning_time > 0.0: warning_time = maxf(warning_time, REENTRY_WARNING_FLOOR)
+	if shock_warning > 0.0: shock_warning = maxf(shock_warning, REENTRY_WARNING_FLOOR)
+	if ring_warning > 0.0: ring_warning = maxf(ring_warning, REENTRY_WARNING_FLOOR)
 
 
 func suspend_encounter() -> void:
@@ -90,7 +117,9 @@ func suspend_encounter() -> void:
 
 
 func _attack_delay() -> float:
-	return 1.45 if phase == 2 else 1.20
+	# Only the exposed counter window changes. Full directional/area warnings,
+	# attack shapes and HP stay the same; disable this for A/B comparison.
+	return (1.20 if phase == 2 else 1.00) if brisk_cadence else (1.45 if phase == 2 else 1.20)
 
 
 func _physics_process(delta: float) -> void:
@@ -175,6 +204,12 @@ func _begin_charge(warning: float) -> void:
 
 
 func _finish_pattern(pulse := false) -> void:
+	if not pulse and brisk_cadence and phase == 1 and next_attack_shock and is_instance_valid(target) and global_position.distance_to(target.global_position) <= 280.0 and _clear_shot_to_player():
+		# Staying close after the charge earns a second, separately warned pulse.
+		# The counter window begins after the full pair, not between the tells.
+		shock_warning = SHOCK_WARNING
+		attacks_started += 1
+		return
 	recovery_time = _attack_delay()
 	attack_cooldown = 0.0
 	if pulse:

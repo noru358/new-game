@@ -97,16 +97,16 @@ func tick(delta: float) -> void:
 			if inside:
 				boss_entered = true
 				if arena.diagnostics != null: arena.diagnostics.boss_event("engage", arena.run_time)
-				arena.boss.encounter_active = true
+				arena.boss.resume_from_boundary()
 				arena.boss.add_to_group("training_enemies")
 			else:
-				arena.boss.suspend_encounter()
+				arena.boss.pause_for_boundary()
 				arena.boss.remove_from_group("training_enemies")
 		if boss_active: _clear_arena_intruders()
 	_sync_field_actors()
 	_tick_garden(delta)
 	destination_label.visible = arena.player.global_position.distance_to(destination_point) < 650.0
-	destination_label.text = "성소 · 문지기의 영역\n" + ("경계 진입 시 교전 · 출입 자유" if boss_ready else "5분 이후 접근하여 교전")
+	destination_label.text = "성소 · 문지기의 영역\n" + ("경계 진입 시 교전 · 출입 자유" if boss_ready else "4분 이후 접근하여 교전")
 	_update_hud()
 
 
@@ -260,7 +260,7 @@ func _clear_transients() -> void:
 
 
 func _update_hud() -> void:
-	section_hud.text = "성소의 문지기 · 5분 이후 성소에 접근하여 교전"
+	section_hud.text = "성소의 문지기 · 4분 이후 성소에 접근하여 교전"
 	if boss_ready:
 		section_hud.text = "성소의 문지기가 깨어났습니다 · 동쪽 성소로"
 	if boss_entered:
@@ -285,7 +285,7 @@ func _build_destination() -> void:
 		boundary_visual.add_child(mark)
 	var title := Label3D.new()
 	destination_label = title
-	title.text = "성소 · 문지기의 영역\n5분 이후 접근하여 교전"
+	title.text = "성소 · 문지기의 영역\n4분 이후 접근하여 교전"
 	title.font_size = 34
 	title.pixel_size = 0.006
 	title.billboard = BaseMaterial3D.BILLBOARD_ENABLED
