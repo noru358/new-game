@@ -29,7 +29,10 @@ func _run() -> void:
 	_check(scene.actors[scene.player].get_node("Body").scale == Vector3.ONE, "fourth attack no longer enlarges the player")
 	_check(is_equal_approx(scene._spawn_rate(), 0.90) and scene.MAX_ENEMIES == 72, "early ambient rate and headroom grow by 50 percent")
 	scene.run_time = 200.0
-	_check(is_equal_approx(scene._spawn_rate(), 2.10), "late ambient rate also grows by 50 percent")
+	var late_pressure: float = scene._spawn_rate()
+	scene.run_time = 220.0
+	var late_recovery: float = scene._spawn_rate()
+	_check(is_equal_approx(late_pressure, 2.625) and is_equal_approx(late_recovery, 1.575) and is_equal_approx((late_pressure + late_recovery) * 0.5, 2.10), "late ambient rate keeps the 50 percent density increase across its balanced pressure and recovery")
 	_check(scene._route_role_weights(Vector2(900, 1000)) != scene._route_role_weights(Vector2(2900, 1100)) and scene._route_role_weights(Vector2(2900, 1100)) != scene._route_role_weights(Vector2(3000, 1950)), "forest, causeway and riverbank have different enemy compositions")
 	var foreground := 0
 	for wall in scene.terrain.wall_areas:

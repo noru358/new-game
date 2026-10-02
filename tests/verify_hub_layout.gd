@@ -72,7 +72,7 @@ func _run() -> void:
 			hub._preview_mod(mod_id)
 			_check(hub.mod_preview_label.text.begins_with(RunProfile.affix_description(mod_id)) and hub.mod_preview_label.text.contains(RunProfile.affix_source(mod_id)), "compact option keeps the full %s description in its preview" % mod_id)
 	hub.profile.slotted_mods = {"W_ECHO": "ECHO_WISP"}
-	_check(hub.growth_buttons.size() == 8, "attack, defense and mobility growth choices appear in the preparation screen")
+	_check(hub.growth_buttons.size() == PermanentGrowthCatalog.IDS.size(), "all ten attack, defense and mobility growth choices appear in the preparation screen")
 	hub.tabs.current_tab = 2
 	hub.profile.currency = 100
 	hub._refresh()
