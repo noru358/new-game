@@ -138,6 +138,7 @@ func _hud(region: String, dimensions: Vector2i):
 	check(scene.profile._snapshot() == before, "HUD mounting is read-only")
 	check(not scene.run_hud.visible and not scene.temple_section.section_hud.visible, "one destination readout replaces duplicates")
 	check(presenter.objective.text.is_empty() and not presenter.objective.visible and not presenter.help.visible, "free exploration has no permanent goal or control help")
+	check(presenter.boss_clock.visible and presenter.boss_clock.text.begins_with("보스까지"), "boss countdown remains visible during free exploration")
 	for item in presenter.passive_controls:
 		check(item.mouse_filter == Control.MOUSE_FILTER_IGNORE and item.focus_mode == Control.FOCUS_NONE, "HUD input transparent")
 		if item.visible: check(Rect2(0,0,1280,720).encloses(item.get_global_rect()), "HUD fits scaled canvas")

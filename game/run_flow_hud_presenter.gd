@@ -7,12 +7,14 @@ var arena: Node3D
 var health: Label
 var mobility: Label
 var objective: Label
+var boss_clock: Label
 var progress: Label
 var notice: Label
 var help: Label
 var boss_title: Label
 var survival_surface: ColorRect
 var objective_surface: ColorRect
+var boss_clock_surface: ColorRect
 var notice_surface: ColorRect
 var passive_controls: Array[Control] = []
 var seen_notices: Dictionary = {}
@@ -35,12 +37,18 @@ func setup(scene: Node3D) -> void:
 	base.get_node("ControlsHint").hide()
 	for label in [scene.hud, scene.growth.hud, scene.moving_slash_status, scene.build_summary_label, scene.run_hud]: label.hide()
 	if scene.temple_section != null: scene.temple_section.section_hud.hide()
+	# Keep the clock legible above paused card and retry backdrops, outside their controls.
+	var clock_canvas := CanvasLayer.new()
+	clock_canvas.layer = 36
+	add_child(clock_canvas)
 	survival_surface = _surface(base, "Survival", Rect2(20, 556, 376, 132))
-	objective_surface = _surface(base, "Destination", Rect2(20, 20, 480, 46))
+	boss_clock_surface = _surface(clock_canvas, "BossClock", Rect2(20, 20, 280, 46))
+	objective_surface = _surface(base, "Destination", Rect2(20, 78, 480, 46))
 	notice_surface = _surface(base, "EventNotice", Rect2(420, 568, 572, 95))
 	health = _label(base, "Health", Rect2(34, 566, 346, 31), 24)
 	mobility = _label(base, "Mobility", Rect2(34, 620, 346, 60), 20)
-	objective = _label(base, "DestinationState", Rect2(34, 28, 452, 30), 21)
+	boss_clock = _label(clock_canvas, "BossTimeRemaining", Rect2(34, 28, 252, 30), 21)
+	objective = _label(base, "DestinationState", Rect2(34, 86, 452, 30), 21)
 	progress = _label(base, "GrowthProgress", Rect2(420, 666, 572, 27), 19, MUTED)
 	notice = _label(base, "EventText", Rect2(434, 574, 544, 86), 19)
 	help = _label(base, "ContextHelp", Rect2(1020, 594, 240, 96), 18, MUTED)
@@ -71,8 +79,9 @@ func refresh() -> void:
 	objective.text = destination_text(arena)
 	objective.visible = not objective.text.is_empty()
 	objective_surface.visible = objective.visible
+	boss_clock.text = boss_clock_text(arena)
 	var active: bool = arena.temple_section != null and arena.temple_section.boss_active
-	objective_surface.position = Vector2(400, 120) if active else Vector2(20, 20)
+	objective_surface.position = Vector2(400, 120) if active else Vector2(20, 78)
 	objective_surface.size.x = 480
 	objective.position = objective_surface.position + Vector2(14, 8)
 	if not arena.growth.unlock_notice.is_empty(): _publish("unlock:" + arena.growth.unlock_notice, arena.growth.unlock_notice)
@@ -96,7 +105,7 @@ func refresh() -> void:
 	boss_title.hide() # The single objective names the active boss above its HP.
 	# Preserve existing visibility gates during death/result/map; never unpause.
 	var ended: bool = arena.run_ended
-	for item in [survival_surface, health, mobility, progress, arena.player_health_bar, arena.growth.xp_bar]: item.visible = not ended
+	for item in [boss_clock, boss_clock_surface, survival_surface, health, mobility, progress, arena.player_health_bar, arena.growth.xp_bar]: item.visible = not ended
 	if ended:
 		objective.hide()
 		objective_surface.hide()
@@ -110,6 +119,16 @@ func _publish(key: String, value: String) -> void:
 	transient_notice += "\n" + value if notice_seconds > 0 else value
 	notice_seconds = 6.0
 
+static func boss_clock_text(scene: Node3D) -> String:
+	var section: Node = scene.temple_section
+	if section != null:
+		if section.retry_pending: return "보스 재도전 대기"
+		if section.boss_active: return "보스 교전 중"
+		if section.boss_ready: return "보스 준비 완료"
+	var remaining := maxi(0, ceili(scene.BOSS_TIME - scene.run_time))
+	if remaining == 0: return "보스 준비 중"
+	return "보스까지 %02d:%02d" % [remaining / 60, remaining % 60]
+
 static func destination_text(scene: Node3D) -> String:
 	var section: Node = scene.temple_section
 	if section == null: return ""
@@ -119,7 +138,7 @@ static func destination_text(scene: Node3D) -> String:
 		return "%s · %d단계" % [scene.boss_name, scene.boss.phase]
 	var jungle: bool = scene.region_id == RunProfile.JUNGLE_REGION
 	if section.boss_ready: return "관문 안쪽으로" if jungle else "동쪽 성소로"
-	return "" # Free exploration needs no permanent instruction or timer.
+	return "" # The boss clock stays visible independently of destination text.
 
 func _surface(canvas: CanvasLayer, title: String, rect: Rect2) -> ColorRect:
 	var control := ColorRect.new()
