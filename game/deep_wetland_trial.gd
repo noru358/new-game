@@ -85,7 +85,7 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	_build_face()
 	add_child(preload("res://game/wetland_root_environment.gd").build(self))
 	# Silhouettes stay in blocked water along the far bank, not over the route.
-	for p in [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]:
+	for p in _far_bank_groves():
 		_stone(p, Vector3(0.55, 2.4, 0.7), Color("394f44"))
 		_stone(p + Vector2(-35, 25), Vector3(1.45, 0.8, 1.25), Color("355b4a"), 340)
 	# Far-bank canopy clusters grow into blocked water only; the walking bank stays clear.
@@ -205,3 +205,6 @@ func _dry_routes() -> Array:
 
 func _place_encounters() -> Array:
 	return PLACE_ENCOUNTERS
+
+func _far_bank_groves() -> Array:
+	return [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]

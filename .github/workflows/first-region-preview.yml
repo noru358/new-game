@@ -70,6 +70,10 @@ jobs:
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
           godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
           test "$(find wetland-field-render -name '*.png' | wc -l)" -eq 8
+          mkdir -p wetland-field-visibility
+          WETLAND_CAPTURE_DIR="$PWD/wetland-field-visibility" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --rendering-driver opengl3 --script res://tests/capture_wetland_field_visibility.gd
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -80,3 +84,4 @@ jobs:
             temple-run-render/
             jungle-south-render/
             wetland-field-render/
+            wetland-field-visibility/
