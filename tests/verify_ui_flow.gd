@@ -239,9 +239,12 @@ func _check_layout(control: Control, dimensions: Vector2i):
 		if item is Label and item.is_visible_in_tree(): check(item.get_line_count() <= item.get_visible_line_count(), "preparation text visible")
 func _capture(tag: String):
 	if DisplayServer.get_name() == "headless": return
+	var folder := OS.get_environment("UI_FLOW_CAPTURE_DIR")
+	if folder.is_empty(): return
+	DirAccess.make_dir_recursive_absolute(folder)
 	await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../simplify-evidence/") + tag + ".png")
+	check(root.get_texture().get_image().save_png(folder.path_join(tag + ".png")) == OK, "native UI capture saved")
 func _release(scene: Node):
 	paused = false
 	scene.queue_free()
