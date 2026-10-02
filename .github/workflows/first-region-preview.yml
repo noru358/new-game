@@ -17,7 +17,7 @@ jobs:
       - name: Install official engine and software display
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri fonts-noto-cjk
           mkdir -p "$RUNNER_TEMP/godot"
           cd "$RUNNER_TEMP/godot"
           base=https://github.com/godotengine/godot-builds/releases/download/4.6-stable

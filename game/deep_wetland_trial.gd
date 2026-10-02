@@ -24,7 +24,17 @@ func _ready() -> void:
 	growth.last_choice_label.hide()
 	player.set_combo_rank(2)
 	build_summary_label.hide()
+	minimap.hide()
 	_update_hud()
+
+func _build_ui() -> void:
+	super._build_ui()
+	for canvas in get_children():
+		if not canvas is CanvasLayer: continue
+		var hint := canvas.get_node_or_null("ControlsHint")
+		if hint != null:
+			hint.text = "WASD 이동 · J 공격 · Space 베기 · Shift 대시 · Tab 지도 · Esc 정지 · R 재시작"
+			hint.position = Vector2(20, 680)
 
 func _on_enemy_defeated(_enemy: TrainingEnemy) -> void:
 	kills += 1
@@ -42,6 +52,14 @@ func _process(delta: float) -> void:
 		camera.position = terrain.world_point(terrain.map_size * 0.5) + camera_offset.normalized() * 90.0
 		camera.look_at(terrain.world_point(terrain.map_size * 0.5), Vector3.UP)
 
+func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> void:
+	# This place sample has no prototype checkerboard. Preserve physical boundaries.
+	var tint := Color("294e50") if color == Color("39858b") else color
+	var points: Array = []
+	for p in [area.position, Vector2(area.end.x, area.position.y), area.end, Vector2(area.position.x, area.end.y)]:
+		points.append(Vector3(p.x, elevation.call(p), p.y))
+	_quad(st, points, tint)
+
 func _build_terrain(render_bounds := Rect2()) -> void:
 	super._build_terrain(render_bounds)
 	# Broad irregular stone facets, not noisy pebble carpets.
@@ -57,6 +75,12 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	for p in [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]:
 		_stone(p, Vector3(0.55, 2.4, 0.7), Color("394f44"))
 		_stone(p + Vector2(-35, 25), Vector3(1.45, 0.8, 1.25), Color("355b4a"), 340)
+	# Far-bank canopy clusters grow into blocked water only; the walking bank stays clear.
+	for i in 24:
+		var p := Vector2(820 + i * 79, 220 + sin(i * 0.6) * 90)
+		_stone(p, Vector3(0.3, 1.7 + 0.15 * (i % 3), 0.4), Color("344e40"))
+		for offset in [Vector2(-45, 0), Vector2(45, 20), Vector2(0, -50)]:
+			_stone(p + offset, Vector3(0.95, 0.42, 0.85), Color("3d6450"), 295 + (i % 4) * 14)
 	# Reed clusters mark only existing blocked water boundaries.
 	for i in 24:
 		var p := Vector2(2470 + i * 53, 1810 + 15 * sin(i))
