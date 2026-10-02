@@ -89,10 +89,20 @@ func _run() -> void:
 			_check(boss.combo_gap > 0.0 and boss.combo_attacks_left == 1, "jungle follow-up survives a boundary crossing")
 			boss._beast_velocity(0.13)
 			_check(boss.gust_warning > 0.0, "jungle follow-up resumes with its wind warning")
+			boss.gust_warning = 0.05
 		else:
 			_check(boss.charge_time == 0.0 and boss.warning_time >= GateBoss.REENTRY_WARNING_FLOOR and boss.charge_followups == 1, "mid-charge exit converts to a warned resumed charge")
 			boss._beast_velocity(boss.warning_time + 0.01)
 			_check(boss.charge_time > 0.0, "resumed charge follows the full visible warning")
+			boss._beast_velocity(boss.charge_time + 0.01)
+			boss._beast_velocity(0.01)
+			_check(boss.warning_time > 0.0 and boss.charge_followups == 0, "second charge starts its own warning")
+			boss.warning_time = 0.05
+		scene.player.global_position = outside
+		section.tick(0.0)
+		scene.player.global_position = inside
+		section.tick(0.0)
+		_check((boss.gust_warning if jungle else boss.warning_time) >= GateBoss.REENTRY_WARNING_FLOOR, "a separate follow-up warning gets its own safe re-entry")
 		_check(not section.retry_used and not section.retry_pending, "free exit leaves the one boss retry untouched")
 		print("BOSS_BOUNDARY jungle=", jungle, " hp=", boss.health, " fired=", boss.attacks_fired)
 		scene.queue_free()

@@ -165,6 +165,7 @@ func _beast_velocity(delta: float) -> Vector2:
 			impact_flash = 0.18
 			impact_is_ring = false
 			if phase == 2:
+				boundary_warning_granted = false
 				ring_warning = RING_WARNING
 			else:
 				_finish_pattern(true)
@@ -193,6 +194,7 @@ func _beast_velocity(delta: float) -> Vector2:
 	var distance := global_position.distance_to(target.global_position)
 	if attack_cooldown <= 0.0 and _clear_shot_to_player():
 		if next_attack_shock and distance <= 280.0:
+			boundary_warning_granted = false
 			shock_warning = SHOCK_WARNING
 			attacks_started += 1
 			return Vector2.ZERO
@@ -206,6 +208,7 @@ func _beast_velocity(delta: float) -> Vector2:
 
 func _begin_charge(warning: float) -> void:
 	if not is_instance_valid(target): return
+	boundary_warning_granted = false
 	locked_direction = global_position.direction_to(target.global_position)
 	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
 	planned_charge_distance = clampf(global_position.distance_to(target.global_position) + 75.0, 140.0, 650.0)
@@ -218,6 +221,7 @@ func _finish_pattern(pulse := false) -> void:
 	if not pulse and brisk_cadence and phase == 1 and next_attack_shock and is_instance_valid(target) and global_position.distance_to(target.global_position) <= 280.0 and _clear_shot_to_player():
 		# Staying close after the charge earns a second, separately warned pulse.
 		# The counter window begins after the full pair, not between the tells.
+		boundary_warning_granted = false
 		shock_warning = SHOCK_WARNING
 		attacks_started += 1
 		return
