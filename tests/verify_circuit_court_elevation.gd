@@ -12,6 +12,20 @@ func _run() -> void:
 	root.add_child(scene)
 	for i in 4: await physics_frame
 	scene.set_physics_process(false)
+	var environment = preload("res://game/temple_circuit_environment.gd")
+	for point in environment.FAR_BANK_GROVES:
+		for i in 12:
+			var test_point: Vector2 = point + Vector2.from_angle(TAU * float(i) / 12.0) * 85
+			var blocked_water := false
+			for water in scene.terrain.water_areas:
+				if water.has_point(test_point): blocked_water = true
+			check(blocked_water, "far-bank root footprint stays in existing water")
+	var mapped_walls := 0
+	for wall in scene.terrain.wall_areas:
+		if wall.get("circuit_masonry", false):
+			check(scene.minimap._wall_visible(wall, scene.display_bounds()), "replacement masonry keeps its minimap obstacle")
+			mapped_walls += 1
+	check(mapped_walls == 6, "all six existing masonry footprints remain represented")
 	check(scene.terrain.height_at(Vector2(2450, 2100)) == 120, "central court is a low raised place")
 	check(scene.terrain.height_at(Vector2(3400, 2080)) == 0, "water route stays at ground level")
 	for pair in [[Vector2(1670, 2275), 60.0], [Vector2(2340, 1400), 60.0], [Vector2(3060, 2390), 60.0]]:

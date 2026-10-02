@@ -18,7 +18,7 @@ func _run() -> void:
 	if scene.player.arena_bounds != scene.CircuitLayout.MAIN_BOUNDS: failures += 1
 	if not scene.temple_sanctuary_root.has_node("SteppedSanctuary"): failures += 1
 	var court = scene.temple_sanctuary_root.get_node("ReclaimedCourtMasonry")
-	if court.get_meta("collision_footprints").size() != 6 or court.get_child_count() != 2: failures += 1
+	if court.get_meta("collision_footprints").size() != 6 or court.get_child_count() != 3: failures += 1
 	if scene.navigation.is_open(Vector2(2800, 100), 30): failures += 1
 	if scene.BOSS_TIME != 240.0 or scene.profile.load_error: failures += 1
 	for p in [scene.start_point, Vector2(2450, 2100), scene.CircuitLayout.RETURN_POINT, scene.temple_section.boss_point, scene.temple_section.retry_point]:

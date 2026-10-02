@@ -6,6 +6,7 @@ func _init() -> void:
 	for wall in wall_areas:
 		wall["circuit_masonry"] = true
 		wall["visual"] = false
+		wall["minimap_visible"] = true
 	# A low raised central court creates three readable approaches within the loop.
 	plateaus = [{"area": Rect2(1870, 1600, 990, 1150), "height": 120.0, "base": 0.0, "name": "높은 중심 뜰", "openings": {"west": [[2100.0, 2450.0]], "north": [[2180.0, 2500.0]], "east": [[2240.0, 2540.0]]}}]
 	ramps = [

@@ -6,6 +6,16 @@ func _run() -> void:
 	for i in 4: await physics_frame
 	var failures := 0
 	var helper = preload("res://game/wetland_root_environment.gd")
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	helper._tube(surface, Vector3.ZERO, Vector3.UP * 2, 1.0, 0.7, Color.WHITE)
+	var sample_mesh: ArrayMesh = surface.commit()
+	var arrays := sample_mesh.surface_get_arrays(0)
+	var first_vertex: Vector3 = arrays[Mesh.ARRAY_VERTEX][0]
+	var first_normal: Vector3 = arrays[Mesh.ARRAY_NORMAL][0]
+	if Vector3(first_vertex.x, 0, first_vertex.z).dot(first_normal) <= 0:
+		printerr("FAIL: root tube lighting normal points inward")
+		failures += 1
 	for point in helper.CLUSTERS:
 		for i in 16:
 			var angle := float(i) * TAU / 16.0

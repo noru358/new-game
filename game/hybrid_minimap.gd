@@ -68,8 +68,7 @@ func _draw() -> void:
 				var last := Vector2(area.end.x, seam)
 				draw_line(_map_point_at(first, arena.terrain.ramp_height(ramp, first)), _map_point_at(last, arena.terrain.ramp_height(ramp, last)), Color("244742"), 1.1)
 	for wall in arena.terrain.wall_areas:
-		if not wall.get("visual", true) or not bounds.intersects(wall.area): continue
-		if not _discovered_geometry(wall): continue
+		if not _wall_visible(wall, bounds): continue
 		if wall.get("collidable", true):
 			_draw_world_area(wall.area, func(_p): return wall.height, wall.color)
 	for plateau in arena.terrain.plateaus:
@@ -191,3 +190,7 @@ func camera_ground_footprint() -> PackedVector2Array:
 		var world: Vector3 = origin + direction * ((plane_y - origin.y) / direction.y)
 		result.append(Vector2(world.x, world.z) / Terrain.SCALE)
 	return result
+
+func _wall_visible(wall: Dictionary, bounds: Rect2) -> bool:
+	# Mesh replacement may hide only the primitive, not the obstacle on the map.
+	return bool(wall.get("minimap_visible", wall.get("visual", true))) and bounds.intersects(wall.area) and _discovered_geometry(wall)

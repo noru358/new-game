@@ -2,15 +2,15 @@ extends RefCounted
 ## Interlocked root silhouettes on submerged banks, using shared mesh batches.
 const CLUSTERS := [Vector2(2270, 800), Vector2(2660, 770), Vector2(3660, 620), Vector2(360, 1160), Vector2(360, 1840)]
 const ROOT_RADIUS := 85.0
-static func build(arena: Node3D) -> Node3D:
+static func build(arena: Node3D, clusters: Array = CLUSTERS) -> Node3D:
 	var root := Node3D.new()
 	root.name = "SubmergedRootGroves"
 	var wood := SurfaceTool.new()
 	var leaves := SurfaceTool.new()
 	wood.begin(Mesh.PRIMITIVE_TRIANGLES)
 	leaves.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for index in CLUSTERS.size():
-		var p: Vector2 = CLUSTERS[index]
+	for index in clusters.size():
+		var p: Vector2 = clusters[index]
 		var base: Vector3 = arena.terrain.world_point(p)
 		var bend := Vector3(0.22 if index % 2 else -0.22, 2.4, -0.16)
 		var crown := base + bend + Vector3(0.13, 1.25, 0.10)
@@ -48,12 +48,12 @@ static func _tube(st: SurfaceTool, start: Vector3, end: Vector3, first_radius: f
 		var first := side * cos(a) + other * sin(a)
 		var second := side * cos(b) + other * sin(b)
 		var vertices := [start + first * first_radius, end + first * last_radius, end + second * last_radius, start + second * first_radius]
-		var normal: Vector3 = (vertices[1] - vertices[0]).cross(vertices[2] - vertices[0]).normalized()
-		for i in [0, 1, 2, 0, 2, 3]:
+		var normal: Vector3 = (vertices[2] - vertices[0]).cross(vertices[1] - vertices[0]).normalized()
+		for i in [0, 2, 1, 0, 3, 2]:
 			st.set_color(color)
 			st.set_normal(normal)
 			st.add_vertex(vertices[i])
-		for vertex in [end, end + second * last_radius, end + first * last_radius]:
+		for vertex in [end, end + first * last_radius, end + second * last_radius]:
 			st.set_color(color)
 			st.set_normal(axis)
 			st.add_vertex(vertex)
