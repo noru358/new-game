@@ -17,6 +17,7 @@ var canal_trial_button: Button
 var start_button: Button
 var temple_region_button: Button
 var jungle_region_button: Button
+var wetland_region_button: Button
 var base_weapon_button: Button
 var weapon_button: Button
 var echo_weapon_button: Button
@@ -100,6 +101,8 @@ func _build_ui() -> void:
 	region.add_child(region_choices)
 	temple_region_button = _button(region_choices, "", _select_region.bind(RunProfile.TEMPLE_REGION))
 	jungle_region_button = _button(region_choices, "", _select_region.bind(RunProfile.JUNGLE_REGION))
+	wetland_region_button = _button(region_choices, "", _select_region.bind(RunProfile.WETLAND_REGION))
+	wetland_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	temple_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	jungle_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	progress_label = _label("", 17, Color("efca8d"))
@@ -319,9 +322,11 @@ func _refresh() -> void:
 	temple_region_button.text = "청록 폐사원  ·  %s%s\n문지기" % ["완료" if profile.temple_owned else "도전 가능", "  ✓" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
 	jungle_region_button.text = "정글 절벽 관문  ·  %s%s\n수호자" % ["완료" if profile.jungle_owned else "도전 가능" if profile.temple_owned else "잠김", "  ✓" if selected_region_id == RunProfile.JUNGLE_REGION else ""]
 	jungle_region_button.disabled = profile.load_error or not profile.region_available(RunProfile.JUNGLE_REGION)
-	var region_name := "정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원"
-	var unlocked := profile.jungle_owned if selected_region_id == RunProfile.JUNGLE_REGION else profile.temple_owned
-	progress_label.text = "첫 성공 → 장비 개방" if not unlocked else "재도전 성공 → 새 지역 옵션 1개"
+	wetland_region_button.text = "깊은 사원 습지"
+	wetland_region_button.disabled = profile.load_error or not profile.region_available(RunProfile.WETLAND_REGION)
+	var region_name := "깊은 사원 습지" if selected_region_id == RunProfile.WETLAND_REGION else "정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원"
+	var unlocked := profile.wetland_owned if selected_region_id == RunProfile.WETLAND_REGION else profile.jungle_owned if selected_region_id == RunProfile.JUNGLE_REGION else profile.temple_owned
+	progress_label.text = ("첫 성공 → 습지 정복" if selected_region_id == RunProfile.WETLAND_REGION else "첫 성공 → 장비 개방") if not unlocked else "재도전 성공 → 미보유 옵션 1개"
 	info_label.text = "주공격  %s  ·  %s\n장신구  %s  ·  %s" % [
 		RunProfile.gear_name(profile.equipped_weapon),
 		_mod_summary(profile.equipped_weapon),
@@ -337,6 +342,7 @@ func _refresh() -> void:
 	start_button.disabled = profile.load_error or not profile.region_available(selected_region_id)
 	temple_region_button.add_theme_stylebox_override("normal", _button_style(selected_region_id == RunProfile.TEMPLE_REGION))
 	jungle_region_button.add_theme_stylebox_override("normal", _button_style(selected_region_id == RunProfile.JUNGLE_REGION))
+	wetland_region_button.add_theme_stylebox_override("normal", _button_style(selected_region_id == RunProfile.WETLAND_REGION))
 	base_weapon_button.text = "기본 마력장\n%s" % ("장착 중" if profile.equipped_weapon == "W_START" else "보유")
 	weapon_button.text = "흐름의 마력장\n%s" % _gear_state("W_FLOW")
 	echo_weapon_button.text = "집결의 마력장\n%s" % _gear_state("W_ECHO")
@@ -534,7 +540,7 @@ func _toggle_supply() -> void:
 
 func _depart() -> void:
 	if profile.load_error or not profile.region_available(selected_region_id): return
-	get_tree().change_scene_to_file(preload("res://game/field_preview_session.gd").region_scene(get_tree(), selected_region_id == RunProfile.JUNGLE_REGION))
+	get_tree().change_scene_to_file(preload("res://game/field_preview_session.gd").scene_for_region(get_tree(), selected_region_id))
 
 
 func _depart_canal_trial() -> void:

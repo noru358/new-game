@@ -6,3 +6,6 @@ func _init() -> void:
 	floor_areas = floor_areas.filter(func(floor): return floor.area != SANCTUARY_FLOOR)
 	floor_areas.append({"area":DUEL,"height":0.5,"color":Color("999d83")})
 	wall_areas = wall_areas.filter(func(wall): return not wall.area.intersects(DUEL.grow(30)))
+
+	for wall in wall_areas:
+		if not wall.has("color"): wall["color"] = Color("85927a")

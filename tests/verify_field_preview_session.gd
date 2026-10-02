@@ -68,6 +68,25 @@ func _run() -> void:
 	check(run.profile.equipped_weapon == "W_FLOW", "next map uses camp equipment")
 	check(run.player.max_health == 110, "next map uses purchased health growth")
 	check(run.growth.unlocks.lifetime_levelups == 0, "jungle does not inject six lifetime levelups")
+	run.run_currency=80
+	run._finish_run("SUCCESS")
+	for i in 120:
+		if run.result_overlay.visible: break
+		await physics_frame
+	camp=await _follow_button(run.replay_button,"res://game/travel_camp.tscn")
+	hub=camp.preparation
+	check(not hub.wetland_region_button.disabled,"jungle clear opens third departure button")
+	hub._select_region(RunProfile.WETLAND_REGION)
+	run=await _follow_button(hub.start_button,Session.scene_for_region(self,RunProfile.WETLAND_REGION))
+	check(run.region_id==RunProfile.WETLAND_REGION,"third button opens real wetland run")
+	check(run.profile.equipped_weapon=="W_FLOW" and run.player.max_health==110,"third map inherits same build investment")
+	run.run_currency=80
+	run._finish_run("SUCCESS")
+	for i in 120:
+		if run.result_overlay.visible: break
+		await physics_frame
+	camp=await _follow_button(run.replay_button,"res://game/travel_camp.tscn")
+	check(camp.preparation.profile.wetland_owned,"three-map state journey returns to camp with wetland clear")
 	await _clear_scene()
 	root.remove_meta(Session.KEY)
 	check(Session.region_scene(self,true)=="res://game/jungle_pass.tscn", "ordinary launch restored after test session")

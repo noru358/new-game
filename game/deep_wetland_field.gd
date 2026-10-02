@@ -19,15 +19,7 @@ func _place_encounters() -> Array:
 	]
 func _build_terrain(render_bounds := Rect2()) -> void:
 	super._build_terrain(render_bounds)
-	for area in _inner_ruins():
-		_stone(area.get_center(), Vector3(area.size.x / 200.0, 0.55, area.size.y / 200.0), Color("85927a"))
-	# The inner temple silhouette lives on the blocked far bank; its combat floor stays clear.
-	for x in [4740, 4940, 5140]:
-		_stone(Vector2(x, 380), Vector3(0.8, 2.0, 0.8), Color("677e70"))
-		_stone(Vector2(x, 380), Vector3(1.15, 0.18, 1.0), Color("899982"), 360)
-	for point in [Vector2(4350, 300), Vector2(5500, 300)]:
-		_stone(point, Vector3(0.44, 2.4, 0.50), Color("3d5848"))
-		_stone(point, Vector3(1.45, 0.5, 1.35), Color("3d644f"), 370)
+	preload("res://game/wetland_environment.gd").build_field(self)
 func _update_hud() -> void:
 	super._update_hud()
 	if hud != null: hud.text = hud.text.replace("대표 구간", "전체 동선 시험")

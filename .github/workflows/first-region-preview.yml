@@ -6,6 +6,9 @@ on:
       - 'game/deep_wetland*'
       - 'game/wetland_boss*'
       - 'tests/capture_wetland_boss.gd'
+      - 'tests/capture_wetland_run.gd'
+      - 'game/wetland_environment.gd'
+      - 'game/wetland_guardian_visual.gd'
       - 'game/temple_circuit*'
       - 'game/jungle_south_circuit*'
       - 'game/wetland_root_environment.gd'
@@ -81,6 +84,11 @@ jobs:
           WETLAND_CAPTURE_DIR="$PWD/wetland-boss-render" LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
           godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_boss.gd
+          mkdir -p wetland-run-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-run-render" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_run.gd
+          test "$(find wetland-run-render -name '*.png' | wc -l)" -eq 6
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -93,3 +101,4 @@ jobs:
             wetland-field-render/
             wetland-field-visibility/
             wetland-boss-render/
+            wetland-run-render/

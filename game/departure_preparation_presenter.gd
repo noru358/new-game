@@ -18,7 +18,7 @@ func setup(scene: Control) -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	scene.add_child(self)
 	var departure: VBoxContainer = scene.temple_region_button.get_parent().get_parent()
-	for button in [scene.temple_region_button, scene.jungle_region_button]:
+	for button in [scene.temple_region_button, scene.jungle_region_button, scene.wetland_region_button]:
 		button.custom_minimum_size.y = 76
 		button.add_theme_font_size_override("font_size", 22)
 	scene.info_label.hide()
@@ -92,7 +92,8 @@ func refresh() -> void:
 	supply_summary.visible = hub.profile.supply_selected and hub.profile.supply_count > 0
 	supply_summary.text = "회복 부적 사용"
 	# The hub already owns the storage-error message/folder entry. Do not repeat it.
-	gate_reason.text = "청록 폐사원 첫 성공 후 출정 가능" if not hub.profile.region_available(hub.selected_region_id) and not hub.profile.load_error else ""
+	hub.wetland_region_button.text = "깊은 사원 습지%s" % (" · 잠김" if not hub.profile.region_available(Profile.WETLAND_REGION) else " · 선택" if hub.selected_region_id == Profile.WETLAND_REGION else "")
+	gate_reason.text = ("정글 절벽 관문 첫 성공 후 출정 가능" if hub.selected_region_id == Profile.WETLAND_REGION else "청록 폐사원 첫 성공 후 출정 가능") if not hub.profile.region_available(hub.selected_region_id) and not hub.profile.load_error else ""
 	gate_reason.visible = first_page and not gate_reason.text.is_empty()
 
 func _label(value: String, pixels: int, tint: Color = INK) -> Label:

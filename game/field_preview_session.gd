@@ -17,3 +17,7 @@ static func region_scene(tree: SceneTree, jungle: bool) -> String:
 	if active(tree):
 		return "res://game/jungle_south_circuit.tscn" if jungle else "res://game/temple_circuit_run.tscn"
 	return "res://game/jungle_pass.tscn" if jungle else "res://game/hybrid_region.tscn"
+
+static func scene_for_region(tree: SceneTree, region_id: String) -> String:
+	if region_id == RunProfile.WETLAND_REGION: return "res://game/deep_wetland_run.tscn"
+	return region_scene(tree,region_id == RunProfile.JUNGLE_REGION)

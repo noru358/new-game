@@ -62,11 +62,15 @@ static func result_data(scene: Node3D) -> Dictionary:
 		if not gear.is_empty():
 			available.append("%s · 구매 가능 (%d 화폐)" % [Profile.gear_name(gear), int(Profile.GEAR_COST[gear])])
 			data.next_action = "다음 · 야영지 장비에서 %s 구매 → 장착" % Profile.gear_name(gear)
-		# The temple is the existing prerequisite for the only next region.
+		# Read earned next-region access; presentation never grants a clear.
 		# Availability is read from the profile, never granted by this presenter.
 		if scene.region_id == Profile.TEMPLE_REGION and profile.region_available(Profile.JUNGLE_REGION):
 			available.append("정글 절벽 관문 · 출정 가능")
-		data.outcome_heading = "첫 정복 · 새로 열린 선택"
+		if scene.region_id == Profile.JUNGLE_REGION and profile.region_available(Profile.WETLAND_REGION):
+			available.append("깊은 사원 습지 · 출정 가능")
+		if scene.region_id == Profile.WETLAND_REGION:
+			available.append("습지 정복 기록 저장 · 재도전에서 미보유 장비 옵션 획득")
+		data.outcome_heading = "깊은 사원 습지 첫 정복" if scene.region_id == Profile.WETLAND_REGION else "첫 정복 · 새로 열린 선택"
 		data.outcome_details = "\n".join(available)
 	elif not profile.last_mod_award.is_empty():
 		var gear := Profile.gear_for_affix(profile.last_mod_award)

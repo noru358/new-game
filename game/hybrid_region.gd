@@ -138,7 +138,7 @@ func _ready() -> void:
 		save_folder_button.show()
 		result_overlay.show()
 	else:
-		if region_id in [RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION]:
+		if region_id in [RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION, RunProfile.WETLAND_REGION]:
 			temple_section = _create_region_section()
 			temple_section.setup(self)
 			add_child(temple_section)
@@ -1090,9 +1090,10 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	var main_mesh := terrain_mesh
 	var main_faces := resolved_vertical_faces.duplicate(true)
 	var main_lips := resolved_lips.duplicate(true)
-	super._build_terrain(layout.FIELD_BOUNDS)
-	garden_terrain_mesh = terrain_mesh
-	garden_terrain_mesh.hide()
+	if layout.FIELD_BOUNDS.has_area():
+		super._build_terrain(layout.FIELD_BOUNDS)
+		garden_terrain_mesh = terrain_mesh
+		garden_terrain_mesh.hide()
 	terrain_mesh = main_mesh
 	resolved_vertical_faces = main_faces
 	resolved_lips = main_lips
