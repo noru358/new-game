@@ -1,0 +1,18 @@
+{
+  "base_commit": "f21f2b63e600c0a27233bbef87d4cc96bb9643dc",
+  "mount_patch_sha256": "8f8af5dea388fc0083ac15b23dd07c5444ae8cd0c836e2932b5d7293561ce121",
+  "all_native_samples_passed": true,
+  "source_and_ordinary_saves_preserved": true,
+  "transforms_materials_preserved": true,
+  "geometry": {
+    "decor_triangles_before": 216,
+    "decor_triangles_after": 1304,
+    "terrain_triangles_before": 7752,
+    "terrain_triangles_after": 7728,
+    "net_triangles_added": 1064,
+    "decor_instances_before_after": 18,
+    "decor_surfaces_before_after": 18
+  },
+  "human_aesthetic_acceptance": false,
+  "actor_burial_fix_in_scope": false
+}

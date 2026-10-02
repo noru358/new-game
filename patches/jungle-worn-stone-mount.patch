@@ -1,0 +1,58 @@
+diff --git a/game/hybrid_height.gd b/game/hybrid_height.gd
+index 9bf1d49..132453c 100644
+--- a/game/hybrid_height.gd
++++ b/game/hybrid_height.gd
+@@ -410,12 +410,16 @@ func _ramp_edge_markers(st: SurfaceTool, ramp: Dictionary) -> void:
+ func _gate_stairs(st: SurfaceTool, ramp: Dictionary) -> void:
+ 	var area: Rect2 = ramp.area
+ 	_top(st, area, func(point): return terrain.ramp_height(ramp, point), ramp_color.darkened(0.24))
+-	for step in 12:
+-		var x0: float = area.position.x + area.size.x * float(step) / 12.0
+-		var width: float = area.size.x / 12.0
+-		var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
+-		_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
+-		_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
++	var worn_stone = preload("res://game/jungle_worn_stone_visuals.gd")
++	if worn_stone.enabled():
++		worn_stone.append_treads(st, ramp, func(point): return terrain.ramp_height(ramp, point), ramp_color)
++	else:
++		for step in 12:
++			var x0: float = area.position.x + area.size.x * float(step) / 12.0
++			var width: float = area.size.x / 12.0
++			var tread := Rect2(x0 + 2.0, area.position.y + 14.0, width - 4.0, area.size.y - 28.0)
++			_top(st, tread, func(point): return terrain.ramp_height(ramp, point) + 2.0, ramp_color.lightened(0.08) if step % 2 == 0 else ramp_color)
++			_top(st, Rect2(x0 + 2.0, area.position.y + 14.0, 5.0, area.size.y - 28.0), func(point): return terrain.ramp_height(ramp, point) + 3.5, ramp_color.darkened(0.36))
+ 	_ramp_edge_markers(st, ramp)
+ 
+ func _rock_path(st: SurfaceTool, ramp: Dictionary) -> void:
+diff --git a/game/jungle_pass.gd b/game/jungle_pass.gd
+index 168bdce..2c174d0 100644
+--- a/game/jungle_pass.gd
++++ b/game/jungle_pass.gd
+@@ -1,5 +1,6 @@
+ extends "res://game/hybrid_region.gd"
+ 
++const WornStone = preload("res://game/jungle_worn_stone_visuals.gd")
+ const RouteTerrain = preload("res://game/jungle_route_terrain.gd")
+ const RouteEnvironment = preload("res://game/jungle_route_environment.gd")
+ const PassTerrain = preload("res://game/jungle_pass_terrain.gd")
+@@ -314,7 +315,8 @@ func _build_gate_approaches() -> void:
+ 			post.name = "StairPost"
+ 			var shape := BoxMesh.new()
+ 			shape.size = Vector3(0.24, 0.62, 0.30)
+-			post.mesh = shape
++			post.set_meta("worn_stone_kind", "post")
++			post.mesh = WornStone.post_mesh(shape.size, step / 4) if WornStone.enabled() else shape
+ 			post.material_override = _material(Color("797d6c"))
+ 			post.position = Vector3(x * PassTerrain.SCALE, (height + 31.0) * PassTerrain.SCALE, side_y * PassTerrain.SCALE)
+ 			add_child(post)
+@@ -332,7 +334,8 @@ func _build_gate_approaches() -> void:
+ 			shard.name = "RockEdge"
+ 			var shape := BoxMesh.new()
+ 			shape.size = Vector3(0.38, 0.44 + float(step % 3) * 0.17, 0.52)
+-			shard.mesh = shape
++			shard.set_meta("worn_stone_kind", "rock")
++			shard.mesh = WornStone.rock_mesh(shape.size, step + (0 if side < 0 else 5)) if WornStone.enabled() else shape
+ 			shard.material_override = _material(Color("586c65") if step % 2 == 0 else Color("748379"))
+ 			shard.position = Vector3(x * PassTerrain.SCALE, (height + shape.size.y * 50.0) * PassTerrain.SCALE, y * PassTerrain.SCALE)
+ 			shard.rotation.y = float(step + 1) * 0.17 * side
