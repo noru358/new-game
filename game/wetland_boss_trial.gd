@@ -4,6 +4,7 @@ const DuelTerrain = preload("res://game/wetland_boss_trial_terrain.gd")
 var trial_boss: WetlandBoss
 var trial_finished := false
 var trial_won := false
+var root_visuals: Dictionary = {}
 func _init() -> void:
 	super._init()
 	terrain = DuelTerrain.new()
@@ -84,6 +85,7 @@ func _physics_process(delta: float) -> void:
 	if not inside: trial_boss.tick_outside(delta)
 func _process(delta: float) -> void:
 	super._process(delta)
+	_update_root_visuals()
 	if is_instance_valid(trial_boss) and actors.has(trial_boss):
 		var face: Node3D=actors[trial_boss].get_node("StoneFace")
 		face.rotation.y=atan2(player.position.x-trial_boss.position.x,player.position.y-trial_boss.position.y)
@@ -98,3 +100,28 @@ func _update_hud() -> void:
 	if player_health_bar!=null:
 		player_health_bar.max_value=player.max_health
 		player_health_bar.value=player.health
+
+func _update_root_visuals() -> void:
+	for zone in get_tree().get_nodes_in_group("enemy_zones"):
+		if not simulation.is_ancestor_of(zone) or not is_instance_valid(trial_boss) or zone.source != trial_boss: continue
+		if not root_visuals.has(zone):
+			var cluster := Node3D.new()
+			for offset in [Vector2(-32,-10),Vector2(27,-24),Vector2(10,34)]:
+				var spike := MeshInstance3D.new()
+				var mesh := CylinderMesh.new()
+				mesh.top_radius=0.02
+				mesh.bottom_radius=0.11
+				mesh.height=0.8
+				mesh.radial_segments=5
+				spike.mesh=mesh
+				spike.position=Vector3(offset.x*0.01,0.4,offset.y*0.01)
+				spike.material_override=_material(Color("718759"))
+				cluster.add_child(spike)
+			cluster.position=terrain.world_point(zone.global_position)
+			add_child(cluster)
+			root_visuals[zone]=cluster
+		root_visuals[zone].visible=zone.warning_time<=0.0
+	for zone in root_visuals.keys():
+		if not is_instance_valid(zone) or zone.is_queued_for_deletion():
+			root_visuals[zone].queue_free()
+			root_visuals.erase(zone)

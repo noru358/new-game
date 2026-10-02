@@ -62,6 +62,13 @@ func _run() -> void:
 	boss.attack_cooldown=0
 	boss._beast_velocity(0.01)
 	check(boss.roots_remaining==5,"phase two adds placements rather than untelegraphed hits")
+	boss.roots_remaining=1
+	player.velocity=Vector2(200,0)
+	boss._place_root()
+	check(boss.last_root_point.x>player.position.x, "last tell visibly anticipates continuing travel")
+	var anticipated: Vector2=boss.last_root_point
+	player.position+=Vector2(0,70)
+	check(boss.last_root_point==anticipated,"anticipated tell remains fixed when player turns")
 	boss.suspend_encounter()
 	check(not boss.pattern_active and boss.roots_remaining==0,"fresh encounter resets candidate state")
 	sandbox.queue_free()

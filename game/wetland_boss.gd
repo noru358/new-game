@@ -46,6 +46,9 @@ func _beast_velocity(delta: float) -> Vector2:
 func _place_root() -> void:
 	if not is_instance_valid(target) or projectile_parent == null: return
 	var point := target.global_position
+	# The last tell cuts the current travel line. It is locked at placement, never homing.
+	if roots_remaining == 1 or (phase == 2 and roots_remaining == 3):
+		point += target.velocity.limit_length(280.0) * 0.65
 	if encounter_area.has_area():
 		var safe := encounter_area.grow(-EnemyZone.RADIUS - 8.0)
 		point = point.clamp(safe.position, safe.end)
