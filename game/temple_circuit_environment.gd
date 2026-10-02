@@ -42,7 +42,7 @@ static func _build_court(arena: Node3D) -> Node3D:
 		footprints.append(area)
 	# Broad stone courses stay on the low raised court; every ramp band follows its slope.
 	var court: Rect2 = arena.terrain.plateaus[0].area
-	builder._paving_field(court.grow(-6), 120.75, Color("b9b496"), 238, 246, 4)
+	builder._paving_field(court.grow(-6), 119.8, Color("b9b496"), 238, 246, 4)
 	for ramp in arena.terrain.ramps:
 		for band in 9:
 			var area: Rect2 = ramp.area

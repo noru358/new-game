@@ -5,6 +5,8 @@ on:
     paths:
       - 'game/deep_wetland*'
       - 'game/temple_circuit*'
+      - 'game/jungle_south_circuit*'
+      - 'game/wetland_root_environment.gd'
       - 'tests/capture_deep_wetland.gd'
       - '.github/workflows/first-region-preview.yml'
 permissions:
@@ -58,6 +60,11 @@ jobs:
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
           godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
           test "$(find temple-run-render -name '*.png' | wc -l)" -eq 10
+          mkdir -p jungle-south-render
+          WETLAND_CAPTURE_DIR="$PWD/jungle-south-render" CAPTURE_JUNGLE_SOUTH=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find jungle-south-render -name '*.png' | wc -l)" -eq 10
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,3 +73,4 @@ jobs:
             wetland-render/
             temple-circuit-render/
             temple-run-render/
+            jungle-south-render/

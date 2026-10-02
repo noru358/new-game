@@ -20,6 +20,15 @@ func _run() -> void:
 			for water in scene.terrain.water_areas:
 				if water.has_point(test_point): blocked_water = true
 			check(blocked_water, "far-bank root footprint stays in existing water")
+	var paving = scene.temple_sanctuary_root.get_node("ReclaimedCourtMasonry/CourtAndStairCourses")
+	var vertices: PackedVector3Array = paving.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	var court: Rect2 = scene.terrain.plateaus[0].area.grow(-5)
+	var peak := 0.0
+	for vertex in vertices:
+		if court.has_point(Vector2(vertex.x, vertex.z) / 0.01): peak = maxf(peak, vertex.y)
+	var shadow = scene.actors[scene.player].get_node("Shadow")
+	var shadow_bottom: float = 1.2 + shadow.position.y - shadow.mesh.height * 0.5
+	check(peak < shadow_bottom - 0.0005, "new court paving remains below the actual shadow cylinder")
 	var mapped_walls := 0
 	for wall in scene.terrain.wall_areas:
 		if wall.get("circuit_masonry", false):

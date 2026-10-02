@@ -48,3 +48,15 @@ Pinned source8353c91, the existing normal-speed `sample_build_comparison.gd`, th
 - Companion link policy died at60.73active seconds,46kills,6choices. It had no S_WISP_COUNT choice. Third/fourth hit counts2/0 reflect its deliberate single-hit retreat controller, so do not infer that the companion branch itself is weak. The bounded common-controller follow-up reached the boss retry offer at252.77active seconds,344kills/28choices; it did not settle a defeat or victory. Wisp hits700 versus50 in the short link-policy sample, and fourth hits31 versus0, show why the early failure cannot diagnose branch strength. Different resulting fights/cards still prevent a causal numerical ranking. No buff was applied based on that early failure.
 
 Time scale1 and source hashes/fixture/input details are recorded in each raw JSON. Headless concurrent runs do not validate frame-rate performance or art.
+
+## Jungle southern circuit candidate
+
+The existing ridge, upper stone bridge, lower gate approach, boss, hidden grotto and economy remain. A separate development scene extends the main bounds from5600×2400 to5600×3600, with an80→0 riverbank descent, an actually walkable40-high landing, a ruined transit court and a return to the original forest/ridge. New water and landing holes share collision/render records; the enlarged bounds do not bypass the hidden-field separator. Normal progression scenes are unchanged.
+
+Development access explicitly seeds a temple clear with0earned currency (existing50first-clear award) and6prior unlock levelups in separate trial save prefixes. It is not a naturally unlocked fresh campaign. No ordinary save was used for the tests.
+
+Normal-speed input measurement, enemies/arena scheduling disabled: original riverbank→west forest route2509.45distance/8.07nominal physics seconds; the optional southern route between the same endpoints with its place checkpoints4018.35/12.02seconds. Wall times7.90/11.91seconds, time scale1. This compares different chosen routes, not a claim of50%more meaningful content. Combat, exploration dwell and human place perception remain unverified.
+
+The first narrow landing approach failed path connectivity because its lower entry overlapped the riverbank ramp's side. The landing was widened to260 and water was cut beneath both its platform and ramp; all authored points then connected. A boss-time/engagement/injected-kill/settlement/reload check also passes using the unchanged jungle boss contract. These are construction/lifecycle checks, not a natural full-run victory.
+
+The latest courtyard render exposed a new decorative paving surface coplanar with the top of the fake shadow cylinder. New paving tops were lowered below the shadow's bottom and a mesh-height assertion added, rather than moving actors in front of terrain. The correction and new southern field still require their next rendered inspection.
