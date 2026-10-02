@@ -39,6 +39,19 @@ func setup(scene: Control) -> void:
 	scene.canal_trial_button.text = "수로도시 개발 시험 · 저장·보상 없음"
 	scene.canal_trial_button.custom_minimum_size.y = 34
 	scene.canal_trial_button.add_theme_font_size_override("font_size", 16)
+	for trial in [
+		{"title": "사원 전체 동선 후보 · 저장·보상 없음", "scene": "res://game/temple_circuit_trial.tscn"},
+		{"title": "깊은 사원 습지 대표 구간 · 저장·보상 없음", "scene": "res://game/deep_wetland_trial.tscn"},
+	]:
+		var button := Button.new()
+		button.text = trial.title
+		button.custom_minimum_size.y = 34
+		button.add_theme_font_size_override("font_size", 16)
+		var path: String = trial.scene
+		button.pressed.connect(func():
+			scene.get_tree().paused = false
+			scene.get_tree().change_scene_to_file(path))
+		extra.add_child(button)
 	summary = VBoxContainer.new()
 	summary.name = "EquippedSummary"
 	summary.add_theme_constant_override("separation", 10)

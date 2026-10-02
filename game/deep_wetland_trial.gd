@@ -33,7 +33,7 @@ func _build_ui() -> void:
 		if not canvas is CanvasLayer: continue
 		var hint := canvas.get_node_or_null("ControlsHint")
 		if hint != null:
-			hint.text = "WASD 이동 · J 공격 · Space 베기 · Shift 대시 · Tab 지도 · Esc 정지 · R 재시작"
+			hint.text = "WASD 이동 · J 공격 · Space 베기 · Shift 대시 · Tab 지도 · Esc 정지 · R 재시작 · G 야영지"
 			hint.position = Vector2(20, 680)
 
 func _on_enemy_defeated(_enemy: TrainingEnemy) -> void:
@@ -112,3 +112,10 @@ func _build_face() -> void:
 		_stone(p + Vector2(x, 80), Vector3(0.37, 0.09, 0.10), Color("a3aa8a"), 213)
 	_stone(p + Vector2(0, 90), Vector3(0.17, 0.38, 0.23), Color("a0a788"), 128)
 	_stone(p + Vector2(0, 82), Vector3(0.38, 0.065, 0.09), Color("485e4d"), 101)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_G:
+		_set_paused(false)
+		get_tree().change_scene_to_file("res://game/travel_camp.tscn")
+		return
+	super._input(event)

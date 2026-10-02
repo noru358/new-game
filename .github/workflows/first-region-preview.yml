@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'game/deep_wetland*'
+      - 'game/temple_circuit*'
       - 'tests/capture_deep_wetland.gd'
       - '.github/workflows/first-region-preview.yml'
 permissions:
@@ -46,9 +47,16 @@ jobs:
           WETLAND_CAPTURE_DIR="$PWD/wetland-render" LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
           godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          mkdir -p temple-circuit-render
+          WETLAND_CAPTURE_DIR="$PWD/temple-circuit-render" CAPTURE_TEMPLE_CIRCUIT=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find temple-circuit-render -name '*.png' | wc -l)" -eq 10
           test "$(find wetland-render -name '*.png' | wc -l)" -eq 10
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: deep-wetland-render
-          path: wetland-render/
+          path: |
+            wetland-render/
+            temple-circuit-render/
