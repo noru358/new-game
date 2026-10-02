@@ -8,7 +8,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - name: Install Godot 4.6 stable
@@ -33,6 +33,10 @@ jobs:
           failed=0
           for script in tests/verify_*.gd; do
             name="$(basename "$script" .gd)"
+            # This fixture compares rendered pixels and has its own isolated Xvfb step.
+            if [[ "$name" == "verify_actor_terrain_depth" ]]; then
+              continue
+            fi
             if ! timeout 240 godot --headless --path . --script "res://$script" > "verification-logs/$name.log" 2>&1; then
               failed=1
             fi
@@ -42,6 +46,48 @@ jobs:
             fi
           done
           exit "$failed"
+      - name: Verify actor depth with isolated software rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri
+          private="$RUNNER_TEMP/actor-depth-private"
+          mkdir -p "$private" verification-logs
+          git archive HEAD | tar -x -C "$private"
+          python3 - "$private/project.godot" <<'PY'
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          text = path.read_text()
+          original = 'config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"'
+          assert text.count(original) == 1
+          path.write_text(text.replace(original, 'config/custom_user_dir_name="CodexActorTerrainV43-CI"'))
+          PY
+          godot --headless --editor --path "$private" --quit > verification-logs/actor-depth-import.log 2>&1
+          for size in 960 1280; do
+            output="$RUNNER_TEMP/actor-depth-output/$size"
+            mkdir -p "$output"
+            args=()
+            if [[ "$size" == 1280 ]]; then args=(-- --large); fi
+            if ! ACTOR_DEPTH_OUTPUT="$output" LIBGL_ALWAYS_SOFTWARE=1 \
+              xvfb-run -a -s '-screen 0 1280x720x24' \
+              timeout 240 godot --path "$private" --rendering-driver opengl3 \
+              --script res://tests/verify_actor_terrain_depth.gd "${args[@]}" \
+              > "verification-logs/actor-depth-$size.log" 2>&1; then
+              cat "verification-logs/actor-depth-$size.log"
+              exit 1
+            fi
+            cat "verification-logs/actor-depth-$size.log"
+            test -s "$output/report.json"
+            python3 - "$output/report.json" <<'PY'
+          import json, sys
+          report = json.load(open(sys.argv[1]))
+          assert len(report['cases']) == 9, report
+          assert not report['failures'], report
+          assert 'CodexActorTerrainV43' in report['user_data_dir'], report
+          PY
+          done
       - name: Verify isolated price-trial copies
         run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
@@ -50,5 +96,6 @@ jobs:
           name: verification-logs
           path: |
             verification-logs/
+            ${{ runner.temp }}/actor-depth-output/*/report.json
             ${{ runner.temp }}/price-trial-checks/engine-summary.json
             ${{ runner.temp }}/price-trial-checks/*/*.log
