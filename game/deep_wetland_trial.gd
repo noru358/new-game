@@ -137,7 +137,7 @@ func _build_dry_paths() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var count := 0
-	for route in [Wetland.WAYPOINTS, Wetland.SIDE_ROUTE]:
+	for route in _dry_routes():
 		for i in range(route.size() - 1):
 			var a: Vector2 = route[i]
 			var b: Vector2 = route[i + 1]
@@ -179,7 +179,7 @@ func spawn_enemies() -> void:
 		actors[actor].queue_free()
 		actors.erase(actor)
 		actor_motion.erase(actor)
-	for spec in PLACE_ENCOUNTERS:
+	for spec in _place_encounters():
 		var enemy := _spawn_enemy_at(spec[0], spec[1], spec[2])
 		enemy.set_physics_process(false)
 		dormant_place_enemies.append(enemy)
@@ -199,3 +199,9 @@ func _physics_process(delta: float) -> void:
 		# Once engaged, retreat never freezes a warning or resets the enemy.
 		enemy.set_physics_process(true)
 		dormant_place_enemies.erase(enemy)
+
+func _dry_routes() -> Array:
+	return [Wetland.WAYPOINTS, Wetland.SIDE_ROUTE]
+
+func _place_encounters() -> Array:
+	return PLACE_ENCOUNTERS
