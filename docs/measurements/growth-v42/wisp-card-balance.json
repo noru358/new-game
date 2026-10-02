@@ -1,0 +1,116 @@
+{
+  "human_playtest": false,
+  "notes": "Six10s cases; two fixture cards each, standard starting weapon/no accessory or permanent growth, same stationary target layout. AI and player input frozen. Actual projectile movement, targeting including incoming-damage avoidance, collision and damage callbacks. Swarm18 stationary22HP targets; boss actual1800HP. No respawn or rewards. No claim about natural boss movement, player positioning, camera clipping, run economy or final balance.",
+  "rows": [
+    {
+      "card": "S_WISP_COUNT",
+      "coefficient": 1.0,
+      "duration": 10.0000000000001,
+      "in_flight_at_end": 1,
+      "interval": 1.25,
+      "metrics": {
+        "hits": 23,
+        "hp_removed": 174.0,
+        "kills": 7,
+        "overkill": 56.0,
+        "shots": 24
+      },
+      "rank": 2,
+      "resolved_misses": 0,
+      "scenario": "swarm",
+      "wisps": 3
+    },
+    {
+      "card": "S_WISP_DAMAGE",
+      "coefficient": 1.4,
+      "duration": 10.0000000000001,
+      "in_flight_at_end": 0,
+      "interval": 1.25,
+      "metrics": {
+        "hits": 8,
+        "hp_removed": 88.0,
+        "kills": 4,
+        "overkill": 24.0,
+        "shots": 8
+      },
+      "rank": 2,
+      "resolved_misses": 0,
+      "scenario": "swarm",
+      "wisps": 1
+    },
+    {
+      "card": "S_WISP_CADENCE",
+      "coefficient": 1.0,
+      "duration": 10.0000000000001,
+      "in_flight_at_end": 0,
+      "interval": 1.0,
+      "metrics": {
+        "hits": 10,
+        "hp_removed": 76.0,
+        "kills": 3,
+        "overkill": 24.0,
+        "shots": 10
+      },
+      "rank": 2,
+      "resolved_misses": 0,
+      "scenario": "swarm",
+      "wisps": 1
+    },
+    {
+      "card": "S_WISP_COUNT",
+      "coefficient": 1.0,
+      "duration": 10.0000000000001,
+      "in_flight_at_end": 0,
+      "interval": 1.25,
+      "metrics": {
+        "hits": 24,
+        "hp_removed": 240.0,
+        "kills": 0,
+        "overkill": 0.0,
+        "shots": 24
+      },
+      "rank": 2,
+      "resolved_misses": 0,
+      "scenario": "single_boss",
+      "wisps": 3
+    },
+    {
+      "card": "S_WISP_DAMAGE",
+      "coefficient": 1.4,
+      "duration": 10.0000000000001,
+      "in_flight_at_end": 0,
+      "interval": 1.25,
+      "metrics": {
+        "hits": 8,
+        "hp_removed": 112.0,
+        "kills": 0,
+        "overkill": 0.0,
+        "shots": 8
+      },
+      "rank": 2,
+      "resolved_misses": 0,
+      "scenario": "single_boss",
+      "wisps": 1
+    },
+    {
+      "card": "S_WISP_CADENCE",
+      "coefficient": 1.0,
+      "duration": 10.0000000000001,
+      "in_flight_at_end": 0,
+      "interval": 1.0,
+      "metrics": {
+        "hits": 10,
+        "hp_removed": 100.0,
+        "kills": 0,
+        "overkill": 0.0,
+        "shots": 10
+      },
+      "rank": 2,
+      "resolved_misses": 0,
+      "scenario": "single_boss",
+      "wisps": 1
+    }
+  ],
+  "sample": "fixed_wisp_card_balance_v1",
+  "time_scale": 1.0
+}

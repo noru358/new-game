@@ -1,0 +1,7 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+CAP_PHASE start
+CAP_PHASE chain
+CAP_PHASE boss
+CAP_PHASE cleanup
+SLASH_CHAIN_CAP_CHECKS 36 failures 0
