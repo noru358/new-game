@@ -40,6 +40,7 @@ func setup(scene: Control) -> void:
 	scene.canal_trial_button.custom_minimum_size.y = 34
 	scene.canal_trial_button.add_theme_font_size_override("font_size", 16)
 	for trial in [
+		{"title": "사원 4분 진행 시험 · 별도 기록", "scene": "res://game/temple_circuit_run.tscn"},
 		{"title": "사원 전체 동선 후보 · 저장·보상 없음", "scene": "res://game/temple_circuit_trial.tscn"},
 		{"title": "깊은 사원 습지 대표 구간 · 저장·보상 없음", "scene": "res://game/deep_wetland_trial.tscn"},
 	]:

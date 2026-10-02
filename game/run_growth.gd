@@ -95,8 +95,12 @@ func _ready() -> void:
 	_update_hud()
 
 
+# Opt-in first-region pacing comparison. Live scenes keep the default curve.
+var late_xp_slope_trial := false
+
 func next_xp() -> int:
-	return 8 + 2 * (level - 1)
+	var earned := level - 1
+	return 8 + 2 * earned + (2 * maxi(0, earned - 5) if late_xp_slope_trial else 0)
 
 
 func on_enemy_defeated(enemy: TrainingEnemy) -> void:
