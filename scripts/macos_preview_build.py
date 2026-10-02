@@ -189,6 +189,20 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     report["disk_image"] = {"name": image.name, "bytes": image.stat().st_size,
                             "sha256": digest(image, "sha256"), "format": "ULMO",
                             "mounted_signature_and_startup_verified": True}
+    compact = output / f"LoopConquest-{label}-macOS-{architecture}.tar.xz"
+    checked(["tar", "-cJf", compact, "-C", deployment, app.name], scratch, output / "tar-create.log", 300)
+    extracted = scratch / "extracted-compact"
+    extracted.mkdir()
+    checked(["tar", "-xJf", compact, "-C", extracted], scratch, output / "tar-extract.log", 120)
+    extracted_app = extracted / app.name
+    extracted_executable = extracted_app / "Contents/MacOS" / info["CFBundleExecutable"]
+    if digest(extracted_executable, "sha256") != digest(executable, "sha256"):
+        raise RuntimeError("Compact archive executable differs from verified export")
+    checked(["codesign", "--verify", "--deep", "--strict", extracted_app], scratch, output / "tar-signature.log")
+    checked([extracted_executable, "--headless", "--quit-after", "120"], scratch, output / "tar-startup.log", 90)
+    report["compact_archive"] = {"name": compact.name, "bytes": compact.stat().st_size,
+                                 "sha256": digest(compact, "sha256"),
+                                 "native_extraction_signature_startup_verified": True}
     report["status"] = "passed"
     (output / "PLAYTEST.txt").write_text(
         f"Loop Conquest {label} 필드 비교판\n소스: {commit}\n\n"
