@@ -18,20 +18,24 @@ func _create_region_section() -> Node:
 	section.layout = SouthLayout
 	return section
 func _ready() -> void:
-	# Explicit synthetic access in this separate trial, never a real campaign clear.
-	var trial_profile := RunProfile.new()
-	trial_profile.save_prefix = profile_save_prefix
-	trial_profile.load_state()
-	if not trial_profile.load_error and not trial_profile.temple_owned:
-		trial_profile.settle("southern-circuit-development-access", "SUCCESS", 0, RunProfile.TEMPLE_REGION)
-	if not trial_profile.load_error:
-		var trial_unlocks := UnlockProgress.new()
-		trial_unlocks.save_prefix = growth_save_prefix
-		trial_unlocks.load_progress()
-		while trial_unlocks.lifetime_levelups < 6:
-			var previous := trial_unlocks.lifetime_levelups
-			trial_unlocks.add_levelup()
-			if trial_unlocks.lifetime_levelups == previous: break
+	var session = preload("res://game/field_preview_session.gd")
+	session.configure(self)
+	if session.active(get_tree()): scene_hud_title = "정글 · 미리보기 공통 기록"
+	if not session.active(get_tree()):
+		# Explicit synthetic access in this separate trial, never a real campaign clear.
+		var trial_profile := RunProfile.new()
+		trial_profile.save_prefix = profile_save_prefix
+		trial_profile.load_state()
+		if not trial_profile.load_error and not trial_profile.temple_owned:
+			trial_profile.settle("southern-circuit-development-access", "SUCCESS", 0, RunProfile.TEMPLE_REGION)
+		if not trial_profile.load_error:
+			var trial_unlocks := UnlockProgress.new()
+			trial_unlocks.save_prefix = growth_save_prefix
+			trial_unlocks.load_progress()
+			while trial_unlocks.lifetime_levelups < 6:
+				var previous := trial_unlocks.lifetime_levelups
+				trial_unlocks.add_levelup()
+				if trial_unlocks.lifetime_levelups == previous: break
 	super._ready()
 	var environment := preload("res://game/jungle_south_circuit_environment.gd").build(self)
 	add_child(environment)

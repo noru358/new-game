@@ -48,6 +48,7 @@ var growth_tabs: TabContainer
 
 
 func _ready() -> void:
+	preload("res://game/field_preview_session.gd").configure(self)
 	get_window().title = "Loop Conquest — 여행 준비"
 	profile = ProfileScript.new()
 	profile.save_prefix = profile_save_prefix
@@ -533,7 +534,7 @@ func _toggle_supply() -> void:
 
 func _depart() -> void:
 	if profile.load_error or not profile.region_available(selected_region_id): return
-	get_tree().change_scene_to_file(JUNGLE_SCENE if selected_region_id == RunProfile.JUNGLE_REGION else REGION_SCENE)
+	get_tree().change_scene_to_file(preload("res://game/field_preview_session.gd").region_scene(get_tree(), selected_region_id == RunProfile.JUNGLE_REGION))
 
 
 func _depart_canal_trial() -> void:

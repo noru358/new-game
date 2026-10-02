@@ -22,4 +22,5 @@ func _ready() -> void:
 		printerr("FAIL: unsupported or repeated preview scene selection")
 		get_tree().quit(2)
 		return
+	preload("res://game/field_preview_session.gd").activate(get_tree())
 	get_tree().call_deferred("change_scene_to_file", path)

@@ -30,6 +30,8 @@ func _create_region_section() -> Node:
 	return section
 
 func _ready() -> void:
+	preload("res://game/field_preview_session.gd").configure(self)
+	if preload("res://game/field_preview_session.gd").active(get_tree()): scene_hud_title = "사원 · 미리보기 공통 기록"
 	super._ready()
 	growth.late_xp_slope_trial = OS.get_cmdline_user_args().has("--circuit-xp-trial")
 	growth.choice_batch_trial_enabled = OS.get_cmdline_user_args().has("--circuit-choice-batch")

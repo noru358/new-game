@@ -21,6 +21,7 @@ var stations := [
 
 
 func _ready() -> void:
+	preload("res://game/field_preview_session.gd").configure(self)
 	get_window().title = "Loop Conquest — 이동 야영지"
 	_build_camp()
 	_build_overlay()

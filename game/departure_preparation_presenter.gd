@@ -45,6 +45,8 @@ func setup(scene: Control) -> void:
 		{"title": "사원 전체 동선 후보 · 저장·보상 없음", "scene": "res://game/temple_circuit_trial.tscn"},
 		{"title": "깊은 사원 습지 대표 구간 · 저장·보상 없음", "scene": "res://game/deep_wetland_trial.tscn"},
 	]:
+		if preload("res://game/field_preview_session.gd").active(scene.get_tree()) and trial.scene in ["res://game/temple_circuit_run.tscn", "res://game/jungle_south_circuit.tscn"]:
+			continue # Shared campaign uses the ordinary departure buttons and real unlock gate.
 		var button := Button.new()
 		button.text = trial.title
 		button.custom_minimum_size.y = 34
