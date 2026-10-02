@@ -27,6 +27,7 @@ var planned_charge_distance := 260.0
 var impact_flash := 0.0
 var impact_is_ring := false
 var counter_flash := 0.0
+var boundary_warning_granted := false
 const COUNTER_DAMAGE_MULTIPLIER := 1.30
 const DUEL_CHARGE_SPEED := 1000.0
 const REENTRY_WARNING_FLOOR := 0.35
@@ -92,13 +93,22 @@ func pause_for_boundary() -> void:
 		charge_time = 0.0
 		charge_pending = false
 		warning_time = maxf(warning_duration, REENTRY_WARNING_FLOOR)
+		boundary_warning_granted = true
 
 
 func resume_from_boundary() -> void:
 	encounter_active = true
-	if warning_time > 0.0: warning_time = maxf(warning_time, REENTRY_WARNING_FLOOR)
-	if shock_warning > 0.0: shock_warning = maxf(shock_warning, REENTRY_WARNING_FLOOR)
-	if ring_warning > 0.0: ring_warning = maxf(ring_warning, REENTRY_WARNING_FLOOR)
+	if not boundary_warning_granted:
+		if warning_time > 0.0: warning_time = maxf(warning_time, REENTRY_WARNING_FLOOR)
+		if shock_warning > 0.0: shock_warning = maxf(shock_warning, REENTRY_WARNING_FLOOR)
+		if ring_warning > 0.0: ring_warning = maxf(ring_warning, REENTRY_WARNING_FLOOR)
+		boundary_warning_granted = warning_time > 0.0 or shock_warning > 0.0 or ring_warning > 0.0
+
+
+func tick_outside(delta: float) -> void:
+	# The player cannot pause the counter window by repeatedly crossing the gate.
+	recovery_time = maxf(0.0, recovery_time - delta)
+	attack_cooldown = maxf(0.0, attack_cooldown - delta)
 
 
 func suspend_encounter() -> void:
@@ -112,6 +122,7 @@ func suspend_encounter() -> void:
 	recovery_time = 0.0
 	charge_followups = 0
 	charge_pending = false
+	boundary_warning_granted = false
 	impact_flash = 0.0
 	counter_flash = 0.0
 
@@ -210,6 +221,7 @@ func _finish_pattern(pulse := false) -> void:
 		shock_warning = SHOCK_WARNING
 		attacks_started += 1
 		return
+	boundary_warning_granted = false
 	recovery_time = _attack_delay()
 	attack_cooldown = 0.0
 	if pulse:

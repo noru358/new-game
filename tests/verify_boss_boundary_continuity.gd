@@ -53,8 +53,23 @@ func _run() -> void:
 		scene.player.global_position = inside
 		section.tick(0.0)
 		_check((boss.sweep_warning if jungle else boss.warning_time) >= GateBoss.REENTRY_WARNING_FLOOR, "re-entry leaves readable warning time")
+		if jungle:
+			boss.sweep_warning = 0.05
+		else:
+			boss.warning_time = 0.05
+		scene.player.global_position = outside
+		section.tick(0.0)
+		scene.player.global_position = inside
+		section.tick(0.0)
+		_check((boss.sweep_warning if jungle else boss.warning_time) <= 0.051, "repeated crossing cannot replenish the same warning")
 		boss._beast_velocity(0.36)
 		_check(boss.attacks_fired == fired_before + 1, "the paused attack resolves on re-entry")
+		boss.recovery_time = 1.0
+		scene.player.global_position = outside
+		section.tick(0.4)
+		_check(is_equal_approx(boss.recovery_time, 0.6), "counter recovery expires while outside the gate")
+		scene.player.global_position = inside
+		section.tick(0.0)
 		if jungle:
 			boss.recovery_time = 0.0
 			boss.combo_gap = 0.12

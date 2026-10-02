@@ -103,6 +103,7 @@ func tick(delta: float) -> void:
 				arena.boss.pause_for_boundary()
 				arena.boss.remove_from_group("training_enemies")
 		if boss_active: _clear_arena_intruders()
+		else: arena.boss.tick_outside(delta)
 	_sync_field_actors()
 	_tick_garden(delta)
 	destination_label.visible = arena.player.global_position.distance_to(destination_point) < 650.0

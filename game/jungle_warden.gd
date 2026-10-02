@@ -93,6 +93,7 @@ func _after_warden_strike(gust_next: bool) -> void:
 		pending_gust = gust_next
 		combo_gap = 0.18
 	else:
+		boundary_warning_granted = false
 		recovery_time = _attack_delay()
 		attack_cooldown = 0.0
 
@@ -109,8 +110,10 @@ func suspend_encounter() -> void:
 
 func resume_from_boundary() -> void:
 	super.resume_from_boundary()
-	if sweep_warning > 0.0: sweep_warning = maxf(sweep_warning, REENTRY_WARNING_FLOOR)
-	if gust_warning > 0.0: gust_warning = maxf(gust_warning, REENTRY_WARNING_FLOOR)
+	if not boundary_warning_granted:
+		if sweep_warning > 0.0: sweep_warning = maxf(sweep_warning, REENTRY_WARNING_FLOOR)
+		if gust_warning > 0.0: gust_warning = maxf(gust_warning, REENTRY_WARNING_FLOOR)
+		boundary_warning_granted = sweep_warning > 0.0 or gust_warning > 0.0
 
 
 func combat_cue() -> String:

@@ -204,7 +204,7 @@ func _encounter_cue() -> String:
 
 func _run_hud_text() -> String:
 	var result := super._run_hud_text()
-	if run_time >= 270.0 and not boss_spawned:
+	if run_time >= BOSS_TIME - 30.0 and not boss_spawned:
 		result += "\n관문 상단에 수호자 출현 예정"
 	if not is_instance_valid(boss) or not boss is JungleWarden: return result
 	if boss.global_position.distance_to(player.global_position) > 850.0:
