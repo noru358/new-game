@@ -20,4 +20,4 @@
 
 `tests/verify_actor_terrain_depth.gd`는 계단 하·중·상·마루, 바위길, 관문 상단, 사원 테라스·징검돌, 수로 시험 다리의 9개 표본을 검사한다. 최종 Mac 960·1280에서 각각 9/9 통과했다. 변경된 수목의 실제 충돌 위치도 확인한다. 기존 적 표현324개, 정글 경로73개, 지형·수로·사원 관련 회귀도 통과했다. 이는 고정 표본의 지형·시야 검사이며 자연 한 판, 사람의 가독성/미감 수용, 장시간 성능 결과가 아니다.
 
-최종 합본의 기존 [72개 검사 결과](full-suite-results.tsv)는 모두 exit0이다. 손상된 설정 파일을 고의로 넣는 `verify_play_settings`의 엔진 파서 오류는 v42에서도 같은 입력에서 발생했고 검사 결과는211/0이다. [보스 시계401개](boss-countdown-native.log), [출정 UI268개](ui-flow-native.log), [석조 이동960](worn-960-native.log)·[1280](worn-1280-native.log)이 실제 Mac에서 통과했다. [정글 강변 긴 경로](route-960-report.json)는 약4,956 맵 단위 정상속도 입력으로 목적지에 도달했지만 [캡처 종료 로그](route-960-native.log)에 자원1개 정리 경고가 반복된다. 본격 게임창의 장시간 자원 거동은 확인하지 않았다.
+최종 합본의 기존 [72개 검사 결과](full-suite-results.tsv)는 모두 exit0이다. 손상된 설정 파일을 고의로 넣는 `verify_play_settings`의 엔진 파서 오류는 v42에서도 같은 입력에서 발생했고 검사 결과는211/0이다. [보스 시계401개](boss-countdown-native.txt), [출정 UI268개](ui-flow-native.txt), [석조 이동960](worn-960-native.txt)·[1280](worn-1280-native.txt)이 실제 Mac에서 통과했다. [정글 강변 긴 경로](route-960-report.json)는 약4,956 맵 단위 정상속도 입력으로 목적지에 도달했지만 [캡처 종료 로그](route-960-native.txt)에 자원1개 정리 경고가 반복된다. 본격 게임창의 장시간 자원 거동은 확인하지 않았다.
