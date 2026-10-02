@@ -6,7 +6,7 @@ const OFFERING_GROVE := Vector2(4010, 1730)
 const INNER_ROUTE := [TEMPLE_COURT, Vector2(3620, 970), Vector2(3980, 970), Vector2(4060, 690), Vector2(4600, 690), INNER_COURT]
 const RETURN_ROUTE := [INNER_COURT, Vector2(4780, 1670), OFFERING_GROVE, Vector2(3420, 1630), Vector2(3180, 1280), TEMPLE_COURT]
 const SANCTUARY_FLOOR := Rect2(4630, 730, 630, 680)
-const INNER_RUINS := [Rect2(3820, 840, 120, 110), Rect2(3830, 1060, 110, 110), Rect2(4660, 760, 100, 130), Rect2(5170, 780, 90, 150), Rect2(3900, 1820, 150, 110)]
+const INNER_RUINS := [Rect2(3820, 840, 120, 110), Rect2(3830, 1060, 110, 110), Rect2(4710, 560, 100, 130), Rect2(5170, 780, 90, 150), Rect2(3900, 1820, 150, 110)]
 func _init() -> void:
 	super._init()
 	map_size.x = 5600
