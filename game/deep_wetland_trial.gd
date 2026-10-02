@@ -72,6 +72,7 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	for p in [Vector2(2940, 660), Vector2(2940, 1100), Vector2(3340, 660), Vector2(3340, 1100)]:
 		_stone(p, Vector3(0.65, 0.065, 0.75), Color("b9b28e"))
 	_build_face()
+	add_child(preload("res://game/wetland_root_environment.gd").build(self))
 	# Silhouettes stay in blocked water along the far bank, not over the route.
 	for p in [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]:
 		_stone(p, Vector3(0.55, 2.4, 0.7), Color("394f44"))
