@@ -23,7 +23,7 @@ func _run() -> void:
 				var total := 0.0
 				for weight in phase.weights: total += weight
 				check(is_equal_approx(total, 100.0), "role weights sum to 100")
-		check(is_equal_approx(actual, baseline), "pressure and recovery preserve the four-minute scheduled spawn budget")
+		check(is_equal_approx(actual, baseline) and is_equal_approx(actual, 352.125), "pressure and recovery preserve the 352.125 four-minute scheduled spawn request budget")
 		scene.run_time = 140.0
 		check(scene._spawn_rate() > 1.1, "middle wave preserves pressure increase")
 		if path.ends_with("jungle_pass.tscn"):
