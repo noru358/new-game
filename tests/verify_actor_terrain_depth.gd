@@ -86,8 +86,8 @@ func _run() -> void:
 		{"name": "jungle-stair-crest", "scene": "res://game/jungle_pass.tscn", "point": Vector2(3850, 1320)},
 		{"name": "jungle-rock-path", "scene": "res://game/jungle_pass.tscn", "point": Vector2(3880, 1880)},
 		{"name": "jungle-plateau", "scene": "res://game/jungle_pass.tscn", "point": Vector2(4450, 1100)},
-		{"name": "temple-terrace-ramp", "scene": "res://game/hybrid_region.tscn", "point": Vector2(1000, 1000)},
-		{"name": "temple-south-stones", "scene": "res://game/hybrid_region.tscn", "point": Vector2(1290, 1640)},
+		{"name": "temple-terrace-ramp", "scene": "res://game/hybrid_region.tscn", "point": Vector2(700, 1120)},
+		{"name": "temple-south-stones", "scene": "res://game/hybrid_region.tscn", "point": Vector2(940, 1645)},
 		{"name": "canal-bridge", "scene": "res://game/canal_city_trial.tscn", "point": Vector2(3800, 2180)},
 	]: await _measure(entry)
 	var file := FileAccess.open(output.path_join("report.json"), FileAccess.WRITE)

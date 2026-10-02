@@ -57,6 +57,23 @@
         0.0,
         0.0
       ],
+      "height": 464.0,
+      "name": "jungle-stair-crest",
+      "point": [
+        3850.0,
+        1320.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 849,
+      "visible_body_pixels_with_terrain": 825,
+      "visible_ratio": 0.971731448763251
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "height": 328.421052631579,
       "name": "jungle-rock-path",
       "point": [
@@ -91,16 +108,16 @@
         0.0,
         0.0
       ],
-      "height": 320.0,
+      "height": 272.0,
       "name": "temple-terrace-ramp",
       "point": [
-        1000.0,
-        1000.0
+        700.0,
+        1120.0
       ],
       "sprite_offset_y": 34.0,
       "visible_body_pixels_bare": 849,
-      "visible_body_pixels_with_terrain": 849,
-      "visible_ratio": 1.0
+      "visible_body_pixels_with_terrain": 837,
+      "visible_ratio": 0.985865724381625
     },
     {
       "body_position": [
@@ -108,16 +125,16 @@
         0.0,
         0.0
       ],
-      "height": 0.0,
+      "height": 106.666666666667,
       "name": "temple-south-stones",
       "point": [
-        1290.0,
-        1640.0
+        940.0,
+        1645.0
       ],
       "sprite_offset_y": 34.0,
       "visible_body_pixels_bare": 849,
-      "visible_body_pixels_with_terrain": 834,
-      "visible_ratio": 0.982332155477032
+      "visible_body_pixels_with_terrain": 849,
+      "visible_ratio": 1.0
     },
     {
       "body_position": [
@@ -139,7 +156,15 @@
   ],
   "engine": "4.6-stable (official)",
   "failures": [
-    "missing bare sprite: jungle-stair-high"
+    "terrain clips actor feet: jungle-stair-low",
+    "terrain clips actor feet: jungle-stair-mid",
+    "opaque gate canopy was not relocated",
+    "gate canopy visual and 2D blocker disagree",
+    "opaque scenery buries most of actor: jungle-stair-high",
+    "terrain clips actor feet: jungle-stair-high",
+    "terrain clips actor feet: jungle-stair-crest",
+    "terrain clips actor feet: jungle-rock-path",
+    "terrain clips actor feet: jungle-plateau"
   ],
   "user_data_dir": "/Users/lty/Library/Application Support/CodexActorTerrainV43/Baseline"
 }

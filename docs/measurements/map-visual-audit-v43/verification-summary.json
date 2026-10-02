@@ -1,0 +1,122 @@
+[
+  {
+    "source": "/Users/lty/Documents/Codex/2026-10-02/task-3/audit-worktree",
+    "head": "f21f2b63e600c0a27233bbef87d4cc96bb9643dc",
+    "status": "",
+    "trial": "ba861002-26c1-4379-92f6-08971e70d46e",
+    "results": [
+      {
+        "label": "import",
+        "passed": true,
+        "exit_code": 0
+      },
+      {
+        "label": "capture_terrain_audit",
+        "passed": true,
+        "exit_code": 0
+      }
+    ],
+    "ordinary_save_preserved": true,
+    "source_unchanged_during_run": true
+  },
+  {
+    "source": "/Users/lty/Documents/Codex/2026-10-02/task-3/audit-fixed-worktree",
+    "head": "cdb272ae312193c04e3e52ef83cb04da8b5fea28",
+    "status": "",
+    "trial": "1d5e3552-c1f8-459f-a00a-8ca924d355f4",
+    "results": [
+      {
+        "label": "import",
+        "passed": true,
+        "exit_code": 0
+      },
+      {
+        "label": "capture_terrain_audit",
+        "passed": true,
+        "exit_code": 0
+      }
+    ],
+    "ordinary_save_preserved": true,
+    "source_unchanged_during_run": true
+  },
+  {
+    "source": "/Users/lty/Documents/Codex/2026-10-02/task-3/audit-worktree",
+    "head": "f21f2b63e600c0a27233bbef87d4cc96bb9643dc",
+    "status": "",
+    "trial": "3f41d602-4c50-4d71-b888-2fea0bebe191",
+    "results": [
+      {
+        "label": "import",
+        "passed": true,
+        "exit_code": 0
+      },
+      {
+        "label": "audit_terrain_surfaces",
+        "passed": true,
+        "exit_code": 0
+      }
+    ],
+    "ordinary_save_preserved": true,
+    "source_unchanged_during_run": true
+  },
+  {
+    "source": "/Users/lty/Documents/Codex/2026-10-02/task-3/audit-fixed-worktree",
+    "head": "cdb272ae312193c04e3e52ef83cb04da8b5fea28",
+    "status": "",
+    "trial": "e5facf57-be13-4288-af11-2fcacb260ddf",
+    "results": [
+      {
+        "label": "import",
+        "passed": true,
+        "exit_code": 0
+      },
+      {
+        "label": "audit_terrain_surfaces",
+        "passed": true,
+        "exit_code": 0
+      }
+    ],
+    "ordinary_save_preserved": true,
+    "source_unchanged_during_run": true
+  },
+  {
+    "source": "/Users/lty/Documents/Codex/2026-10-02/task-3/audit-worktree",
+    "head": "f21f2b63e600c0a27233bbef87d4cc96bb9643dc",
+    "status": "",
+    "trial": "763d01b0-8811-45e8-8493-4515338d42e2",
+    "results": [
+      {
+        "label": "import",
+        "passed": true,
+        "exit_code": 0
+      },
+      {
+        "label": "capture_terrain_motion_audit",
+        "passed": true,
+        "exit_code": 0
+      }
+    ],
+    "ordinary_save_preserved": true,
+    "source_unchanged_during_run": true
+  },
+  {
+    "source": "/Users/lty/Documents/Codex/2026-10-02/task-3/audit-fixed-worktree",
+    "head": "cdb272ae312193c04e3e52ef83cb04da8b5fea28",
+    "status": "",
+    "trial": "a641386b-57ac-45d0-a483-957235852fa6",
+    "results": [
+      {
+        "label": "import",
+        "passed": true,
+        "exit_code": 0
+      },
+      {
+        "label": "capture_terrain_motion_audit",
+        "passed": true,
+        "exit_code": 0
+      }
+    ],
+    "ordinary_save_preserved": true,
+    "source_unchanged_during_run": true
+  }
+]

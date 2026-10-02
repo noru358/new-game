@@ -108,11 +108,11 @@
         0.0399999991059303,
         0.0
       ],
-      "height": 320.0,
+      "height": 272.0,
       "name": "temple-terrace-ramp",
       "point": [
-        1000.0,
-        1000.0
+        700.0,
+        1120.0
       ],
       "sprite_offset_y": 34.0,
       "visible_body_pixels_bare": 1514,
@@ -125,16 +125,16 @@
         0.0399999991059303,
         0.0
       ],
-      "height": 0.0,
+      "height": 106.666666666667,
       "name": "temple-south-stones",
       "point": [
-        1290.0,
-        1640.0
+        940.0,
+        1645.0
       ],
       "sprite_offset_y": 34.0,
       "visible_body_pixels_bare": 1514,
-      "visible_body_pixels_with_terrain": 1540,
-      "visible_ratio": 1.01717305151915
+      "visible_body_pixels_with_terrain": 1514,
+      "visible_ratio": 1.0
     },
     {
       "body_position": [
@@ -156,5 +156,5 @@
   ],
   "engine": "4.6-stable (official)",
   "failures": [],
-  "user_data_dir": "/Users/lty/Library/Application Support/CodexActorTerrainV43/Integrated"
+  "user_data_dir": "/Users/lty/Library/Application Support/LoopConquestMapTrials/CodexActorTerrainV43-Integrated"
 }
