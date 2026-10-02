@@ -1,0 +1,254 @@
+{
+  "captures": [
+    {
+      "file": "01-ridge-entry.png",
+      "height": 240.0,
+      "point": [
+        2400.0,
+        1770.0
+      ]
+    },
+    {
+      "file": "02-open-riverbank.png",
+      "height": 80.0,
+      "point": [
+        2911.90161132812,
+        1931.11499023438
+      ]
+    },
+    {
+      "file": "03-water-and-remnant.png",
+      "height": 80.0,
+      "point": [
+        3079.7490234375,
+        2162.82592773438
+      ]
+    },
+    {
+      "file": "05-north-remnant.png",
+      "height": 123.32640625,
+      "point": [
+        3235.39501953125,
+        1739.02709960938
+      ]
+    },
+    {
+      "file": "04-gate-destination.png",
+      "height": 423.989771792763,
+      "point": [
+        4182.63427734375,
+        1769.99011230469
+      ]
+    }
+  ],
+  "complete": true,
+  "currency": 3,
+  "engine": "4.6-stable (official)",
+  "failures": [],
+  "fixture": "One start placement; all 11 checkpoints via ordinary 60Hz directional and attack input, actual navigation/collision/elevation/entry/crest/native defenders/camera. Fresh HP/loadout and automatic companion. Ambient spawns and growth modal disabled equally, test window focus auto-pause disconnected equally. No dash or waypoint teleport. No natural full run, human fun, volume acceptance, audio or performance verdict.",
+  "height_range": [
+    80.0,
+    480.0
+  ],
+  "hp": 81.0,
+  "kills": 2,
+  "resolution": [
+    960,
+    540
+  ],
+  "time_scale": 1.0,
+  "user_data_dir": "/Users/lty/Library/Application Support/LoopConquestMapTrials/CodexActorTerrainV43-Integrated",
+  "variant": "candidate",
+  "walked": 4956.09672701359,
+  "walks": [
+    {
+      "goal": [
+        2590.0,
+        1770.0
+      ],
+      "height": 183.154897836538,
+      "hp": 100.0,
+      "label": "narrow-descent",
+      "physics_seconds": 0.65,
+      "point": [
+        2592.37329101562,
+        1769.41333007812
+      ],
+      "remaining": 2.44472742080688,
+      "walked": 188.705474853516,
+      "wall_seconds": 0.644831
+    },
+    {
+      "goal": [
+        2910.0,
+        1930.0
+      ],
+      "height": 80.0,
+      "hp": 81.0,
+      "label": "open-riverbank",
+      "physics_seconds": 1.56666666666667,
+      "point": [
+        2911.90161132812,
+        1931.11499023438
+      ],
+      "remaining": 2.20438861846924,
+      "walked": 429.730671048164,
+      "wall_seconds": 1.583306
+    },
+    {
+      "goal": [
+        3080.0,
+        2160.0
+      ],
+      "height": 80.0,
+      "hp": 81.0,
+      "label": "water-edge",
+      "physics_seconds": 1.11666666666667,
+      "point": [
+        3079.7490234375,
+        2162.82592773438
+      ],
+      "remaining": 2.83705067634583,
+      "walked": 369.600701808929,
+      "wall_seconds": 1.067861
+    },
+    {
+      "goal": [
+        3310.0,
+        2080.0
+      ],
+      "height": 147.52015625,
+      "hp": 81.0,
+      "label": "south-bypass",
+      "physics_seconds": 0.783333333333333,
+      "point": [
+        3311.00048828125,
+        2077.14599609375
+      ],
+      "remaining": 3.0242874622345,
+      "walked": 283.339350223541,
+      "wall_seconds": 0.750873
+    },
+    {
+      "goal": [
+        3410.0,
+        1790.0
+      ],
+      "height": 180.67546875,
+      "hp": 81.0,
+      "label": "broken-bridge-rise",
+      "physics_seconds": 1.1,
+      "point": [
+        3414.61083984375,
+        1794.15454101562
+      ],
+      "remaining": 6.2064528465271,
+      "walked": 375.076361179352,
+      "wall_seconds": 1.116967
+    },
+    {
+      "goal": [
+        3240.0,
+        1740.0
+      ],
+      "height": 123.32640625,
+      "hp": 81.0,
+      "label": "north-bypass",
+      "physics_seconds": 0.6,
+      "point": [
+        3235.39501953125,
+        1739.02709960938
+      ],
+      "remaining": 4.70663166046143,
+      "walked": 224.591202259064,
+      "wall_seconds": 0.616584
+    },
+    {
+      "goal": [
+        3010.0,
+        1760.0
+      ],
+      "height": 80.0,
+      "hp": 81.0,
+      "label": "short-return-loop",
+      "physics_seconds": 0.683333333333333,
+      "point": [
+        3010.66674804688,
+        1760.48706054688
+      ],
+      "remaining": 0.825700283050537,
+      "walked": 244.786303043365,
+      "wall_seconds": 0.634544
+    },
+    {
+      "goal": [
+        3310.0,
+        2080.0
+      ],
+      "height": 147.149375,
+      "hp": 81.0,
+      "label": "river-return",
+      "physics_seconds": 1.61666666666667,
+      "point": [
+        3309.841796875,
+        2081.41040039062
+      ],
+      "remaining": 1.4192453622818,
+      "walked": 571.847050666809,
+      "wall_seconds": 1.633176
+    },
+    {
+      "goal": [
+        3750.0,
+        1770.0
+      ],
+      "height": 287.578818873355,
+      "hp": 81.0,
+      "label": "gate-ascent",
+      "physics_seconds": 1.86666666666667,
+      "point": [
+        3750.66625976562,
+        1765.16125488281
+      ],
+      "remaining": 4.8843994140625,
+      "walked": 667.177927970886,
+      "wall_seconds": 1.883296
+    },
+    {
+      "goal": [
+        4180.0,
+        1770.0
+      ],
+      "height": 423.989771792763,
+      "hp": 81.0,
+      "label": "destination-sight",
+      "physics_seconds": 1.08333333333333,
+      "point": [
+        4182.63427734375,
+        1769.99011230469
+      ],
+      "remaining": 2.63429594039917,
+      "walked": 429.384880542755,
+      "wall_seconds": 1.099902
+    },
+    {
+      "goal": [
+        4520.0,
+        1160.0
+      ],
+      "height": 480.0,
+      "hp": 81.0,
+      "label": "gate-interior",
+      "physics_seconds": 3.41666666666667,
+      "point": [
+        4521.0126953125,
+        1160.9365234375
+      ],
+      "remaining": 1.37935781478882,
+      "walked": 1171.85680341721,
+      "wall_seconds": 3.382464
+    }
+  ],
+  "warnings_seen": true,
+  "zones_seen": true
+}

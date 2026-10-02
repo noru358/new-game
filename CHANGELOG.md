@@ -493,3 +493,10 @@
 - Dress the existing waterfront-to-raised-court approach using blocked edges, masonry, water-bank remnants and low growth; retain routes, heights and camera.
 - Keep an alternate third-card family distribution opt-in and in memory only. Baseline runs and save data retain the existing offer policy and prices.
 - Preserve the delivered v38 Mac checkpoint independently; native arm64/Intel startup is evidence for that exact archive, not automatic certification of later code or human play quality.
+## 2026-10-03 — v43 Mac visibility and playtest handoff
+
+- Keep the v42 four-minute boss and v7 save contract. Restore an independent, always visible countdown during preparation and distinct ready/fight/retry statuses without replacing the destination line.
+- Fix a measured jungle gate-stair enemy burial: move one opaque canopy and its actual blocker from `(4060,1390)` to `(4250,1390)`; raise only ordinary enemy billboards 0.04 world units above painted surfaces while keeping shadows and gameplay coordinates grounded. Preserve collision sizes, enemy rules, assets and opacity.
+- Mount one bounded worn-stone sample on the existing 8 gate posts, 10 rocks and 12 stair courses. Keep the original transforms and terrain heights; static drawcalls are unchanged in the Mac sample, with 1,064 more geometry triangles.
+- Verify the combined source with the previous 72 script regressions, 9 actor/terrain depth poses at both Mac resolutions, native boss countdown/UI and normal-input jungle stone/route samples. A capture-only route script still reports one resource at process exit; its walk and images complete, while the ordinary route regression exits cleanly.
+- Preserve v42 app and saves. Human visual acceptance, longer play/performance, audio and remaining map-wide occlusion audit stay open.
