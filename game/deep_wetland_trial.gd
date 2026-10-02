@@ -1,0 +1,90 @@
+extends "res://game/hybrid_height.gd"
+## Standalone construction sample: no profile, XP, settlement or new unlocks.
+const Wetland = preload("res://game/deep_wetland_terrain.gd")
+
+func _init() -> void:
+	terrain = Wetland.new()
+	start_point = Wetland.ENTRY
+	enemy_points = [Vector2(1300, 2180), Vector2(2140, 1550), Vector2(2840, 1510), Vector2(3230, 1030)]
+	landmark_points = {"입구": Wetland.ENTRY, "참배길": Wetland.PROCESSION, "얼굴 유적": Wetland.FACE_BANK, "사원뜰": Wetland.TEMPLE_COURT}
+	combat_camera_size = 9.0
+	overview_camera_size = 48.0
+	camera_offset = Vector3(14, 13.864, 14)
+	ground_color = Color("4c6858")
+	scene_title = "Deep Temple Wetland — representative route"
+	show_practice_controls = false
+	moving_slash_practice = true
+	growth_save_prefix = "user://deep_wetland_trial_unused_unlocks"
+
+func _ready() -> void:
+	super._ready()
+	growth.growth_ended = true
+	growth.hud.hide()
+	growth.xp_bar.hide()
+	growth.last_choice_label.hide()
+	player.set_combo_rank(2)
+	build_summary_label.hide()
+	_update_hud()
+
+func _on_enemy_defeated(_enemy: TrainingEnemy) -> void:
+	kills += 1
+
+func _update_hud() -> void:
+	if hud == null or not is_instance_valid(player): return
+	hud.text = "깊은 사원 습지 · 대표 구간\n%s · HP %d · 저장/보상 없음" % [terrain.surface_name(player.position), ceili(player.health)]
+	if player_health_bar != null:
+		player_health_bar.max_value = player.max_health
+		player_health_bar.value = player.health
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if overview:
+		camera.position = terrain.world_point(terrain.map_size * 0.5) + camera_offset.normalized() * 90.0
+		camera.look_at(terrain.world_point(terrain.map_size * 0.5), Vector3.UP)
+
+func _build_terrain(render_bounds := Rect2()) -> void:
+	super._build_terrain(render_bounds)
+	# Broad irregular stone facets, not noisy pebble carpets.
+	for i in 12:
+		var p := Vector2(1050 + i * 70, 2080 + sin(i * 0.7) * 55)
+		_stone(p, Vector3(0.55, 0.022, 0.65), Color("a0a087"))
+	for p in [Vector2(1080, 1980), Vector2(1810, 1970), Vector2(2940, 610), Vector2(3340, 570)]:
+		_stone(p, Vector3(0.72, 1.2, 0.68), Color("8a9279"))
+	for p in [Vector2(2940, 660), Vector2(2940, 1100), Vector2(3340, 660), Vector2(3340, 1100)]:
+		_stone(p, Vector3(0.65, 0.065, 0.75), Color("b9b28e"))
+	_build_face()
+	# Silhouettes stay in blocked water along the far bank, not over the route.
+	for p in [Vector2(330, 450), Vector2(420, 1110), Vector2(390, 1900), Vector2(1140, 300), Vector2(1770, 350), Vector2(3650, 400), Vector2(3670, 1000)]:
+		_stone(p, Vector3(0.55, 2.4, 0.7), Color("394f44"))
+		_stone(p + Vector2(-35, 25), Vector3(1.45, 0.8, 1.25), Color("355b4a"), 340)
+	# Reed clusters mark only existing blocked water boundaries.
+	for i in 24:
+		var p := Vector2(2470 + i * 53, 1810 + 15 * sin(i))
+		_stone(p, Vector3(0.055, 0.25 + 0.08 * (i % 3), 0.055), Color("66866a"))
+
+func _stone(p: Vector2, size: Vector3, color: Color, lift: float = 0.0) -> MeshInstance3D:
+	var mesh := CylinderMesh.new()
+	mesh.radial_segments = 7
+	mesh.rings = 1
+	mesh.top_radius = 0.78
+	mesh.bottom_radius = 1.0
+	mesh.height = 2.0
+	var node := MeshInstance3D.new()
+	node.mesh = mesh
+	node.scale = size
+	node.position = terrain.world_point(p, lift) + Vector3.UP * size.y
+	node.rotation.y = fmod(p.x * 0.031, TAU)
+	node.material_override = _material(color)
+	add_child(node)
+	return node
+
+func _build_face() -> void:
+	var p: Vector2 = Wetland.FACE
+	_stone(p, Vector3(1.08, 1.6, 0.9), Color("8c9981"))
+	_stone(p + Vector2(0, 5), Vector3(1.24, 0.22, 1.0), Color("70896e"), 288)
+	# Eyes, brow and nose face the dry southern bank; no glowing gimmicks.
+	for x in [-46, 46]:
+		_stone(p + Vector2(x, 79), Vector3(0.29, 0.09, 0.07), Color("354b42"), 189)
+		_stone(p + Vector2(x, 80), Vector3(0.37, 0.09, 0.10), Color("a3aa8a"), 213)
+	_stone(p + Vector2(0, 90), Vector3(0.17, 0.38, 0.23), Color("a0a788"), 128)
+	_stone(p + Vector2(0, 82), Vector3(0.38, 0.065, 0.09), Color("485e4d"), 101)

@@ -1,0 +1,54 @@
+name: First region prototype render
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'game/deep_wetland*'
+      - 'tests/capture_deep_wetland.gd'
+      - '.github/workflows/first-region-preview.yml'
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install official engine and software display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri
+          mkdir -p "$RUNNER_TEMP/godot"
+          cd "$RUNNER_TEMP/godot"
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6-stable
+          curl --fail --location --retry 3 -O "$base/Godot_v4.6-stable_linux.x86_64.zip"
+          curl --fail --location --retry 3 -O "$base/SHA512-SUMS.txt"
+          grep ' Godot_v4.6-stable_linux.x86_64.zip$' SHA512-SUMS.txt | sha512sum --check --strict
+          unzip -q Godot_v4.6-stable_linux.x86_64.zip
+          chmod +x Godot_v4.6-stable_linux.x86_64
+          ln -s "$RUNNER_TEMP/godot/Godot_v4.6-stable_linux.x86_64" "$RUNNER_TEMP/godot/godot"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+      - name: Isolate and verify prototype
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('project.godot')
+          s=p.read_text()
+          old='config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,'config/custom_user_dir_name="WetlandV44-CI"'))
+          PY
+          godot --headless --editor --path . --quit
+          godot --headless --path . --script res://tests/verify_deep_wetland.gd
+      - name: Capture actual software-rendered scene
+        run: |
+          mkdir -p wetland-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-render" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find wetland-render -name '*.png' | wc -l)" -eq 10
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deep-wetland-render
+          path: wetland-render/
