@@ -1,4 +1,4 @@
-"""Build an isolated, ad-hoc-signed universal macOS field preview on a hosted Mac.
+"""Build an isolated, ad-hoc-signed macOS field preview on a hosted Mac.
 
 Official Godot archives are SHA-512 checked. Startup is headless on the runner,
 not a claim about the user's Mac, Gatekeeper, graphics, sound or play acceptance.
@@ -42,7 +42,7 @@ def checked(command, cwd, log, timeout=180, env=None):
     return {"exit_code": result.returncode, "seconds": round(time.monotonic() - started, 3)}
 
 
-def smoke(workspace, scratch, output, commit, label, report):
+def smoke(workspace, scratch, output, commit, label, architecture, report):
     if sys.platform != "darwin":
         raise RuntimeError("This workflow must run on macOS; cross-export is not this smoke test")
     if scratch.exists():
@@ -100,6 +100,7 @@ def smoke(workspace, scratch, output, commit, label, report):
     config = presets.read_text()
     config = config.replace('application/bundle_identifier="com.noru358.loopconquest1a"',
                             'application/bundle_identifier="com.noru358.loopconquest.preview.v44"', 1)
+    config = config.replace('binary_format/architecture="universal"', f'binary_format/architecture="{architecture}"', 1)
     presets.write_text(config)
     report["packaging_changes"] = {"title": title, "separate_user_data": "LoopConquest-FieldPreview-v44", "bundle_id": "com.noru358.loopconquest.preview.v44", "source_commit": commit, "entry": "res://game/field_preview_entry.tscn"}
     checked([editor, "--headless", "--editor", "--path", workspace, "--quit"], scratch, output / "import.log", 240)
@@ -111,8 +112,8 @@ def smoke(workspace, scratch, output, commit, label, report):
     info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
     executable = app / "Contents/MacOS" / info["CFBundleExecutable"]
     architectures = subprocess.check_output(["lipo", "-archs", str(executable)], text=True).strip().split()
-    if not {"arm64", "x86_64"}.issubset(set(architectures)):
-        raise RuntimeError(f"Expected universal binary, got {architectures}")
+    if set(architectures) != ({"arm64", "x86_64"} if architecture == "universal" else {"arm64"}):
+        raise RuntimeError(f"Expected {architecture} binary, got {architectures}")
     checked(["codesign", "--verify", "--deep", "--strict", app], deployment, output / "codesign-verify.log")
     report["architectures"] = architectures
     report["ad_hoc_signature_verified"] = True
@@ -151,7 +152,7 @@ def smoke(workspace, scratch, output, commit, label, report):
     if not expected_data.is_dir():
         raise RuntimeError("Expected separate preview user-data directory was not created")
     report["verified_user_data_directory"] = str(expected_data)
-    archive = output / f"LoopConquest-{label}-macOS-universal.zip"
+    archive = output / f"LoopConquest-{label}-macOS-{architecture}.zip"
     checked(["ditto", "-c", "-k", "--sequesterRsrc", "--keepParent", app, archive], deployment, output / "package.log", 240)
     report["package"] = {"name": archive.name, "bytes": archive.stat().st_size, "sha256": digest(archive, "sha256")}
     report["status"] = "passed"
@@ -161,7 +162,7 @@ def smoke(workspace, scratch, output, commit, label, report):
         "야영지 → 발견 탭 아래에서 사원 4분 진행 / 정글 남쪽 순환 / 깊은 사원 습지 시험을 선택할 수 있습니다.\n"
         "정글 시험은 진입용 해금이 있는 별도 개발 기록으로 시작합니다. 습지는 저장·보상 없는 대표 구간입니다.\n"
         "첫 권역 전체 완성판이 아닙니다. 정상속도 재미·미감·장시간 성능은 별도 확인이 필요합니다.\n"
-        "검증 범위: 공식 Godot, universal 두 아키텍처, ad-hoc 서명, Mac CI headless에서 앱과 네 씬 초기 실행.\n"
+        "검증 범위: 공식 Godot, 요청 아키텍처, ad-hoc 서명, Mac CI headless에서 앱과 네 씬 초기 실행.\n"
         "사용자 Mac에서의 GUI 첫 실행, Gatekeeper, 사운드와 GPU 플레이는 아직 미검증이며 notarization은 없습니다.\n",
         encoding="utf-8")
 
@@ -173,6 +174,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--commit", required=True)
     parser.add_argument("--label", required=True)
+    parser.add_argument("--architecture", choices=["universal", "arm64"], default="universal")
     args = parser.parse_args()
     if not re.fullmatch(r"v[0-9]+(?:\.[0-9]+)?", args.label): parser.error("Invalid preview label")
     if not re.fullmatch(r"[0-9a-f]{40}", args.commit): parser.error("Expected full source SHA")
@@ -180,7 +182,7 @@ def main():
     report = {"status": "failed", "source_commit": args.commit, "label": args.label,
               "scope": "Hosted macOS headless exported-app startup; not user-device or gameplay acceptance"}
     try:
-        smoke(args.workspace.resolve(), args.scratch.resolve(), args.output.resolve(), args.commit, args.label, report)
+        smoke(args.workspace.resolve(), args.scratch.resolve(), args.output.resolve(), args.commit, args.label, args.architecture, report)
     except Exception as error:
         report["error"] = str(error)
         raise
