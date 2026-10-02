@@ -164,6 +164,31 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     archive = output / f"LoopConquest-{label}-macOS-{architecture}.zip"
     checked(["ditto", "-c", "-k", "--sequesterRsrc", "--keepParent", app, archive], deployment, output / "package.log", 240)
     report["package"] = {"name": archive.name, "bytes": archive.stat().st_size, "sha256": digest(archive, "sha256")}
+    # A native compressed disk image avoids chat attachment limits without splitting files.
+    # Validate Apple's available format locally and verify the mounted app, not only the container.
+    formats = subprocess.check_output(["hdiutil", "create", "-help"], stderr=subprocess.STDOUT, text=True)
+    if "ULMO" not in formats:
+        raise RuntimeError("Native hdiutil does not advertise the required LZMA format")
+    image = output / f"LoopConquest-{label}-macOS-{architecture}.dmg"
+    checked(["hdiutil", "create", "-srcfolder", deployment, "-volname", f"Loop Conquest {label}",
+             "-format", "ULMO", image], scratch, output / "dmg-create.log", 300)
+    checked(["hdiutil", "verify", image], scratch, output / "dmg-verify.log", 120)
+    mount = scratch / "mounted-preview"
+    checked(["hdiutil", "attach", "-readonly", "-nobrowse", "-mountpoint", mount, image],
+            scratch, output / "dmg-attach.log", 120)
+    try:
+        mounted_app = mount / app.name
+        mounted_executable = mounted_app / "Contents/MacOS" / info["CFBundleExecutable"]
+        if digest(mounted_executable, "sha256") != digest(executable, "sha256"):
+            raise RuntimeError("Mounted image executable differs from verified export")
+        checked(["codesign", "--verify", "--deep", "--strict", mounted_app], scratch, output / "dmg-signature.log")
+        checked([mounted_executable, "--headless", "--quit-after", "120"],
+                scratch, output / "dmg-startup.log", 90)
+    finally:
+        checked(["hdiutil", "detach", mount], scratch, output / "dmg-detach.log", 120)
+    report["disk_image"] = {"name": image.name, "bytes": image.stat().st_size,
+                            "sha256": digest(image, "sha256"), "format": "ULMO",
+                            "mounted_signature_and_startup_verified": True}
     report["status"] = "passed"
     (output / "PLAYTEST.txt").write_text(
         f"Loop Conquest {label} 필드 비교판\n소스: {commit}\n\n"
