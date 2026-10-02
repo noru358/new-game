@@ -1,0 +1,79 @@
+diff --git a/game/jungle_pass.gd b/game/jungle_pass.gd
+index 203ad28..560449e 100644
+--- a/game/jungle_pass.gd
++++ b/game/jungle_pass.gd
+@@ -2,2 +2,4 @@ extends "res://game/hybrid_region.gd"
+ 
++const RouteTerrain = preload("res://game/jungle_route_terrain.gd")
++const RouteEnvironment = preload("res://game/jungle_route_environment.gd")
+ const PassTerrain = preload("res://game/jungle_pass_terrain.gd")
+@@ -20,3 +22,3 @@ func _init() -> void:
+ 	super._init()
+-	terrain = PassTerrain.new()
++	terrain = PassTerrain.new() if OS.get_cmdline_user_args().has("--jungle-route-baseline") else RouteTerrain.new()
+ 	start_point = Vector2(430, 1210)
+@@ -62,2 +64,3 @@ func _ready() -> void:
+ 	_build_route_scenery()
++	if terrain is RouteTerrain: add_child(RouteEnvironment.build(self))
+ 	for child in get_children():
+@@ -273,4 +276,5 @@ func _build_jungle_silhouette() -> void:
+ 	# Decorative canopy massing sits beside the clear navigation routes.
+-	for i in PassTerrain.CANOPY_POINTS.size():
+-		var point: Vector2 = PassTerrain.CANOPY_POINTS[i]
++	var canopy_points: Array = terrain.route_canopy_points if terrain is RouteTerrain else PassTerrain.CANOPY_POINTS
++	for i in canopy_points.size():
++		var point: Vector2 = canopy_points[i]
+ 		var root := terrain.world_point(point)
+@@ -321,2 +325,7 @@ func _build_gate_approaches() -> void:
+ 			var height: float = terrain.ramp_height(rocks, Vector2(x, y))
++			if terrain is RouteTerrain:
++				var point: Vector2 = RouteTerrain.ROCK_EDGE_POINTS[step + (0 if side < 0 else 5)]
++				x = point.x
++				y = point.y
++				height = terrain.height_at(point)
+ 			var shard := MeshInstance3D.new()
+@@ -335,13 +344,15 @@ func _build_river_route() -> void:
+ 	# Low water ribbons and rooted banks keep the path and actors readable.
+-	for i in 28:
+-		var point := Vector2(2790 + i * 48, 2200 + sin(i * 0.7) * 14)
+-		var water := MeshInstance3D.new()
+-		water.name = "RiverRibbon"
+-		var shape := BoxMesh.new()
+-		shape.size = Vector3(0.52, 0.025, 0.55)
+-		water.mesh = shape
+-		water.position = terrain.world_point(point, 2)
+-		water.material_override = _material(Color("76b2ad"))
+-		add_child(water)
+-	for point in [Vector2(2790, 2030), Vector2(3170, 2090), Vector2(2810, 1590)]:
++	if not terrain is RouteTerrain:
++		for i in 28:
++			var point := Vector2(2790 + i * 48, 2200 + sin(i * 0.7) * 14)
++			var water := MeshInstance3D.new()
++			water.name = "RiverRibbon"
++			var shape := BoxMesh.new()
++			shape.size = Vector3(0.52, 0.025, 0.55)
++			water.mesh = shape
++			water.position = terrain.world_point(point, 2)
++			water.material_override = _material(Color("76b2ad"))
++			add_child(water)
++	var root_points: Array = RouteTerrain.RIVER_ROOT_POINTS if terrain is RouteTerrain else [Vector2(2790, 2030), Vector2(3170, 2090), Vector2(2810, 1590)]
++	for point in root_points:
+ 		var root := MeshInstance3D.new()
+@@ -380,2 +391,3 @@ func _build_route_scenery() -> void:
+ 		var point := Vector2(2770 + i * 57, 2180 + sin(float(i) * 0.72) * 26.0)
++		if terrain is RouteTerrain: point = terrain.route_reed_points[i]
+ 		var reed := MeshInstance3D.new()
+diff --git a/tests/verify_terrain_coherence.gd b/tests/verify_terrain_coherence.gd
+index 067a517..7b1982a 100644
+--- a/tests/verify_terrain_coherence.gd
++++ b/tests/verify_terrain_coherence.gd
+@@ -1,2 +1,3 @@
+ extends SceneTree
++const RouteTerrain = preload("res://game/jungle_route_terrain.gd")
+ 
+@@ -51,3 +52,4 @@ func _run() -> void:
+ 	_check(scene.canopy_visuals.size() == JunglePassTerrain.CANOPY_POINTS.size(), "every blocking canopy trunk has a visible tree")
+-	for point in JunglePassTerrain.CANOPY_POINTS:
++	var canopy_points: Array = scene.terrain.route_canopy_points if scene.terrain is RouteTerrain else JunglePassTerrain.CANOPY_POINTS
++	for point in canopy_points:
+ 		var trunk: MeshInstance3D = scene.canopy_visuals.get(point)

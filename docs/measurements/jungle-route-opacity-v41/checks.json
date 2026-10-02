@@ -1,0 +1,291 @@
+{
+  "opacity-check-v1": {
+    "base_commit": "6dbe4b3e",
+    "phase": "opacity",
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_temple_occlusion_candidate",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_canal_overhead_occlusion",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_temple_environment",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_opening_temple_environment",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_canal_city",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_boss_visibility",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true
+  },
+  "route-check-final": {
+    "base_commit": "6dbe4b3e",
+    "phase": "route",
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_route",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_pass",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_section",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_warden",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_terrain_coherence",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_surface_overlap",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true
+  },
+  "route-render-final": {
+    "base_commit": "6dbe4b3e",
+    "phase": "render",
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "baseline-960",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "baseline-1280",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "candidate-960",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "candidate-1280",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "opaque-assets-render",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true
+  },
+  "remote": {
+    "branch": "codex/current-playtest",
+    "sha": "93674fdb64dc1251e4de0d991cd34b47422576fe",
+    "verified": "git ls-remote after final source verification; no remote mutation"
+  },
+  "mounted_game_identical_to_native_render": true,
+  "handoff-route-check": {
+    "base_commit": "6dbe4b3e529d50f96bffa67c4a0e612065915876",
+    "phase": "route",
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_route",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_pass",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_section",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_warden",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_terrain_coherence",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_surface_overlap",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true,
+    "mount_states": [
+      {
+        "patch": "environment-opacity-mount.patch",
+        "state": "applied to isolated copy",
+        "sha256": "c11129b97674fb27f7f833c0bd3afd49e23103334c810eebe05032ac4e11103a"
+      },
+      {
+        "patch": "jungle-route-mount.patch",
+        "state": "applied to isolated copy",
+        "sha256": "483e3a4d7140517e251fe14b831ee54f14da6b3b56aa7d381cd2eded3a92c2a8"
+      }
+    ]
+  },
+  "handoff-opacity-check": {
+    "base_commit": "6dbe4b3e529d50f96bffa67c4a0e612065915876",
+    "phase": "opacity",
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_temple_occlusion_candidate",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_canal_overhead_occlusion",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_temple_environment",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_opening_temple_environment",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_canal_city",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_boss_visibility",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true,
+    "mount_states": [
+      {
+        "patch": "environment-opacity-mount.patch",
+        "state": "applied to isolated copy",
+        "sha256": "c11129b97674fb27f7f833c0bd3afd49e23103334c810eebe05032ac4e11103a"
+      },
+      {
+        "patch": "jungle-route-mount.patch",
+        "state": "applied to isolated copy",
+        "sha256": "483e3a4d7140517e251fe14b831ee54f14da6b3b56aa7d381cd2eded3a92c2a8"
+      }
+    ]
+  },
+  "handoff-route-final": {
+    "base_commit": "6dbe4b3e529d50f96bffa67c4a0e612065915876",
+    "phase": "route",
+    "results": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_route",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_pass",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_section",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_jungle_warden",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_terrain_coherence",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "verify_surface_overlap",
+        "exit_code": 0,
+        "passed": true
+      }
+    ],
+    "ordinary_save_and_source_preserved": true,
+    "mount_states": [
+      {
+        "patch": "environment-opacity-mount.patch",
+        "state": "applied to isolated copy",
+        "sha256": "c11129b97674fb27f7f833c0bd3afd49e23103334c810eebe05032ac4e11103a"
+      },
+      {
+        "patch": "jungle-route-mount.patch",
+        "state": "applied to isolated copy",
+        "sha256": "483e3a4d7140517e251fe14b831ee54f14da6b3b56aa7d381cd2eded3a92c2a8"
+      }
+    ]
+  }
+}
