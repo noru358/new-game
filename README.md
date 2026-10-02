@@ -1,4 +1,14 @@
-# Loop Conquest — Readable Playtest v41
+# Loop Conquest — Mac Playtest v42
+
+This local checkpoint starts from the delivered v41 `6dbe4b3e`, with the real remote `codex/current-playtest` at `93674fdb`. It combines the simplified camp/combat UI, the four-minute **boss preparation** deadline, continuous boss warnings across arena exits, ten permanent growth tracks with five ranks, a small jungle river route adjustment, and fully opaque original environment assets. Boss defeat still ends the run; one boss retry remains. The historical v41 notes below describe the earlier checkpoint.
+
+Open `Loop Conquest - Playtest v42.app` after closing the older v41 game. Both versions use the same ordinary save location. v42 reads earlier save versions and preserves raw pre-v7 slot copies before its first v7 write. The older v41 app cannot continue a v7 save. Keep the v41 app and archive for reference, but do not resume an old open session after v42 has written progress.
+
+From source, use Godot 4.6.x and run `godot --path .`. At camp, walk to departure with WASD and press E. The first preparation page shows region, equipped items and departure; equipment, permanent growth, rewards and the save-free canal trial remain in their existing tabs. J/click attacks, Space moving slash, Shift dash, Tab map and Esc pause/close retain their controls.
+
+The four-minute spawn request budget is 352.125 by the fixed schedule, not measured kills, XP or currency. The three-run economy sample and native input/render fixtures are comparison evidence, not human fun, readability, audio or long-session acceptance. The design master still records the older five-minute baseline; this v42 timing is the user's newer bounded playtest instruction. See `DEV_STATUS.md` for integrated checks and remaining decisions.
+
+# Previous checkpoint: Readable Playtest v41
 
 Run the ordinary game with Godot4.6.x: `godot --path .`. Start at camp; existing saves, prices20/35 and ordinary card caps/offers remain unchanged. The already delivered native Mac archive remains the separate v38 `b4e9bf2` checkpoint and does not silently include this newer source.
 
