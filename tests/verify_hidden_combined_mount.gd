@@ -43,11 +43,12 @@ func _run() -> void:
 					var threshold_floors: Array = scene.terrain.floor_areas.filter(func(record): return record.get("discovery_id", "") == "TEMPLE_GARDEN" and not section.field_area.encloses(record.area))
 					check(threshold_floors.size() == 1 and threshold_floors[0].height == 0.5 and threshold_floors[0].area == section.layout.ENTRY_TRIGGER.grow(30.0), "circuit threshold is exactly 0.5 at active entry")
 			section.enter_garden()
+			section.tick(0.0)
 			check(section.in_garden and section.hidden_visual_root.visible and not section.main_entry_root.visible, name + " roots switch on actual entry")
-			check(section.discovery_marker().point == section.layout.ALTAR, name + " hidden marker uses actual layout")
+			check(section.discovery_marker().get("point", Vector2.INF) == section.layout.ALTAR, name + " hidden marker uses actual layout")
 			section.leave_garden()
 			check(not section.in_garden and not section.hidden_visual_root.visible and section.main_entry_root.visible, name + " roots switch on actual return")
-			check(section.discovery_marker().point == section.layout.ENTRY_TRIGGER.get_center(), name + " return marker uses actual entrance")
+			check(section.discovery_marker().get("point", Vector2.INF) == section.layout.ENTRY_TRIGGER.get_center(), name + " return marker uses actual entrance")
 		scene.queue_free()
 		paused = false
 		await process_frame
