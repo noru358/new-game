@@ -50,7 +50,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri fonts-noto-cjk
           private="$RUNNER_TEMP/actor-depth-private"
           mkdir -p "$private" verification-logs
           git archive HEAD | tar -x -C "$private"
