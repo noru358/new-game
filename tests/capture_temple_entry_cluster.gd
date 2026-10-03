@@ -36,7 +36,7 @@ func _run() -> void:
 		walking=true;await super._walk(point);walking=false;_release()
 		if not errors.is_empty():break
 	if errors.is_empty():
-		var record:Dictionary={"name":"06-cloister","width":960,"height":540,"target":[1450,1700],"previous_candidate_target":[1590,1840],"reached":_point(scene.player.position),"approach":"normal input: entry to court, west stairs, past previous viewpoint, northward to actual cloister entry; no teleport","cluster_offset":[0,0,-240],"active_walk_seconds":active_seconds,"camera_size":scene.camera.size,"camera_position":[scene.camera.position.x,scene.camera.position.y,scene.camera.position.z],"run_time_frozen":scene.run_time}
+		var record:Dictionary={"name":"06-cloister","width":960,"height":540,"target":[1450,1700],"first_candidate_target":[1590,1840],"previous_candidate_target":[1450,1700],"reached":_point(scene.player.position),"approach":"normal input: entry to court, west stairs, past previous viewpoint, northward to actual cloister entry; no teleport","cluster_offset":[0,0,0],"replacement_scope":"entire original GALLERY_HALL wall ornament (1730,1190,420,500); plateau remains","active_walk_seconds":active_seconds,"camera_size":scene.camera.size,"camera_position":[scene.camera.position.x,scene.camera.position.y,scene.camera.position.z],"run_time_frozen":scene.run_time}
 		_check_follow("entry-group",record)
 		var mesh_projected:Dictionary={}
 		if scene.has_node("TempleEntryCluster"):

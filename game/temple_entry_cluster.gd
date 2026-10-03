@@ -4,10 +4,10 @@ extends RefCounted
 ## Install after the circuit's normal _ready. No terrain, collision or light edits.
 const SCALE := 0.01
 const SOURCE_AREA := Rect2(1730, 1190, 420, 500)
-const REPLACE_AREA := Rect2(1729.5, 1250, 421, 200.5)
-const PLACEMENT_OFFSET := Vector3(0,0,-2.4)
-const SOLID_AREA := Rect2(1730, 1490, 420, 200)
-const CONTACT_AREA := Rect2(1690, 1490, 170, 235)
+const REPLACE_AREA := Rect2(1729.5, 1189.5, 421, 501)
+const PLACEMENT_OFFSET := Vector3.ZERO
+const SOLID_AREA := SOURCE_AREA
+const CONTACT_AREA := Rect2(1660, 1200, 90, 500)
 const FLOOR_LIFT := 0.67
 const Kit = preload("res://game/temple_environment_kit.gd")
 var stone := SurfaceTool.new()
@@ -21,7 +21,7 @@ static func install(arena: Node3D) -> Node3D:
 	if arena.has_node("TempleEntryCluster"): return arena.get_node("TempleEntryCluster")
 	var root := Node3D.new()
 	root.name = "TempleEntryCluster"
-	# Authored mesh dimensions stay fixed; the group moves to the exposed NW bay.
+	# Replace the complete obstructing hall ornament, rather than a small window.
 	root.position = PLACEMENT_OFFSET
 	var court:Node3D = arena.temple_sanctuary_root.get_node("ReclaimedCourtMasonry")
 	for label in ["WeatheredCourtyardWalls", "CourtyardEdgeGrowth"]:
@@ -51,21 +51,18 @@ static func install(arena: Node3D) -> Node3D:
 	return root
 
 func _masonry_group() -> void:
-	# Broad foundation reads as the old solid barrier even where the upper wall broke.
-	_weathered_stone(Rect2(1730,1490,420,200), 0.0, 21.0, 4.0, 0, Color("94937b"))
-	# Retained northern foundation meets this narrow back course at the clipping seam.
-	_weathered_stone(Rect2(1732,1490,416,25), 21.0, 43.0, 4.0, 1, Color("a29e83"))
-	# Three long low coping members; far fewer joints than the old four-course wall.
-	for spec in [[Rect2(1731,1496,29,72),38.0,0], [Rect2(1731,1570,33,67),42.0,1], [Rect2(1731,1639,28,48),35.0,2]]:
-		_weathered_stone(spec[0], 21.0, spec[1], 5.5, spec[2], Color("b0a88b"))
-	# Large separated fracture shapes, distinct from the little plinth and thin rail.
-	_weathered_stone(Rect2(1768,1507,88,52), 21.0, 102.0, 10.0, 3, Color("aaa287"))
-	_weathered_stone(Rect2(1790,1565,122,34), 21.0, 87.0, 12.0, 4, Color("b4aa8d"))
-	_weathered_stone(Rect2(1782,1631,77,53), 21.0, 64.0, 9.0, 5, Color("a7a188"))
-	_weathered_stone(Rect2(1825,1602,39,24), 21.0, 37.0, 6.0, 6, Color("b6ad90"))
-	# A few broad moss contacts on the sheltered tops; no texture/noise or joint grid.
-	_patch(growth, Vector3(1776,21.18,1568), Vector2(10,17), Color("667451"), 2)
-	_patch(growth, Vector3(1852,21.18,1644), Vector2(10,16), Color("677651"), 1)
+	# The entire former hall ornament is gone. Low sill along the walking face,
+	# tall broken members at the back, one broad fallen stone between them.
+	# No full-height foreground bay remains over the soil/leaf colony.
+	for spec in [[Rect2(1731,1194,33,142),18.0,0], [Rect2(1731,1338,36,166),23.0,1], [Rect2(1731,1506,29,182),16.0,2]]:
+		_weathered_stone(spec[0],0.0,spec[1],5.5,spec[2],Color("b0a88b"))
+	_weathered_stone(Rect2(1770,1280,117,112),0.0,109.0,12.0,3,Color("aaa287"))
+	_weathered_stone(Rect2(1925,1296,112,128),0.0,89.0,13.0,4,Color("b4aa8d"))
+	_weathered_stone(Rect2(1784,1490,154,89),0.0,37.0,10.0,5,Color("a7a188"))
+	_weathered_stone(Rect2(1772,1605,63,52),0.0,21.0,7.0,6,Color("b6ad90"))
+	# Low fallen courses on the blocked rear apron mark the retained barrier.
+	for spec in [[Rect2(1970,1450,114,83),15.0,1],[Rect2(2069,1560,77,98),12.0,2],[Rect2(2055,1195,90,68),19.0,0]]:
+		_weathered_stone(spec[0],0.0,spec[1],6.0,spec[2],Color("989780"))
 
 func _weathered_stone(area: Rect2, bottom: float, top: float, bevel: float, variant: int, tint: Color) -> void:
 	var p := area.position; var e := area.end
@@ -90,25 +87,24 @@ func _weathered_stone(area: Rect2, bottom: float, top: float, bevel: float, vari
 	for i in outline.size(): _tri(stone,peak,cap[(i+1)%outline.size()],cap[i],tint.lightened(0.065))
 
 func _sheltered_growth() -> void:
-	# Three readable scales share the same masonry recess, rather than scattered leaves.
-	for spec in [[Vector3(1772,21.5,1583),14.0,0.5],[Vector3(1766,21.5,1623),11.0,1.4],[Vector3(1809,21.5,1665),13.0,2.2]]:
+	# A continuous sheltered edge reads from the road after removing the old bay.
+	for spec in [[Vector3(1769,0.67,1410),14.0,0.5],[Vector3(1802,0.67,1430),11.0,1.4],[Vector3(1769,0.67,1473),13.0,2.2]]:
 		_grass_tuft(spec[0],spec[1],spec[2])
-	_rosette(Vector3(1804,21.5,1609), 1.0, 0.3)
-	_rosette(Vector3(1768,21.5,1660), 0.68, 1.6)
-	_rosette(Vector3(1810,21.5,1583), 0.57, 2.1)
-	# Back vines hang along the first fracture face, behind the walkable approach.
+	_rosette(Vector3(1782,0.67,1444),1.0,0.3)
+	_rosette(Vector3(1764,0.67,1523),0.68,1.6)
+	_rosette(Vector3(1870,0.67,1420),0.57,2.1)
 	var kit := Kit.new()
-	kit._growth = growth
+	kit._growth=growth
 	for strand in 3:
-		var start := Vector3(1767,99-strand*4,1517+strand*17)
-		var path: Array[Vector3] = [start,start+Vector3(-1,-19,-3),start+Vector3(-2,-39,3),start+Vector3(-3,-60,-1),start+Vector3(-7,-76,6)]
+		var start:=Vector3(1792+strand*18,98-strand*4,1393)
+		var path:Array[Vector3]=[start,start+Vector3(-3,-23,1),start+Vector3(2,-47,2),start+Vector3(-4,-70,4),start+Vector3(6,-93,10)]
 		kit._root(path,1.2,SOLID_AREA,Color("6d7752"),growth)
 		for leaf in 5:
-			var origin := path[mini(leaf,3)]+Vector3(0,-3,0.8)
-			_leaf(origin,Vector3(-0.6,-0.3,-0.8 if leaf%2 else 0.8).normalized(),24.0,15.0,5.0,Color("5f774f"),float(leaf)*0.2)
-	counts.growth += kit._vertex_counts[2]
-	_patch(growth,Vector3(1769,22.1,1604),Vector2(11,25),Color("61734f"),3)
-	_patch(growth,Vector3(1771,22.1,1658),Vector2(11,19),Color("657750"),1)
+			var origin:=path[mini(leaf,3)]+Vector3(0,-3,0.8)
+			_leaf(origin,Vector3(-0.7 if leaf%2 else 0.8,-0.3,0.5).normalized(),24.0,15.0,5.0,Color("5f774f"),float(leaf)*0.2)
+	counts.growth+=kit._vertex_counts[2]
+	_patch(growth,Vector3(1753,0.69,1455),Vector2(11,29),Color("61734f"),3)
+	_patch(growth,Vector3(1753,0.69,1590),Vector2(11,34),Color("657750"),1)
 
 func _rosette(origin: Vector3, scale: float, rotation: float) -> void:
 	for i in 6:
@@ -137,7 +133,7 @@ func _leaf(origin: Vector3, along: Vector3, length: float, width: float, rise: f
 	for row in 8:
 		for column in 4:
 			var color := tint.lightened(0.028 if column==1 else 0.0).darkened(0.045 if column==3 else 0.0)
-			_quad(growth,grid[row][column],grid[row+1][column],grid[row+1][column+1],grid[row][column+1],color)
+			_quad(growth,grid[row][column],grid[row][column+1],grid[row+1][column+1],grid[row+1][column],color)
 
 func _grass_tuft(origin: Vector3, height: float, turn: float) -> void:
 	for blade in 7:
@@ -149,15 +145,13 @@ func _grass_tuft(origin: Vector3, height: float, turn: float) -> void:
 			var a:=side*(1.0-float(i)/3.0); var b:=side*(1.0-float(i+1)/3.0)
 			_quad(growth,points[i]-a,points[i+1]-b,points[i+1]+b,points[i]+a,Color("64794c").lightened(0.02*(blade%3)))
 
-func _ground_contacts(arena: Node3D) -> void:
-	# Low irregular contact islands hug the two visible sides. Broad combat paving stays.
-	for spec in [[Vector2(1718,1558),Vector2(18,52),0],[Vector2(1715,1642),Vector2(21,38),2],[Vector2(1772,1701),Vector2(43,14),1]]:
-		var center: Vector2=spec[0]
-		var elevation: float=arena.terrain.height_at(center)+FLOOR_LIFT
-		_contact_island(Vector3(center.x,elevation,center.y),spec[1],spec[2])
-	# Five large fragments in the seam, all flatter than the existing paving lift.
-	for spec in [[Vector2(1708,1530),Vector2(10,19),0],[Vector2(1716,1597),Vector2(13,18),2],[Vector2(1718,1654),Vector2(9,16),3],[Vector2(1788,1700),Vector2(25,8),1]]:
-		var point: Vector2=spec[0]
+func _ground_contacts(arena:Node3D) -> void:
+	# Exposed low soil and stone contacts run beside the new continuous low sill.
+	for spec in [[Vector2(1708,1320),Vector2(31,94),0],[Vector2(1703,1480),Vector2(37,86),2],[Vector2(1708,1617),Vector2(28,61),1]]:
+		var center:Vector2=spec[0]
+		_contact_island(Vector3(center.x,arena.terrain.height_at(center)+FLOOR_LIFT,center.y),spec[1],spec[2])
+	for spec in [[Vector2(1708,1280),Vector2(12,25),0],[Vector2(1699,1410),Vector2(13,18),2],[Vector2(1718,1540),Vector2(9,16),3],[Vector2(1705,1637),Vector2(13,24),1]]:
+		var point:Vector2=spec[0]
 		_patch(ground,Vector3(point.x,arena.terrain.height_at(point)+FLOOR_LIFT+0.055,point.y),spec[1],Color("a2a185"),spec[2])
 
 func _contact_island(center:Vector3,radius:Vector2,variant:int) -> void:
@@ -193,7 +187,7 @@ func _tri(surface: SurfaceTool,a: Vector3,b: Vector3,c: Vector3,tint: Color) -> 
 	counts[key] += 3
 
 static func _outside_slice(mesh: Mesh) -> ArrayMesh:
-	# Clip only the southern hall footprint from the existing shared batches.
+	# Remove all original hall ornament from the two batches. Plateau is separate.
 	# All emitted vertices retain interpolated original colors/normals. Materials stay.
 	var arrays := mesh.surface_get_arrays(0)
 	var vertices: PackedVector3Array=arrays[Mesh.ARRAY_VERTEX]
