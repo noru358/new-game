@@ -127,6 +127,23 @@ jobs:
               test "$(find "regional-landmarks/$variant/$region" -name '*.png' | wc -l)" -eq "$expected"
             done
           done
+          python3 - <<'PYREPORT'
+          import json
+          from pathlib import Path
+          for region in ('temple','jungle'):
+              reports=[json.loads((Path('regional-landmarks')/variant/region/'report.json').read_text()) for variant in ('baseline','candidate')]
+              for report in reports:
+                  assert report['render'] and not report['errors']
+                  assert report['normal_input'] and not report['acceleration'] and report['time_scale']==1
+              before,after=[{(row['name'],row['width']):row for row in report['samples'] if 'visibility' in row} for report in reports]
+              assert before.keys()==after.keys()
+              for key,b in before.items():
+                  c=after[key]
+                  assert b['target']==c['target'] and b['camera_size']==c['camera_size']
+                  assert b['move_speed']==c['move_speed'] and b['move_speed_multiplier']==c['move_speed_multiplier']
+                  assert c['visibility']['ratio']+0.03>=b['visibility']['ratio'], (region,key,b['visibility'],c['visibility'])
+              print(region, 'normal-input comparisons:', len(after), 'no visibility regression beyond 0.03')
+          PYREPORT
           mkdir -p "$RUNNER_TEMP/temple-landmark-data" temple-monument-render
           TEMPLE_MONUMENT_CAPTURE_DIR="$PWD/temple-monument-render" XDG_DATA_HOME="$RUNNER_TEMP/temple-landmark-data" LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_temple_monument_scale.gd

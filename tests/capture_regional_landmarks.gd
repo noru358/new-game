@@ -59,7 +59,8 @@ func _run() -> void:
 		scene.growth_save_prefix = scene.profile_save_prefix + "_unlocks"
 		root.add_child(scene)
 		current_scene = scene
-		scene.set_physics_process(false) # Freeze spawns, section ticks and run clock only.
+		# Set AFTER _ready: retain initialized region/profile, but skip encounter pressure.
+		scene.practice_mode = true # HybridRegion still calls HybridHeight physics sync first.
 		scene.wisp.set_physics_process(false)
 		for actor in scene.actors:
 			if actor != scene.player: actor.set_physics_process(false)
@@ -81,7 +82,8 @@ func _run() -> void:
 				"render": false, "camera_size": scene.camera.size, "camera_position": [scene.camera.position.x,scene.camera.position.y,scene.camera.position.z],
 				"camera_rotation": [scene.camera.rotation.x,scene.camera.rotation.y,scene.camera.rotation.z], "move_speed": scene.player.MOVE_SPEED,
 				"move_speed_multiplier": scene.player.move_speed_multiplier, "run_time_frozen": scene.run_time}
-			if not measure_only: await _capture_checkpoint(sample.name, size.x, record)
+			_check_follow(sample.name, record)
+			if errors.is_empty() and not measure_only: await _capture_checkpoint(sample.name, size.x, record)
 			records.append(record)
 			print("CHECKPOINT: ", JSON.stringify(record))
 			if not errors.is_empty(): break
@@ -140,13 +142,29 @@ func _walk(goal: Vector2) -> void:
 			active_seconds += 1.0 / Engine.physics_ticks_per_second
 	_release()
 
+func _check_follow(label: String, record: Dictionary) -> void:
+	var expected_actor: Vector3 = scene.terrain.world_point(scene.player.position)
+	var actual_actor: Vector3 = scene.actors[scene.player].position
+	var expected_camera: Vector3 = scene.terrain.world_point(scene.player.position, 35) + scene.camera_offset
+	var actor_error := actual_actor.distance_to(expected_actor)
+	var camera_error: float = scene.camera.position.distance_to(expected_camera)
+	record["follow_check"] = {"actor_error_world":actor_error, "camera_error_world":camera_error,
+		"expected_actor_world":[expected_actor.x,expected_actor.y,expected_actor.z],
+		"actual_actor_world":[actual_actor.x,actual_actor.y,actual_actor.z],
+		"expected_camera_world":[expected_camera.x,expected_camera.y,expected_camera.z]}
+	if actor_error > 0.03: errors.append("Player visual did not follow reached position at " + label)
+	if camera_error > 0.03: errors.append("Camera did not follow reached position at " + label)
+	if not is_zero_approx(scene.run_time): errors.append("Fixture encounter clock was not frozen at " + label)
+
 func _capture_checkpoint(label: String, width: int, record: Dictionary) -> void:
 	# Freeze only for differential frames; restore normal player/camera processing.
 	scene.set_process(false)
+	scene.set_physics_process(false) # Freeze only after the follow assertions, for differential frames.
 	scene.player.set_physics_process(false)
 	var actor: Node3D = scene.actors[scene.player]
 	var body: Node3D = actor.get_node("Body")
-	var center: Vector2 = scene.camera.unproject_position(body.global_position)
+	var logical_center: Vector2 = scene.camera.unproject_position(body.global_position)
+	var logical_rect: Rect2 = scene.camera.get_viewport().get_visible_rect()
 	var normal := await _image()
 	record["draw_calls"] = Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
 	record["primitives"] = Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME)
@@ -166,9 +184,16 @@ func _capture_checkpoint(label: String, width: int, record: Dictionary) -> void:
 	for node in hidden: node.show()
 	scene.player.set_physics_process(true)
 	scene.set_process(true)
+	scene.set_physics_process(true)
 	if normal == null or normal_without == null or reference == null or reference_without == null: return
 	_save(normal, "%s-%d.png" % [label, width])
 	_save(reference, "%s-reference-%d.png" % [label, width])
+	# Camera coordinates use the logical viewport, while PNGs use physical output pixels.
+	var image_scale := Vector2(normal.get_size()) / logical_rect.size
+	var center := (logical_center - logical_rect.position) * image_scale
+	record["projection"] = {"logical_viewport":[logical_rect.position.x,logical_rect.position.y,logical_rect.size.x,logical_rect.size.y],
+		"logical_body_center":_point(logical_center), "image_body_center":_point(center),
+		"image_size":[normal.get_width(),normal.get_height()], "logical_to_image_scale":_point(image_scale)}
 	# Only a bounded 160x160 box around the actor, never a full-map pixel sweep.
 	var roi := Rect2i(Vector2i(center) - Vector2i(80,80), Vector2i(160,160)).intersection(Rect2i(Vector2i.ZERO, normal.get_size()))
 	var potential := 0
@@ -180,7 +205,7 @@ func _capture_checkpoint(label: String, width: int, record: Dictionary) -> void:
 				if _different(normal.get_pixel(x,y), normal_without.get_pixel(x,y)): visible += 1
 	record["visibility"] = {"reference_actor_pixels": potential, "normal_actor_pixels": visible, "ratio": float(visible) / maxf(1.0, potential), "roi": [roi.position.x,roi.position.y,roi.size.x,roi.size.y], "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"}
 	record["render"] = true
-	if potential < 8: errors.append("No usable player pixel reference at " + label)
+	if potential < 100: errors.append("No usable player pixel reference at " + label)
 	if visible < 8: errors.append("Player not visibly evidenced at " + label)
 
 func _different(a: Color, b: Color) -> bool:
