@@ -89,11 +89,23 @@ jobs:
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
           godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_run.gd
           test "$(find wetland-run-render -name '*.png' | wc -l)" -eq 6
+      - name: Compare fixed wetland presentation views
+        run: |
+          mkdir -p "$RUNNER_TEMP/wetland-baseline" presentation-baseline presentation-candidate
+          git fetch --no-tags origin 2eae0971f8eb04ea89d73986101d54efe62d3577
+          git archive 2eae0971f8eb04ea89d73986101d54efe62d3577 | tar -x -C "$RUNNER_TEMP/wetland-baseline"
+          cp tests/capture_wetland_presentation.gd "$RUNNER_TEMP/wetland-baseline/tests/"
+          sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WetlandV44-PresentationBaseline#' "$RUNNER_TEMP/wetland-baseline/project.godot"
+          godot --headless --editor --path "$RUNNER_TEMP/wetland-baseline" --quit
+          WETLAND_CAPTURE_DIR="$PWD/presentation-baseline" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/wetland-baseline" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
+          WETLAND_CAPTURE_DIR="$PWD/presentation-candidate" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: deep-wetland-render
           path: |
+            presentation-baseline/
+            presentation-candidate/
             wetland-render/
             temple-circuit-render/
             temple-run-render/
