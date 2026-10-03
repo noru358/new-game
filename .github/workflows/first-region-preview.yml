@@ -10,6 +10,11 @@ on:
       - 'tests/capture_wetland_boss.gd'
       - 'tests/capture_wetland_run.gd'
       - 'game/wetland_environment.gd'
+      - 'game/wetland_face_sculpture.gd'
+      - 'game/jungle_emergent_tree.gd'
+      - 'game/temple_monument_scale.gd'
+      - 'tests/capture_regional_landmarks.gd'
+      - 'tests/capture_temple_monument_scale.gd'
       - 'game/wetland_guardian_visual.gd'
       - 'game/temple_circuit*'
       - 'game/jungle_south_circuit*'
@@ -102,6 +107,30 @@ jobs:
           godot --headless --editor --path "$RUNNER_TEMP/wetland-baseline" --quit
           WETLAND_CAPTURE_DIR="$PWD/presentation-baseline" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/wetland-baseline" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
           WETLAND_CAPTURE_DIR="$PWD/presentation-candidate" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
+      - name: Compare normal-input regional landmark approaches
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/regional-baseline" regional-landmarks
+          git fetch --no-tags origin 8380c69b92e4c8cc880239c6b0259841259c72f5
+          git archive 8380c69b92e4c8cc880239c6b0259841259c72f5 | tar -x -C "$RUNNER_TEMP/regional-baseline"
+          cp tests/capture_regional_landmarks.gd "$RUNNER_TEMP/regional-baseline/tests/"
+          sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WetlandV44-RegionalBaseline#' "$RUNNER_TEMP/regional-baseline/project.godot"
+          godot --headless --editor --path "$RUNNER_TEMP/regional-baseline" --quit
+          for variant in baseline candidate; do
+            project="$PWD"
+            if [ "$variant" = baseline ]; then project="$RUNNER_TEMP/regional-baseline"; fi
+            for region in temple jungle; do
+              REGION_LANDMARK="$region" REGIONAL_LANDMARK_OUTPUT="$PWD/regional-landmarks/$variant/$region" LIBGL_ALWAYS_SOFTWARE=1 \
+              xvfb-run -a -s '-screen 0 1280x720x24' timeout 240 godot --path "$project" --audio-driver Dummy --rendering-method gl_compatibility --script res://tests/capture_regional_landmarks.gd
+              expected=26
+              if [ "$region" = jungle ]; then expected=22; fi
+              test "$(find "regional-landmarks/$variant/$region" -name '*.png' | wc -l)" -eq "$expected"
+            done
+          done
+          mkdir -p "$RUNNER_TEMP/temple-landmark-data" temple-monument-render
+          TEMPLE_MONUMENT_CAPTURE_DIR="$PWD/temple-monument-render" XDG_DATA_HOME="$RUNNER_TEMP/temple-landmark-data" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_temple_monument_scale.gd
+          test "$(find temple-monument-render -name '*.png' | wc -l)" -eq 16
       - name: Capture companion focus contract
         run: |
           mkdir -p "$RUNNER_TEMP/companion-focus" companion-focus-render
@@ -116,6 +145,8 @@ jobs:
         with:
           name: deep-wetland-render
           path: |
+            regional-landmarks/
+            temple-monument-render/
             companion-focus-render/
             presentation-baseline/
             presentation-candidate/

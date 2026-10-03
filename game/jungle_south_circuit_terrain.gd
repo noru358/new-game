@@ -8,6 +8,7 @@ const SOUTH_ROUTE := [Vector2(3010, 2130), Vector2(3010, 2440), Vector2(3010, 26
 const RIDGE_RETURN := [Vector2(2080, 2910), Vector2(2175, 2400), Vector2(2175, 2120), Vector2(2175, 1800)]
 func _init() -> void:
 	super._init()
+	preload("res://game/jungle_emergent_tree.gd").install(self)
 	map_size.y = 3600
 	plateaus[2].openings["south"] = [[2840.0, 3180.0]]
 	ramps.append({"area": SOUTH_DESCENT, "axis": 1, "from": 80.0, "to": 0.0, "base": 0.0, "name": "남쪽 강가 내리막", "kind": "south_bank_descent"})

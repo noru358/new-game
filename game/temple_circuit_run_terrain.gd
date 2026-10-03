@@ -24,6 +24,7 @@ func _init() -> void:
 		if record.get("discovery_id", "") == "TEMPLE_GARDEN": wall_areas.append(record.duplicate(true))
 	water_areas.append(Layout.POND)
 	wall_areas.append({"area": preload("res://game/temple_circuit_environment.gd").FOOTPRINT, "height": 554.0, "visual": false})
+	wall_areas.append({"area": preload("res://game/temple_monument_scale.gd").NORTH_FOOTPRINT, "height": 655.8, "visual": false})
 	wall_areas.append({"area": Rect2(4600, 0, 990, 3500), "height": 200.0, "visual": false})
 
 func height_at(point: Vector2) -> float:

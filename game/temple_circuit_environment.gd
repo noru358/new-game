@@ -2,7 +2,8 @@ extends RefCounted
 ## Reuse the existing sanctuary's authored stonework behind the new court.
 const Sanctuary = preload("res://game/temple_sanctuary_environment.gd")
 const OFFSET := Vector3(-25.2, 0.0, -12.1)
-const FOOTPRINT := Rect2(2572, 0, 456, 240)
+const MonumentScale = preload("res://game/temple_monument_scale.gd")
+const FOOTPRINT := MonumentScale.FOOTPRINT
 const FAR_BANK_GROVES := [Vector2(330, 500), Vector2(420, 1150), Vector2(300, 1900), Vector2(1000, 300), Vector2(1530, 300)]
 static func build(arena: Node3D) -> Node3D:
 	var root := Node3D.new()
@@ -12,6 +13,7 @@ static func build(arena: Node3D) -> Node3D:
 	builder._shrine()
 	builder._finish_batch(root, builder._stone, "SteppedSanctuary", 0, true)
 	builder._finish_batch(root, builder._growth, "AttachedMoss", 2, false)
+	MonumentScale.apply(root)
 	var court := _build_court(arena)
 	court.position = -OFFSET
 	root.add_child(court)
