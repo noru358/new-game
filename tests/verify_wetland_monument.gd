@@ -16,7 +16,7 @@ func _run() -> void:
 	var monument = scene.get_node("MonumentalWetlandFace")
 	check(scene.terrain.water_areas == waters and scene.terrain.wall_areas == walls, "unchanged water and collision records")
 	check(scene.camera.size == 9.0, "unchanged combat camera")
-	check(monument.get_child_count() == 11, "same eleven face parts")
+	check(monument.get_child_count() == 2, "two opaque sculpture batches")
 	var top := 0.0
 	for node in monument.get_children():
 		check(node is MeshInstance3D, "visual mesh only")
