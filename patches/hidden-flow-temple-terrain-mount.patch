@@ -11,7 +11,7 @@
 +		if record.get("discovery_id", "") == "TEMPLE_GARDEN" and Layout.FIELD_BOUNDS.encloses(record.area): wall_areas.append(record.duplicate(true))
 +	# The legacy vestibule belongs to the old main field. Keep this threshold
 +	# on the active cloister approach without copying that old room.
-+	floor_areas.append({"area": Layout.ENTRY_TRIGGER.grow(30.0), "height": 1.0, "color": Color("719c69"), "discovery_id": "TEMPLE_GARDEN"})
++	floor_areas.append({"area": Layout.ENTRY_TRIGGER.grow(30.0), "height": 0.5, "color": Color("719c69"), "discovery_id": "TEMPLE_GARDEN"})
  	water_areas.append(Layout.POND)
  	wall_areas.append({"area": preload("res://game/temple_circuit_environment.gd").FOOTPRINT, "height": 554.0, "visual": false})
  	wall_areas.append({"area": preload("res://game/temple_monument_scale.gd").NORTH_FOOTPRINT, "height": 655.8, "visual": false})
