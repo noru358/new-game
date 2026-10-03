@@ -14,7 +14,7 @@ func supported(node: MeshInstance3D,rock: TriangleMesh) -> bool:
 	var heads: PackedVector3Array = node.get_meta("drop_head_points")
 	for local in heads:
 		var head := node.to_global(local)
-		var probe := Vector2(head.x,head.z)*100.0-spec.out*0.55
+		var probe: Vector2 = Vector2(head.x,head.z)*100.0-spec.out*0.55
 		var hit := rock.intersect_segment(Vector3(probe.x,600,probe.y)*0.01,Vector3(probe.x,-10,probe.y)*0.01)
 		if hit.is_empty() or absf(head.y-hit.position.y-0.002) > 0.008: return false
 	return true
@@ -43,7 +43,7 @@ func _run() -> void:
 		ids[spec.id] = true
 		var rock := main_rock if spec.field == "main" else hidden_rock
 		check(supported(node,rock),"actual drop head touches rendered rock "+spec.id)
-		var old := node.position
+		var old: Vector3 = node.position
 		node.position.y += 0.5
 		check(not supported(node,rock),"raised detached-water negative control "+spec.id)
 		node.position = old
