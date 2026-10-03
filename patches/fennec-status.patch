@@ -1,0 +1,16 @@
+--- a/DEV_STATUS.md
++++ b/DEV_STATUS.md
+@@ -1,6 +1,13 @@
+ # DEV_STATUS — 루프 정복 게임
+ 
+ > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
++
++## Fennec idle v1 — 캐릭터 최소 샘플 / 부모 GUI 검토 전
++
++- 사용자 승인 시안과 꼬리 보정 원본을 소비자Mac에서 실제열람. 별도branch의 파생3PNG/adapter/전용preview/검사, commonmountpatch만 제공한다. sourceplayer/render/project/save 바이트보존.
++- 공식Mac4.6stable 단일headless7사례56assert 실패0. 960/1280 native와 사람미감은 아직미검증이다. 전체높이기준57.6/76.8px와 귀제외몸체맞춤960한장(전체69.4px)을 비교할 준비가됐다.
++- 현재2단계첫권역제작/3단계아트생산시험. 바로다음은 부모GUI슬롯에서7PNG촬영/화면판단→animation범위결정이다. 출시최종디자인·캐릭터전량애니메이션·패키지/merge는수행하지않았다. integration/FENNEC_IDLE_V1.md 참고.
++
+ 
+ 
+ ## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03

@@ -1,0 +1,90 @@
+{
+  "failures": [],
+  "native": false,
+  "records": [
+    {
+      "authored_height_world": 0.959999978542328,
+      "body_ground": "(479.9999, 287.2019)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 57.5999987125397,
+      "front_crown_to_foot_px": 47.8035275130181,
+      "height": 540,
+      "native": false,
+      "view": "front",
+      "width": 960
+    },
+    {
+      "authored_height_world": 0.959999978542328,
+      "body_ground": "(479.9999, 287.2019)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 57.5999987125397,
+      "front_crown_to_foot_px": -1,
+      "height": 540,
+      "native": false,
+      "view": "side",
+      "width": 960
+    },
+    {
+      "authored_height_world": 0.959999978542328,
+      "body_ground": "(479.9999, 287.2019)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 57.5999987125397,
+      "front_crown_to_foot_px": -1,
+      "height": 540,
+      "native": false,
+      "view": "back",
+      "width": 960
+    },
+    {
+      "authored_height_world": 1.15673473477364,
+      "body_ground": "(479.9999, 287.2019)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 69.4040840864182,
+      "front_crown_to_foot_px": 57.6000020364345,
+      "height": 540,
+      "native": false,
+      "view": "front-body-height",
+      "width": 960
+    },
+    {
+      "authored_height_world": 0.959999978542328,
+      "body_ground": "(639.9999, 382.9359)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 76.7999982833862,
+      "front_crown_to_foot_px": 63.7380366840241,
+      "height": 720,
+      "native": false,
+      "view": "front",
+      "width": 1280
+    },
+    {
+      "authored_height_world": 0.959999978542328,
+      "body_ground": "(639.9999, 382.9359)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 76.7999982833862,
+      "front_crown_to_foot_px": -1,
+      "height": 720,
+      "native": false,
+      "view": "side",
+      "width": 1280
+    },
+    {
+      "authored_height_world": 0.959999978542328,
+      "body_ground": "(639.9999, 382.9359)",
+      "camera_size": 9.0,
+      "crown_measurement": "manual forelock landmark; prototype approximation",
+      "expected_sprite_height_px": 76.7999982833862,
+      "front_crown_to_foot_px": -1,
+      "height": 720,
+      "native": false,
+      "view": "back",
+      "width": 1280
+    }
+  ]
+}

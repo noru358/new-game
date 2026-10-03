@@ -1,0 +1,31 @@
+--- a/game/hybrid_height.gd
++++ b/game/hybrid_height.gd
+@@ -6,6 +6,8 @@
+ const GrowthScript = preload("res://game/run_growth.gd")
+ const MinimapScript = preload("res://game/hybrid_minimap.gd")
+ const ActorTexture = preload("res://game/hybrid_actor.svg")
++const FennecIdleTrial = preload("res://game/fennec_idle_adapter.gd")
++var fennec_idle_trial := OS.get_cmdline_user_args().has("--fennec-idle-trial")
+ const EnemyRoleVisual = preload("res://game/enemy_role_visual.gd")
+ const COMBAT_CAMERA_SIZE := 10.8
+ const OVERVIEW_CAMERA_SIZE := 30.0
+@@ -120,6 +122,7 @@
+ 	hearing.make_current()
+ 	player.set_dash_upgrade(2)
+ 	actors[player] = _actor_visual(Color.WHITE)
++	if fennec_idle_trial: FennecIdleTrial.configure(actors[player].get_node("Body"))
+ 	actor_motion[player] = [player.global_position, player.global_position]
+ 	player.attack_landed.connect(_on_player_attack_landed)
+ 	player.hurt_received.connect(func(point: Vector2, _direction: Vector2): _flash(point, Color("ff7878"), 0.30))
+@@ -856,7 +859,10 @@
+ 				body.modulate.a = 0.45 if int(player.hurt_immunity * 16.0) % 2 == 0 else 0.85
+ 			elif (player.dash_time > 0.0 and player.dash_elapsed <= SandboxPlayer.DASH_INVULNERABILITY) or (player.moving_slash_time > 0.0 and player.moving_slash_elapsed <= SandboxPlayer.MOVING_SLASH_INVULNERABILITY):
+ 				body.modulate = Color(0.55, 0.95, 1.0, 0.65)
+-			body.flip_h = player.facing.x - player.facing.y < -0.1
++			if fennec_idle_trial:
++				FennecIdleTrial.update(body, player.facing, camera)
++			else:
++				body.flip_h = player.facing.x - player.facing.y < -0.1
+ 			var slash_progress: float = 1.0 - player.moving_slash_time / SandboxPlayer.MOVING_SLASH_DURATION
+ 			body.rotation.z = 0.19 * sin(PI * slash_progress) if player.moving_slash_time > 0.0 else -0.14 if player.attack_step == 3 else 0.16 if player.attack_step == 4 else 0.0
+ 			body.scale = Vector3.ONE

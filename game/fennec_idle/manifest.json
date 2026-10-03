@@ -1,0 +1,83 @@
+{
+  "invariant": "equal 384px ear-to-foot height, pelvic/feet anchor x192, foot y416; idle only",
+  "records": [
+    {
+      "view": "front",
+      "source_sha256": "1e0b6771c7270abc4cc229689808681d31f2a6dec88cd542c65a4b314caccf35",
+      "source_size": [
+        1024,
+        1536
+      ],
+      "crop": [
+        26,
+        49,
+        902,
+        1466
+      ],
+      "source_foot_x": 580,
+      "scale": 0.2709950599858857,
+      "canvas": [
+        384,
+        448
+      ],
+      "foot": [
+        192,
+        416
+      ],
+      "alpha_preserved": true,
+      "sha256": "2f426ad26822c6a13ba98063c404bbb1bf021f4368ffd79a219b2d797ac1ab43"
+    },
+    {
+      "view": "side",
+      "source_sha256": "ec70f68a9466ff662dd845a5181af79761781a4f02bdbb32e9555761f32f6202",
+      "source_size": [
+        1151,
+        1366
+      ],
+      "crop": [
+        184,
+        26,
+        929,
+        1354
+      ],
+      "source_foot_x": 710,
+      "scale": 0.2891566265060241,
+      "canvas": [
+        384,
+        448
+      ],
+      "foot": [
+        192,
+        416
+      ],
+      "alpha_preserved": true,
+      "sha256": "1955751fc398ed33b9a660a5d1c0700863b6561a5918000a70f506cc8e6f01fa"
+    },
+    {
+      "view": "back",
+      "source_sha256": "952c576094a472ea56e7a40952d6d46d0a8438abb7e58d45c598d480be7d5ead",
+      "source_size": [
+        1146,
+        1373
+      ],
+      "crop": [
+        219,
+        50,
+        900,
+        1329
+      ],
+      "source_foot_x": 584,
+      "scale": 0.30023455824863177,
+      "canvas": [
+        384,
+        448
+      ],
+      "foot": [
+        192,
+        416
+      ],
+      "alpha_preserved": true,
+      "sha256": "7094b4cbfbcf9d6d850335741a87900be0f9456067acc1c602230f517f62bcba"
+    }
+  ]
+}
