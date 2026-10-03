@@ -11,8 +11,7 @@ func _clear_arena_intruders() -> void:
 	for group in ["enemy_bolts","enemy_zones"]:
 		for node in get_tree().get_nodes_in_group(group):
 			if arena.simulation.is_ancestor_of(node) and node.get("source") != arena.boss: node.queue_free()
-func tick(delta: float) -> void:
-	super.tick(delta)
-	if destination_label != null: destination_label.text="침수 성소 · 석면 수호자\n"+("경계 진입 시 교전" if boss_ready else "4분 이후 접근하여 교전")
+func _destination_place_name() -> String:
+	return "안쪽 성소"
 func _update_hud() -> void:
 	section_hud.text="안쪽 성소 · 석면 수호자" if not boss_ready else "석면 수호자 · 안쪽 성소에서 교전"

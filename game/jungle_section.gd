@@ -17,9 +17,8 @@ func _init() -> void:
 	destination_point = Vector2(4320, 1120)
 
 
-func tick(delta: float) -> void:
-	super.tick(delta)
-	destination_label.text = "관문 수호자의 영역\n" + ("경계 진입 시 교전 · 출입 자유" if boss_ready else "4분 이후 접근하여 교전")
+func _destination_place_name() -> String:
+	return "관문"
 
 
 func _tick_garden(delta: float) -> void:

@@ -220,7 +220,7 @@ func describe_card(card_id: String, next_rank: int) -> String:
 	var old_rank := next_rank - 1
 	match card_id:
 		"U_EDGE":
-			var base_percent := roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus))
+			var base_percent := 100.0 * (1.0 + player.permanent_basic_damage_bonus)
 			return _damage_rank_detail("%s 피해\n%s → %s" % [_basic_attack_scope(), _percent_text(base_percent + 100.0 * _damage_card_bonus(card_id, old_rank)), _percent_text(base_percent + 100.0 * _damage_card_bonus(card_id, next_rank))], next_rank)
 		"U_TEMPO": return "%s 속도\n+%d%% → +%d%%" % [_basic_attack_scope(), roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
 		"U_REACH": return "%s 범위\n+%d%% → +%d%%" % [_basic_attack_scope(), 15 * old_rank, 15 * next_rank]
@@ -228,8 +228,8 @@ func describe_card(card_id: String, next_rank: int) -> String:
 		"S_WISP_DAMAGE": return _damage_rank_detail("여우불 한 발이 더 강해집니다\n기본 피해 %.1f → %.1f" % [SandboxPlayer.ATTACK_DAMAGE * (WispCompanion.BASE_DAMAGE_MULTIPLIER + wisps[0].permanent_damage_bonus + _damage_card_bonus(card_id, old_rank)), SandboxPlayer.ATTACK_DAMAGE * (WispCompanion.BASE_DAMAGE_MULTIPLIER + wisps[0].permanent_damage_bonus + _damage_card_bonus(card_id, next_rank))], next_rank)
 		"S_WISP_CADENCE": return "여우불이 더 자주 쏩니다\n발사 간격 %.2f초 → %.2f초" % [1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * old_rank), 1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * next_rank)]
 		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
-		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
-		"S_WISP_CHAIN": return "연쇄 대상 %d명 → %d명" % [old_rank + int(permanent_wisp_chain_bonus), next_rank + int(permanent_wisp_chain_bonus)]
+		"S_WISP_ORBIT": return "마탄 발사 유지\n회전 접촉 피해 추가" if next_rank == 1 else "마탄 발사 유지\n회전 접촉 피해 4 → 7"
+		"S_WISP_CHAIN": return "마탄 명중 후 가까운 다른 적에게\n추가 연쇄 %d명 → %d명" % [old_rank + int(permanent_wisp_chain_bonus), next_rank + int(permanent_wisp_chain_bonus)]
 		"S_WISP_FOLLOWUP": return "평타 적중 → 여우불 발사\n한 동작당 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
 		"S_WISP_SWEEP": return "이동 베기 적중 → 여우불 발사\n한 동작당 대기\n%.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
 		"S_WISP_REPLY": return "여우불 적중 → 이동 베기\n적중마다 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
