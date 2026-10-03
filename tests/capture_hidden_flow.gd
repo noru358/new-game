@@ -5,10 +5,12 @@ var output := ""
 var captures := []
 var width := 0
 var region := ""
+var exit_only := false
 
 func _run() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-dir="): output = argument.trim_prefix("--capture-dir=")
+		if argument == "--exit-only": exit_only = true
 	if DisplayServer.get_name() == "headless" or output.is_empty() or not output.is_absolute_path() or not "LoopConquestHiddenFlow" in OS.get_user_data_dir():
 		printerr("FAIL: real renderer, private HiddenFlow userdata and fresh absolute output required")
 		quit(1)
@@ -42,28 +44,29 @@ func _run() -> void:
 			var section = scene.temple_section
 			var layout = section.layout
 			scene.teleport(layout.RETURN_POINT)
-			await _capture("main-undiscovered",size)
+			if not exit_only: await _capture("main-undiscovered",size)
 			await _walk_threshold(true)
 			await _capture("hidden-arrival",size)
 			var inward: Vector2 = layout.EXIT_TRIGGER.get_center().direction_to(layout.FIELD_ENTRY)
-			await _walk(layout.FIELD_ENTRY + inward * 340.0)
-			await _capture("hidden-away",size)
-			scene.overview = true
-			scene.camera.size = scene.overview_camera_size
-			await _capture("hidden-overview",size)
+			if not exit_only:
+				await _walk(layout.FIELD_ENTRY + inward * 340.0)
+				await _capture("hidden-away",size)
+				scene.overview = true
+				scene.camera.size = scene.overview_camera_size
+				await _capture("hidden-overview",size)
 			scene.overview = false
 			scene.camera.size = scene.combat_camera_size
 			var edge: Vector2 = layout.FIELD_ENTRY.clamp(layout.EXIT_TRIGGER.position,layout.EXIT_TRIGGER.end)
 			await _walk(edge + inward * 55.0)
 			await _capture("exit-approach",size)
 			await _walk_threshold(false)
-			await _capture("main-return",size)
+			if not exit_only: await _capture("main-return",size)
 			_release()
 			scene.queue_free()
 			await process_frame
 			if failures: break
 		if failures: break
-	check(captures.size() == 24, "all24 rendered states captured")
+	check(captures.size() == (8 if exit_only else 24), "all requested rendered states captured")
 	var file := FileAccess.open(output.path_join("report.json"),FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks":checks,"failures":failures,"captures":captures,"scope":"real native renderer, normal threshold inputs, fixed setup, frozen combat/time; no human play"},"\t"))
 	print("HIDDEN_RENDER ",JSON.stringify({"checks":checks,"failures":failures,"images":captures.size()}))
