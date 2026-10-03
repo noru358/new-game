@@ -91,11 +91,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for fixture in verify_growth_card_descriptions capture_world_destination_labels; do
+          for fixture in verify_growth_card_descriptions capture_world_destination_labels verify_jungle_waterfall_visibility; do
             private="$RUNNER_TEMP/ui-copy-$fixture"
             mkdir -p "$private" "verification-logs/ui-copy/$fixture"
             git archive HEAD | tar -x -C "$private"
             sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WorldDestinationLabelsV48#' "$private/project.godot"
+            if [[ "$fixture" = verify_jungle_waterfall_visibility ]]; then sed -i 's/WorldDestinationLabelsV48/WaterfallVisibilityV48/' "$private/project.godot"; fi
             export HOME="$RUNNER_TEMP/ui-home-$fixture"
             export XDG_DATA_HOME="$HOME/data" XDG_CONFIG_HOME="$HOME/config" XDG_CACHE_HOME="$HOME/cache"
             mkdir -p "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME"
@@ -109,6 +110,7 @@ jobs:
           done
           test "$(find verification-logs/ui-copy/verify_growth_card_descriptions -name '*.png' | wc -l)" -eq 4
           test "$(find verification-logs/ui-copy/capture_world_destination_labels -name '*.png' | wc -l)" -eq 50
+          test "$(find verification-logs/ui-copy/verify_jungle_waterfall_visibility -name '*.png' | wc -l)" -eq 48
       - name: Verify isolated price-trial copies
         run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
