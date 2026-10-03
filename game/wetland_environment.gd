@@ -16,10 +16,7 @@ static func build(arena: Node3D) -> void:
 	for i in 24:
 		groves.append(Vector2(820+i*79,230+sin(i*0.6)*90))
 	arena.add_child(preload("res://game/wetland_canopy_environment.gd").build(arena,groves,"FarBankCanopyKit"))
-	# Reed clusters mark only existing blocked water boundaries.
-	for i in 24:
-		var p := Vector2(2470 + i * 53, 1810 + 15 * sin(i))
-		stone(arena, p, Vector3(0.055, 0.25 + 0.08 * (i % 3), 0.055), Color("66866a"))
+	arena.add_child(preload("res://game/wetland_waterbank_details.gd").build(arena))
 
 static func stone(arena: Node3D, p: Vector2, size: Vector3, color: Color, lift: float = 0.0) -> MeshInstance3D:
 	var mesh := CylinderMesh.new()
