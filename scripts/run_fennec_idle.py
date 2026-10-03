@@ -12,6 +12,7 @@ p = argparse.ArgumentParser()
 p.add_argument('--engine', required=True)
 p.add_argument('--output', required=True)
 p.add_argument('--native', action='store_true')
+p.add_argument('--motion', action='store_true', help='Real input motion observation; pending engine verification')
 a = p.parse_args()
 source = Path(__file__).resolve().parents[1]
 output = Path(a.output).resolve()
@@ -29,7 +30,8 @@ config.write_text(text)
 engine = str(Path(a.engine).resolve())
 version = subprocess.check_output([engine, '--version'], text=True).strip()
 assert version == '4.6.stable.official.89cea1439', version
-commands = [[engine, '--headless', '--path', str(project), '--editor', '--import', '--quit'], [engine] + ([] if a.native else ['--headless']) + ['--path', str(project), '--script', 'res://tests/capture_fennec_idle.gd']]
+fixture = 'capture_fennec_motion.gd' if a.motion else 'capture_fennec_idle.gd'
+commands = [[engine, '--headless', '--path', str(project), '--editor', '--import', '--quit'], [engine] + ([] if a.native else ['--headless']) + ['--path', str(project), '--script', 'res://tests/' + fixture]]
 import os
 env = dict(os.environ, FENNEC_OUTPUT=str(output / 'captures'))
 for i, command in enumerate(commands):

@@ -45,9 +45,9 @@ func _run() -> void:
 			# Manually inspected forelock crown y290 in the 1536px generated front.
 			# Alpha-scissor used y49..1466: crown-to-foot1176, total1417.
 			# Retain ear-inclusive reference and offer ONE crown-height comparison.
-			body.pixel_size = Adapter.PIXEL_SIZE * (1417.0 / 1176.0 if view == "front-body-height" else 1.0)
+			body.pixel_size = Adapter.BASE_PIXEL_SIZE * (Adapter.TRIAL_SCALE if view == "front-body-height" else 1.0)
 			check(body.texture.get_size() == Vector2(384, 448), "same canvas " + view)
-			check(body.offset == Vector2(0, 192), "same foot pivot " + view)
+			check(body.offset == Adapter.anchor_offset("front" if view == "front-body-height" else view, false), "measured foot pivot " + view)
 			check(body.billboard == BaseMaterial3D.BILLBOARD_ENABLED, "billboard " + view)
 			check(body.alpha_cut == SpriteBase3D.ALPHA_CUT_DISCARD, "depth cutout " + view)
 			check(scene.player.collision_radius == original_radius, "collision unchanged " + view)

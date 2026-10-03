@@ -1,0 +1,77 @@
+{
+  "measurement": "dark alpha-scissored shoe-contact span midpoint; image geometry estimate, not anatomy acceptance",
+  "trial_scale": 1.2049319727891157,
+  "whole_height_960_px": 69.40408163265306,
+  "crown_to_foot_960_px": 57.6,
+  "records": [
+    {
+      "view": "front",
+      "mirrored": false,
+      "sole_band": [
+        407,
+        416
+      ],
+      "dark_threshold": 140,
+      "alpha_threshold": 128,
+      "minimum_rows": 2,
+      "source_foot_edge_midpoint_x": 190.0,
+      "nominal_anchor_x": 192,
+      "uncorrected_error_authored_px": -2.0,
+      "adapter_offset_x": 2.0,
+      "corrected_residual_authored_px": 0.0,
+      "source_sha256": "2f426ad26822c6a13ba98063c404bbb1bf021f4368ffd79a219b2d797ac1ab43"
+    },
+    {
+      "view": "side",
+      "mirrored": false,
+      "sole_band": [
+        407,
+        416
+      ],
+      "dark_threshold": 140,
+      "alpha_threshold": 128,
+      "minimum_rows": 2,
+      "source_foot_edge_midpoint_x": 187.0,
+      "nominal_anchor_x": 192,
+      "uncorrected_error_authored_px": -5.0,
+      "adapter_offset_x": 5.0,
+      "corrected_residual_authored_px": 0.0,
+      "source_sha256": "1955751fc398ed33b9a660a5d1c0700863b6561a5918000a70f506cc8e6f01fa"
+    },
+    {
+      "view": "side",
+      "mirrored": true,
+      "sole_band": [
+        407,
+        416
+      ],
+      "dark_threshold": 140,
+      "alpha_threshold": 128,
+      "minimum_rows": 2,
+      "source_foot_edge_midpoint_x": 187.0,
+      "nominal_anchor_x": 192,
+      "uncorrected_error_authored_px": 5.0,
+      "adapter_offset_x": -5.0,
+      "corrected_residual_authored_px": 0.0,
+      "source_sha256": "1955751fc398ed33b9a660a5d1c0700863b6561a5918000a70f506cc8e6f01fa"
+    },
+    {
+      "view": "back",
+      "mirrored": false,
+      "sole_band": [
+        407,
+        416
+      ],
+      "dark_threshold": 140,
+      "alpha_threshold": 128,
+      "minimum_rows": 2,
+      "source_foot_edge_midpoint_x": 195.5,
+      "nominal_anchor_x": 192,
+      "uncorrected_error_authored_px": 3.5,
+      "adapter_offset_x": -3.5,
+      "corrected_residual_authored_px": 0.0,
+      "source_sha256": "7094b4cbfbcf9d6d850335741a87900be0f9456067acc1c602230f517f62bcba"
+    }
+  ],
+  "engine_execution": "NONE; runtime verification pending allocated slot"
+}

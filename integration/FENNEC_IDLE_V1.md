@@ -1,5 +1,7 @@
 # Fennec idle trial v1
 
+> Historical native evidence: a7270f0. Current adapter preparation changes are documented in FENNEC_MOTION_V2_PREP.md and have NOT run an engine yet.
+
 ## Status / 진행 대시보드
 
 - 현재 단계·세부 위치: 2단계 메타 연결/첫 권역 제작 중, 3단계 진입용 주인공 아트 생산 최소 시험.
