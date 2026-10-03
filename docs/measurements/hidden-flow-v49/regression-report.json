@@ -1,0 +1,53 @@
+{
+  "tested_sha": "d9ead856d50a1a4e42cfba3f5b27d4f445a2840d",
+  "results": [
+    {
+      "test": "verify_hidden_flow",
+      "exit": 0,
+      "errors": false,
+      "seconds": 4.84
+    },
+    {
+      "test": "verify_temple_section",
+      "exit": 0,
+      "errors": false,
+      "seconds": 1.48
+    },
+    {
+      "test": "verify_jungle_section",
+      "exit": 0,
+      "errors": false,
+      "seconds": 2.35
+    },
+    {
+      "test": "verify_discovery_ui",
+      "exit": 0,
+      "errors": false,
+      "seconds": 1.49
+    },
+    {
+      "test": "verify_world_destination_labels",
+      "exit": 0,
+      "errors": false,
+      "seconds": 2.57
+    },
+    {
+      "test": "verify_temple_circuit_run",
+      "exit": 0,
+      "errors": false,
+      "seconds": 0.85
+    },
+    {
+      "test": "verify_jungle_south_circuit",
+      "exit": 0,
+      "errors": false,
+      "seconds": 2.2
+    },
+    {
+      "test": "verify_deep_wetland_run",
+      "exit": 0,
+      "errors": false,
+      "seconds": 1.33
+    }
+  ]
+}

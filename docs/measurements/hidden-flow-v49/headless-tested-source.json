@@ -1,0 +1,17 @@
+{
+  "tested_sha": "5cca186a572ab7f88c67ee98d5c57decd403e65a",
+  "base_sha": "1aac501f097ff565f5fd249b9411ab91e64b3223",
+  "owned_sha256": {
+    "game/temple_section.gd": "e734a95c52351c5ba24e66f9ca9bee08554abf2293a85ac103714000034e7154",
+    "game/jungle_section.gd": "bbf7a3d56d561d98f9fddff7dc645905f16345d59c32c021b9212aeb11ab883d",
+    "game/hidden_threshold_latch.gd": "b0e3c244a0fd8907fb4df2e686516c2dc75727353d7debc6e75605bd8697a463",
+    "tests/verify_hidden_flow.gd": "77f4676a82d20013644a548479276acf22fafe2d7b55662f5e8285c9c86d74ac",
+    "tests/capture_hidden_flow.gd": "945a8ba94e6da05313cfae454bfe077935381e57bd3f0af0dca07b2a2c30cd4e"
+  },
+  "applied_mounts": [
+    "hidden-flow-minimap-mount.patch",
+    "hidden-flow-temple-terrain-mount.patch"
+  ],
+  "userdata": "/Users/lty/Library/Application Support/LoopConquestHiddenFlow/d8d230df48e04758b06216e479080b9a",
+  "engine": "4.6.stable.official.89cea1439"
+}

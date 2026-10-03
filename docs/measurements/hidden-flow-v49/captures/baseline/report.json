@@ -1,0 +1,596 @@
+{
+  "captures": [
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2648.18359375,
+        2027.44226074219
+      ],
+      "marker": [],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-undiscovered",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-hidden-arrival.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        566.461181640625,
+        281.776397705078
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5840.0,
+        1770.0
+      ],
+      "region": "temple",
+      "state": "hidden-arrival",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-hidden-away.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        373.723388671875,
+        167.330078125
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        6186.7177734375,
+        1776.0
+      ],
+      "region": "temple",
+      "state": "hidden-away",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 37.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-hidden-overview.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        353.799560546875,
+        303.158111572266
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        6186.7177734375,
+        1776.0
+      ],
+      "region": "temple",
+      "state": "hidden-overview",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-exit-approach.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        582.800659179688,
+        287.255676269531
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5817.111328125,
+        1776.0
+      ],
+      "region": "temple",
+      "state": "exit-approach",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-main-return.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2648.18359375,
+        2027.44226074219
+      ],
+      "marker": [
+        3120.0,
+        250.0
+      ],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-return",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2399.28198242188,
+        2579.046875
+      ],
+      "marker": [],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-undiscovered",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-hidden-arrival.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        583.431762695312,
+        285.021118164062
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6290.0,
+        2630.0
+      ],
+      "region": "jungle",
+      "state": "hidden-arrival",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-hidden-away.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        407.149658203125,
+        160.035842895508
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6638.41259765625,
+        2666.78588867188
+      ],
+      "region": "jungle",
+      "state": "hidden-away",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 50.4000015258789,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-hidden-overview.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        330.900512695312,
+        313.635620117188
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6638.41259765625,
+        2666.78588867188
+      ],
+      "region": "jungle",
+      "state": "hidden-overview",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-exit-approach.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        569.566711425781,
+        270.103363037109
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6325.2392578125,
+        2640.7314453125
+      ],
+      "region": "jungle",
+      "state": "exit-approach",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-main-return.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2399.28198242188,
+        2579.046875
+      ],
+      "marker": [
+        1300.0,
+        685.0
+      ],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-return",
+      "width": 960
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2648.18359375,
+        2027.44226074219
+      ],
+      "marker": [],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-undiscovered",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-hidden-arrival.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        566.461181640625,
+        281.776397705078
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5840.0,
+        1770.0
+      ],
+      "region": "temple",
+      "state": "hidden-arrival",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-hidden-away.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        373.723388671875,
+        167.330078125
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        6186.7177734375,
+        1776.0
+      ],
+      "region": "temple",
+      "state": "hidden-away",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 37.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-hidden-overview.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        353.799560546875,
+        303.158111572266
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        6186.7177734375,
+        1776.0
+      ],
+      "region": "temple",
+      "state": "hidden-overview",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-exit-approach.png",
+      "hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+      "inside": true,
+      "label_screen": [
+        582.800659179688,
+        287.255676269531
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5817.111328125,
+        1776.0
+      ],
+      "region": "temple",
+      "state": "exit-approach",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-main-return.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2648.18359375,
+        2027.44226074219
+      ],
+      "marker": [
+        3120.0,
+        250.0
+      ],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-return",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2399.28198242188,
+        2579.046875
+      ],
+      "marker": [],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-undiscovered",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-hidden-arrival.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        583.431762695312,
+        285.021118164062
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6290.0,
+        2630.0
+      ],
+      "region": "jungle",
+      "state": "hidden-arrival",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-hidden-away.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        407.149658203125,
+        160.035842895508
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6638.41259765625,
+        2666.78588867188
+      ],
+      "region": "jungle",
+      "state": "hidden-away",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 50.4000015258789,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-hidden-overview.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        330.900512695312,
+        313.635620117188
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6638.41259765625,
+        2666.78588867188
+      ],
+      "region": "jungle",
+      "state": "hidden-overview",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-exit-approach.png",
+      "hud": "물길 너머 안쪽 유적 탐색",
+      "inside": true,
+      "label_screen": [
+        569.566711425781,
+        270.103363037109
+      ],
+      "marker": [
+        8870.0,
+        440.0
+      ],
+      "point": [
+        6325.2392578125,
+        2640.7314453125
+      ],
+      "region": "jungle",
+      "state": "exit-approach",
+      "width": 1280
+    },
+    {
+      "boss_clock": "보스까지 04:00",
+      "camera_size": 9.0,
+      "corrected_source": false,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-main-return.png",
+      "hud": "",
+      "inside": false,
+      "label_screen": [
+        2399.28198242188,
+        2579.046875
+      ],
+      "marker": [
+        1300.0,
+        685.0
+      ],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-return",
+      "width": 1280
+    }
+  ],
+  "checks": 234,
+  "failures": 0,
+  "scope": "real native renderer, normal threshold inputs, fixed setup, frozen combat/time; no human play",
+  "tested_sha": "1aac501f097ff565f5fd249b9411ab91e64b3223"
+}
