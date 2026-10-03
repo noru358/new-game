@@ -30,6 +30,10 @@ func _run() -> void:
 		scene.growth_save_prefix=scene.profile_save_prefix+"_growth"
 		root.add_child(scene)
 		current_scene=scene
+		# Existing native fixture convention: synthetic inputs do not depend on
+		# desktop focus. This does not alter the game or operate the user app.
+		for connection in root.focus_exited.get_connections():root.focus_exited.disconnect(connection.callable)
+		scene._set_paused(false)
 		scene.practice_mode=true
 		scene.wisp.set_physics_process(false)
 		for actor in scene.actors:
@@ -75,7 +79,7 @@ func _record(label: String, target: Vector2, width: int, before: float) -> void:
 		var expected: Vector3=scene.terrain.world_point(scene.player.position,35)+scene.camera_offset
 		if scene.camera.position.distance_to(expected)<0.01:break
 		await physics_frame
-	var record: Dictionary={"name":label,"width":width,"target":_point(target),"reached":_point(scene.player.position),"active_walk_seconds":active_seconds-before,"render":false,"camera_size":scene.camera.size,"move_speed":scene.player.MOVE_SPEED,"move_speed_multiplier":scene.player.move_speed_multiplier,"run_time_frozen":scene.run_time,"in_garden":scene.temple_section.in_garden,"scope":"normal movement and real portals; initialized main-return placement, guardian delays/time frozen"}
+	var record: Dictionary={"name":label,"width":width,"target":_point(target),"reached":_point(scene.player.position),"active_walk_seconds":active_seconds-before,"render":false,"camera_size":scene.camera.size,"move_speed":scene.player.MOVE_SPEED,"move_speed_multiplier":scene.player.move_speed_multiplier,"run_time_frozen":scene.run_time,"in_garden":scene.temple_section.in_garden,"scope":"normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally"}
 	_check_follow(label,record)
 	if not measure_only and errors.is_empty():
 		expected_screenshots+=2
