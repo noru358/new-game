@@ -33,3 +33,7 @@ python3 scripts/launch_temple_entry_cluster.py walk --godot /path/to/official/Go
 ```
 
 GUI slot이 있는 때만 native를 실행한다. `--baseline`은 군집을 설치하지 않으며 원래 화면 비교용이다. native 후보1장/4개의 actor tell reference와 [report.json](report.json)/receipt를 보존했다. 부모 판단 전에 전체 렌더 반복이나 수치 미세 조정하지 않는다.
+
+## 후속 정정
+
+부모는 첫 사진의 오른쪽 좁은 틈 군집을 미채택했다. [북서면 이동 결과](../temple-entry-cluster-nw/HANDOFF.md)에 실제 다음 사진과 한계를 보존한다. 첫 그림자 검사는 중심 1.2와 비교했으며 실제 아랫면 0.8의 여유를 입증하지 못했다. 원시 첫 로그는 보존하고 후속 source는 contact 최대 0.725와 실제 아랫면을 검사한다.

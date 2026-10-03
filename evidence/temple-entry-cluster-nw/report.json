@@ -1,0 +1,181 @@
+{
+  "active_walk_seconds": 13.6833333333336,
+  "engine": "4.6-stable (official)",
+  "errors": [],
+  "normal_input": true,
+  "render": true,
+  "resolutions": [
+    [
+      960,
+      540
+    ]
+  ],
+  "samples": [
+    {
+      "active_walk_seconds": 13.6833333333336,
+      "approach": "normal input: entry to court, west stairs, past previous viewpoint, northward to actual cloister entry; no teleport",
+      "camera_position": [
+        28.5372295379639,
+        14.2140045166016,
+        31.0428905487061
+      ],
+      "camera_size": 9.0,
+      "cluster_offset": [
+        0,
+        0,
+        -240
+      ],
+      "cluster_projected_bounds": {
+        "BrokenMasonry": [
+          940.133483886719,
+          258.334075927734,
+          350.725036621094,
+          268.015350341797
+        ],
+        "ShelteredGrowth": [
+          942.386413574219,
+          263.322235107422,
+          181.419616699219,
+          159.40234375
+        ],
+        "StoneSoilContacts": [
+          908.279296875,
+          320.642852783203,
+          179.186889648438,
+          102.816497802734
+        ]
+      },
+      "draw_calls": 112.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 801,
+        "ratio": 1.0,
+        "reference_pixels": 801,
+        "roi": [
+          489,
+          207,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 820,
+        "ratio": 1.0,
+        "reference_pixels": 820,
+        "roi": [
+          369,
+          89,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          1563.013671875,
+          1603.67126464844
+        ],
+        "role": 1,
+        "scope": "fixed real enemy/rendered telegraph, no attack or difficulty claim",
+        "warning_surfaces": 1,
+        "warning_time": 0.3
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          14.5301361083984,
+          0.0,
+          17.0367126464844
+        ],
+        "camera_error_world": 0.00940655265003443,
+        "expected_actor_world": [
+          14.5301361083984,
+          0.0,
+          17.0367126464844
+        ],
+        "expected_camera_world": [
+          28.5301361083984,
+          14.2140007019043,
+          31.0367126464844
+        ]
+      },
+      "height": 540,
+      "name": "06-cloister",
+      "objects": 250.0,
+      "place_labels_hidden": true,
+      "player_scenery_visibility": {
+        "normal_pixels": 951,
+        "ratio": 0.990625,
+        "reference_pixels": 960,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "previous_candidate_target": [
+        1590,
+        1840
+      ],
+      "primitives": 30569.0,
+      "projection": {
+        "image_body_center": [
+          479.97021484375,
+          260.655242919922
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.960266113281,
+          347.540313720703
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1453.013671875,
+        1703.67126464844
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1450,
+        1700
+      ],
+      "visibility": {
+        "normal_actor_pixels": 951,
+        "ratio": 0.943452380952381,
+        "reference_actor_pixels": 1008,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    }
+  ],
+  "scope": "normal input court-to-cloister decision image; frozen encounter pressure and fixed real telegraph; no live-combat or human-art acceptance",
+  "screenshots": [
+    "06-cloister-960.png",
+    "06-cloister-reference-960.png",
+    "06-cloister-hero-reference-960.png",
+    "06-cloister-enemy-reference-960.png",
+    "06-cloister-tell-reference-960.png"
+  ],
+  "teleport": false
+}
