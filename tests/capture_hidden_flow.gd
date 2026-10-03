@@ -10,7 +10,7 @@ var only_region := ""
 var only_width := 0
 
 func _expected_capture_count() -> int:
-	return (2 if only_region != "" else 4) * (1 if only_width != 0 else 2) * (2 if exit_only else 6)
+	return (1 if only_region != "" else 2) * (1 if only_width != 0 else 2) * (2 if exit_only else 6)
 
 func _run() -> void:
 	for argument in OS.get_cmdline_user_args():
