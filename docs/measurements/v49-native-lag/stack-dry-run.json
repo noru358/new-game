@@ -1,0 +1,30 @@
+{
+  "dry_run": true,
+  "engine": [
+    "/Users/lty/Documents/Codex/2026-10-04/task-3/runtime/Godot.app/Contents/MacOS/Godot",
+    "--path",
+    "/Users/lty/Documents/Codex/2026-10-04/task-3/qa/stack-prepared-0b97481",
+    "--rendering-driver",
+    "opengl3",
+    "--script",
+    "res://tests/profile_v49_hitch.gd",
+    "--",
+    "--walk",
+    "--combat",
+    "--region=temple",
+    "--output=/Users/lty/Documents/Codex/2026-10-04/task-3/evidence/stack-next-slot/native.json"
+  ],
+  "sampler": [
+    "/usr/bin/sample",
+    "<PID returned by this runner's Popen>",
+    "8",
+    "2",
+    "-mayDie",
+    "-file",
+    "/Users/lty/Documents/Codex/2026-10-04/task-3/evidence/stack-next-slot/stack.txt"
+  ],
+  "start": "one stdout marker at active game time>=12s; duration8 wall seconds, interval2ms",
+  "sampler_scope": "exact owned engine PID only",
+  "watchdog_seconds": 35,
+  "limits": "Sampling perturbs execution; sample is aggregated, spindump timeline attachment privilege unverified; no GPU or FPS proof"
+}

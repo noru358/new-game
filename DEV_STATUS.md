@@ -10,6 +10,12 @@
 - 정상Input/카메라/공격/자동스폰65초도 전후 실행했다. 저밀도심한렉은 미재현/미해결; 사원 단발78.168→87.752ms가 남는다. 10762native/cache검사0fail·PNGbyte동일, 관련7회귀PASS. 전체CI/패키지실행/사람응답성/장시간은 미검증. 원본4진척JSONhash동일,02:08:39local 엔진0·슬롯반환.
 - 단계:2단계메타연결·첫권역제작중 성능회귀. 다음은 남은저밀도단발/renderer-presentation 원인진단과 별도재출정수정통합검증. draftPR56만 생성했고 병합/배포하지 않았다. 근거 docs/measurements/v49-native-lag/README.md. 부모메시지/PRattach tool은Transport closed로 실패해최종자동보고로인계한다.
 
+## v49 native stack — 코드-only 준비 / 2026-10-04 KST
+
+- 통합담당슬롯유지중 engine/sample/spindump실행없이시스템help/man을확인했다. 기존sample동일Godot1ms성공근거가있어다음8초/2ms·ownPID만수집하는기본실행기를준비했다. game_time12초stdout마커로시작하고24초scene/35초watchdog. execute+slot-authorized없으면dry-run만동작한다.
+- sample은일시정지/재개오버헤드가있고집계calltree라특정83ms의시간귀속은미확정이다. spindump-onlyTarget/-timeline옵션은있지만live권한미검증. xctrace는fullXcode없음(activeCommandLineTools)으로사용불가;설치/보안/서명/권한거부우회없음.
+- PythonAST·dry-run·마커/cleanup구조검사만PASS,신규Godot파싱/native샘플링은미검증. 제품1cd01604이후game변경0. 준비QA stack-prepared-0b97481/UUID저장. 다음은부모슬롯배정대기,실제권한거부면오류를보존해보고하고중단. docs/measurements/v49-native-lag/native-stack-ready.md.
+
 ## v49 사원 단발 지연 — 단일 정렬 계측 반환 / 2026-10-04 KST
 
 - 부모전용슬롯에서기존캐시후보1cd01604/5006b8e를21함수QA계측했다(a665eff아님). 동일native조건에서83.892ms지연,renderpre→post83.068ms,+6행viewportCPU81.398ms를확인. 정확위치(2046.728,943.9999),game15.4167초,route6/waypoint14/적12. 앞선첫중정설과first-wisp-hit설은반증됐다.

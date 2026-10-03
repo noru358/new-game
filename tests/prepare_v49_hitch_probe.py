@@ -109,12 +109,14 @@ def prepare(source, target):
     manifest["user_directory"] = user_dir
     profiler = (source / "tests/profile_spawn_lag.gd").read_text()
     profiler = profiler.replace("extends SceneTree\n", 'extends SceneTree\nconst Trace = preload("res://tests/fixtures/v49_hitch_trace.gd")\n')
+    profiler = profiler.replace('var focus_resumes:=0', 'var focus_resumes:=0\nvar stack_window_announced:=false')
     profiler = profiler.replace("func _initialize():\n", "func _initialize():\n\tTrace.reset()\n")
     profiler = profiler.replace('\n\troot.add_child(arena)', '\n\tif arena.get_script() == null:\n\t\tprinterr("QA scene script failed to load")\n\t\tquit(2)\n\t\treturn\n\troot.add_child(arena)')
     profiler = profiler.replace("RenderingServer.frame_post_draw.connect(sample_frame)", "RenderingServer.frame_post_draw.connect(sample_frame)\n\tRenderingServer.frame_pre_draw.connect(sample_pre_draw)")
     profiler = profiler.replace("create_timer(60.0)", "create_timer(19.0)")
     profiler = profiler.replace('FileAccess.open(output,FileAccess.WRITE)', 'report["timeline"] = Trace.report()\n\tFileAccess.open(output,FileAccess.WRITE)')
     profiler = profiler.replace("func sample_frame():\n", "func sample_frame():\n\tTrace.mark(\"render_post_draw\", {\"run_time\":arena.run_time, \"position\":str(arena.player.position), \"camera\":str(arena.camera.position), \"route_index\":route_index, \"waypoint\":waypoint, \"xp\":arena.growth.xp, \"level\":arena.growth.level, \"attack_step\":arena.player.attack_step, \"pending_spawns\":arena.pending_spawns.size(), \"enemies\":arena._active_enemy_count()})\n")
+    profiler = profiler.replace('func sample_frame():\n', 'func sample_frame():\n\tif not stack_window_announced and arena.run_time >= 12.0:\n\t\tstack_window_announced = true\n\t\tprint("STACK_WINDOW_START ", JSON.stringify({"pid":OS.get_process_id(), "run_time":arena.run_time, "ticks_usec":Time.get_ticks_usec(), "origin_usec":Trace.origin_usec, "region":region}))\n')
     profiler = profiler.replace("func steer():\n", "func steer():\n\tTrace.mark(\"physics_frame\")\n")
     # Add absolute clocks and engine frame IDs alongside the existing sample columns.
     profiler = profiler.replace('frames.append([float(now-last_usec)/1000.0,', 'Trace.mark("frame_sample", [now, Engine.get_frames_drawn(), Engine.get_process_frames(), Engine.get_physics_frames(), float(now-last_usec)/1000.0, Performance.get_monitor(Performance.TIME_PROCESS)*1000.0])\n\t\tframes.append([float(now-last_usec)/1000.0,')
