@@ -87,6 +87,28 @@ jobs:
           assert 'CodexActorTerrainV43' in report['user_data_dir'], report
           PY
           done
+      - name: Render concise world labels and growth descriptions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for fixture in verify_growth_card_descriptions capture_world_destination_labels; do
+            private="$RUNNER_TEMP/ui-copy-$fixture"
+            mkdir -p "$private" "verification-logs/ui-copy/$fixture"
+            git archive HEAD | tar -x -C "$private"
+            sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WorldDestinationLabelsV48#' "$private/project.godot"
+            export HOME="$RUNNER_TEMP/ui-home-$fixture"
+            export XDG_DATA_HOME="$HOME/data" XDG_CONFIG_HOME="$HOME/config" XDG_CACHE_HOME="$HOME/cache"
+            mkdir -p "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME"
+            godot --headless --editor --path "$private" --quit > "verification-logs/ui-copy/$fixture/import.log" 2>&1
+            LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+              godot --path "$private" --audio-driver Dummy --rendering-method gl_compatibility \
+              --script "res://tests/$fixture.gd" -- --capture-dir="$GITHUB_WORKSPACE/verification-logs/ui-copy/$fixture/images" \
+              > "verification-logs/ui-copy/$fixture/render.log" 2>&1
+            cat "verification-logs/ui-copy/$fixture/render.log"
+            if grep -E 'SCRIPT ERROR:|Parse Error:|^FAIL:' "verification-logs/ui-copy/$fixture/"*.log; then exit 1; fi
+          done
+          test "$(find verification-logs/ui-copy/verify_growth_card_descriptions -name '*.png' | wc -l)" -eq 4
+          test "$(find verification-logs/ui-copy/capture_world_destination_labels -name '*.png' | wc -l)" -eq 50
       - name: Verify isolated price-trial copies
         run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
