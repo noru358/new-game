@@ -541,7 +541,9 @@ func _toggle_supply() -> void:
 
 func _depart() -> void:
 	if profile.load_error or not profile.region_available(selected_region_id): return
-	get_tree().change_scene_to_file(preload("res://game/field_preview_session.gd").scene_for_region(get_tree(), selected_region_id))
+	var error := get_tree().change_scene_to_file(preload("res://game/field_preview_session.gd").scene_for_region(get_tree(), selected_region_id))
+	if error != OK:
+		status_label.text = "지역을 열지 못했습니다. 게임 폴더를 유지한 채 압축을 푼 앱에서 다시 실행하세요. 기존 기록은 유지됩니다."
 
 
 func _depart_canal_trial() -> void:

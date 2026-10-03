@@ -20,7 +20,21 @@ func _add(path: String) -> Node:
 	for i in 4: await physics_frame
 	return scene
 func _follow_button(button: Button, expected_path: String) -> Node:
-	button.pressed.emit()
+	# Exercise viewport GUI dispatch rather than bypassing input with pressed.emit().
+	if current_scene != null and current_scene.scene_file_path == "res://game/travel_camp.tscn":
+		current_scene.preparation.open_section(0)
+		current_scene.preparation.show()
+	for i in 3: await process_frame
+	check(button.is_visible_in_tree() and not button.disabled, "transition button is actually actionable")
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.position = button.get_global_rect().get_center()
+	click.global_position = click.position
+	click.pressed = true
+	root.push_input(click, true)
+	click = click.duplicate()
+	click.pressed = false
+	root.push_input(click, true)
 	for i in 20:
 		await physics_frame
 		if current_scene != null and current_scene.scene_file_path == expected_path:
@@ -54,6 +68,20 @@ func _run() -> void:
 	var hub = camp.preparation
 	check(hub.profile.currency == expected, "earned settlement visible back in camp")
 	check(not hub.jungle_region_button.disabled, "earned jungle access visible")
+
+	# Both earned destinations remain repeatable after returning, with the same save.
+	for region in [RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION, RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION]:
+		hub._select_region(region)
+		var before: int = hub.profile.currency
+		run = await _follow_button(hub.start_button, Session.scene_for_region(self, region))
+		check(run.profile.temple_owned and not run.profile.load_error, "redeparture preserves earned clear and valid profile")
+		check(run.region_id == region and not run.run_ended and not paused, "selected repeat run is live and unpaused")
+		run._finish_run("RETREAT")
+		camp = await _follow_button(run.replay_button, "res://game/travel_camp.tscn")
+		hub = camp.preparation
+		check(hub.profile.currency == before, "empty repeat retreat does not award first-clear money again")
+		check(not hub.start_button.disabled and not hub.jungle_region_button.disabled and not paused, "return keeps both departures available")
+
 	hub._select_gear("W_FLOW")
 	hub._gear_action()
 	check(hub.profile.owned_gear.has("W_FLOW"), "purchase recorded")
