@@ -77,7 +77,7 @@ static func install(arena: Node3D) -> void:
 			for property in ["light_color","light_energy","shadow_enabled","directional_shadow_max_distance","directional_shadow_mode"]:
 				scope.original_sun[property] = child.get(property)
 			child.light_color = Color("fff0d1")
-			child.light_energy = 1.05
+			child.light_energy = 0.62
 			child.shadow_enabled = true
 			child.directional_shadow_max_distance = 45.0
 			child.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL

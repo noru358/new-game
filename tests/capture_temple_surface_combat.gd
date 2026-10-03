@@ -74,7 +74,7 @@ func _run() -> void:
 				if live_enemy_warning and scene.warning_mesh.get_surface_count() > 0:
 					warning_frames += 1
 					if not measure and captures.is_empty():
-						await RenderingServer.frame_post_draw
+						RenderingServer.force_draw(false)
 						var filename: String = sample.name+"-live-warning-"+str(size.x)+".png"
 						root.get_texture().get_image().save_png(output.path_join(filename))
 						captures.append(filename)
