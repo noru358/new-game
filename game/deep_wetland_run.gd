@@ -6,6 +6,7 @@ const Layout = preload("res://game/wetland_run_layout.gd")
 const WetlandDecor = preload("res://game/wetland_environment.gd")
 const GuardianVisual = preload("res://game/wetland_guardian_visual.gd")
 var root_visuals: Dictionary = {}
+var place_encounter_trial := true
 func _init() -> void:
 	super._init()
 	terrain=RunTerrain.new()
@@ -73,3 +74,13 @@ func _animate_boss_figure() -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	GuardianVisual.update_roots(self,boss,root_visuals)
+
+func _roll_role() -> TrainingEnemy.Role:
+	if not place_encounter_trial:return super._roll_role()
+	if boss_spawned or run_time<45.0:return TrainingEnemy.Role.FRAGMENT
+	var weights=preload("res://game/wetland_encounter_composition.gd").weights(player.position,run_time,_encounter_phase())
+	var roll:=rng.randf()*100.0
+	for role in 5:
+		roll-=weights[role]
+		if roll<0.0:return role as TrainingEnemy.Role
+	return TrainingEnemy.Role.FRAGMENT
