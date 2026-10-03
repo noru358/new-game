@@ -112,6 +112,12 @@ func _ready() -> void:
 	player.attack_path_filter = clear_attack
 	player.moving_slash_enabled = moving_slash_practice
 	simulation.add_child(player)
+	# The visible camera is 3D, so a disabled Camera2D cannot move the 2D audio listener.
+	var hearing := AudioListener2D.new()
+	hearing.name = "HybridAudioListener"
+	hearing.rotation = player.input_rotation
+	player.add_child(hearing)
+	hearing.make_current()
 	player.set_dash_upgrade(2)
 	actors[player] = _actor_visual(Color.WHITE)
 	actor_motion[player] = [player.global_position, player.global_position]
