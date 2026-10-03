@@ -2,6 +2,19 @@ extends "res://tests/capture_temple_place_sequence.gd"
 ## Bounded surface comparison on the real production scene/camera/input path.
 const Finish = preload("res://game/temple_surface_sample.gd")
 var requested_size := Vector2i(960,540)
+var walking := false
+func _process(delta: float) -> bool:
+	if not walking: _release()
+	return super._process(delta)
+func _release() -> void:
+	# Pair synthetic InputEventAction presses with synthetic releases too. Native
+	# input queues can otherwise retain the previous walk across scene recreation.
+	for action in ACTIONS:
+		if not InputMap.has_action(action): continue
+		var event := InputEventAction.new()
+		event.action = action; event.pressed = false; event.strength = 0.0
+		Input.parse_input_event(event)
+		Input.action_release(action)
 func _initialize() -> void:
 	root.mode = Window.MODE_WINDOWED
 	super._initialize()
@@ -22,7 +35,10 @@ func _walk(goal: Vector2) -> void:
 	for connection in root.focus_exited.get_connections(): root.focus_exited.disconnect(connection.callable)
 	scene._set_paused(false)
 	Finish.install(scene)
+	walking = true
 	await super._walk(goal)
+	walking = false
+	_release()
 func _capture_checkpoint(label: String, width: int, record: Dictionary) -> void:
 	requested_size = Vector2i(width,width*9/16)
 	root.size = requested_size
