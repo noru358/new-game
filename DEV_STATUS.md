@@ -3,6 +3,31 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
+## v49 Mac 성능 회귀 최소 수정 — 2026-10-04 KST
+
+- 배포296bde54 독립fix/v49-native-lag, 제품수정1cd01604: 반복 장판 예고의 정적지형48segment×3ray 캐시. damage/AI/스폰/화질/카메라/저장/아트 보존. 변경 충돌체 transform/shape/layer/disabled/추가삭제에서 무효화한다.
+- M3/공식4.6/GL/1280×720/기본60physics·time_scale1 native72 적: 렌더제출간격 사원mean10.268→8.359/p9524.275→11.103ms, 정글12.854→11.271/20.527→16.337ms. 실제표시FPS가 아니며GLGPU timer미지원. 계측clear_attack2387858→2054/20초, 예고CPU3.601→1.856ms/call.
+- 정상Input/카메라/공격/자동스폰65초도 전후 실행했다. 저밀도심한렉은 미재현/미해결; 사원 단발78.168→87.752ms가 남는다. 10762native/cache검사0fail·PNGbyte동일, 관련7회귀PASS. 전체CI/패키지실행/사람응답성/장시간은 미검증. 원본4진척JSONhash동일,02:08:39local 엔진0·슬롯반환.
+- 단계:2단계메타연결·첫권역제작중 성능회귀. 다음은 남은저밀도단발/renderer-presentation 원인진단과 별도재출정수정통합검증. draftPR56만 생성했고 병합/배포하지 않았다. 근거 docs/measurements/v49-native-lag/README.md. 부모메시지/PRattach tool은Transport closed로 실패해최종자동보고로인계한다.
+
+## v49 native stack — 코드-only 준비 / 2026-10-04 KST
+
+- 통합담당슬롯유지중 engine/sample/spindump실행없이시스템help/man을확인했다. 기존sample동일Godot1ms성공근거가있어다음8초/2ms·ownPID만수집하는기본실행기를준비했다. game_time12초stdout마커로시작하고24초scene/35초watchdog. execute+slot-authorized없으면dry-run만동작한다.
+- sample은일시정지/재개오버헤드가있고집계calltree라특정83ms의시간귀속은미확정이다. spindump-onlyTarget/-timeline옵션은있지만live권한미검증. xctrace는fullXcode없음(activeCommandLineTools)으로사용불가;설치/보안/서명/권한거부우회없음.
+- PythonAST·dry-run·마커/cleanup구조검사만PASS,신규Godot파싱/native샘플링은미검증. 제품1cd01604이후game변경0. 준비QA stack-prepared-0b97481/UUID저장. 다음은부모슬롯배정대기,실제권한거부면오류를보존해보고하고중단. docs/measurements/v49-native-lag/native-stack-ready.md.
+
+## v49 사원 단발 지연 — 단일 정렬 계측 반환 / 2026-10-04 KST
+
+- 부모전용슬롯에서기존캐시후보1cd01604/5006b8e를21함수QA계측했다(a665eff아님). 동일native조건에서83.892ms지연,renderpre→post83.068ms,+6행viewportCPU81.398ms를확인. 정확위치(2046.728,943.9999),game15.4167초,route6/waypoint14/적12. 앞선첫중정설과first-wisp-hit설은반증됐다.
+- 타깃반복의측정스크립트44call union0.734ms는draw전에실행됐다. 중첩process0.443/base0.436/attack0.262ms를합산하지않는다. 타깃중hit/pulse/audio/spawn/path새호출없음. renderer내부native구분(최초표시자원/셰이더/driver동기화)은미확정;추가제품패치없음.
+- 첫QA중복상수parse실패보존/수정,후속sceneparse로그오류0. 관측23.983active초/focus0/2272frame은저장됐지만종료cleanup signal11/exit-6이므로전체PASS아님. cap80000은22.603trace초에소진(타깃16.036–16.119보다뒤). anonymousQA콜백제거/disconnect후속은실행미검증. 원본4savehash동일/ownedPID종료/ps엔진0·슬롯반환했고통합담당이현재슬롯소유. raw와한계는temple-hitch-plan.md.
+
+## v49 사원 단발 지연 — 코드-only 재조사 / 2026-10-04 KST
+
+- 새 엔진을 실행하지 않고 기존 raw를 재분석했다. 사원 interval78.168/87.752ms와6행 뒤 delayed viewport CPU75.109/85.110ms를 확인했다. 작은 같은행getter로renderer비용을배제하지 않는다. 추정wall15.396/15.520초이며 당시정확위치/run_time은원자료에없다. GPU/전체mainthread/셰이더원인은미확정이다.
+- 첫wisp_hit가 flash+pulse두draw를만드는경로와관측+2draw가일치하지만이벤트증거없음. ready풍경생성/fragment hittexture선생성은코드로확인. 21함수span·render pre/post·정확run_time/위치/route/firsthit 계측복사본과24초단일실행계획을준비했다. Python구조검사만PASS; Godot파싱/실행은부모슬롯대기다. 제품수정추가없음.
+- jungle baseline focus_resumes=1/after0 정정. 시점미기록이므로paired지표를완전통제비교로쓰지않는다. 사원두run은0. 세부 docs/measurements/v49-native-lag/temple-hitch-plan.md. 다음은통합담당슬롯반환후부모가배정하는한번의정렬계측이며사용자앱/세이브보존.
+
 ## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03
 
 - 부모가 합본 대표4PNG와 마지막diff를 검토하고 히든 장소/입출구 개선을 다음 플레이후보로 채택했다. 세lane 통합20359e1의 정확전체CI37129486967은116headless/preview/depth18사례/UI160PNG를 통과했다. 사원표면/조명 후속·캐릭터시안은 이 묶음에 포함하지 않는다.

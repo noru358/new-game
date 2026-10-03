@@ -1,0 +1,6 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: The member "V49HitchTrace" already exists in parent class res://game/hybrid_height.gd.
+          at: GDScript::reload (res://game/hybrid_region.gd:2)
+ERROR: Failed to load script "res://game/hybrid_region.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript.cpp:2907)

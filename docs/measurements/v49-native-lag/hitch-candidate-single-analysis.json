@@ -1,0 +1,1254 @@
+{
+  "time_basis": "5-second warmup plus sampled wall intervals; legacy samples do not record per-frame run_time or position",
+  "focus_resumes": 0,
+  "worst_interval": {
+    "index": 1252,
+    "approx_wall_seconds": 15.516449999999992,
+    "row": [
+      83.892,
+      12,
+      2.092,
+      0.737999975681305,
+      147.0
+    ]
+  },
+  "max_viewport_render_cpu": {
+    "index": 1258,
+    "approx_wall_seconds": 15.565231999999991,
+    "row": [
+      3.486,
+      12,
+      2.092,
+      81.3980026245117,
+      146.0
+    ]
+  },
+  "render_peak_row_offset": 6,
+  "neighbors": [
+    {
+      "index": 1248,
+      "approx_wall_seconds": 15.41194699999999,
+      "row": [
+        13.08,
+        12,
+        2.092,
+        0.751999974250793,
+        145.0
+      ]
+    },
+    {
+      "index": 1249,
+      "approx_wall_seconds": 15.415456999999991,
+      "row": [
+        3.51,
+        12,
+        2.092,
+        0.688000023365021,
+        145.0
+      ]
+    },
+    {
+      "index": 1250,
+      "approx_wall_seconds": 15.428608999999991,
+      "row": [
+        13.152,
+        12,
+        2.092,
+        0.754000008106232,
+        145.0
+      ]
+    },
+    {
+      "index": 1251,
+      "approx_wall_seconds": 15.432557999999991,
+      "row": [
+        3.949,
+        12,
+        2.092,
+        1.15699994564056,
+        145.0
+      ]
+    },
+    {
+      "index": 1252,
+      "approx_wall_seconds": 15.516449999999992,
+      "row": [
+        83.892,
+        12,
+        2.092,
+        0.737999975681305,
+        147.0
+      ]
+    },
+    {
+      "index": 1253,
+      "approx_wall_seconds": 15.528310999999992,
+      "row": [
+        11.861,
+        12,
+        2.092,
+        0.760999977588654,
+        146.0
+      ]
+    },
+    {
+      "index": 1254,
+      "approx_wall_seconds": 15.531436999999991,
+      "row": [
+        3.126,
+        12,
+        2.092,
+        0.739000022411346,
+        146.0
+      ]
+    },
+    {
+      "index": 1255,
+      "approx_wall_seconds": 15.545034999999991,
+      "row": [
+        13.598,
+        12,
+        2.092,
+        0.755999982357025,
+        146.0
+      ]
+    },
+    {
+      "index": 1256,
+      "approx_wall_seconds": 15.547968999999991,
+      "row": [
+        2.934,
+        12,
+        2.092,
+        0.773999989032745,
+        146.0
+      ]
+    },
+    {
+      "index": 1257,
+      "approx_wall_seconds": 15.56174599999999,
+      "row": [
+        13.777,
+        12,
+        2.092,
+        0.819000005722046,
+        146.0
+      ]
+    },
+    {
+      "index": 1258,
+      "approx_wall_seconds": 15.565231999999991,
+      "row": [
+        3.486,
+        12,
+        2.092,
+        81.3980026245117,
+        146.0
+      ]
+    },
+    {
+      "index": 1259,
+      "approx_wall_seconds": 15.578307999999991,
+      "row": [
+        13.076,
+        12,
+        2.092,
+        0.851000010967255,
+        146.0
+      ]
+    },
+    {
+      "index": 1260,
+      "approx_wall_seconds": 15.581041999999991,
+      "row": [
+        2.734,
+        12,
+        2.092,
+        0.519999980926514,
+        146.0
+      ]
+    }
+  ],
+  "columns": [
+    "post_draw_interval_ms",
+    "enemies",
+    "one_second_max_physics_ms",
+    "delayed_viewport_render_cpu_ms",
+    "draw_calls"
+  ],
+  "caveat": "Same-row render time is a delayed getter; no GPU or whole engine main-thread measurement.",
+  "timeline": {
+    "dropped": 12608,
+    "first_events": {
+      "game/enemy_role_visual.gd:_texture": [
+        "game/enemy_role_visual.gd:_texture",
+        403283,
+        403286,
+        0,
+        1,
+        0,
+        [
+          0,
+          false
+        ]
+      ],
+      "game/hybrid_height.gd:_sphere": [
+        "game/hybrid_height.gd:_sphere",
+        404552,
+        404584,
+        0,
+        1,
+        0,
+        [
+          0.13,
+          "(0.2863, 0.8627, 0.9098, 1.0)"
+        ]
+      ],
+      "game/run_flow_hud_presenter.gd:refresh": [
+        "game/run_flow_hud_presenter.gd:refresh",
+        472855,
+        472880,
+        0,
+        1,
+        0,
+        null
+      ],
+      "game/arena_navigation.gd:find_path": [
+        "game/arena_navigation.gd:find_path",
+        473060,
+        473363,
+        0,
+        1,
+        0,
+        null
+      ],
+      "physics_frame": [
+        "physics_frame",
+        487890,
+        487891,
+        0,
+        2,
+        0,
+        null
+      ],
+      "game/player.gd:_physics_process": [
+        "game/player.gd:_physics_process",
+        487908,
+        487929,
+        0,
+        2,
+        0,
+        null
+      ],
+      "game/hybrid_region.gd:_physics_process": [
+        "game/hybrid_region.gd:_physics_process",
+        487945,
+        488316,
+        0,
+        2,
+        0,
+        null
+      ],
+      "game/hybrid_height.gd:_physics_process": [
+        "game/hybrid_height.gd:_physics_process",
+        487946,
+        488287,
+        0,
+        2,
+        0,
+        null
+      ],
+      "game/temple_section.gd:tick": [
+        "game/temple_section.gd:tick",
+        488293,
+        488307,
+        0,
+        2,
+        0,
+        null
+      ],
+      "game/hybrid_region.gd:_process": [
+        "game/hybrid_region.gd:_process",
+        488632,
+        488666,
+        0,
+        8,
+        0,
+        null
+      ],
+      "game/hybrid_height.gd:_process": [
+        "game/hybrid_height.gd:_process",
+        488633,
+        488659,
+        0,
+        8,
+        0,
+        null
+      ],
+      "game/hybrid_height.gd:_draw_attack_at": [
+        "game/hybrid_height.gd:_draw_attack_at",
+        488653,
+        488655,
+        0,
+        8,
+        0,
+        null
+      ],
+      "render_pre_draw": [
+        "render_pre_draw",
+        489408,
+        489409,
+        0,
+        8,
+        0,
+        null
+      ],
+      "render_post_draw": [
+        "render_post_draw",
+        865171,
+        865172,
+        0,
+        8,
+        0,
+        {
+          "attack_step": 0,
+          "camera": "(20.73384, 14.09843, 43.96634)",
+          "enemies": 0,
+          "level": 1,
+          "pending_spawns": 0,
+          "position": "(688.7596, 2994.647)",
+          "route_index": 0,
+          "run_time": 0.116666666666667,
+          "waypoint": 2,
+          "xp": 0
+        }
+      ],
+      "game/player.gd:_play_sound": [
+        "game/player.gd:_play_sound",
+        880612,
+        880906,
+        1,
+        9,
+        1,
+        "res://game/audio/attack_1.wav"
+      ],
+      "game/hybrid_region.gd:_choose_spawn_point": [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        1748741,
+        1751338,
+        97,
+        68,
+        97,
+        null
+      ],
+      "game/hybrid_region.gd:_schedule_spawn": [
+        "game/hybrid_region.gd:_schedule_spawn",
+        1751344,
+        1751473,
+        97,
+        68,
+        97,
+        [
+          "(1568.425, 2752.517)",
+          0,
+          false
+        ]
+      ],
+      "game/hybrid_region.gd:_spawn_now": [
+        "game/hybrid_region.gd:_spawn_now",
+        2549473,
+        2550099,
+        192,
+        116,
+        192,
+        [
+          "(1568.425, 2752.517)",
+          0,
+          false
+        ]
+      ],
+      "game/hybrid_height.gd:_update_health_bar": [
+        "game/hybrid_height.gd:_update_health_bar",
+        2550261,
+        2550263,
+        192,
+        116,
+        192,
+        null
+      ],
+      "game/enemy.gd:_physics_process": [
+        "game/enemy.gd:_physics_process",
+        2565244,
+        2565283,
+        194,
+        117,
+        194,
+        null
+      ],
+      "game/hybrid_height.gd:_on_wisp_hit": [
+        "game/hybrid_height.gd:_on_wisp_hit",
+        3032086,
+        3032320,
+        250,
+        145,
+        250,
+        "(1520.335, 2768.105)"
+      ],
+      "game/hybrid_height.gd:_flash": [
+        "game/hybrid_height.gd:_flash",
+        3032088,
+        3032252,
+        250,
+        145,
+        250,
+        [
+          "(1520.335, 2768.105)",
+          0.22
+        ]
+      ],
+      "frame_sample": [
+        "frame_sample",
+        5615230,
+        5615231,
+        559,
+        300,
+        559,
+        [
+          6068384,
+          559,
+          559,
+          300,
+          12.092,
+          13.56
+        ]
+      ]
+    },
+    "longest_script_spans": [
+      [
+        "game/hybrid_region.gd:_physics_process",
+        5070422,
+        5073681,
+        495,
+        268,
+        495,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        7285869,
+        7288964,
+        761,
+        401,
+        761,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        5070509,
+        5073569,
+        495,
+        268,
+        495,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        7285952,
+        7288779,
+        761,
+        401,
+        761,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        1748692,
+        1751482,
+        97,
+        68,
+        97,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        8403537,
+        8406299,
+        895,
+        468,
+        895,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        9518807,
+        9521407,
+        1029,
+        535,
+        1029,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        19518730,
+        19521328,
+        2220,
+        1135,
+        2220,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        1748741,
+        1751338,
+        97,
+        68,
+        97,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        18402750,
+        18405285,
+        2086,
+        1068,
+        2086,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        11737087,
+        11739598,
+        1295,
+        668,
+        1295,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        8403625,
+        8406135,
+        895,
+        468,
+        895,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        9518877,
+        9521258,
+        1029,
+        535,
+        1029,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        21736558,
+        21738870,
+        2486,
+        1268,
+        2486,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        11737177,
+        11739463,
+        1295,
+        668,
+        1295,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        18402869,
+        18405134,
+        2086,
+        1068,
+        2086,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        19518844,
+        19520988,
+        2220,
+        1135,
+        2220,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_choose_spawn_point",
+        21736671,
+        21738716,
+        2486,
+        1268,
+        2486,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        2864842,
+        2866883,
+        230,
+        135,
+        230,
+        null
+      ],
+      [
+        "game/hybrid_region.gd:_physics_process",
+        20619511,
+        20621415,
+        2352,
+        1201,
+        2352,
+        null
+      ]
+    ],
+    "longest_pre_post_wall_intervals": [
+      {
+        "ms": 375.763,
+        "pre": [
+          "render_pre_draw",
+          489408,
+          489409,
+          0,
+          8,
+          0,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          865171,
+          865172,
+          0,
+          8,
+          0,
+          {
+            "attack_step": 0,
+            "camera": "(20.73384, 14.09843, 43.96634)",
+            "enemies": 0,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(688.7596, 2994.647)",
+            "route_index": 0,
+            "run_time": 0.116666666666667,
+            "waypoint": 2,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 83.068,
+        "pre": [
+          "render_pre_draw",
+          16036514,
+          16036515,
+          1811,
+          926,
+          1811,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          16119582,
+          16119582,
+          1811,
+          926,
+          1811,
+          {
+            "attack_step": 2,
+            "camera": "(34.00865, 14.21401, 23.43998)",
+            "enemies": 12,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(2046.728, 943.9999)",
+            "route_index": 6,
+            "run_time": 15.416666666667,
+            "waypoint": 14,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 72.199,
+        "pre": [
+          "render_pre_draw",
+          882640,
+          882640,
+          1,
+          16,
+          1,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          954839,
+          954839,
+          1,
+          16,
+          1,
+          {
+            "attack_step": 1,
+            "camera": "(21.1165, 14.17537, 43.94009)",
+            "enemies": 0,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(733.5016, 2992.604)",
+            "route_index": 0,
+            "run_time": 0.25,
+            "waypoint": 3,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 14.585,
+        "pre": [
+          "render_pre_draw",
+          1101001,
+          1101001,
+          20,
+          29,
+          20,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          1115586,
+          1115587,
+          20,
+          29,
+          20,
+          {
+            "attack_step": 2,
+            "camera": "(21.69698, 14.20736, 43.92495)",
+            "enemies": 0,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(806.2991, 2992.082)",
+            "route_index": 0,
+            "run_time": 0.466666666666667,
+            "waypoint": 6,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.859,
+        "pre": [
+          "render_pre_draw",
+          2668487,
+          2668488,
+          207,
+          123,
+          207,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          2682346,
+          2682349,
+          207,
+          123,
+          207,
+          {
+            "attack_step": 1,
+            "camera": "(26.40747, 14.214, 43.08369)",
+            "enemies": 1,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1265.744, 2879.385)",
+            "route_index": 0,
+            "run_time": 2.03333333333333,
+            "waypoint": 24,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.839,
+        "pre": [
+          "render_pre_draw",
+          1084192,
+          1084193,
+          18,
+          28,
+          18,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          1098031,
+          1098032,
+          18,
+          28,
+          18,
+          {
+            "attack_step": 2,
+            "camera": "(21.64789, 14.20641, 43.92554)",
+            "enemies": 0,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(800.6991, 2992.093)",
+            "route_index": 0,
+            "run_time": 0.45,
+            "waypoint": 6,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.792,
+        "pre": [
+          "render_pre_draw",
+          1017625,
+          1017625,
+          10,
+          24,
+          10,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          1031417,
+          1031418,
+          10,
+          24,
+          10,
+          {
+            "attack_step": 0,
+            "camera": "(21.464, 14.20109, 43.92854)",
+            "enemies": 0,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(778.2994, 2992.187)",
+            "route_index": 0,
+            "run_time": 0.383333333333333,
+            "waypoint": 5,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.698,
+        "pre": [
+          "render_pre_draw",
+          2701279,
+          2701279,
+          211,
+          125,
+          211,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          2714977,
+          2714978,
+          211,
+          125,
+          211,
+          {
+            "attack_step": 1,
+            "camera": "(26.47807, 14.214, 43.01016)",
+            "enemies": 1,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1275.727, 2874.309)",
+            "route_index": 0,
+            "run_time": 2.06666666666666,
+            "waypoint": 24,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.635,
+        "pre": [
+          "render_pre_draw",
+          1051050,
+          1051051,
+          14,
+          26,
+          14,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          1064685,
+          1064686,
+          14,
+          26,
+          14,
+          {
+            "attack_step": 2,
+            "camera": "(21.55365, 14.20411, 43.9269)",
+            "enemies": 0,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(789.4992, 2992.131)",
+            "route_index": 0,
+            "run_time": 0.416666666666667,
+            "waypoint": 5,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.606,
+        "pre": [
+          "render_pre_draw",
+          2132192,
+          2132192,
+          143,
+          91,
+          143,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          2145798,
+          2145798,
+          143,
+          91,
+          143,
+          {
+            "attack_step": 0,
+            "camera": "(25.11065, 14.214, 43.92002)",
+            "enemies": 1,
+            "level": 1,
+            "pending_spawns": 1,
+            "position": "(1153.498, 2992.0)",
+            "route_index": 0,
+            "run_time": 1.5,
+            "waypoint": 17,
+            "xp": 0
+          }
+        ]
+      }
+    ],
+    "longest_sampled_pre_post_wall_intervals": [
+      {
+        "ms": 83.068,
+        "pre": [
+          "render_pre_draw",
+          16036514,
+          16036515,
+          1811,
+          926,
+          1811,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          16119582,
+          16119582,
+          1811,
+          926,
+          1811,
+          {
+            "attack_step": 2,
+            "camera": "(34.00865, 14.21401, 23.43998)",
+            "enemies": 12,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(2046.728, 943.9999)",
+            "route_index": 6,
+            "run_time": 15.416666666667,
+            "waypoint": 14,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.571,
+        "pre": [
+          "render_pre_draw",
+          9668327,
+          9668327,
+          1047,
+          544,
+          1047,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9681898,
+          9681898,
+          1047,
+          544,
+          1047,
+          {
+            "attack_step": 1,
+            "camera": "(32.93326, 15.4066, 35.52135)",
+            "enemies": 7,
+            "level": 1,
+            "pending_spawns": 1,
+            "position": "(1849.222, 2158.848)",
+            "route_index": 3,
+            "run_time": 9.05000000000003,
+            "waypoint": 21,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.538,
+        "pre": [
+          "render_pre_draw",
+          9434880,
+          9434880,
+          1019,
+          530,
+          1019,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9448418,
+          9448419,
+          1019,
+          530,
+          1019,
+          {
+            "attack_step": 0,
+            "camera": "(33.50534, 15.41399, 35.29151)",
+            "enemies": 6,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1929.153, 2148.095)",
+            "route_index": 3,
+            "run_time": 8.81666666666668,
+            "waypoint": 18,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.44,
+        "pre": [
+          "render_pre_draw",
+          8535147,
+          8535148,
+          911,
+          476,
+          911,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          8548587,
+          8548588,
+          911,
+          476,
+          911,
+          {
+            "attack_step": 0,
+            "camera": "(36.07448, 15.41399, 34.95535)",
+            "enemies": 7,
+            "level": 1,
+            "pending_spawns": 1,
+            "position": "(2166.41, 2095.795)",
+            "route_index": 3,
+            "run_time": 7.91666666666664,
+            "waypoint": 9,
+            "xp": 0
+          }
+        ]
+      },
+      {
+        "ms": 13.416,
+        "pre": [
+          "render_pre_draw",
+          9501425,
+          9501426,
+          1027,
+          534,
+          1027,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9514841,
+          9514842,
+          1027,
+          534,
+          1027,
+          {
+            "attack_step": 0,
+            "camera": "(33.38407, 15.41399, 35.38018)",
+            "enemies": 6,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1907.564, 2153.508)",
+            "route_index": 3,
+            "run_time": 8.88333333333335,
+            "waypoint": 19,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.321,
+        "pre": [
+          "render_pre_draw",
+          9468237,
+          9468237,
+          1023,
+          532,
+          1023,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9481558,
+          9481559,
+          1023,
+          532,
+          1023,
+          {
+            "attack_step": 0,
+            "camera": "(33.45089, 15.41399, 35.33786)",
+            "enemies": 6,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1918.582, 2151.497)",
+            "route_index": 3,
+            "run_time": 8.85000000000002,
+            "waypoint": 19,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.314,
+        "pre": [
+          "render_pre_draw",
+          18301974,
+          18301974,
+          2074,
+          1062,
+          2074,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          18315288,
+          18315288,
+          2074,
+          1062,
+          2074,
+          {
+            "attack_step": 1,
+            "camera": "(40.29692, 14.214, 23.87282)",
+            "enemies": 14,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(2630.466, 987.9001)",
+            "route_index": 7,
+            "run_time": 17.6833333333336,
+            "waypoint": 0,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.291,
+        "pre": [
+          "render_pre_draw",
+          9418578,
+          9418579,
+          1017,
+          529,
+          1017,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9431869,
+          9431870,
+          1017,
+          529,
+          1017,
+          {
+            "attack_step": 0,
+            "camera": "(33.52744, 15.41399, 35.26847)",
+            "enemies": 6,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1934.214, 2145.699)",
+            "route_index": 3,
+            "run_time": 8.80000000000002,
+            "waypoint": 18,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.283,
+        "pre": [
+          "render_pre_draw",
+          9368418,
+          9368419,
+          1011,
+          526,
+          1011,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9381701,
+          9381702,
+          1011,
+          526,
+          1011,
+          {
+            "attack_step": 0,
+            "camera": "(33.57303, 15.41399, 35.20463)",
+            "enemies": 6,
+            "level": 1,
+            "pending_spawns": 0,
+            "position": "(1946.579, 2135.776)",
+            "route_index": 3,
+            "run_time": 8.75000000000001,
+            "waypoint": 17,
+            "xp": 2
+          }
+        ]
+      },
+      {
+        "ms": 13.203,
+        "pre": [
+          "render_pre_draw",
+          9601550,
+          9601550,
+          1039,
+          540,
+          1039,
+          null
+        ],
+        "post": [
+          "render_post_draw",
+          9614753,
+          9614753,
+          1039,
+          540,
+          1039,
+          {
+            "attack_step": 1,
+            "camera": "(33.13143, 15.41399, 35.47852)",
+            "enemies": 7,
+            "level": 1,
+            "pending_spawns": 1,
+            "position": "(1874.276, 2157.666)",
+            "route_index": 3,
+            "run_time": 8.98333333333336,
+            "waypoint": 20,
+            "xp": 2
+          }
+        ]
+      }
+    ],
+    "limits": "Script spans overlap; do not sum nested spans. pre/post boundaries include renderer work/waits, not GPU-only time. Use event IDs, wall timestamps and per-frame run_time rather than delayed viewport getter for alignment."
+  }
+}
