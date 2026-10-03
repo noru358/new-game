@@ -1,0 +1,89 @@
+{
+  "complete": true,
+  "engine": "4.6-stable (official)",
+  "errors": [],
+  "records": [
+    {
+      "active_seconds": 10.9833333333335,
+      "attack_frames": 492,
+      "camera_size": 9.0,
+      "captures": [
+        "court-live-warning-960.png"
+      ],
+      "distance": 1094.75083871186,
+      "frame_interval_median_ms": 16.661,
+      "frame_interval_p95_ms": 16.93,
+      "health": 55.0,
+      "kills": 1,
+      "place": "court",
+      "resolution": [
+        960,
+        540
+      ],
+      "surviving_enemies_attacks_fired": 4,
+      "warning_frames": 218
+    },
+    {
+      "active_seconds": 10.9833333333335,
+      "attack_frames": 492,
+      "camera_size": 9.0,
+      "captures": [
+        "cloister-live-warning-960.png"
+      ],
+      "distance": 1083.65562897921,
+      "frame_interval_median_ms": 16.663,
+      "frame_interval_p95_ms": 17.024,
+      "health": 55.0,
+      "kills": 1,
+      "place": "cloister",
+      "resolution": [
+        960,
+        540
+      ],
+      "surviving_enemies_attacks_fired": 4,
+      "warning_frames": 218
+    },
+    {
+      "active_seconds": 10.9833333333335,
+      "attack_frames": 491,
+      "camera_size": 9.0,
+      "captures": [
+        "court-live-warning-1280.png"
+      ],
+      "distance": 1074.25004476309,
+      "frame_interval_median_ms": 16.663,
+      "frame_interval_p95_ms": 17.536,
+      "health": 85.0,
+      "kills": 0,
+      "place": "court",
+      "resolution": [
+        1280,
+        720
+      ],
+      "surviving_enemies_attacks_fired": 7,
+      "warning_frames": 194
+    },
+    {
+      "active_seconds": 10.9833333333335,
+      "attack_frames": 491,
+      "camera_size": 9.0,
+      "captures": [
+        "cloister-live-warning-1280.png"
+      ],
+      "distance": 1073.46136298776,
+      "frame_interval_median_ms": 16.663,
+      "frame_interval_p95_ms": 17.204,
+      "health": 70.0,
+      "kills": 0,
+      "place": "cloister",
+      "resolution": [
+        1280,
+        720
+      ],
+      "surviving_enemies_attacks_fired": 7,
+      "warning_frames": 194
+    }
+  ],
+  "scope": "Normal 60Hz movement/attack/AI/time. Synthetic placement and two80HP enemies per place; ambient arrivals/growth modal/wisp suppressed equally. No natural progression, human fun, sound or sustained performance verdict.",
+  "variant": "candidate"
+}

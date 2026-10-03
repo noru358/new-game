@@ -1,0 +1,633 @@
+{
+  "acceleration": false,
+  "active_walk_seconds": 26.5333333333331,
+  "engine": "4.6-stable (official)",
+  "errors": [
+    "Player scenery visibility below98% at 04-open-court",
+    "Player scenery visibility below98% at 06-cloister",
+    "Player scenery visibility below98% at 04-open-court",
+    "Player scenery visibility below98% at 06-cloister"
+  ],
+  "expected_screenshots": 22,
+  "measure_only": false,
+  "normal_input": true,
+  "region": "temple",
+  "rejected_targets": [
+    {
+      "approved_replacement": [
+        3450,
+        600
+      ],
+      "name": "eastside",
+      "reason": "Inside existing wall Rect2(3310,170,80,370)",
+      "requested": [
+        3350,
+        500
+      ]
+    }
+  ],
+  "render": true,
+  "resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "samples": [
+    {
+      "active_walk_seconds": 7.69999999999998,
+      "approach": "ordinary movement inputs via existing navigation; no teleport",
+      "camera_position": [
+        38.486873626709,
+        15.4139976501465,
+        34.9921226501465
+      ],
+      "camera_rotation": [
+        -0.610885560512543,
+        0.785398185253143,
+        0.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 122.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 817,
+        "ratio": 0.997557997557998,
+        "reference_pixels": 819,
+        "roi": [
+          489,
+          207,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 822,
+        "ratio": 1.0,
+        "reference_pixels": 822,
+        "roi": [
+          369,
+          89,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          2558.68872070312,
+          1999.21118164062
+        ],
+        "role": 1,
+        "scope": "fixed real enemy/rendered telegraph, no attack or difficulty claim",
+        "warning_surfaces": 1,
+        "warning_time": 0.3
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          24.4868869781494,
+          1.19999992847443,
+          20.9921112060547
+        ],
+        "camera_error_world": 0.0000164353259606287,
+        "expected_actor_world": [
+          24.4868869781494,
+          1.19999992847443,
+          20.9921112060547
+        ],
+        "expected_camera_world": [
+          38.4868850708008,
+          15.4140005111694,
+          34.9921112060547
+        ]
+      },
+      "height": 540,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "04-open-court",
+      "objects": 260.0,
+      "place_labels_hidden": true,
+      "player_scenery_visibility": {
+        "normal_pixels": 916,
+        "ratio": 0.969312169312169,
+        "reference_pixels": 945,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 58155.0,
+      "projection": {
+        "image_body_center": [
+          480.000671386719,
+          260.902404785156
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.000915527344,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        2448.68872070312,
+        2099.21118164062
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        2450.0,
+        2100.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 920,
+        "ratio": 0.917248255234297,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "wall_seconds": 9.395051,
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 5.56666666666693,
+      "approach": "ordinary movement inputs via existing navigation; no teleport",
+      "camera_position": [
+        28.5147361755371,
+        14.2140045166016,
+        27.5387649536133
+      ],
+      "camera_rotation": [
+        -0.610885560512543,
+        0.785398185253143,
+        0.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 119.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 819,
+        "ratio": 1.0,
+        "reference_pixels": 819,
+        "roi": [
+          489,
+          207,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 822,
+        "ratio": 1.0,
+        "reference_pixels": 822,
+        "roi": [
+          369,
+          89,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          1561.47448730469,
+          1253.87512207031
+        ],
+        "role": 1,
+        "scope": "fixed real enemy/rendered telegraph, no attack or difficulty claim",
+        "warning_surfaces": 1,
+        "warning_time": 0.3
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          14.514744758606,
+          0.0,
+          13.5387506484985
+        ],
+        "camera_error_world": 0.0000174811393662822,
+        "expected_actor_world": [
+          14.514744758606,
+          0.0,
+          13.5387506484985
+        ],
+        "expected_camera_world": [
+          28.5147438049316,
+          14.2140007019043,
+          27.5387496948242
+        ]
+      },
+      "height": 540,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "06-cloister",
+      "objects": 257.0,
+      "place_labels_hidden": true,
+      "player_scenery_visibility": {
+        "normal_pixels": 915,
+        "ratio": 0.968253968253968,
+        "reference_pixels": 945,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 58422.0,
+      "projection": {
+        "image_body_center": [
+          480.000671386719,
+          260.902648925781
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.000915527344,
+          347.870208740234
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1451.47448730469,
+        1353.87512207031
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1450.0,
+        1350.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 919,
+        "ratio": 0.916251246261216,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "wall_seconds": 6.818122,
+      "width": 960
+    },
+    {
+      "approach": "separate static overview; explicit teleport",
+      "name": "overview-static",
+      "render": true,
+      "target": [
+        2450,
+        2100
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 7.69999999999985,
+      "approach": "ordinary movement inputs via existing navigation; no teleport",
+      "camera_position": [
+        38.4868698120117,
+        15.4139966964722,
+        34.9921264648438
+      ],
+      "camera_rotation": [
+        -0.610885560512543,
+        0.785398185253143,
+        0.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 125.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1445,
+        "ratio": 0.998617829993089,
+        "reference_pixels": 1447,
+        "roi": [
+          678,
+          303,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 1363,
+        "ratio": 1.0,
+        "reference_pixels": 1363,
+        "roi": [
+          558,
+          186,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          2558.68872070312,
+          1999.21118164062
+        ],
+        "role": 1,
+        "scope": "fixed real enemy/rendered telegraph, no attack or difficulty claim",
+        "warning_surfaces": 1,
+        "warning_time": 0.3
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          24.4868869781494,
+          1.19999992847443,
+          20.9921112060547
+        ],
+        "camera_error_world": 0.0000219137673411751,
+        "expected_actor_world": [
+          24.4868869781494,
+          1.19999992847443,
+          20.9921112060547
+        ],
+        "expected_camera_world": [
+          38.4868850708008,
+          15.4140005111694,
+          34.9921112060547
+        ]
+      },
+      "height": 720,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "04-open-court",
+      "objects": 260.0,
+      "place_labels_hidden": true,
+      "player_scenery_visibility": {
+        "normal_pixels": 1613,
+        "ratio": 0.964712918660287,
+        "reference_pixels": 1672,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 58155.0,
+      "projection": {
+        "image_body_center": [
+          640.000915527344,
+          347.869873046875
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.000915527344,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        2448.68872070312,
+        2099.21118164062
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        2450.0,
+        2100.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1620,
+        "ratio": 0.911136107986502,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "wall_seconds": 8.957457,
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 5.56666666666635,
+      "approach": "ordinary movement inputs via existing navigation; no teleport",
+      "camera_position": [
+        28.5147361755371,
+        14.2140045166016,
+        27.5387649536133
+      ],
+      "camera_rotation": [
+        -0.610885560512543,
+        0.785398185253143,
+        0.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 122.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1446,
+        "ratio": 0.999308914996545,
+        "reference_pixels": 1447,
+        "roi": [
+          678,
+          303,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 1363,
+        "ratio": 1.0,
+        "reference_pixels": 1363,
+        "roi": [
+          558,
+          186,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          1561.47448730469,
+          1253.87512207031
+        ],
+        "role": 1,
+        "scope": "fixed real enemy/rendered telegraph, no attack or difficulty claim",
+        "warning_surfaces": 1,
+        "warning_time": 0.3
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          14.514744758606,
+          0.0,
+          13.5387506484985
+        ],
+        "camera_error_world": 0.0000174811393662822,
+        "expected_actor_world": [
+          14.514744758606,
+          0.0,
+          13.5387506484985
+        ],
+        "expected_camera_world": [
+          28.5147438049316,
+          14.2140007019043,
+          27.5387496948242
+        ]
+      },
+      "height": 720,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "06-cloister",
+      "objects": 257.0,
+      "place_labels_hidden": true,
+      "player_scenery_visibility": {
+        "normal_pixels": 1611,
+        "ratio": 0.963516746411483,
+        "reference_pixels": 1672,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 58422.0,
+      "projection": {
+        "image_body_center": [
+          640.000915527344,
+          347.870208740234
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.000915527344,
+          347.870208740234
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1451.47448730469,
+        1353.87512207031
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1450.0,
+        1350.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1618,
+        "ratio": 0.910011248593926,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "wall_seconds": 6.818561,
+      "width": 1280
+    },
+    {
+      "approach": "separate static overview; explicit teleport",
+      "name": "overview-static",
+      "render": true,
+      "target": [
+        2450,
+        2100
+      ],
+      "width": 1280
+    }
+  ],
+  "scope": "isolated visual-walk fixture; frozen spawn/time pressure and enemy attacks; NOT natural combat or fun evidence",
+  "screenshots": [
+    "04-open-court-960.png",
+    "04-open-court-reference-960.png",
+    "04-open-court-hero-reference-960.png",
+    "04-open-court-enemy-reference-960.png",
+    "04-open-court-tell-reference-960.png",
+    "06-cloister-960.png",
+    "06-cloister-reference-960.png",
+    "06-cloister-hero-reference-960.png",
+    "06-cloister-enemy-reference-960.png",
+    "06-cloister-tell-reference-960.png",
+    "overview-static-960.png",
+    "04-open-court-1280.png",
+    "04-open-court-reference-1280.png",
+    "04-open-court-hero-reference-1280.png",
+    "04-open-court-enemy-reference-1280.png",
+    "04-open-court-tell-reference-1280.png",
+    "06-cloister-1280.png",
+    "06-cloister-reference-1280.png",
+    "06-cloister-hero-reference-1280.png",
+    "06-cloister-enemy-reference-1280.png",
+    "06-cloister-tell-reference-1280.png",
+    "overview-static-1280.png"
+  ],
+  "time_scale": 1.0,
+  "wall_seconds": 39.22114
+}

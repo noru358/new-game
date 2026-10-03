@@ -1,0 +1,84 @@
+{
+  "baseline_sha": "af5df78bd78f67c48a811a1af363bd6536dd7662",
+  "candidate_tested_sha": "3c9f3cf4978077a517a6d6ca652fe964d4e5200a",
+  "game_hashes_equal": true,
+  "baseline_complete": true,
+  "candidate_visibility_complete": false,
+  "candidate_failures": [
+    "Player scenery visibility below98% at 04-open-court",
+    "Player scenery visibility below98% at 06-cloister",
+    "Player scenery visibility below98% at 04-open-court",
+    "Player scenery visibility below98% at 06-cloister"
+  ],
+  "baseline_pngs": 22,
+  "candidate_pngs": 22,
+  "active_walk_seconds_each": 26.5333333333331,
+  "rows": [
+    {
+      "place": "04-open-court",
+      "width": 960,
+      "body_before": 0.996845425867508,
+      "body_after": 0.969312169312169,
+      "enemy_before": 1.0,
+      "enemy_after": 0.997557997557998,
+      "tell_before": 1.0,
+      "tell_after": 1.0,
+      "draw_calls_before": 110.0,
+      "draw_calls_after": 122.0,
+      "primitives_before": 30733.0,
+      "primitives_after": 58155.0
+    },
+    {
+      "place": "06-cloister",
+      "width": 960,
+      "body_before": 0.993690851735016,
+      "body_after": 0.968253968253968,
+      "enemy_before": 1.0,
+      "enemy_after": 1.0,
+      "tell_before": 1.0,
+      "tell_after": 1.0,
+      "draw_calls_before": 109.0,
+      "draw_calls_after": 119.0,
+      "primitives_before": 31024.0,
+      "primitives_after": 58422.0
+    },
+    {
+      "place": "04-open-court",
+      "width": 1280,
+      "body_before": 0.988179669030733,
+      "body_after": 0.964712918660287,
+      "enemy_before": 1.0,
+      "enemy_after": 0.998617829993089,
+      "tell_before": 1.0,
+      "tell_after": 1.0,
+      "draw_calls_before": 113.0,
+      "draw_calls_after": 125.0,
+      "primitives_before": 30733.0,
+      "primitives_after": 58155.0
+    },
+    {
+      "place": "06-cloister",
+      "width": 1280,
+      "body_before": 0.988179669030733,
+      "body_after": 0.963516746411483,
+      "enemy_before": 1.0,
+      "enemy_after": 0.999308914996545,
+      "tell_before": 1.0,
+      "tell_after": 1.0,
+      "draw_calls_before": 112.0,
+      "draw_calls_after": 122.0,
+      "primitives_before": 31024.0,
+      "primitives_after": 58422.0
+    }
+  ],
+  "evidence_png_sha256": {
+    "before-cloister-960.png": "7c7656be3d54b64acfe732b0a76b99d238d192e15a5d03bc8450aa4338c6ff58",
+    "before-cloister-1280.png": "55ae283a81a807aed110afddc9aebcfd4b1106cd350c17a2768913d2e5933285",
+    "after-cloister-1280.png": "960470d8a3af1200474d26f5a6c33ee03890b5403c79ae86fd066c57716b743e",
+    "after-cloister-960.png": "7537cb144af88dc2da36727d488a50fc6cbf53313d9b7a708c5b41d3a2380d0e",
+    "after-court-960.png": "73d03badc6367541cabb1f03077ea60aea58541ebccb7c1688e382b5669d7711",
+    "before-court-960.png": "59fc5e61b04ab7e044a5907cbf12914cbc9229af1161848ad5dfa120ffe32291",
+    "before-court-1280.png": "b94587f116747c333dd8e5823bf025dd0d12dea34877477b8953f5a1ff4359a2",
+    "after-court-1280.png": "5b68c3fe2ae7f5b4a28483e933d950e3134adae6a8227cc3cec7ab31d30f812b"
+  }
+}
