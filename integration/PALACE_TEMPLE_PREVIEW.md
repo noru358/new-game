@@ -1,5 +1,7 @@
 # Palace temple first checkpoint — 2026-10-03 UTC
 
+Follow-up source/approach/headless results: `PALACE_APPROACH_READY.md`. The first screenshot limitations below are preserved as historical evidence.
+
 Independent branch `codex/palace-temple-preview-oct03`, cloned from latest playable candidate `296bde54f987372750e652c608c62b8e6309192c` / draft PR54. Actual remote owner and connected user are both `noru358`; production `1aac501f097ff565f5fd249b9411ab91e64b3223` is an ancestor. No main/production/canonical change or campaign mounting.
 
 ## Scope and implementation
