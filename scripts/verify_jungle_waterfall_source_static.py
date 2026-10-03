@@ -1,8 +1,12 @@
 """Engine-free placement preparation, not a Godot parser/render/physics test."""
-import ast, copy, hashlib, json, math, pathlib, re, subprocess
+import argparse, ast, copy, hashlib, json, math, pathlib, re, subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 BASE = "296bde54f987372750e652c608c62b8e6309192c"
+parser = argparse.ArgumentParser()
+parser.add_argument("--contract-base", default=BASE, help="Exact approved pre-waterfall candidate for nonowned byte checks")
+args = parser.parse_args()
+contract_base = subprocess.check_output(["git", "rev-parse", "--verify", args.contract_base + "^{commit}"], cwd=ROOT, text=True).strip()
 text = (ROOT / "game/jungle_waterfall_sources.gd").read_text()
 layout = (ROOT / "game/jungle_grotto_layout.gd").read_text()
 
@@ -68,9 +72,9 @@ for forbidden in ["generate_triangle_mesh", "_process(", "_physics_process(", "P
 unchanged=[]
 for name in subprocess.check_output(["git","ls-files","game","project.godot"],cwd=ROOT,text=True).splitlines():
     if name in {"game/jungle_hidden_sanctuary.gd","game/jungle_waterfall_sources.gd"}: continue
-    assert (ROOT/name).read_bytes()==subprocess.check_output(["git","show",BASE+":"+name],cwd=ROOT),name
+    assert (ROOT/name).read_bytes()==subprocess.check_output(["git","show",contract_base+":"+name],cwd=ROOT),name
     unchanged.append(name)
-result={"base":BASE,"engine_runs":0,"scope":"Python declared placement audit only; not GDScript parse, actual mesh/physics, render or performance acceptance","sources":main+hidden,"water_mesh_nodes_before":6,"water_mesh_nodes_prepared":6,"water_triangles_before":72,"water_triangles_prepared":sum(8+2+len(s["feed"])-2 for s in main+hidden),"negative_controls":["190-height over21-rim rejected","pool-centered floating hidden source rejected"],"nonowned_game_config_byte_identical":len(unchanged),"sha256":{n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in ["game/jungle_hidden_sanctuary.gd","game/jungle_waterfall_sources.gd","tests/verify_jungle_waterfall_sources.gd","tests/verify_jungle_waterfall_visibility.gd"]},"remaining":["Godot import/parser and source-contact negative controls","actual fixed-camera960/1280 waterfall approach/return and actor/tell readability","bounded performance delta; no lag-fix claim"]}
+result={"base":BASE,"nonowned_contract_base":contract_base,"engine_runs":0,"scope":"Python declared placement audit only; not GDScript parse, actual mesh/physics, render or performance acceptance","sources":main+hidden,"water_mesh_nodes_before":6,"water_mesh_nodes_prepared":6,"water_triangles_before":72,"water_triangles_prepared":sum(8+2+len(s["feed"])-2 for s in main+hidden),"negative_controls":["190-height over21-rim rejected","pool-centered floating hidden source rejected"],"nonowned_game_config_byte_identical":len(unchanged),"sha256":{n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in ["game/jungle_hidden_sanctuary.gd","game/jungle_waterfall_sources.gd","tests/verify_jungle_waterfall_sources.gd","tests/verify_jungle_waterfall_visibility.gd"]},"remaining":["Godot import/parser and source-contact negative controls","actual fixed-camera960/1280 waterfall approach/return and actor/tell readability","bounded performance delta; no lag-fix claim"]}
 out=ROOT/"docs/measurements/jungle-waterfall-source-v50"
 out.mkdir(parents=True,exist_ok=True)
 (out/"static-preparation.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")

@@ -1,5 +1,6 @@
 {
   "base": "296bde54f987372750e652c608c62b8e6309192c",
+  "nonowned_contract_base": "a665effff313df293d94dec2fbbbf09dc6fb97a7",
   "engine_runs": 0,
   "scope": "Python declared placement audit only; not GDScript parse, actual mesh/physics, render or performance acceptance",
   "sources": [

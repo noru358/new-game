@@ -2,6 +2,14 @@
 
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
+## v49 세 증상 후속 후보 — packaged QA 진입점 준비 / 2026-10-04
+
+- 부모 지정 재출정34e6533 + 성능5006b8e의 두 커밋을 a665eff에 통합했다. 정확 a665eff 소스의 import+영향9검사 PASS, viewport 실제클릭 shared-session95검사/실패0. arm64 QA앱 export/strictcodesign/275자원·개발자료0은 확인했다. native 외부 --script 검사는180초 보고서 미생성으로 종료했으며 제품PASS/FAIL로 해석하지 않는다. Godot4.6 공식 CLI 문서에서 --script는 경로override 허용build 전용이며 지원하지 않는 인자가 무시되는 점을 확인했다.
+- 엔진0 조건에서 폭포117818e의 두 커밋을 별도 후보51549db에 통합했다. 4본선+2히든의 실제암벽상단→물줄기→물받이이며 노드6/삼각형72→80, 게임 충돌·출입·보상/저장 변경 없음. 비소유 파일 감사는 승인된 폭포 직전 a665eff를 명시해 바이트 비교하며 기대값을 삭제하지 않는다. 선언배치 정적 감사 PASS; Godot parser/actualmesh support/native9601280은 아직이다.
+- QA전용 main_scene/fixture를 ephemeral QA pack에 포함하는 후속검사를 준비했다. 같은 runtime 게임파일의 normal pack은 기존 field_preview_entry로 시작하고 qa/ 폴더가 없어야 한다. 실제 export의 normal pack 자원·QA script/entry/remap 부재, 정상launch의 실제camp로드, instrumented pack의 반복출정/복제v7/소유PCK소실 음성대조를 별도로 검사한다. QA fixture는 배포 소스에 추가하지 않았다.
+- 사용자 저장4파일 전후sha동일, 사용자앱 미변경·엔진0/슬롯반환. 현재 성능담당24초 추가계측 슬롯 소유다. PR54 미승인 병합/canonical/main 이동은 하지 않는다. 실제FPS/전면렉해결·사원11~12적78~88ms단발끊김 해결·폭포미감 수용은 주장하지 않는다.
+
+
 ## v49 재출정 긴급 진단 — 엔진 미실행 / 2026-10-04
 
 - 사용자 후속 설명은 첨부→Archive Utility 해제→나온 앱 실행이다. 정상적인 사용 방법이며 사용자 과실로 판단하지 않는다. 실제 오류 실행 주체/소스SHA/파일 제거 주체는 로그만으로 미확정이다. Downloads 번들의 PCK719864bytes SHA25655e5bc52cf021843f04f68aefc14c37aa8dac954eaf2c3d101868dd5bc5fcb46와 executable/plist는 공식 배포본과 동일하다.
