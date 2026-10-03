@@ -1,0 +1,22 @@
+{
+  "packed_resources": 277,
+  "documentation_imports_checked": 336,
+  "documentation_resources_packed": 0,
+  "development_imports_checked": 406,
+  "development_resources_packed": 0,
+  "excluded_development_roots": [
+    "docs",
+    "tests",
+    "scripts",
+    "patches",
+    "integration",
+    "evidence"
+  ],
+  "evidence": "Godot export Storing File records and development import remaps",
+  "source": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69",
+  "qa_entries_packed": 0,
+  "qa_folder_absent": true,
+  "normal_main_scene": "res://game/field_preview_entry.tscn",
+  "architecture": "arm64",
+  "strict_codesign": true
+}

@@ -1,0 +1,19 @@
+{
+  "packaged_source": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69",
+  "waterfall_native_source": "5d696a5912733be156be32c23e31da3946c3b377",
+  "all_game_files_byte_identical": true,
+  "source_game_files": 224,
+  "normal_launch_exit": 0,
+  "packaged_fixture_exits": [
+    0,
+    0,
+    0
+  ],
+  "user_save_json_files": 4,
+  "user_save_hashes_unchanged": true,
+  "os_focus_changed": false,
+  "synthetic_settlement_not_natural_victory": true,
+  "normal_packed_resources": 277,
+  "normal_qa_resources": 0,
+  "normal_development_resources": 0
+}

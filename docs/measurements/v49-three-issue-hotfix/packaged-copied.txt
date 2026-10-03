@@ -1,0 +1,73 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+Unrecognized output string "misc2" in mapping:
+030000007e0500006920000001010000,Nintendo Switch 2 Pro Controller,a:b0,b:b1,back:b14,dpdown:b8,dpleft:b10,dpright:b9,dpup:b11,guide:b16,leftshoulder:b12,leftstick:b15,lefttrigger:b13,leftx:a0,lefty:a1~,misc1:b17,misc2:b20,paddle1:b18,paddle2:b19,rightshoulder:b4,rightstick:b7,righttrigger:b5,rightx:a2,righty:a3~,start:b6,x:b2,y:b3,platform:Mac OS X,
+SDL: Init OK!
+Using "default" pen tablet driver...
+OpenGL debugging not supported!
+Shader 'CanvasSdfShaderGLES3' SHA256: aa209c9cd00c30996f4e3b5154b4a42d5f99b1f48b97a2271aa7e66e4ca0f69d
+Shader 'SkeletonShaderGLES3' SHA256: 19be6c6762bbf588f916616b0c74d8a1014507705c22088f9e12eb5303ee80d4
+Shader 'ParticlesShaderGLES3' SHA256: 998856346189136d10e532cce18fdd784ee523eae2236f17964103b7f8839fc7
+Shader 'ParticlesCopyShaderGLES3' SHA256: ae08aabacb32868d0599949b6e09ebc8f103c489812e2548bd2e9f424f0b3db5
+Shader 'CopyShaderGLES3' SHA256: 453a91688a5a27b9589b74a3c45625d4bdfd8887614efbd6d8fedd4ad829fb2c
+Shader 'CubemapFilterShaderGLES3' SHA256: 32cdce29e15a69d17b4deb0605a17917455909a228dcc3a6b4dad32f60014b7b
+Shader 'GlowShaderGLES3' SHA256: b00e122bba00bd1c678479fefd572f82f878e0ba6e76d4b2f826de21233e3944
+Shader 'PostShaderGLES3' SHA256: 681b4b01529ff8166eb1ee764a4ca6ca85a520d043db1c232896ca5a6cf25b66
+Shader 'FeedShaderGLES3' SHA256: 99c82b3ef90c7ca526bc1e5b6b324451cef4a6f2c04dc1e0398cad3e2c1e7f91
+Shader 'CanvasShaderGLES3' SHA256: 2df5dae51c7db1d5f0263c452426ee1b7ca67f8a7a400dcbc2e07f30a789239e
+Shader 'CanvasOcclusionShaderGLES3' SHA256: c4479089f938138c9ba1bb3c1e9df7375f87d40838287dec967683ff866af1be
+Shader 'SceneShaderGLES3' SHA256: 3ed23ac693edea2cb6437e02ff1df5f42339238f191b3cd0dbe340bd89d59d05
+Shader 'SkyShaderGLES3' SHA256: 55349cec338d5745835e0d87d1ee1988266e586e84bd4197dd94a6e65e3a90ca
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+CORE API HASH: 0
+EDITOR API HASH: 0
+SceneTreeFTI: traversal method DEFAULT
+Loaded system CA certificates
+Loading resource: res://.godot/exported/133200997/export-29991a761499a50ac05c84fea9d99efd-packaged_entry.scn
+Loading resource: res://qa/packaged_entry.gdc
+Loading resource: res://game/audio/wisp_shot.wav
+Loading resource: res://.godot/imported/wisp_shot.wav-7a098382a13db6ee1c0bce8c83e84675.sample
+Loading resource: res://game/audio/wisp_hit.wav
+Loading resource: res://.godot/imported/wisp_hit.wav-d3a20bfa6389c7c21659ccb63cac3000.sample
+Loading resource: res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn
+Loading resource: res://game/travel_camp.gdc
+Loading resource: res://.godot/exported/133200997/export-2b4c71f3fedb76a8604696c47c8e5576-hub.scn
+Loading resource: res://game/hub.gdc
+Loading resource: res://.godot/exported/133200997/export-815f63e2ac0d124f44a2820c1bf3fd95-temple_circuit_run.scn
+Loading resource: res://game/temple_circuit_run.gdc
+Loading resource: res://.godot/exported/133200997/export-4c6fd1a93bec3da12b50d9e4cfdb088e-player.scn
+Loading resource: res://.godot/exported/133200997/export-e51bc3b4e9791a2c3f6b73c3311dfd90-enemy.scn
+Loading resource: res://game/hybrid_actor.svg
+Loading resource: res://.godot/imported/hybrid_actor.svg-ad9f29909974bcd823f0aa26a303649c.ctex
+Loading resource: res://.godot/exported/133200997/export-f5b01f6d26e0ce77e79a2f075be9a94f-gate_boss.scn
+Loading resource: res://game/enemy_fragment.svg
+Loading resource: res://.godot/imported/enemy_fragment.svg-47b5bd7a971c75537621dc0ab30f3498.ctex
+Loading resource: res://game/enemy_beast.svg
+Loading resource: res://.godot/imported/enemy_beast.svg-a0a9ab78d96aaf856bd1011ccb034f03.ctex
+Loading resource: res://game/enemy_lamp.svg
+Loading resource: res://.godot/imported/enemy_lamp.svg-8baa248367f5a0fdb3e68fe59b8004f7.ctex
+Loading resource: res://game/enemy_zone.svg
+Loading resource: res://.godot/imported/enemy_zone.svg-be81b9e7db2df69b48f16680bc5d4f50.ctex
+Loading resource: res://game/enemy_support.svg
+Loading resource: res://.godot/imported/enemy_support.svg-e5b6dafda37d5e732d22600e78423e78.ctex
+Hybrid scene ready: Temple circuit — isolated four-minute run
+Loading resource: res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn
+Loading resource: res://.godot/exported/133200997/export-25686aacd9a5d74d4ebbff85bb482b27-jungle_south_circuit.scn
+Loading resource: res://game/jungle_south_circuit.gdc
+Loading resource: res://.godot/exported/133200997/export-6eeab43cf5ee5c07d4e23c8c5bfac2c1-jungle_warden.scn
+Loading resource: res://game/jungle_warden.gdc
+Hybrid scene ready: Jungle southern circuit — isolated development run
+Loading resource: res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn
+Loading resource: res://.godot/exported/133200997/export-815f63e2ac0d124f44a2820c1bf3fd95-temple_circuit_run.scn
+Hybrid scene ready: Temple circuit — isolated four-minute run
+Loading resource: res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn
+Loading resource: res://.godot/exported/133200997/export-25686aacd9a5d74d4ebbff85bb482b27-jungle_south_circuit.scn
+Hybrid scene ready: Jungle southern circuit — isolated development run
+Loading resource: res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn
+Copied v7 packaged re-departure: 26 checks, 0 failures
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"

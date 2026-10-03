@@ -1,0 +1,58 @@
+{
+  "source": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69",
+  "results": [
+    {
+      "name": "fresh",
+      "exit_code": 0,
+      "seconds": 12.29,
+      "passed": true,
+      "errors": [],
+      "report": {
+        "checks": 97,
+        "failures": 0,
+        "native_packaged": true,
+        "os_focus_modified": false,
+        "source": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69",
+        "synthetic_settlement": true
+      },
+      "pack_sha256": "4781e564bce62feaebf4c13faae54bdb536eae96ef87a5cbc07b8926e0f86875"
+    },
+    {
+      "name": "copied",
+      "exit_code": 0,
+      "seconds": 8.126,
+      "passed": true,
+      "errors": [],
+      "report": {
+        "checks": 26,
+        "failures": 0,
+        "native_packaged": true,
+        "original_save_modified": false,
+        "source": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69",
+        "synthetic_settlement": true
+      },
+      "pack_sha256": "4781e564bce62feaebf4c13faae54bdb536eae96ef87a5cbc07b8926e0f86875"
+    },
+    {
+      "name": "negative",
+      "exit_code": 0,
+      "seconds": 1.607,
+      "passed": true,
+      "errors": [
+        "ERROR: Can't open pack-referenced file \"res://game/temple_circuit_run.tscn.remap\" from pack \"/QA_WORKSPACE/qa/hotfix-embedded-38a8c98/instrumented/codex-file-preview-negative-93a72870-44af-4c6c-8df8-afcc649a0533/Loop Conquest - Hotfix instrumented QA.app/Contents/Resources/Loop Conquest - Hotfix instrumented QA.pck\".",
+        "ERROR: File must be opened before use.",
+        "ERROR: Condition \"num_read == 18446744073709551615ULL\" is true. Returning: 0",
+        "ERROR: Cannot open file 'res://game/temple_circuit_run.tscn'.",
+        "ERROR: Failed loading resource: res://game/temple_circuit_run.tscn."
+      ],
+      "report": {
+        "checks": 10,
+        "expected_resource_load_error": true,
+        "failures": 0,
+        "owned_qa_pack_only": true,
+        "source": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69"
+      },
+      "pack_sha256": "4781e564bce62feaebf4c13faae54bdb536eae96ef87a5cbc07b8926e0f86875"
+    }
+  ]
+}

@@ -2,6 +2,13 @@
 
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
+## v49 세 증상 후보 — native packaged·폭포 검증 / 2026-10-04
+
+- 정확38a8c98 standalone QA 진입점에서 새저장97/복제v7 26/소유PCK소실10검사 모두0실패·native종료3회exit0. 실제viewport클릭/합성성공정산이며 자연보스승리 아님. 정상launch QA없는pack277자원/개발0/arm64/strictcodesign·실제camp로드·exit0도 확인했다. 사용자저장4파일전후hash동일/OSfocus미조작.
+- 정확38a8c98 영향16중15PASS, 새폭포접촉fixture 타입추론2오류를5d696a5에서검사코드만명시타입으로수정했다. 실제source-contact53/0·기존물계약·warningcache재검사PASS. 모든게임파일은38a8c98/5d696a5동일. 최초파서실패를보존하며삭제해통과시키지않았다.
+- 정확5d696a5 폭포9601280 native12PNG·94검사/0, 기존가림12사례29788검사/계약실패0. 입구water-reference98.80%/98.70%,귀환100%; 기존cooldown경사면몸체~56%가림은strict2실패/knownlimit로유지하고전방향98%해결로쓰지않는다.부모이미지검토는미수용이며캡처는docs/measurements/v49-three-issue-hotfix.
+- native절차/정적/영향검사는완료했으며정확최종증거HEAD 전체CI는아직이다.성능기존72적ms개선과저밀도78~88ms단발끊김미해결을구분한다.별도성능후속·부모시각판단·최종빌드선정/제출은남아있고PR54merge/canonical/main이동은하지않았다.
+
 ## v49 세 증상 후속 후보 — packaged QA 진입점 준비 / 2026-10-04
 
 - 부모 지정 재출정34e6533 + 성능5006b8e의 두 커밋을 a665eff에 통합했다. 정확 a665eff 소스의 import+영향9검사 PASS, viewport 실제클릭 shared-session95검사/실패0. arm64 QA앱 export/strictcodesign/275자원·개발자료0은 확인했다. native 외부 --script 검사는180초 보고서 미생성으로 종료했으며 제품PASS/FAIL로 해석하지 않는다. Godot4.6 공식 CLI 문서에서 --script는 경로override 허용build 전용이며 지원하지 않는 인자가 무시되는 점을 확인했다.

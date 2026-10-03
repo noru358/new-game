@@ -1,0 +1,187 @@
+{
+  "source_sha": "38a8c98996ce9efc52b2c1eeb8bc3858097d6b69",
+  "engine": "/QA_WORKSPACE/runtime/Godot.app/Contents/MacOS/Godot",
+  "scripts": [
+    "tests/verify_field_preview_entry.gd",
+    "tests/verify_field_preview_session.gd",
+    "tests/verify_warning_clipping_cache.gd",
+    "tests/verify_travel_camp.gd",
+    "tests/verify_run_profile.gd",
+    "tests/verify_jungle_waterfall_sources.gd",
+    "tests/verify_jungle_waterfall_visibility.gd",
+    "tests/verify_jungle_hidden_sanctuary.gd",
+    "tests/verify_hidden_combined_mount.gd",
+    "tests/verify_temple_garden_approach.gd",
+    "tests/verify_garden_transition.gd",
+    "tests/verify_hidden_flow.gd",
+    "tests/verify_temple_circuit_run.gd",
+    "tests/verify_jungle_south_circuit.gd",
+    "tests/verify_hybrid_combat_feedback.gd",
+    "tests/verify_terrain_coherence.gd"
+  ],
+  "results": [
+    {
+      "script": "import",
+      "exit_code": 0,
+      "seconds": 12.06,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/import.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-435b4cb5-5b57-4e80-b9a4-a176cb1cf48c",
+      "passed": true
+    },
+    {
+      "script": "verify_field_preview_entry",
+      "exit_code": 0,
+      "seconds": 0.35,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_field_preview_entry.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-41c34630-b3a2-4b21-9efc-9355e34698fe",
+      "passed": true
+    },
+    {
+      "script": "verify_field_preview_session",
+      "exit_code": 0,
+      "seconds": 10.16,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_field_preview_session.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-1cdfbc56-7f1b-4845-bd2b-fc64394f3181",
+      "passed": true
+    },
+    {
+      "script": "verify_warning_clipping_cache",
+      "exit_code": 0,
+      "seconds": 0.62,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_warning_clipping_cache.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-e0ded9da-d531-4c7a-a9df-27d99f33c460",
+      "passed": true
+    },
+    {
+      "script": "verify_travel_camp",
+      "exit_code": 0,
+      "seconds": 0.41,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_travel_camp.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-8ab2a287-7122-4a12-a16e-1198fa6e8f6d",
+      "passed": true
+    },
+    {
+      "script": "verify_run_profile",
+      "exit_code": 0,
+      "seconds": 0.29,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_run_profile.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-c1e3ac29-1f75-41d5-88d3-37e28bb191e9",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_waterfall_sources",
+      "exit_code": 0,
+      "seconds": 0.24,
+      "errors": [
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"probe\" variable because the value doesn't have a set type.",
+        "SCRIPT ERROR: Parse Error: Cannot infer the type of \"old\" variable because the value doesn't have a set type.",
+        "ERROR: Failed to load script \"res://tests/verify_jungle_waterfall_sources.gd\" with error \"Parse error\"."
+      ],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_jungle_waterfall_sources.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-f14356f9-eae0-4d47-80ef-e699d37bc293",
+      "passed": false
+    },
+    {
+      "script": "verify_jungle_waterfall_visibility",
+      "exit_code": 0,
+      "seconds": 4.69,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_jungle_waterfall_visibility.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-b991e8a4-78a9-4f6a-b6f5-b0e659910005",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_hidden_sanctuary",
+      "exit_code": 0,
+      "seconds": 2.48,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_jungle_hidden_sanctuary.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-85c7c7e4-f76e-402d-a8b3-60dfd9c04097",
+      "passed": true
+    },
+    {
+      "script": "verify_hidden_combined_mount",
+      "exit_code": 0,
+      "seconds": 3.67,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_hidden_combined_mount.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-6ab2811c-113a-489c-84ca-38bb40fa20a4",
+      "passed": true
+    },
+    {
+      "script": "verify_temple_garden_approach",
+      "exit_code": 0,
+      "seconds": 1.27,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_temple_garden_approach.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-66dae205-b704-4435-a23a-162bf5fd03cb",
+      "passed": true
+    },
+    {
+      "script": "verify_garden_transition",
+      "exit_code": 0,
+      "seconds": 1.98,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_garden_transition.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-969a17fe-69a2-419f-a4a2-f866832d05ec",
+      "passed": true
+    },
+    {
+      "script": "verify_hidden_flow",
+      "exit_code": 0,
+      "seconds": 74.33,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_hidden_flow.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-6cb773f3-b9ed-4002-953f-ed848a7bad50",
+      "passed": true
+    },
+    {
+      "script": "verify_temple_circuit_run",
+      "exit_code": 0,
+      "seconds": 3.64,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_temple_circuit_run.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-3e21f5d1-8b7e-469b-a592-91cf94581f33",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_south_circuit",
+      "exit_code": 0,
+      "seconds": 2.29,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_jungle_south_circuit.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-19926fd7-ab69-4ebf-b5e7-d247523d0d6a",
+      "passed": true
+    },
+    {
+      "script": "verify_hybrid_combat_feedback",
+      "exit_code": 0,
+      "seconds": 0.73,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_hybrid_combat_feedback.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-d18155c6-5c6f-4be6-956b-8f4627480d6e",
+      "passed": true
+    },
+    {
+      "script": "verify_terrain_coherence",
+      "exit_code": 0,
+      "seconds": 7.45,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/three-issues-impact-38a8c98/verify_terrain_coherence.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-bb585235-5c5a-4f86-901e-4585bf282855",
+      "passed": true
+    }
+  ],
+  "engine_concurrency": 1,
+  "fixed_fps": null,
+  "dedicated_excluded": "tests/verify_actor_terrain_depth.gd",
+  "nested_engine_fixtures_deferred_to_CI": [],
+  "scope": "serialized headless engine checks; isolated UUID userdata per fixture; no user save access",
+  "passed": false
+}

@@ -1,0 +1,318 @@
+{
+	"captures": [
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-main-undiscovered.png",
+			"hud": "",
+			"inside": false,
+			"marker": [],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-undiscovered",
+			"visible_field_water_ids": [
+				"mouth",
+				"upper_south",
+				"lower_rim",
+				"upper_west"
+			],
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "jungle-960-hidden-arrival.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"label_screen": [
+				583.431762695312,
+				298.127380371094
+			],
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6290.0,
+				2630.0
+			],
+			"region": "jungle",
+			"state": "hidden-arrival",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-receiving-pool.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				7470.0,
+				2280.0
+			],
+			"region": "jungle",
+			"state": "receiving-pool",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-stream-turn.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8190.0,
+				1530.0
+			],
+			"region": "jungle",
+			"state": "stream-turn",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-return-pool.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8530.0,
+				740.0
+			],
+			"region": "jungle",
+			"state": "return-pool",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-main-return.png",
+			"hud": "",
+			"inside": false,
+			"marker": [
+				1300.0,
+				685.0
+			],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-return",
+			"visible_field_water_ids": [
+				"mouth",
+				"upper_south",
+				"lower_rim",
+				"upper_west"
+			],
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-main-undiscovered.png",
+			"hud": "",
+			"inside": false,
+			"marker": [],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-undiscovered",
+			"visible_field_water_ids": [
+				"mouth",
+				"upper_south",
+				"lower_rim",
+				"upper_west"
+			],
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "jungle-1280-hidden-arrival.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"label_screen": [
+				583.431762695312,
+				298.127380371094
+			],
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6290.0,
+				2630.0
+			],
+			"region": "jungle",
+			"state": "hidden-arrival",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-receiving-pool.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				7470.0,
+				2280.0
+			],
+			"region": "jungle",
+			"state": "receiving-pool",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-stream-turn.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8190.0,
+				1530.0
+			],
+			"region": "jungle",
+			"state": "stream-turn",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-return-pool.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8530.0,
+				740.0
+			],
+			"region": "jungle",
+			"state": "return-pool",
+			"visible_field_water_ids": [
+				"receiving_pool",
+				"return_pool"
+			],
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-main-return.png",
+			"hud": "",
+			"inside": false,
+			"marker": [
+				1300.0,
+				685.0
+			],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-return",
+			"visible_field_water_ids": [
+				"mouth",
+				"upper_south",
+				"lower_rim",
+				"upper_west"
+			],
+			"width": 1280
+		}
+	],
+	"checks": 94,
+	"engine": "4.6-stable (official)",
+	"failures": 0,
+	"scope": "native960/1280, real entry/exit input, fixed legal interior views/frozen pressure; no natural combat or human visual acceptance"
+}

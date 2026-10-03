@@ -1,0 +1,53 @@
+{
+  "source_sha": "5d696a5912733be156be32c23e31da3946c3b377",
+  "engine": "/QA_WORKSPACE/runtime/Godot.app/Contents/MacOS/Godot",
+  "scripts": [
+    "tests/verify_jungle_waterfall_sources.gd",
+    "tests/verify_jungle_waterfall_visibility.gd",
+    "tests/verify_warning_clipping_cache.gd"
+  ],
+  "results": [
+    {
+      "script": "import",
+      "exit_code": 0,
+      "seconds": 12.11,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/waterfall-support-fixed-5d696a5/import.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-96599a3d-e01f-4c72-9b78-4530896db7a1",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_waterfall_sources",
+      "exit_code": 0,
+      "seconds": 2.31,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/waterfall-support-fixed-5d696a5/verify_jungle_waterfall_sources.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-5fe98ba6-b577-4eda-8dcf-4fb1ce314ed7",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_waterfall_visibility",
+      "exit_code": 0,
+      "seconds": 4.7,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/waterfall-support-fixed-5d696a5/verify_jungle_waterfall_visibility.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-764cad92-3ab8-4fba-8b19-943f887c827e",
+      "passed": true
+    },
+    {
+      "script": "verify_warning_clipping_cache",
+      "exit_code": 0,
+      "seconds": 0.63,
+      "errors": [],
+      "log": "/QA_WORKSPACE/qa/waterfall-support-fixed-5d696a5/verify_warning_clipping_cache.log",
+      "userdata": "CodexCombined/WaterfallSourcesV50-LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-e1332f16-ba75-40f1-8f9a-b6ea9c88ffd3",
+      "passed": true
+    }
+  ],
+  "engine_concurrency": 1,
+  "fixed_fps": null,
+  "dedicated_excluded": "tests/verify_actor_terrain_depth.gd",
+  "nested_engine_fixtures_deferred_to_CI": [],
+  "scope": "serialized headless engine checks; isolated UUID userdata per fixture; no user save access",
+  "passed": true
+}
