@@ -1,0 +1,19 @@
+{
+  "tested_sha": "d9ead856d50a1a4e42cfba3f5b27d4f445a2840d",
+  "base_sha": "1aac501f097ff565f5fd249b9411ab91e64b3223",
+  "owned_sha256": {
+    "game/temple_section.gd": "d1299d2bde34aeb412b7691d02200d00ca8937ce44e3bebb4a32327bab269602",
+    "game/jungle_section.gd": "bbf7a3d56d561d98f9fddff7dc645905f16345d59c32c021b9212aeb11ab883d",
+    "game/hidden_threshold_latch.gd": "b0e3c244a0fd8907fb4df2e686516c2dc75727353d7debc6e75605bd8697a463",
+    "tests/verify_hidden_flow.gd": "77f4676a82d20013644a548479276acf22fafe2d7b55662f5e8285c9c86d74ac",
+    "tests/capture_hidden_flow.gd": "a5938ad39ec607c5239244dc5423d76b9d093b1f8dcb5b4def435e79d2e11198"
+  },
+  "applied_mounts": [
+    "hidden-flow-minimap-mount.patch",
+    "hidden-flow-temple-terrain-mount.patch"
+  ],
+  "mounts_match": true,
+  "engine": "4.6.stable.official.89cea1439",
+  "render_full_sha": "0a644f8317dcbfb113e9e81421000c4c5261cd21",
+  "render_exit_sha": "d9ead856d50a1a4e42cfba3f5b27d4f445a2840d"
+}

@@ -1,0 +1,2414 @@
+{
+  "acceleration": false,
+  "active_walk_seconds": 68.0999999999974,
+  "engine": "4.6-stable (official)",
+  "errors": [
+    "Body visibility below98% at 01-threshold",
+    "Player not visibly evidenced at north_pond",
+    "Body visibility below98% at north_pond",
+    "Body scenery visibility below98% at rooted_bank player_scenery_visibility",
+    "Body scenery visibility below98% at east_pond player_scenery_visibility",
+    "Body visibility below98% at garden_stone",
+    "Body visibility below98% at threshold_return",
+    "Body visibility below98% at 01-threshold",
+    "Player not visibly evidenced at north_pond",
+    "Body visibility below98% at north_pond",
+    "Body scenery visibility below98% at rooted_bank player_scenery_visibility",
+    "Body scenery visibility below98% at east_pond player_scenery_visibility",
+    "Body visibility below98% at garden_stone",
+    "Body visibility below98% at threshold_return"
+  ],
+  "expected_screenshots": 72,
+  "measure_only": false,
+  "normal_input": true,
+  "region": "temple-garden",
+  "rejected_targets": [],
+  "render": true,
+  "resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "samples": [
+    {
+      "active_walk_seconds": 0.0,
+      "camera_size": 9.0,
+      "draw_calls": 106.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "expected_camera_world": [
+          27.0999984741211,
+          14.2140007019043,
+          23.2000007629395
+        ]
+      },
+      "in_garden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "00-main-cloister",
+      "objects": 244.0,
+      "primitives": 30912.0,
+      "projection": {
+        "image_body_center": [
+          480.000061035156,
+          260.902404785156
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.000061035156,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1310.0,
+        920.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        1310.0,
+        920.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1003,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.433333333333333,
+      "camera_size": 9.0,
+      "draw_calls": 83.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          58.3999977111816,
+          0.0,
+          17.6999988555908
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          58.3999977111816,
+          0.0,
+          17.6999988555908
+        ],
+        "expected_camera_world": [
+          72.3999938964844,
+          14.2140007019043,
+          31.6999988555908
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "01-threshold",
+      "objects": 245.0,
+      "primitives": 1530.0,
+      "projection": {
+        "image_body_center": [
+          480.000183105469,
+          260.902496337891
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.000244140625,
+          347.869995117188
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        5840.0,
+        1770.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        5840.0,
+        1770.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 958,
+        "ratio": 0.955134596211366,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.21666666666666,
+      "camera_size": 9.0,
+      "draw_calls": 86.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          63.490104675293,
+          0.0,
+          15.1483764648438
+        ],
+        "camera_error_world": 0.000550375028979033,
+        "expected_actor_world": [
+          63.490104675293,
+          0.0,
+          15.1483764648438
+        ],
+        "expected_camera_world": [
+          77.490104675293,
+          14.2140007019043,
+          29.1483764648438
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "first_fork",
+      "objects": 248.0,
+      "primitives": 1878.0,
+      "projection": {
+        "image_body_center": [
+          480.033020019531,
+          260.90283203125
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.044006347656,
+          347.870422363281
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6349.0107421875,
+        1514.83764648438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        6350.0,
+        1510.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1000,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1000,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.16666666666666,
+      "camera_size": 9.0,
+      "draw_calls": 93.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 819,
+        "ratio": 1.0,
+        "reference_pixels": 819,
+        "roi": [
+          489,
+          207,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 727,
+        "ratio": 1.0,
+        "reference_pixels": 727,
+        "roi": [
+          369,
+          89,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          6748.5400390625,
+          977.185668945312
+        ],
+        "role": 1,
+        "scope": "frozen real enemy/tell, no difficulty claim",
+        "warning_surfaces": 1
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          66.3853988647461,
+          0.0,
+          10.7718563079834
+        ],
+        "camera_error_world": 0.000365181302186102,
+        "expected_actor_world": [
+          66.3853988647461,
+          0.0,
+          10.7718563079834
+        ],
+        "expected_camera_world": [
+          80.3853988647461,
+          14.2140007019043,
+          24.7718563079834
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "west_pond",
+      "objects": 255.0,
+      "player_scenery_visibility": {
+        "normal_pixels": 947,
+        "ratio": 0.996842105263158,
+        "reference_pixels": 950,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 2506.0,
+      "projection": {
+        "image_body_center": [
+          480.007141113281,
+          260.903137207031
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.009521484375,
+          347.870849609375
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6638.5400390625,
+        1077.18566894531
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        6640.0,
+        1080.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 947,
+        "ratio": 0.945109780439122,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.96666666666666,
+      "camera_size": 9.0,
+      "draw_calls": 87.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.3036880493164,
+          0.0,
+          5.19782590866089
+        ],
+        "camera_error_world": 0.000554431811906397,
+        "expected_actor_world": [
+          71.3036880493164,
+          0.0,
+          5.19782590866089
+        ],
+        "expected_camera_world": [
+          85.3036880493164,
+          14.2140007019043,
+          19.197826385498
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "tended_walk",
+      "objects": 249.0,
+      "primitives": 2958.0,
+      "projection": {
+        "image_body_center": [
+          480.03271484375,
+          260.905944824219
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.043640136719,
+          347.874572753906
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7130.36865234375,
+        519.782592773438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7130.0,
+        520.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1000,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1000,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.78333333333341,
+      "camera_size": 9.0,
+      "draw_calls": 89.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          75.2306289672852,
+          0.0,
+          7.27068042755127
+        ],
+        "camera_error_world": 0.000392232701415196,
+        "expected_actor_world": [
+          75.2306289672852,
+          0.0,
+          7.27068042755127
+        ],
+        "expected_camera_world": [
+          89.2306289672852,
+          14.2140007019043,
+          21.270679473877
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "north_pond",
+      "objects": 251.0,
+      "primitives": 2982.0,
+      "projection": {
+        "image_body_center": [
+          479.996154785156,
+          260.915771484375
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.994873046875,
+          347.8876953125
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7523.06298828125,
+        727.068054199219
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7520.0,
+        730.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 0,
+        "ratio": 0.0,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.66666666666685,
+      "camera_size": 9.0,
+      "draw_calls": 91.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 819,
+        "ratio": 1.0,
+        "reference_pixels": 819,
+        "roi": [
+          489,
+          207,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 823,
+        "ratio": 1.0,
+        "reference_pixels": 823,
+        "roi": [
+          369,
+          89,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          7469.92333984375,
+          1409.96313476562
+        ],
+        "role": 1,
+        "scope": "frozen real enemy/tell, no difficulty claim",
+        "warning_surfaces": 1
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          73.599235534668,
+          0.0,
+          15.0996313095093
+        ],
+        "camera_error_world": 0.000469134101876989,
+        "expected_actor_world": [
+          73.599235534668,
+          0.0,
+          15.0996313095093
+        ],
+        "expected_camera_world": [
+          87.599235534668,
+          14.2140007019043,
+          29.0996322631836
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "rooted_bank",
+      "objects": 253.0,
+      "player_scenery_visibility": {
+        "normal_pixels": 926,
+        "ratio": 0.976793248945148,
+        "reference_pixels": 948,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 2326.0,
+      "projection": {
+        "image_body_center": [
+          479.983245849609,
+          260.894958496094
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.977661132812,
+          347.859954833984
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7359.92333984375,
+        1509.96313476562
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7360.0,
+        1510.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 926,
+        "ratio": 0.926,
+        "reference_actor_pixels": 1000,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.48333333333346,
+      "camera_size": 9.0,
+      "draw_calls": 92.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 684,
+        "ratio": 1.0,
+        "reference_pixels": 684,
+        "roi": [
+          489,
+          207,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 864,
+        "ratio": 1.0,
+        "reference_pixels": 864,
+        "roi": [
+          369,
+          89,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          8135.97607421875,
+          1268.37609863281
+        ],
+        "role": 2,
+        "scope": "frozen real enemy/tell, no difficulty claim",
+        "warning_surfaces": 1
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          80.2597579956055,
+          0.0,
+          13.6837606430054
+        ],
+        "camera_error_world": 0.000452395586762577,
+        "expected_actor_world": [
+          80.2597579956055,
+          0.0,
+          13.6837606430054
+        ],
+        "expected_camera_world": [
+          94.2597579956055,
+          14.2140007019043,
+          27.6837615966797
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "east_pond",
+      "objects": 254.0,
+      "player_scenery_visibility": {
+        "normal_pixels": 920,
+        "ratio": 0.956340956340956,
+        "reference_pixels": 962,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 3250.0,
+      "projection": {
+        "image_body_center": [
+          480.020202636719,
+          260.9052734375
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.026916503906,
+          347.873718261719
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8025.97607421875,
+        1368.37609863281
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        8030.0,
+        1370.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 923,
+        "ratio": 0.922077922077922,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.39999999999984,
+      "camera_size": 9.0,
+      "draw_calls": 83.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          83.0000381469727,
+          0.0,
+          4.79529666900635
+        ],
+        "camera_error_world": 0.000437548442278057,
+        "expected_actor_world": [
+          83.0000381469727,
+          0.0,
+          4.79529666900635
+        ],
+        "expected_camera_world": [
+          97.0000381469727,
+          14.2140007019043,
+          18.795295715332
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "garden_stone",
+      "objects": 245.0,
+      "primitives": 2442.0,
+      "projection": {
+        "image_body_center": [
+          480.025634765625,
+          260.899230957031
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.0341796875,
+          347.865631103516
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8300.00390625,
+        479.529663085938
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        8300.0,
+        480.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 342,
+        "ratio": 0.342,
+        "reference_actor_pixels": 1000,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 5.33333333333303,
+      "camera_size": 9.0,
+      "draw_calls": 87.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.2770919799805,
+          0.0,
+          5.23862743377686
+        ],
+        "camera_error_world": 0.00041831421549432,
+        "expected_actor_world": [
+          71.2770919799805,
+          0.0,
+          5.23862743377686
+        ],
+        "expected_camera_world": [
+          85.2770919799805,
+          14.2140007019043,
+          19.2386283874512
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "north_return",
+      "objects": 249.0,
+      "primitives": 2958.0,
+      "projection": {
+        "image_body_center": [
+          479.999267578125,
+          260.888000488281
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.9990234375,
+          347.850646972656
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7127.708984375,
+        523.862731933594
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7130.0,
+        520.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1003,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 5.14999999999971,
+      "camera_size": 9.0,
+      "draw_calls": 86.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          63.1432113647461,
+          0.0,
+          8.11543655395508
+        ],
+        "camera_error_world": 0.000454321474535391,
+        "expected_actor_world": [
+          63.1432113647461,
+          0.0,
+          8.11543655395508
+        ],
+        "expected_camera_world": [
+          77.1432113647461,
+          14.2140007019043,
+          22.1154365539551
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "west_return",
+      "objects": 248.0,
+      "primitives": 2034.0,
+      "projection": {
+        "image_body_center": [
+          479.975280761719,
+          260.895751953125
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.967041015625,
+          347.861022949219
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6314.3212890625,
+        811.543640136719
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        6310.0,
+        810.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1000,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1000,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 4.1833333333331,
+      "camera_size": 9.0,
+      "draw_calls": 83.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          58.4104042053223,
+          0.0,
+          17.7118644714355
+        ],
+        "camera_error_world": 0.000432867294875905,
+        "expected_actor_world": [
+          58.4104042053223,
+          0.0,
+          17.7118644714355
+        ],
+        "expected_camera_world": [
+          72.410400390625,
+          14.2140007019043,
+          31.7118644714355
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "threshold_return",
+      "objects": 245.0,
+      "primitives": 1530.0,
+      "projection": {
+        "image_body_center": [
+          479.976440429688,
+          260.896392822266
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.968566894531,
+          347.861846923828
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        5841.04052734375,
+        1771.1865234375
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        5840.0,
+        1770.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 957,
+        "ratio": 0.955089820359281,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.266666666666652,
+      "camera_size": 9.0,
+      "draw_calls": 112.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "expected_camera_world": [
+          27.0999984741211,
+          14.2140007019043,
+          23.2000007629395
+        ]
+      },
+      "in_garden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "12-main-return",
+      "objects": 251.0,
+      "primitives": 30988.0,
+      "projection": {
+        "image_body_center": [
+          480.000061035156,
+          260.902404785156
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.000061035156,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1310.0,
+        920.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        1310.0,
+        920.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1003,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "camera_size": 9.0,
+      "draw_calls": 109.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "expected_camera_world": [
+          27.0999984741211,
+          14.2140007019043,
+          23.2000007629395
+        ]
+      },
+      "in_garden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "00-main-cloister",
+      "objects": 244.0,
+      "primitives": 30912.0,
+      "projection": {
+        "image_body_center": [
+          640.000061035156,
+          347.869873046875
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.000061035156,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1310.0,
+        920.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        1310.0,
+        920.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1777,
+        "ratio": 0.999437570303712,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.433333333333309,
+      "camera_size": 9.0,
+      "draw_calls": 87.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          58.3999977111816,
+          0.0,
+          17.6999988555908
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          58.3999977111816,
+          0.0,
+          17.6999988555908
+        ],
+        "expected_camera_world": [
+          72.3999938964844,
+          14.2140007019043,
+          31.6999988555908
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "01-threshold",
+      "objects": 245.0,
+      "primitives": 1530.0,
+      "projection": {
+        "image_body_center": [
+          640.000244140625,
+          347.869995117188
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.000244140625,
+          347.869995117188
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        5840.0,
+        1770.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        5840.0,
+        1770.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1704,
+        "ratio": 0.958380202474691,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.21666666666654,
+      "camera_size": 9.0,
+      "draw_calls": 90.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          63.490104675293,
+          0.0,
+          15.1483764648438
+        ],
+        "camera_error_world": 0.000485651573399082,
+        "expected_actor_world": [
+          63.490104675293,
+          0.0,
+          15.1483764648438
+        ],
+        "expected_camera_world": [
+          77.490104675293,
+          14.2140007019043,
+          29.1483764648438
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "first_fork",
+      "objects": 248.0,
+      "primitives": 1878.0,
+      "projection": {
+        "image_body_center": [
+          640.038818359375,
+          347.870422363281
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.038818359375,
+          347.870422363281
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6349.0107421875,
+        1514.83764648438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        6350.0,
+        1510.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1782,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1782,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.16666666666654,
+      "camera_size": 9.0,
+      "draw_calls": 97.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1448,
+        "ratio": 1.0,
+        "reference_pixels": 1448,
+        "roi": [
+          678,
+          303,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 1290,
+        "ratio": 1.0,
+        "reference_pixels": 1290,
+        "roi": [
+          558,
+          186,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          6748.5400390625,
+          977.185668945312
+        ],
+        "role": 1,
+        "scope": "frozen real enemy/tell, no difficulty claim",
+        "warning_surfaces": 1
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          66.3853988647461,
+          0.0,
+          10.7718563079834
+        ],
+        "camera_error_world": 0.000387600273825228,
+        "expected_actor_world": [
+          66.3853988647461,
+          0.0,
+          10.7718563079834
+        ],
+        "expected_camera_world": [
+          80.3853988647461,
+          14.2140007019043,
+          24.7718563079834
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "west_pond",
+      "objects": 255.0,
+      "player_scenery_visibility": {
+        "normal_pixels": 1684,
+        "ratio": 0.995271867612293,
+        "reference_pixels": 1692,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 2506.0,
+      "projection": {
+        "image_body_center": [
+          640.017944335938,
+          347.871459960938
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.017944335938,
+          347.871459960938
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6638.5400390625,
+        1077.18566894531
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        6640.0,
+        1080.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1684,
+        "ratio": 0.947131608548931,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.9666666666665,
+      "camera_size": 9.0,
+      "draw_calls": 91.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.3036880493164,
+          0.0,
+          5.19782590866089
+        ],
+        "camera_error_world": 0.000517398002557456,
+        "expected_actor_world": [
+          71.3036880493164,
+          0.0,
+          5.19782590866089
+        ],
+        "expected_camera_world": [
+          85.3036880493164,
+          14.2140007019043,
+          19.197826385498
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "tended_walk",
+      "objects": 249.0,
+      "primitives": 2958.0,
+      "projection": {
+        "image_body_center": [
+          640.040649414062,
+          347.874267578125
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.040649414062,
+          347.874267578125
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7130.36865234375,
+        519.782592773438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7130.0,
+        520.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1782,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1782,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.78333333333323,
+      "camera_size": 9.0,
+      "draw_calls": 93.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          75.2306289672852,
+          0.0,
+          7.27068042755127
+        ],
+        "camera_error_world": 0.000375645991880447,
+        "expected_actor_world": [
+          75.2306289672852,
+          0.0,
+          7.27068042755127
+        ],
+        "expected_camera_world": [
+          89.2306289672852,
+          14.2140007019043,
+          21.270679473877
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "north_pond",
+      "objects": 251.0,
+      "primitives": 2982.0,
+      "projection": {
+        "image_body_center": [
+          639.994567871094,
+          347.886901855469
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.994567871094,
+          347.886901855469
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7523.06298828125,
+        727.068054199219
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7520.0,
+        730.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 0,
+        "ratio": 0.0,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.66666666666646,
+      "camera_size": 9.0,
+      "draw_calls": 95.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1447,
+        "ratio": 1.0,
+        "reference_pixels": 1447,
+        "roi": [
+          678,
+          303,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 1362,
+        "ratio": 1.0,
+        "reference_pixels": 1362,
+        "roi": [
+          558,
+          186,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          7469.92333984375,
+          1409.96313476562
+        ],
+        "role": 1,
+        "scope": "frozen real enemy/tell, no difficulty claim",
+        "warning_surfaces": 1
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          73.599235534668,
+          0.0,
+          15.0996313095093
+        ],
+        "camera_error_world": 0.000453520013252273,
+        "expected_actor_world": [
+          73.599235534668,
+          0.0,
+          15.0996313095093
+        ],
+        "expected_camera_world": [
+          87.599235534668,
+          14.2140007019043,
+          29.0996322631836
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "rooted_bank",
+      "objects": 253.0,
+      "player_scenery_visibility": {
+        "normal_pixels": 1648,
+        "ratio": 0.973995271867612,
+        "reference_pixels": 1692,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 2326.0,
+      "projection": {
+        "image_body_center": [
+          639.977783203125,
+          347.859832763672
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.977783203125,
+          347.859832763672
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7359.92333984375,
+        1509.96313476562
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7360.0,
+        1510.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1648,
+        "ratio": 0.926884139482565,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.48333333333319,
+      "camera_size": 9.0,
+      "draw_calls": 96.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1221,
+        "ratio": 1.0,
+        "reference_pixels": 1221,
+        "roi": [
+          678,
+          303,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "enemy_tell_visibility": {
+        "normal_pixels": 1122,
+        "ratio": 1.0,
+        "reference_pixels": 1122,
+        "roi": [
+          558,
+          186,
+          400,
+          400
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          8135.97607421875,
+          1268.37609863281
+        ],
+        "role": 2,
+        "scope": "frozen real enemy/tell, no difficulty claim",
+        "warning_surfaces": 1
+      },
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          80.2597579956055,
+          0.0,
+          13.6837606430054
+        ],
+        "camera_error_world": 0.000438341754488647,
+        "expected_actor_world": [
+          80.2597579956055,
+          0.0,
+          13.6837606430054
+        ],
+        "expected_camera_world": [
+          94.2597579956055,
+          14.2140007019043,
+          27.6837615966797
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "east_pond",
+      "objects": 254.0,
+      "player_scenery_visibility": {
+        "normal_pixels": 1649,
+        "ratio": 0.963200934579439,
+        "reference_pixels": 1712,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 3250.0,
+      "projection": {
+        "image_body_center": [
+          640.0263671875,
+          347.873565673828
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.0263671875,
+          347.873565673828
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8025.97607421875,
+        1368.37609863281
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        8030.0,
+        1370.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1649,
+        "ratio": 0.926925238898257,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.39999999999981,
+      "camera_size": 9.0,
+      "draw_calls": 87.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          83.0000381469727,
+          0.0,
+          4.79529666900635
+        ],
+        "camera_error_world": 0.000478805304737762,
+        "expected_actor_world": [
+          83.0000381469727,
+          0.0,
+          4.79529666900635
+        ],
+        "expected_camera_world": [
+          97.0000381469727,
+          14.2140007019043,
+          18.795295715332
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "garden_stone",
+      "objects": 245.0,
+      "primitives": 2442.0,
+      "projection": {
+        "image_body_center": [
+          640.037353515625,
+          347.865295410156
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.037353515625,
+          347.865295410156
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8300.00390625,
+        479.529663085938
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        8300.0,
+        480.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 599,
+        "ratio": 0.336139169472503,
+        "reference_actor_pixels": 1782,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 5.33333333333303,
+      "camera_size": 9.0,
+      "draw_calls": 91.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.2770919799805,
+          0.0,
+          5.23862743377686
+        ],
+        "camera_error_world": 0.000457545073004439,
+        "expected_actor_world": [
+          71.2770919799805,
+          0.0,
+          5.23862743377686
+        ],
+        "expected_camera_world": [
+          85.2770919799805,
+          14.2140007019043,
+          19.2386283874512
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "north_return",
+      "objects": 249.0,
+      "primitives": 2958.0,
+      "projection": {
+        "image_body_center": [
+          639.998657226562,
+          347.848876953125
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.998657226562,
+          347.848876953125
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7127.708984375,
+        523.862731933594
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        7130.0,
+        520.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1778,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 5.14999999999971,
+      "camera_size": 9.0,
+      "draw_calls": 90.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          63.1432113647461,
+          0.0,
+          8.11543655395508
+        ],
+        "camera_error_world": 0.000488225370645523,
+        "expected_actor_world": [
+          63.1432113647461,
+          0.0,
+          8.11543655395508
+        ],
+        "expected_camera_world": [
+          77.1432113647461,
+          14.2140007019043,
+          22.1154365539551
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "west_return",
+      "objects": 248.0,
+      "primitives": 2034.0,
+      "projection": {
+        "image_body_center": [
+          639.964538574219,
+          347.860534667969
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.964538574219,
+          347.860534667969
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6314.3212890625,
+        811.543640136719
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        6310.0,
+        810.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1782,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1782,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 4.1833333333331,
+      "camera_size": 9.0,
+      "draw_calls": 87.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          58.4104042053223,
+          0.0,
+          17.7118644714355
+        ],
+        "camera_error_world": 0.000473268504720181,
+        "expected_actor_world": [
+          58.4104042053223,
+          0.0,
+          17.7118644714355
+        ],
+        "expected_camera_world": [
+          72.410400390625,
+          14.2140007019043,
+          31.7118644714355
+        ]
+      },
+      "in_garden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "threshold_return",
+      "objects": 245.0,
+      "primitives": 1530.0,
+      "projection": {
+        "image_body_center": [
+          639.965698242188,
+          347.861083984375
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.965698242188,
+          347.861083984375
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        5841.04052734375,
+        1771.1865234375
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        5840.0,
+        1770.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1679,
+        "ratio": 0.944319460067492,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.266666666666652,
+      "camera_size": 9.0,
+      "draw_calls": 115.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          13.0999994277954,
+          0.0,
+          9.19999980926514
+        ],
+        "expected_camera_world": [
+          27.0999984741211,
+          14.2140007019043,
+          23.2000007629395
+        ]
+      },
+      "in_garden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "12-main-return",
+      "objects": 251.0,
+      "primitives": 30988.0,
+      "projection": {
+        "image_body_center": [
+          640.000061035156,
+          347.869873046875
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.000061035156,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1310.0,
+        920.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "scope": "normal movement and real portals; initialized main-return placement, guardian delays/time frozen; test-window focus pause disconnected equally",
+      "target": [
+        1310.0,
+        920.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1777,
+        "ratio": 0.999437570303712,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    }
+  ],
+  "scope": "isolated visual-walk fixture; frozen spawn/time pressure and enemy attacks; NOT natural combat or fun evidence",
+  "screenshots": [
+    "00-main-cloister-960.png",
+    "00-main-cloister-reference-960.png",
+    "01-threshold-960.png",
+    "01-threshold-reference-960.png",
+    "first_fork-960.png",
+    "first_fork-reference-960.png",
+    "west_pond-960.png",
+    "west_pond-reference-960.png",
+    "west_pond-hero-reference-960.png",
+    "west_pond-enemy-reference-960.png",
+    "west_pond-tell-reference-960.png",
+    "tended_walk-960.png",
+    "tended_walk-reference-960.png",
+    "north_pond-960.png",
+    "north_pond-reference-960.png",
+    "rooted_bank-960.png",
+    "rooted_bank-reference-960.png",
+    "rooted_bank-hero-reference-960.png",
+    "rooted_bank-enemy-reference-960.png",
+    "rooted_bank-tell-reference-960.png",
+    "east_pond-960.png",
+    "east_pond-reference-960.png",
+    "east_pond-hero-reference-960.png",
+    "east_pond-enemy-reference-960.png",
+    "east_pond-tell-reference-960.png",
+    "garden_stone-960.png",
+    "garden_stone-reference-960.png",
+    "north_return-960.png",
+    "north_return-reference-960.png",
+    "west_return-960.png",
+    "west_return-reference-960.png",
+    "threshold_return-960.png",
+    "threshold_return-reference-960.png",
+    "overview-static-960.png",
+    "12-main-return-960.png",
+    "12-main-return-reference-960.png",
+    "00-main-cloister-1280.png",
+    "00-main-cloister-reference-1280.png",
+    "01-threshold-1280.png",
+    "01-threshold-reference-1280.png",
+    "first_fork-1280.png",
+    "first_fork-reference-1280.png",
+    "west_pond-1280.png",
+    "west_pond-reference-1280.png",
+    "west_pond-hero-reference-1280.png",
+    "west_pond-enemy-reference-1280.png",
+    "west_pond-tell-reference-1280.png",
+    "tended_walk-1280.png",
+    "tended_walk-reference-1280.png",
+    "north_pond-1280.png",
+    "north_pond-reference-1280.png",
+    "rooted_bank-1280.png",
+    "rooted_bank-reference-1280.png",
+    "rooted_bank-hero-reference-1280.png",
+    "rooted_bank-enemy-reference-1280.png",
+    "rooted_bank-tell-reference-1280.png",
+    "east_pond-1280.png",
+    "east_pond-reference-1280.png",
+    "east_pond-hero-reference-1280.png",
+    "east_pond-enemy-reference-1280.png",
+    "east_pond-tell-reference-1280.png",
+    "garden_stone-1280.png",
+    "garden_stone-reference-1280.png",
+    "north_return-1280.png",
+    "north_return-reference-1280.png",
+    "west_return-1280.png",
+    "west_return-reference-1280.png",
+    "threshold_return-1280.png",
+    "threshold_return-reference-1280.png",
+    "overview-static-1280.png",
+    "12-main-return-1280.png",
+    "12-main-return-reference-1280.png"
+  ],
+  "time_scale": 1.0,
+  "wall_seconds": 101.944921
+}

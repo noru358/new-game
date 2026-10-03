@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Wetland stone face — combat candidate
+Wetland boss scene: 20 checks, 0 failures

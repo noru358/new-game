@@ -9,6 +9,7 @@ const ALTAR_POINT := Garden.ALTAR
 const GUARD_POINTS := Garden.GUARDS
 var in_garden := false
 var portal_cooldown := 0.0
+var portal_latch = preload("res://game/hidden_threshold_latch.gd").new()
 var sleeping_actors: Dictionary = {}
 var main_overview_size := 0.0
 var transition_shade: ColorRect
@@ -26,6 +27,9 @@ var discovery_retry := 0.0
 var garden_message := ""
 var altar_label: Label3D
 var altar_ember: MeshInstance3D
+var hidden_visual_root: Node3D
+var main_entry_root: Node3D
+var exit_label: Label3D
 
 var arena
 var boss_ready := false
@@ -53,6 +57,7 @@ func setup(scene) -> void:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	field_area = layout.FIELD_BOUNDS
 	_build_destination()
 	_build_garden()
 	_build_ui()
@@ -65,7 +70,9 @@ func tick(delta: float) -> void:
 	if arena.diagnostics != null and boss_area.has_point(arena.player.global_position):
 		arena.diagnostics.boss_event("arrive", arena.run_time)
 	portal_cooldown = maxf(0.0, portal_cooldown - delta)
-	if portal_cooldown <= 0.0:
+	var movement := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	var portal_permitted: bool = portal_latch.permits(movement, arena.player.global_position) if not get_tree().paused else false
+	if portal_cooldown <= 0.0 and portal_permitted:
 		if not in_garden and layout.ENTRY_TRIGGER.has_point(arena.player.global_position): enter_garden()
 		elif in_garden and layout.EXIT_TRIGGER.has_point(arena.player.global_position): leave_garden()
 	if arena.run_time >= arena.BOSS_TIME and not arena.boss_spawned:
@@ -106,6 +113,7 @@ func tick(delta: float) -> void:
 		else: arena.boss.tick_outside(delta)
 	_sync_field_actors()
 	_tick_garden(delta)
+	_refresh_hidden_labels()
 	_refresh_destination_label()
 	_update_hud()
 
@@ -137,9 +145,9 @@ func _tick_garden(delta: float) -> void:
 			guardian_reservations = 3
 			for i in 3:
 				var mark: MeshInstance3D = arena._sphere(0.20, Color("ffdb92"))
-				mark.position = arena.terrain.world_point(GUARD_POINTS[i], 20)
+				mark.position = arena.terrain.world_point(layout.GUARDS[i], 20)
 				add_child(mark)
-				guard_warnings.append({"point": GUARD_POINTS[i], "delay": 1.0, "index": i, "marker": mark})
+				guard_warnings.append({"point": layout.GUARDS[i], "delay": 1.0, "index": i, "marker": mark})
 	if not in_garden: return
 	for i in range(guard_warnings.size() - 1, -1, -1):
 		var entry := guard_warnings[i]
@@ -153,13 +161,13 @@ func _tick_garden(delta: float) -> void:
 		entry.marker.queue_free()
 		guard_warnings.remove_at(i)
 		guardian_reservations -= 1
-	altar_label.visible = in_garden and arena.player.global_position.distance_to(ALTAR_POINT) < 600.0
+	altar_label.visible = in_garden and arena.player.global_position.distance_to(layout.ALTAR) < 600.0
 	altar_ember.visible = altar_label.visible
 	altar_label.text = "정원의 불씨\n수호 적 %d / 3" % guardians_defeated if guardians_defeated < 3 else "정원의 불씨\nE · 보상 받기" if not garden_claimed else "정원의 불씨\n이번 런 보상 완료"
 
 
 func claim_garden_reward() -> bool:
-	if not in_garden or arena.run_ended or retry_pending or get_tree().paused or arena.player.health <= 0.0 or garden_claimed or guardians_defeated < 3 or arena.player.global_position.distance_to(ALTAR_POINT) > 105.0: return false
+	if not in_garden or arena.run_ended or retry_pending or get_tree().paused or arena.player.health <= 0.0 or garden_claimed or guardians_defeated < 3 or arena.player.global_position.distance_to(layout.ALTAR) > 105.0: return false
 	var already_awakened: bool = arena.profile.awakenings.has("EMBER_GARDEN")
 	if not arena.profile.claim_garden_awakening():
 		garden_message = "각성 저장 실패 · 지급하지 않았습니다. E로 재시도"
@@ -180,7 +188,7 @@ func claim_garden_reward() -> bool:
 
 func handle_input(event: InputEvent) -> bool:
 	if retry_pending: return true
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E and not arena.run_ended and not get_tree().paused and arena.player.global_position.distance_to(ALTAR_POINT) <= 105.0:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E and not arena.run_ended and not get_tree().paused and arena.player.global_position.distance_to(layout.ALTAR) <= 105.0:
 		claim_garden_reward()
 		get_viewport().set_input_as_handled()
 		return true
@@ -268,8 +276,8 @@ func _update_hud() -> void:
 		section_hud.text = ("성소 교전 중" if boss_active else "성소 밖 · 보스 대기 / HP 유지") + "\n보스전 재도전 " + ("사용 완료" if retry_used else "1회 남음") + " · 출입 자유 / 보스 HP 유지"
 
 	if in_garden:
-		section_hud.text = "숨은 정원 · 수호 적 %d / 3 · 안쪽 제단으로" % guardians_defeated
-		section_hud.text += "\n서쪽 입구로 회랑 복귀"
+		section_hud.text = "정원 보상 획득 · 들어온 회랑으로 복귀" if garden_claimed else "숨은 정원 · 수호 적 %d / 3 · 안쪽 제단으로" % guardians_defeated
+		if not garden_claimed: section_hud.text += "\n들어온 문턱으로 회랑 복귀"
 	if garden_message.contains("실패"): section_hud.text += "\n" + garden_message
 
 
@@ -304,28 +312,9 @@ func _build_destination() -> void:
 
 
 func _build_garden() -> void:
-	# Separate garden field: bent entry, pond forks, and a distant altar.
-	for point in [Vector2(5860, 1770), Vector2(6100, 1770), Vector2(6320, 1600), Vector2(6320, 1250), Vector2(6650, 550), Vector2(7000, 550), Vector2(7500, 550), Vector2(6800, 1560), Vector2(7300, 1560), Vector2(7950, 1500), Vector2(8020, 920), Vector2(8200, 490)]:
-		var stone := MeshInstance3D.new()
-		var slab := BoxMesh.new()
-		slab.size = Vector3(0.85, 0.035, 0.65)
-		stone.mesh = slab
-		stone.material_override = arena._material(Color("c5c7a7"))
-		stone.position = arena.terrain.world_point(point, 5)
-		stone.rotation.y = 0.3
-		add_child(stone)
-	for point in [Vector2(2990, 350), Vector2(3040, 155), Vector2(5940, 1640), Vector2(6070, 1910), Vector2(6250, 330), Vector2(6660, 350), Vector2(6840, 720), Vector2(7500, 730), Vector2(7640, 1320), Vector2(6920, 1410), Vector2(7630, 1870), Vector2(8230, 1850), Vector2(8420, 730), Vector2(8050, 260)]:
-		var bush: MeshInstance3D = arena._sphere(0.65, Color("4d835c"))
-		bush.position = arena.terrain.world_point(point, 45)
-		bush.scale = Vector3(1.3, 0.9, 1.0)
-		add_child(bush)
-	var exit_label := Label3D.new()
-	exit_label.text = "회랑으로"
-	exit_label.font_size = 28
-	exit_label.pixel_size = 0.006
-	exit_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	exit_label.position = arena.terrain.world_point(layout.EXIT_TRIGGER.get_center(), 90)
-	add_child(exit_label)
+	_build_hidden_roots()
+	hidden_visual_root.add_child(preload("res://game/temple_garden_environment.gd").build(arena, layout))
+	_build_exit_label()
 	var altar := MeshInstance3D.new()
 	var base := CylinderMesh.new()
 	base.top_radius = 0.38
@@ -333,20 +322,64 @@ func _build_garden() -> void:
 	base.height = 0.28
 	altar.mesh = base
 	altar.material_override = arena._material(Color("c7c9a1"))
-	altar.position = arena.terrain.world_point(ALTAR_POINT, 15)
-	add_child(altar)
+	altar.position = arena.terrain.world_point(layout.ALTAR, 15)
+	hidden_visual_root.add_child(altar)
 	var ember: MeshInstance3D = arena._sphere(0.18, Color("b0f3b0"))
 	altar_ember = ember
 	ember.visible = false
-	ember.position = arena.terrain.world_point(ALTAR_POINT, 55)
-	add_child(ember)
+	ember.position = arena.terrain.world_point(layout.ALTAR, 55)
+	hidden_visual_root.add_child(ember)
 	altar_label = Label3D.new()
 	altar_label.font_size = 27
 	altar_label.pixel_size = 0.006
 	altar_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	altar_label.position = arena.terrain.world_point(ALTAR_POINT, 140)
+	altar_label.position = arena.terrain.world_point(layout.ALTAR, 140)
 	altar_label.visible = false
-	add_child(altar_label)
+	hidden_visual_root.add_child(altar_label)
+
+
+func _build_hidden_roots() -> void:
+	hidden_visual_root = Node3D.new()
+	hidden_visual_root.name = "HiddenFieldVisuals"
+	hidden_visual_root.visible = in_garden
+	add_child(hidden_visual_root)
+	main_entry_root = Node3D.new()
+	main_entry_root.name = "HiddenEntryClues"
+	main_entry_root.visible = not in_garden
+	add_child(main_entry_root)
+	_build_entry_clues()
+
+
+func _build_entry_clues() -> void:
+	main_entry_root.add_child(preload("res://game/temple_garden_environment.gd").build_entry(arena, layout))
+
+
+func _hidden_place_id() -> String: return "TEMPLE_GARDEN"
+func _hidden_place_name() -> String: return "정원"
+func _hidden_return_name() -> String: return "회랑으로"
+func _hidden_marker_color() -> Color: return Color("b6f3a0")
+
+
+func discovery_marker() -> Dictionary:
+	if not is_instance_valid(hidden_visual_root) or not arena.is_place_discovered(_hidden_place_id()): return {}
+	return {"point": layout.ALTAR if in_garden else layout.ENTRY_TRIGGER.get_center(), "name": _hidden_place_name(), "color": _hidden_marker_color()}
+
+
+func _build_exit_label() -> void:
+	exit_label = Label3D.new()
+	exit_label.name = "HiddenExitLabel"
+	exit_label.text = _hidden_return_name()
+	exit_label.font_size = 28
+	exit_label.pixel_size = 0.010
+	exit_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	exit_label.position = arena.terrain.world_point(layout.EXIT_TRIGGER.get_center(), 70)
+	exit_label.hide()
+	hidden_visual_root.add_child(exit_label)
+
+
+func _refresh_hidden_labels() -> void:
+	if not is_instance_valid(exit_label): return
+	exit_label.visible = in_garden and not arena.overview and not arena.run_ended and arena.player.health > 0.0 and arena.player.global_position.distance_to(layout.EXIT_TRIGGER.get_center()) < 240.0
 
 
 func _build_ui() -> void:
@@ -394,12 +427,12 @@ func _build_ui() -> void:
 
 
 func enter_garden() -> void:
-	if in_garden or arena.run_ended or retry_pending or get_tree().paused: return
+	if in_garden or arena.run_ended or retry_pending or get_tree().paused or arena.player.health <= 0.0: return
 	_set_field(true)
 
 
 func leave_garden() -> void:
-	if not in_garden or arena.run_ended or retry_pending or get_tree().paused: return
+	if not in_garden or arena.run_ended or retry_pending or get_tree().paused or arena.player.health <= 0.0: return
 	_set_field(false)
 
 
@@ -411,11 +444,18 @@ func _set_field(value: bool) -> void:
 	arena.garden_terrain_mesh.visible = value
 	arena.set_main_decor_visible(not value)
 	boundary_visual.visible = not value
+	hidden_visual_root.visible = value
+	main_entry_root.visible = not value
 	arena.player.arena_bounds = layout.FIELD_BOUNDS if value else layout.MAIN_BOUNDS
 	arena.overview_camera_size = maxf(37.0, layout.FIELD_BOUNDS.size.x * 0.012) if value else main_overview_size
 	arena.overview = false
 	arena.camera.size = arena.combat_camera_size
 	arena.teleport(layout.FIELD_ENTRY if value else layout.RETURN_POINT)
+	var arrival_trigger: Rect2 = layout.EXIT_TRIGGER if value else layout.ENTRY_TRIGGER
+	portal_latch.begin(Input.get_vector("move_left", "move_right", "move_up", "move_down"), arena.player.global_position, arrival_trigger, arena.player.collision_radius)
+	var threshold: Vector2 = arrival_trigger.get_center()
+	arena.player.facing = threshold.direction_to(arena.player.global_position)
+	_refresh_hidden_labels()
 	_refresh_destination_label()
 	altar_label.visible = false
 	altar_ember.visible = false

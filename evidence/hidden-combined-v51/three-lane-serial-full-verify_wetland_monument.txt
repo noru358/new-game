@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Deep wetland whole-field candidate
+Wetland monument: 1460 checks, 0 failures; height=9.11999988555908

@@ -16,6 +16,8 @@ var checks := 0
 var errors: Array[String] = []
 var captures: Array[Dictionary] = []
 var output := ""
+var only_pose := ""
+var only_width := 0
 var scene
 var started := 0
 var finished := false
@@ -74,6 +76,8 @@ func _geometry_contract() -> void:
 
 func _run() -> void:
 	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--pose="): only_pose = argument.trim_prefix("--pose=")
+		if argument.begins_with("--width="): only_width = argument.trim_prefix("--width=").to_int()
 		if argument.begins_with("--capture-dir="):
 			if not output.is_empty():
 				printerr("FAIL: only one capture directory is allowed")
@@ -100,7 +104,7 @@ func _run() -> void:
 	for variant in ["baseline", "candidate"]:
 		await _inspect(variant)
 	if not output.is_empty():
-		check(captures.size() == 12, "all baseline/candidate poses at both resolutions rendered")
+		check(captures.size() == 2 * (1 if only_pose != "" else 3) * (1 if only_width != 0 else 2), "all requested baseline/candidate poses rendered")
 	_finish()
 
 func _inspect(variant: String) -> void:
@@ -118,12 +122,27 @@ func _inspect(variant: String) -> void:
 	var section = scene.temple_section
 	check(scene.camera.size == 9.0 and scene.camera_offset == Vector3(14, 13.864, 14), "unchanged authored combat camera")
 	check(scene.terrain_mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "terrain remains opaque")
-	var water_curtains := 0
-	for child in section.get_children():
+	var expected_water := []
+	var center: Vector2 = section.layout.ENTRY_TRIGGER.get_center()
+	for offset in [Vector2(-75, 5), Vector2(40, -180), Vector2(40, 115), Vector2(-180, -195)]:
+		expected_water.append({"point": center + offset, "depth": 1.25 if offset == Vector2(-75, 5) else 0.8})
+	for point in [Vector2(7600, 1650), Vector2(8520, 1140)]:
+		expected_water.append({"point": point, "depth": 0.8})
+	var curtains := []
+	for child in _descendants(section):
 		if child is MeshInstance3D and child.mesh is BoxMesh and is_equal_approx(child.mesh.size.y, 1.8):
-			water_curtains += 1
-			check(child.material_override.albedo_color == Color(0.4, 0.82, 0.85, 0.55), "authored water material retained")
-	check(water_curtains == 6, "all authored waterfall sheets retained")
+			curtains.append(child)
+			var material = child.material_override
+			check(material is StandardMaterial3D and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55) and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "authored water material retained")
+	check(curtains.size() == 6, "all authored waterfall sheets retained, including nested helpers")
+	check(curtains.filter(_authored_waterfall).size() == 6, "render selector recognizes exactly the six nested water sheets")
+	for expected in expected_water:
+		var matches := 0
+		for curtain in curtains:
+			if curtain.global_position.is_equal_approx(scene.terrain.world_point(expected.point, 100)):
+				matches += 1
+				check(curtain.mesh.size.is_equal_approx(Vector3(0.10, 1.8, expected.depth)), "authored water sheet dimensions retained")
+		check(matches == 1, "exactly one water sheet at authored coordinate " + str(expected.point))
 	for pose in POSES:
 		check(scene.navigation.is_open(pose.point, scene.ACTOR_CLEARANCE), "actor never placed inside collision: " + pose.name)
 		check(not scene.navigation.find_path(scene.start_point, pose.point).is_empty(), "local pose remains reachable: " + pose.name)
@@ -132,6 +151,7 @@ func _inspect(variant: String) -> void:
 	var run_time: float = scene.run_time
 	# Real trigger-driven transitions, twice, including the existing cooldown.
 	for cycle in 2:
+		_press_world(Layout.RETURN_POINT.direction_to(Layout.ENTRY_TRIGGER.get_center()))
 		scene.teleport(Layout.ENTRY_TRIGGER.get_center())
 		section.portal_cooldown = 0.0
 		section.tick(0.0)
@@ -139,17 +159,24 @@ func _inspect(variant: String) -> void:
 		scene.teleport(Layout.EXIT_TRIGGER.get_center())
 		section.tick(0.4)
 		check(section.in_garden, "exit honors portal cooldown")
+		_release_input()
 		section.tick(0.41)
+		check(section.in_garden, "neutral teleport cannot bypass arrival latch after cooldown")
+		_press_world(Layout.FIELD_ENTRY.direction_to(Layout.EXIT_TRIGGER.get_center()))
+		section.tick(0.0)
 		check(not section.in_garden and scene.player.position == Layout.RETURN_POINT, "actual exit restores authored return")
 		check(scene.navigation.is_open(scene.player.position, scene.ACTOR_CLEARANCE), "returned actor collision-clear")
+	_release_input()
 	check(scene.player.health == health and scene.run_id == run_id and scene.run_time == run_time, "transitions preserve health/run identity/time")
 	await create_timer(0.5).timeout # Finish the real transition shade before pixels.
 	if not output.is_empty():
 		for size in SIZES:
+			if only_width != 0 and size.x != only_width: continue
 			root.size = size
 			root.content_scale_size = Vector2i(1280, 720)
 			root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-			for pose in POSES: await _capture(variant, size, pose)
+			for pose in POSES:
+				if only_pose == "" or pose.name == only_pose: await _capture(variant, size, pose)
 	scene.queue_free()
 	current_scene = null
 	for i in 3: await process_frame
@@ -157,7 +184,9 @@ func _inspect(variant: String) -> void:
 
 func _image() -> Image:
 	for i in 3: await process_frame
-	await RenderingServer.frame_post_draw
+	# Covered Mac test windows may omit frame_post_draw indefinitely.
+	# Force real rendering without changing product focus or actor depth.
+	RenderingServer.force_draw(false)
 	return root.get_texture().get_image()
 
 func _difference(a: Image, b: Image) -> int:
@@ -169,17 +198,23 @@ func _difference(a: Image, b: Image) -> int:
 	return count
 
 func _authored_waterfall(mesh: Node) -> bool:
-	if mesh.get_parent() != scene.temple_section or not mesh is MeshInstance3D or not mesh.mesh is BoxMesh: return false
+	if not mesh is MeshInstance3D or not mesh.mesh is BoxMesh or not scene.temple_section.is_ancestor_of(mesh): return false
 	var material = mesh.material_override
 	return is_equal_approx(mesh.mesh.size.x, 0.10) and is_equal_approx(mesh.mesh.size.y, 1.8) and material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55)
 
 func _capture(variant: String, size: Vector2i, pose: Dictionary) -> void:
 	scene.teleport(pose.point)
+	# Fixed visibility poses include facing: the new portal deliberately turns
+	# the player away on return, unlike v48. Pin the original right-facing
+	# sprite for comparable geometry/water pixels. Actual return-facing and
+	# ordinary-input traversal stay covered by verify_hidden_flow.
+	scene.player.facing = Vector2.RIGHT
 	scene._process(0.0)
 	scene.camera.position = scene.terrain.world_point(pose.point, 35) + scene.camera_offset
 	scene.camera.look_at(scene.terrain.world_point(pose.point, 35), Vector3.UP)
 	var body: Sprite3D = scene.actors[scene.player].get_node("Body")
 	check(not body.no_depth_test and body.alpha_cut == SpriteBase3D.ALPHA_CUT_DISCARD and body.modulate.a == 1.0, "ordinary opaque player depth, no bypass")
+	check(scene.player.facing == Vector2.RIGHT and not body.flip_h, "fixed original right-facing visibility pose")
 	var actor_error: float = scene.actors[scene.player].position.distance_to(scene.terrain.world_point(pose.point))
 	var camera_error: float = scene.camera.position.distance_to(scene.terrain.world_point(pose.point, 35) + scene.camera_offset)
 	check(actor_error < 0.001 and camera_error < 0.001, "fixed actor/camera synchronization")
@@ -230,7 +265,7 @@ func _capture(variant: String, size: Vector2i, pose: Dictionary) -> void:
 			adoption_pass = water_ratio >= 0.98
 			check(adoption_pass, "candidate return/entry water-comparable visibility: " + name)
 	elif pose.name == "returned": check(ratio < 0.60, "baseline reproduces known opaque rim masking")
-	captures.append({"variant": variant, "pose": pose.name, "point": [pose.point.x, pose.point.y], "width": size.x, "height": size.y, "visible_body_pixels": counts.scenery, "unobstructed_body_pixels": counts.bare, "ratio": ratio, "water_reference_body_pixels": counts["water-reference"], "water_comparable_ratio": water_ratio, "opaque_geometry_body_pixels": counts["opaque-only"], "opaque_geometry_ratio": opaque_ratio, "strict_full_scene_visibility_pass": ratio >= 0.98, "strict_opaque_visibility_pass": opaque_ratio >= 0.98, "strict_threshold": 0.98, "classification": classification, "adoption_gate": "not_applicable_baseline" if variant == "baseline" else "non_regression_only" if pose.name == "cooldown-edge" else "water_comparable_at_least_0.98", "adoption_pass": adoption_pass if variant == "candidate" else null, "baseline_ratios": {} if baseline.is_empty() else {"raw": baseline.ratio, "water_comparable": baseline.water_comparable_ratio, "opaque_geometry": baseline.opaque_geometry_ratio}, "actor_error": actor_error, "camera_error": camera_error, "image_prefix": name, "actual_render": true})
+	captures.append({"variant": variant, "pose": pose.name, "facing": [scene.player.facing.x,scene.player.facing.y], "body_flip_h":body.flip_h, "point": [pose.point.x, pose.point.y], "width": size.x, "height": size.y, "visible_body_pixels": counts.scenery, "unobstructed_body_pixels": counts.bare, "ratio": ratio, "water_reference_body_pixels": counts["water-reference"], "water_comparable_ratio": water_ratio, "opaque_geometry_body_pixels": counts["opaque-only"], "opaque_geometry_ratio": opaque_ratio, "strict_full_scene_visibility_pass": ratio >= 0.98, "strict_opaque_visibility_pass": opaque_ratio >= 0.98, "strict_threshold": 0.98, "classification": classification, "adoption_gate": "not_applicable_baseline" if variant == "baseline" else "non_regression_only" if pose.name == "cooldown-edge" else "water_comparable_at_least_0.98", "adoption_pass": adoption_pass if variant == "candidate" else null, "baseline_ratios": {} if baseline.is_empty() else {"raw": baseline.ratio, "water_comparable": baseline.water_comparable_ratio, "opaque_geometry": baseline.opaque_geometry_ratio}, "actor_error": actor_error, "camera_error": camera_error, "image_prefix": name, "actual_render": true})
 	print("WATERFALL ", JSON.stringify(captures[-1]))
 
 func _finish() -> void:
@@ -253,3 +288,21 @@ func _process(_delta: float) -> bool:
 		check(false, "180-second fixture watchdog expired")
 		_finish()
 	return false
+
+func _descendants(node: Node) -> Array:
+	var result := []
+	for child in node.get_children():
+		result.append(child)
+		result.append_array(_descendants(child))
+	return result
+
+func _release_input() -> void:
+	for action in ["move_left", "move_right", "move_up", "move_down"]: Input.action_release(action)
+
+func _press_world(direction: Vector2) -> void:
+	_release_input()
+	var movement := direction.rotated(-scene.player.input_rotation)
+	if movement.x < -0.1: Input.action_press("move_left", -movement.x)
+	if movement.x > 0.1: Input.action_press("move_right", movement.x)
+	if movement.y < -0.1: Input.action_press("move_up", -movement.y)
+	if movement.y > 0.1: Input.action_press("move_down", movement.y)

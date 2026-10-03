@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Deep wetland whole-field candidate
+Wetland sculpture: 7276 checks, 0 failures; triangles=484; old=[P: (-1.059208, 0.0, -1.241853), S: (2.189135, 3.8, 2.534797)]; new=[P: (-1.045, 0.0, -0.9), S: (2.09, 3.8, 2.14)]

@@ -1,0 +1,507 @@
+{
+  "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "adoption_scope": "return and before-entry water-comparable ratio >=0.98; existing cooldown ramp non-regression only, not a full visibility fix",
+  "captures": [
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 540,
+      "image_prefix": "baseline-960-returned",
+      "opaque_geometry_body_pixels": 333,
+      "opaque_geometry_ratio": 0.332003988035892,
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "pose": "returned",
+      "ratio": 0.332003988035892,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "baseline",
+      "visible_body_pixels": 333,
+      "water_comparable_ratio": 0.332335329341317,
+      "water_reference_body_pixels": 1002,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 540,
+      "image_prefix": "baseline-960-before-entry",
+      "opaque_geometry_body_pixels": 2,
+      "opaque_geometry_ratio": 0.00199401794616152,
+      "point": [
+        1245.0,
+        685.0
+      ],
+      "pose": "before-entry",
+      "ratio": 0.000997008973080758,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "baseline",
+      "visible_body_pixels": 1,
+      "water_comparable_ratio": 0.00159489633173844,
+      "water_reference_body_pixels": 627,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 540,
+      "image_prefix": "baseline-960-cooldown-edge",
+      "opaque_geometry_body_pixels": 0,
+      "opaque_geometry_ratio": 0.0,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.0,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "baseline",
+      "visible_body_pixels": 0,
+      "water_comparable_ratio": 0.0,
+      "water_reference_body_pixels": 1003,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 720,
+      "image_prefix": "baseline-1280-returned",
+      "opaque_geometry_body_pixels": 547,
+      "opaque_geometry_ratio": 0.307649043869516,
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "pose": "returned",
+      "ratio": 0.307649043869516,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "baseline",
+      "visible_body_pixels": 547,
+      "water_comparable_ratio": 0.307822172200338,
+      "water_reference_body_pixels": 1777,
+      "width": 1280
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 720,
+      "image_prefix": "baseline-1280-before-entry",
+      "opaque_geometry_body_pixels": 5,
+      "opaque_geometry_ratio": 0.00281214848143982,
+      "point": [
+        1245.0,
+        685.0
+      ],
+      "pose": "before-entry",
+      "ratio": 0.00168728908886389,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "baseline",
+      "visible_body_pixels": 3,
+      "water_comparable_ratio": 0.00268336314847943,
+      "water_reference_body_pixels": 1118,
+      "width": 1280
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 720,
+      "image_prefix": "baseline-1280-cooldown-edge",
+      "opaque_geometry_body_pixels": 0,
+      "opaque_geometry_ratio": 0.0,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.0,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "baseline",
+      "visible_body_pixels": 0,
+      "water_comparable_ratio": 0.0,
+      "water_reference_body_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "water_comparable_at_least_0.98",
+      "adoption_pass": true,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 540,
+      "image_prefix": "candidate-960-returned",
+      "opaque_geometry_body_pixels": 1003,
+      "opaque_geometry_ratio": 1.0,
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "pose": "returned",
+      "ratio": 0.998005982053839,
+      "strict_full_scene_visibility_pass": true,
+      "strict_opaque_visibility_pass": true,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "candidate",
+      "visible_body_pixels": 1001,
+      "water_comparable_ratio": 0.999001996007984,
+      "water_reference_body_pixels": 1002,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "water_comparable_at_least_0.98",
+      "adoption_pass": true,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 540,
+      "image_prefix": "candidate-960-before-entry",
+      "opaque_geometry_body_pixels": 990,
+      "opaque_geometry_ratio": 0.98703888334995,
+      "point": [
+        1245.0,
+        685.0
+      ],
+      "pose": "before-entry",
+      "ratio": 0.616151545363908,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": true,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "candidate",
+      "visible_body_pixels": 618,
+      "water_comparable_ratio": 0.985645933014354,
+      "water_reference_body_pixels": 627,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "non_regression_only",
+      "adoption_pass": true,
+      "baseline_ratios": {
+        "opaque_geometry": 0.0,
+        "raw": 0.0,
+        "water_comparable": 0.0
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 540,
+      "image_prefix": "candidate-960-cooldown-edge",
+      "opaque_geometry_body_pixels": 566,
+      "opaque_geometry_ratio": 0.564307078763709,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.564307078763709,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "candidate",
+      "visible_body_pixels": 566,
+      "water_comparable_ratio": 0.564307078763709,
+      "water_reference_body_pixels": 1003,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "water_comparable_at_least_0.98",
+      "adoption_pass": true,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 720,
+      "image_prefix": "candidate-1280-returned",
+      "opaque_geometry_body_pixels": 1778,
+      "opaque_geometry_ratio": 1.0,
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "pose": "returned",
+      "ratio": 0.998875140607424,
+      "strict_full_scene_visibility_pass": true,
+      "strict_opaque_visibility_pass": true,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "candidate",
+      "visible_body_pixels": 1776,
+      "water_comparable_ratio": 0.999437253798537,
+      "water_reference_body_pixels": 1777,
+      "width": 1280
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "water_comparable_at_least_0.98",
+      "adoption_pass": true,
+      "baseline_ratios": {
+
+      },
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "height": 720,
+      "image_prefix": "candidate-1280-before-entry",
+      "opaque_geometry_body_pixels": 1753,
+      "opaque_geometry_ratio": 0.985939257592801,
+      "point": [
+        1245.0,
+        685.0
+      ],
+      "pose": "before-entry",
+      "ratio": 0.618110236220472,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": true,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "candidate",
+      "visible_body_pixels": 1099,
+      "water_comparable_ratio": 0.983005366726297,
+      "water_reference_body_pixels": 1118,
+      "width": 1280
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "non_regression_only",
+      "adoption_pass": true,
+      "baseline_ratios": {
+        "opaque_geometry": 0.0,
+        "raw": 0.0,
+        "water_comparable": 0.0
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 720,
+      "image_prefix": "candidate-1280-cooldown-edge",
+      "opaque_geometry_body_pixels": 999,
+      "opaque_geometry_ratio": 0.561867266591676,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.561867266591676,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "candidate",
+      "visible_body_pixels": 999,
+      "water_comparable_ratio": 0.561867266591676,
+      "water_reference_body_pixels": 1778,
+      "width": 1280
+    }
+  ],
+  "checks": 29698,
+  "engine": "4.6-stable (official)",
+  "errors": [],
+  "known_limitations": [
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "non_regression_only",
+      "adoption_pass": true,
+      "baseline_ratios": {
+        "opaque_geometry": 0.0,
+        "raw": 0.0,
+        "water_comparable": 0.0
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 540,
+      "image_prefix": "candidate-960-cooldown-edge",
+      "opaque_geometry_body_pixels": 566,
+      "opaque_geometry_ratio": 0.564307078763709,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.564307078763709,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "candidate",
+      "visible_body_pixels": 566,
+      "water_comparable_ratio": 0.564307078763709,
+      "water_reference_body_pixels": 1003,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "non_regression_only",
+      "adoption_pass": true,
+      "baseline_ratios": {
+        "opaque_geometry": 0.0,
+        "raw": 0.0,
+        "water_comparable": 0.0
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 720,
+      "image_prefix": "candidate-1280-cooldown-edge",
+      "opaque_geometry_body_pixels": 999,
+      "opaque_geometry_ratio": 0.561867266591676,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.561867266591676,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "candidate",
+      "visible_body_pixels": 999,
+      "water_comparable_ratio": 0.561867266591676,
+      "water_reference_body_pixels": 1778,
+      "width": 1280
+    }
+  ],
+  "scope": "fixed local entrance/return poses, frozen pressure and synthetic access; not natural play",
+  "strict_opaque_visibility_failures": [
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "non_regression_only",
+      "adoption_pass": true,
+      "baseline_ratios": {
+        "opaque_geometry": 0.0,
+        "raw": 0.0,
+        "water_comparable": 0.0
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 540,
+      "image_prefix": "candidate-960-cooldown-edge",
+      "opaque_geometry_body_pixels": 566,
+      "opaque_geometry_ratio": 0.564307078763709,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.564307078763709,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1003,
+      "variant": "candidate",
+      "visible_body_pixels": 566,
+      "water_comparable_ratio": 0.564307078763709,
+      "water_reference_body_pixels": 1003,
+      "width": 960
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "non_regression_only",
+      "adoption_pass": true,
+      "baseline_ratios": {
+        "opaque_geometry": 0.0,
+        "raw": 0.0,
+        "water_comparable": 0.0
+      },
+      "camera_error": 0.0,
+      "classification": "known_preexisting_ramp_occlusion",
+      "height": 720,
+      "image_prefix": "candidate-1280-cooldown-edge",
+      "opaque_geometry_body_pixels": 999,
+      "opaque_geometry_ratio": 0.561867266591676,
+      "point": [
+        1310.0,
+        720.0
+      ],
+      "pose": "cooldown-edge",
+      "ratio": 0.561867266591676,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "candidate",
+      "visible_body_pixels": 999,
+      "water_comparable_ratio": 0.561867266591676,
+      "water_reference_body_pixels": 1778,
+      "width": 1280
+    }
+  ],
+  "user_data_dir": "/home/runner/work/_temp/ui-home-verify_jungle_waterfall_visibility/data/WaterfallVisibilityV48"
+}

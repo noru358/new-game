@@ -1,0 +1,164 @@
+{
+  "source_sha": "a9642b033f0a5304a45b27bdef639e3be250b1a6",
+  "engine": "/Users/lty/Documents/Codex/2026-10-03/task-10/runtime/Godot.app/Contents/MacOS/Godot",
+  "scripts": [
+    "tests/verify_hidden_combined_mount.gd",
+    "tests/verify_hidden_flow.gd",
+    "tests/verify_garden_transition.gd",
+    "tests/verify_jungle_hidden_sanctuary.gd",
+    "tests/verify_jungle_waterfall_visibility.gd",
+    "tests/verify_jungle_section.gd",
+    "tests/verify_jungle_south_circuit.gd",
+    "tests/verify_jungle_route.gd",
+    "tests/verify_temple_garden_courtyard.gd",
+    "tests/verify_temple_garden_approach.gd",
+    "tests/verify_terrain_coherence.gd",
+    "tests/verify_surface_overlap.gd",
+    "tests/verify_deep_wetland_run.gd"
+  ],
+  "results": [
+    {
+      "script": "import",
+      "exit_code": 0,
+      "seconds": 11.11,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/import.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-f476967c-d13b-4bb6-8dc9-395d6ae906f9",
+      "passed": true
+    },
+    {
+      "script": "verify_hidden_combined_mount",
+      "exit_code": 0,
+      "seconds": 3.7,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_hidden_combined_mount.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-1df3551c-3f24-4da7-a284-92286988aec8",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_hidden_combined_mount.txt"
+    },
+    {
+      "script": "verify_hidden_flow",
+      "exit_code": 0,
+      "seconds": 4.83,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_hidden_flow.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-104887f6-3b67-49dd-9031-223ca9bf2d5d",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_hidden_flow.txt"
+    },
+    {
+      "script": "verify_garden_transition",
+      "exit_code": 0,
+      "seconds": 0.83,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_garden_transition.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-203f617d-2a42-486b-985a-82c61e95f75f",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_garden_transition.txt"
+    },
+    {
+      "script": "verify_jungle_hidden_sanctuary",
+      "exit_code": 0,
+      "seconds": 2.46,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_jungle_hidden_sanctuary.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-922d7552-8694-428b-907b-e0abea612d99",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_jungle_hidden_sanctuary.txt"
+    },
+    {
+      "script": "verify_jungle_waterfall_visibility",
+      "exit_code": 0,
+      "seconds": 4.03,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_jungle_waterfall_visibility.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-e6631866-424c-42ba-bd2f-2c1dd1344150",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_jungle_waterfall_visibility.txt"
+    },
+    {
+      "script": "verify_jungle_section",
+      "exit_code": 0,
+      "seconds": 2.46,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_jungle_section.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-4a12d197-3131-4cdf-9ec0-e2ceea467df6",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_jungle_section.txt"
+    },
+    {
+      "script": "verify_jungle_south_circuit",
+      "exit_code": 0,
+      "seconds": 2.3,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_jungle_south_circuit.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-4d72f696-eebe-44fe-8010-4cb039f18695",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_jungle_south_circuit.txt"
+    },
+    {
+      "script": "verify_jungle_route",
+      "exit_code": 0,
+      "seconds": 1.48,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_jungle_route.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-9109cc54-7b0b-4de9-9fca-d01d468ef08d",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_jungle_route.txt"
+    },
+    {
+      "script": "verify_temple_garden_courtyard",
+      "exit_code": 0,
+      "seconds": 1.21,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_temple_garden_courtyard.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-ba34d9e4-75a6-4b78-8aa0-418f67307ebd",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_temple_garden_courtyard.txt"
+    },
+    {
+      "script": "verify_temple_garden_approach",
+      "exit_code": 0,
+      "seconds": 0.78,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_temple_garden_approach.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-2a56f543-4de0-491e-9732-a4f6a08c6939",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_temple_garden_approach.txt"
+    },
+    {
+      "script": "verify_terrain_coherence",
+      "exit_code": 0,
+      "seconds": 1.99,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_terrain_coherence.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-a18f0f21-ce18-4a56-ba20-fa516e1454e6",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_terrain_coherence.txt"
+    },
+    {
+      "script": "verify_surface_overlap",
+      "exit_code": 0,
+      "seconds": 1.81,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_surface_overlap.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-82d28b8e-3410-43e5-85ac-ed20bcf3d688",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_surface_overlap.txt"
+    },
+    {
+      "script": "verify_deep_wetland_run",
+      "exit_code": 0,
+      "seconds": 1.33,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/three-lane-impact/verify_deep_wetland_run.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-9cbddd0f-cffa-4658-9703-31514f4e6806",
+      "passed": true,
+      "portable_log": "three-lane-impact-verify_deep_wetland_run.txt"
+    }
+  ],
+  "engine_concurrency": 1,
+  "dedicated_excluded": "tests/verify_actor_terrain_depth.gd",
+  "scope": "serialized headless engine checks; isolated UUID userdata per fixture; no user save access",
+  "passed": true
+}

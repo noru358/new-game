@@ -1,0 +1,11 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+FAIL: hurt protection expires
+FAIL: one press hits once
+FAIL: hold repeats combo
+FAIL: hold reaches third and fourth hits
+FAIL: first enemy stays in small gathered cluster
+FAIL: second enemy stays in small gathered cluster
+FAIL: gather deals light damage once
+FAIL: wide fourth hit lands on gathered enemies
+1A verification failed

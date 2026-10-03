@@ -1,0 +1,45 @@
+verify	Render concise world labels and growth descriptions	﻿2026-10-03T14:07:36.4561280Z ##[group]Run set -euo pipefail
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4561652Z ^[[36;1mset -euo pipefail^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4562314Z ^[[36;1mfor fixture in verify_growth_card_descriptions capture_world_destination_labels verify_jungle_waterfall_visibility verify_equipment_followthrough; do^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4563037Z ^[[36;1m  private="$RUNNER_TEMP/ui-copy-$fixture"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4563423Z ^[[36;1m  mkdir -p "$private" "verification-logs/ui-copy/$fixture"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4563804Z ^[[36;1m  git archive HEAD | tar -x -C "$private"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4564576Z ^[[36;1m  sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WorldDestinationLabelsV48#' "$private/project.godot"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4565524Z ^[[36;1m  if [[ "$fixture" = verify_jungle_waterfall_visibility ]]; then sed -i 's/WorldDestinationLabelsV48/WaterfallVisibilityV48/' "$private/project.godot"; fi^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4566417Z ^[[36;1m  export HOME="$RUNNER_TEMP/ui-home-$fixture"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4566906Z ^[[36;1m  export XDG_DATA_HOME="$HOME/data" XDG_CONFIG_HOME="$HOME/config" XDG_CACHE_HOME="$HOME/cache"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4567593Z ^[[36;1m  mkdir -p "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4568191Z ^[[36;1m  godot --headless --editor --path "$private" --quit > "verification-logs/ui-copy/$fixture/import.log" 2>&1^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4568827Z ^[[36;1m  LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4569397Z ^[[36;1m    godot --path "$private" --audio-driver Dummy --rendering-method gl_compatibility \^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4570127Z ^[[36;1m    --script "res://tests/$fixture.gd" -- --capture-dir="$GITHUB_WORKSPACE/verification-logs/ui-copy/$fixture/images" \^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4570749Z ^[[36;1m    > "verification-logs/ui-copy/$fixture/render.log" 2>&1^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4571155Z ^[[36;1m  cat "verification-logs/ui-copy/$fixture/render.log"^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4571710Z ^[[36;1m  if grep -E 'SCRIPT ERROR:|Parse Error:|^FAIL:' "verification-logs/ui-copy/$fixture/"*.log; then exit 1; fi^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4572196Z ^[[36;1mdone^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4572622Z ^[[36;1mtest "$(find verification-logs/ui-copy/verify_growth_card_descriptions -name '*.png' | wc -l)" -eq 4^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4573354Z ^[[36;1mtest "$(find verification-logs/ui-copy/capture_world_destination_labels -name '*.png' | wc -l)" -eq 50^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4574259Z ^[[36;1mtest "$(find verification-logs/ui-copy/verify_jungle_waterfall_visibility -name '*.png' | wc -l)" -eq 96^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4575018Z ^[[36;1mtest "$(find verification-logs/ui-copy/verify_equipment_followthrough -name '*.png' | wc -l)" -eq 10^[[0m
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4636665Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:36.4637027Z ##[endgroup]
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9030155Z Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9031269Z WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9032248Z      at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9033328Z OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9034562Z 
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9035220Z Layout checks are geometric only; rendered Korean glyphs, clipping and human readability require separate visual inspection.
+verify	Render concise world labels and growth descriptions	2026-10-03T14:07:59.9036210Z Growth card descriptions: 154 checks, 0 failures
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0539146Z Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0540477Z WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0541521Z      at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:364)
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0542719Z OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0544217Z 
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0544997Z Hybrid scene ready: Temple circuit — isolated four-minute run
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0545998Z Hybrid scene ready: Jungle southern circuit — isolated development run
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0546894Z Hybrid scene ready: Loop Conquest — 깊은 사원 습지
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0547711Z Hybrid scene ready: Temple circuit — isolated four-minute run
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0548761Z Hybrid scene ready: Jungle southern circuit — isolated development run
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0549748Z Hybrid scene ready: Loop Conquest — 깊은 사원 습지
+verify	Render concise world labels and growth descriptions	2026-10-03T14:09:24.0550430Z World destination render: 50 / 50 PNGs, 0 failures
+verify	Render concise world labels and growth descriptions	2026-10-03T14:10:07.6090497Z ##[error]Process completed with exit code 1.

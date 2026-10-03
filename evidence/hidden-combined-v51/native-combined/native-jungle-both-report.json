@@ -1,0 +1,491 @@
+{
+	"captures": [
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-main-undiscovered.png",
+			"hud": "",
+			"inside": false,
+			"marker": [],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-undiscovered",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "jungle-960-hidden-arrival.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"label_screen": [
+				583.431762695312,
+				298.127380371094
+			],
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6290.0,
+				2630.0
+			],
+			"region": "jungle",
+			"state": "hidden-arrival",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-reward-approach.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				9935.146484375,
+				501.243316650391
+			],
+			"region": "jungle",
+			"reward": {
+				"claimed": true,
+				"distance": 96.9419326782227,
+				"guardians": 0,
+				"scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+			},
+			"state": "reward-approach",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 50.4000015258789,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-hidden-overview.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				9935.146484375,
+				501.243316650391
+			],
+			"region": "jungle",
+			"state": "hidden-overview",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-rear-return-12.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8949.2451171875,
+				433.423980712891
+			],
+			"region": "jungle",
+			"state": "rear-return-12",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-rear-return-13.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8529.5673828125,
+				746.632385253906
+			],
+			"region": "jungle",
+			"state": "rear-return-13",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-rear-return-14.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				7639.53759765625,
+				752.0
+			],
+			"region": "jungle",
+			"state": "rear-return-14",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-rear-return-15.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6805.1474609375,
+				1103.19226074219
+			],
+			"region": "jungle",
+			"state": "rear-return-15",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-rear-return-16.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6513.59033203125,
+				1930.51428222656
+			],
+			"region": "jungle",
+			"state": "rear-return-16",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "jungle-960-exit-approach.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"label_screen": [
+				568.108581542969,
+				283.881469726562
+			],
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6325.49267578125,
+				2638.41015625
+			],
+			"region": "jungle",
+			"state": "exit-approach",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-960-main-return.png",
+			"hud": "",
+			"inside": false,
+			"marker": [
+				1300.0,
+				685.0
+			],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-return",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-main-undiscovered.png",
+			"hud": "",
+			"inside": false,
+			"marker": [],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-undiscovered",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "jungle-1280-hidden-arrival.png",
+			"hud": "물길 너머 안쪽 유적 탐색",
+			"inside": true,
+			"label_screen": [
+				583.431762695312,
+				298.127380371094
+			],
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6290.0,
+				2630.0
+			],
+			"region": "jungle",
+			"state": "hidden-arrival",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-reward-approach.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				9935.146484375,
+				501.243316650391
+			],
+			"region": "jungle",
+			"reward": {
+				"claimed": true,
+				"distance": 96.9419326782227,
+				"guardians": 0,
+				"scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+			},
+			"state": "reward-approach",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 50.4000015258789,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-hidden-overview.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				9935.146484375,
+				501.243316650391
+			],
+			"region": "jungle",
+			"state": "hidden-overview",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-rear-return-12.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8949.2451171875,
+				433.423980712891
+			],
+			"region": "jungle",
+			"state": "rear-return-12",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-rear-return-13.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				8529.5673828125,
+				746.632385253906
+			],
+			"region": "jungle",
+			"state": "rear-return-13",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-rear-return-14.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				7639.53759765625,
+				752.0
+			],
+			"region": "jungle",
+			"state": "rear-return-14",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-rear-return-15.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6805.1474609375,
+				1103.19226074219
+			],
+			"region": "jungle",
+			"state": "rear-return-15",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-rear-return-16.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6513.59033203125,
+				1930.51428222656
+			],
+			"region": "jungle",
+			"state": "rear-return-16",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "jungle-1280-exit-approach.png",
+			"hud": "유적 보상 획득 · 들어온 물길로 복귀",
+			"inside": true,
+			"label_screen": [
+				568.108581542969,
+				283.881378173828
+			],
+			"marker": [
+				9860.0,
+				440.0
+			],
+			"point": [
+				6325.49267578125,
+				2638.41015625
+			],
+			"region": "jungle",
+			"state": "exit-approach",
+			"width": 1280
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "jungle-1280-main-return.png",
+			"hud": "",
+			"inside": false,
+			"marker": [
+				1300.0,
+				685.0
+			],
+			"point": [
+				1150.0,
+				700.0
+			],
+			"region": "jungle",
+			"state": "main-return",
+			"width": 1280
+		}
+	],
+	"checks": 934,
+	"failures": 0,
+	"scope": "real native renderer, normal threshold inputs, fixed setup, frozen combat/time; no human play"
+}

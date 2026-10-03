@@ -1,0 +1,6 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+RUN_DIAGNOSTICS {"accessory":"","active_seconds":307.0,"active_wall_seconds":13.0,"attack_branch":"","boss_engagements":3,"boss_first_times":{"arrive":{"active_seconds":301.2,"wall_seconds":24.0},"engage":{"active_seconds":301.2,"wall_seconds":24.0},"kill":{"active_seconds":307.0,"wall_seconds":30.0},"ready":{"active_seconds":301.2,"wall_seconds":24.0}},"cards":{"U_EDGE":2,"U_SLASH_CADENCE":1,"U_SLASH_SWEEP":2},"choice_wall_seconds":9.0,"choice_windows":3,"damage_events":1,"damage_taken_actual":10.0,"earned_currency":0,"health":100.0,"kills":0,"level":6,"level_heal_actual":45.0,"level_heal_events":5,"max_health":100.0,"pause_wall_seconds":8.0,"permanent_growth":{"FINISH":0,"GUARD":0,"MOBILITY":0,"POWER":0,"RECOVERY":0,"SLASH":0,"SLASH_POWER":0,"SPEED":0,"VITALITY":0,"WISP":0},"points_earned":5,"points_exhausted":0,"points_pending":0,"points_spent":5,"region":"O_TEMPLE","result":"SUCCESS","schema":"local_run_diagnostics_v1","time_scale_max":1.0,"time_scale_min":1.0,"wall_seconds":30.0,"weapon":"W_START","xp_remainder":0}
+Run diagnostics verification: 0 failures

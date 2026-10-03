@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — Moving Slash Lab v01
+Moving slash lab passed: distance, one hit, wall, water, dash, pause, main-run gating

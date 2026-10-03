@@ -1,0 +1,20 @@
+{
+  "head": "0a4e505f91864e8dcc1b80834ff316ba14ee429e",
+  "run_id": 37126591308,
+  "passed": false,
+  "headless": 115,
+  "passed_fixtures": 109,
+  "failed_fixtures": [
+    "tests/verify_hybrid_corner_ai.gd",
+    "tests/verify_hybrid_growth.gd",
+    "tests/verify_hybrid_combat_feedback.gd",
+    "tests/verify_hybrid_feedback.gd",
+    "tests/verify_hybrid_height.gd",
+    "tests/verify_hybrid_roles.gd"
+  ],
+  "cause": "HybridMinimap._draw line91 directly reads region_id on legacy hybrid_height.gd which has no region_id",
+  "minimal_fix": "arena.get(\"region_id\") guard; game/hybrid_minimap.gd one line",
+  "local_fix_test_sha": "78a2cd2394727aa0b31c05fdaa8bfc198128960b",
+  "local_fix_result": "six failed legacy fixtures plus combined mounting passed",
+  "later_CI_steps": "skipped after aggregate failure; not claimed passed"
+}

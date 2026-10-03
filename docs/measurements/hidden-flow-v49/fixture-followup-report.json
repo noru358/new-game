@@ -1,0 +1,61 @@
+{
+  "tested_sha": "d589595f7300acb52741ef4d3811d8ecae3a6118",
+  "change_scope": "tests/verify_garden_transition.gd only; all product files unchanged",
+  "engine": "4.6.stable.official.89cea1439",
+  "ci_before": {
+    "run_id": 37124127208,
+    "artifact_id": 11274389007,
+    "head_sha": "6dc3fcfcda3362b0415ee569289651211f8cf9f7",
+    "garden_failures": 2,
+    "actual_log": "fixture-ci-before.txt"
+  },
+  "owned_sha256": {
+    "game/temple_section.gd": "d1299d2bde34aeb412b7691d02200d00ca8937ce44e3bebb4a32327bab269602",
+    "game/jungle_section.gd": "bbf7a3d56d561d98f9fddff7dc645905f16345d59c32c021b9212aeb11ab883d",
+    "game/hidden_threshold_latch.gd": "b0e3c244a0fd8907fb4df2e686516c2dc75727353d7debc6e75605bd8697a463",
+    "tests/verify_garden_transition.gd": "4d6516eef8154aa2bb2b242fc266ac1239cabe3f8313a769c53b71bdc6de584c",
+    "tests/verify_hidden_flow.gd": "77f4676a82d20013644a548479276acf22fafe2d7b55662f5e8285c9c86d74ac",
+    "tests/verify_temple_section.gd": "60991e831775b827682cd15b9e15b77fe09e60170063e64e4f667f70a498b9e6"
+  },
+  "strict_source_game_gd_tscn_match_count": 117,
+  "runs": [
+    {
+      "fixture": "verify_garden_transition",
+      "mode": "headless default physics, exact source; no parent mounts or final art",
+      "exit_code": 0,
+      "failures": 0,
+      "log": "fixture-source-after.txt"
+    },
+    {
+      "fixture": "verify_garden_transition",
+      "mode": "headless default physics, two existing parent mounts; no final art",
+      "exit_code": 0,
+      "failures": 0,
+      "log": "fixture-mounted-after.txt"
+    },
+    {
+      "fixture": "verify_hidden_flow",
+      "mode": "headless fixed-fps60, two existing parent mounts; no final art",
+      "exit_code": 0,
+      "checks": 290,
+      "failures": 0,
+      "log": "fixture-hidden-regression.txt"
+    },
+    {
+      "fixture": "verify_temple_section",
+      "mode": "headless fixed-fps60, two existing parent mounts; no final art",
+      "exit_code": 0,
+      "failures": 0,
+      "log": "fixture-temple-regression.txt"
+    }
+  ],
+  "assertions": "All original garden assertions retained; released-input no return and actor count preservation added; no latch/cooldown override or direct enter/leave calls",
+  "isolation": {
+    "userdata": "LoopConquestHiddenFlow/d8d230df48e04758b06216e479080b9a",
+    "protected_json_files": 56,
+    "bytes_unchanged": true,
+    "headless_processes_at_once": 1,
+    "new_gui_runs": 0
+  },
+  "remaining": "Parent waterfall descendant fixture update, final art + mounts assembly and aggregate CI; no final assembly success claimed"
+}

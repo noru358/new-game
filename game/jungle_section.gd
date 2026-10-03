@@ -45,7 +45,7 @@ func _tick_garden(delta: float) -> void:
 		entry.marker.queue_free()
 		wave_markers.remove_at(i)
 		guardian_reservations -= 1
-	altar_label.visible = in_garden and arena.player.global_position.distance_to(Grotto.ALTAR) < 600.0
+	altar_label.visible = in_garden and arena.player.global_position.distance_to(layout.ALTAR) < 600.0
 	altar_ember.visible = altar_label.visible
 	altar_label.text = "계곡 안쪽 유적\nE · 보상 받기" if not garden_claimed else "계곡 안쪽 유적\n이번 런 보상 완료"
 
@@ -73,7 +73,7 @@ func _on_guard_defeated(enemy: TrainingEnemy) -> void:
 
 
 func claim_garden_reward() -> bool:
-	if not in_garden or arena.run_ended or retry_pending or get_tree().paused or arena.player.health <= 0.0 or garden_claimed or arena.player.global_position.distance_to(Grotto.ALTAR) > 105.0: return false
+	if not in_garden or arena.run_ended or retry_pending or get_tree().paused or arena.player.health <= 0.0 or garden_claimed or arena.player.global_position.distance_to(layout.ALTAR) > 105.0: return false
 	var already_awakened: bool = arena.profile.awakenings.has("ECHO_GROTTO")
 	if not arena.profile.claim_grotto_awakening():
 		garden_message = "각성 저장 실패 · 지급하지 않았습니다. E로 재시도"
@@ -94,7 +94,7 @@ func claim_garden_reward() -> bool:
 
 func handle_input(event: InputEvent) -> bool:
 	if retry_pending: return true
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E and not arena.run_ended and not get_tree().paused and arena.player.global_position.distance_to(Grotto.ALTAR) <= 105.0:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E and not arena.run_ended and not get_tree().paused and arena.player.global_position.distance_to(layout.ALTAR) <= 105.0:
 		claim_garden_reward()
 		get_viewport().set_input_as_handled()
 		return true
@@ -107,66 +107,32 @@ func _update_hud() -> void:
 	if boss_entered:
 		section_hud.text = ("관문 교전 중" if boss_active else "관문 밖 · 보스 대기 / HP 유지") + "\n보스전 재도전 " + ("사용 완료" if retry_used else "1회 남음") + " · 출입 자유"
 	if in_garden:
-		section_hud.text = "물길 너머 안쪽 유적 탐색\n길목 적은 돌파하거나 피해 갈 수 있습니다." if not garden_claimed else "유적 보상 획득 · 서쪽 물길로 복귀"
+		section_hud.text = "물길 너머 안쪽 유적 탐색\n길목 적은 돌파하거나 피해 갈 수 있습니다." if not garden_claimed else "유적 보상 획득 · 들어온 물길로 복귀"
 	if garden_message.contains("실패"): section_hud.text += "\n" + garden_message
 
 
 func _build_garden() -> void:
-	# A narrow water curtain masks the side entrance; it does not block walking.
-	for point in [Vector2(1225, 690), Vector2(1340, 505), Vector2(1340, 800), Vector2(1120, 490), Vector2(7600, 1650), Vector2(8520, 1140)]:
-		var fall := MeshInstance3D.new()
-		var mesh := BoxMesh.new()
-		mesh.size = Vector3(0.10, 1.8, 1.25 if point == Vector2(1225, 690) else 0.8)
-		fall.mesh = mesh
-		fall.material_override = arena._material(Color(0.4, 0.82, 0.85, 0.55), true)
-		(fall.material_override as StandardMaterial3D).transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		fall.position = arena.terrain.world_point(point, 100)
-		add_child(fall)
-	for point in [Vector2(7030, 2630), Vector2(7420, 2200), Vector2(8160, 1530), Vector2(9290, 1930), Vector2(9060, 440), Vector2(6790, 1100)]:
-		var stone := MeshInstance3D.new()
-		var mesh := BoxMesh.new()
-		mesh.size = Vector3(0.9, 0.07, 0.7)
-		stone.mesh = mesh
-		stone.material_override = arena._material(Color("bac5a4"))
-		stone.position = arena.terrain.world_point(point, 5)
-		add_child(stone)
-	for point in [Vector2(1130, 455), Vector2(1360, 540), Vector2(1380, 780), Vector2(6810, 2270), Vector2(7650, 1850), Vector2(8510, 1050), Vector2(9030, 1220), Vector2(9410, 1500), Vector2(9600, 300)]:
-		var bush: MeshInstance3D = arena._sphere(0.35, Color("356b51"))
-		bush.name = "GrottoBush"
-		bush.position = arena.terrain.world_point(point, 30)
-		bush.scale = Vector3(1.4, 0.75, 1.0)
-		add_child(bush)
-	for point in [Vector2(6430, 2510), Vector2(6590, 2740), Vector2(6800, 2530), Vector2(7060, 2460), Vector2(7360, 2510), Vector2(7740, 2340), Vector2(8160, 1810), Vector2(8690, 1420), Vector2(9230, 1370)]:
-		var moss: MeshInstance3D = arena._sphere(0.18, Color("688e70"))
-		moss.name = "GrottoEdgeMoss"
-		moss.position = arena.terrain.world_point(point, 15)
-		moss.scale = Vector3(1.5, 0.55, 1.0)
-		add_child(moss)
-	for point in [Vector2(6500, 2540), Vector2(6850, 2720), Vector2(7480, 2470), Vector2(8260, 1710), Vector2(8900, 1270), Vector2(9670, 750)]:
-		var stone := MeshInstance3D.new()
-		stone.name = "GrottoEdgeStone"
-		var shape := BoxMesh.new()
-		shape.size = Vector3(0.44, 0.22, 0.36)
-		stone.mesh = shape
-		stone.rotation.y = point.x * 0.002
-		stone.material_override = arena._material(Color("738a79"))
-		stone.position = arena.terrain.world_point(point, 11)
-		add_child(stone)
+	_build_hidden_roots()
+	hidden_visual_root.add_child(preload("res://game/jungle_hidden_sanctuary.gd").build(arena, layout))
 	altar_label = Label3D.new()
 	altar_label.font_size = 27
 	altar_label.pixel_size = 0.006
 	altar_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	altar_label.position = arena.terrain.world_point(Grotto.ALTAR, 150)
+	altar_label.position = arena.terrain.world_point(layout.ALTAR, 150)
 	altar_label.hide()
-	add_child(altar_label)
+	hidden_visual_root.add_child(altar_label)
 	altar_ember = arena._sphere(0.18, Color("b0e9f3"))
-	altar_ember.position = arena.terrain.world_point(Grotto.ALTAR, 50)
+	altar_ember.position = arena.terrain.world_point(layout.ALTAR, 50)
 	altar_ember.hide()
-	add_child(altar_ember)
-	var exit_label := Label3D.new()
-	exit_label.text = "정글로"
-	exit_label.font_size = 28
-	exit_label.pixel_size = 0.006
-	exit_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	exit_label.position = arena.terrain.world_point(Grotto.EXIT_TRIGGER.get_center(), 90)
-	add_child(exit_label)
+	hidden_visual_root.add_child(altar_ember)
+	_build_exit_label()
+
+
+func _hidden_place_id() -> String: return "JUNGLE_GROTTO"
+func _hidden_place_name() -> String: return "계곡"
+func _hidden_return_name() -> String: return "정글로"
+func _hidden_marker_color() -> Color: return Color("a1e8e7")
+
+
+func _build_entry_clues() -> void:
+	main_entry_root.add_child(preload("res://game/jungle_hidden_sanctuary.gd").build_entry(arena, layout))

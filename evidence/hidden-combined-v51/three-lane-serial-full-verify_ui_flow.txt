@@ -1,0 +1,8 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+UI flow fixture userdata: /Users/lty/Library/Application Support/CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-497461be-3b6e-4a13-9332-b67e3becb50a
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Loop Conquest — 정글 절벽 관문
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Loop Conquest — 정글 절벽 관문
+UI flow: 268 checks, 0 failures, headless

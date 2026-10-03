@@ -1,0 +1,19 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3
+
+Hybrid scene ready: Temple circuit — isolated four-minute run
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"settle80","state":"main-undiscovered","ticks_usec":938928,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"force-render","state":"main-undiscovered","ticks_usec":2380156,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5840.0,1770.0],"region":"temple","stage":"settle80","state":"hidden-arrival","ticks_usec":2697531,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5840.0,1770.0],"region":"temple","stage":"force-render","state":"hidden-arrival","ticks_usec":4018667,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6186.7177734375,1776.0],"region":"temple","stage":"normal-walk-start","state":"reward-approach","ticks_usec":5068488,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.48046875,529.61474609375],"region":"temple","stage":"normal-walk-end","state":"reward-approach","ticks_usec":23317725,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.48046875,529.61474609375],"region":"temple","stage":"settle80","state":"reward-approach","ticks_usec":23319629,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.48046875,529.61474609375],"region":"temple","stage":"force-render","state":"reward-approach","ticks_usec":24651261,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.48046875,529.61474609375],"region":"temple","stage":"settle80","state":"hidden-overview","ticks_usec":24758830,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.48046875,529.61474609375],"region":"temple","stage":"force-render","state":"hidden-overview","ticks_usec":25993794,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5813.1767578125,1775.1796875],"region":"temple","stage":"settle80","state":"exit-approach","ticks_usec":36659848,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5813.1767578125,1775.1796875],"region":"temple","stage":"force-render","state":"exit-approach","ticks_usec":37993354,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"settle80","state":"main-return","ticks_usec":38194579,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"force-render","state":"main-return","ticks_usec":39528143,"width":960}
+HIDDEN_RENDER {"checks":355,"failures":0,"images":6}

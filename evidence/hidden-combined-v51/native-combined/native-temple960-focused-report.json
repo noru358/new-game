@@ -1,0 +1,144 @@
+{
+	"captures": [
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "temple-960-main-undiscovered.png",
+			"hud": "",
+			"inside": false,
+			"marker": [],
+			"point": [
+				1310.0,
+				920.0
+			],
+			"region": "temple",
+			"state": "main-undiscovered",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "temple-960-hidden-arrival.png",
+			"hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로",
+			"inside": true,
+			"label_screen": [
+				566.461181640625,
+				294.882629394531
+			],
+			"marker": [
+				8300.0,
+				480.0
+			],
+			"point": [
+				5840.0,
+				1770.0
+			],
+			"region": "temple",
+			"state": "hidden-arrival",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "temple-960-reward-approach.png",
+			"hud": "숨은 정원 · 수호 적 3 / 3 · 안쪽 제단으로",
+			"inside": true,
+			"marker": [
+				8300.0,
+				480.0
+			],
+			"point": [
+				8362.48046875,
+				529.61474609375
+			],
+			"region": "temple",
+			"reward": {
+				"claimed": true,
+				"distance": 79.7836608886719,
+				"guardians": 3,
+				"scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+			},
+			"state": "reward-approach",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 37.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "temple-960-hidden-overview.png",
+			"hud": "숨은 정원 · 수호 적 3 / 3 · 안쪽 제단으로",
+			"inside": true,
+			"marker": [
+				8300.0,
+				480.0
+			],
+			"point": [
+				8362.48046875,
+				529.61474609375
+			],
+			"region": "temple",
+			"state": "hidden-overview",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": true,
+			"exit_visible": true,
+			"file": "temple-960-exit-approach.png",
+			"hud": "숨은 정원 · 수호 적 3 / 3 · 안쪽 제단으로",
+			"inside": true,
+			"label_screen": [
+				584.562316894531,
+				301.904724121094
+			],
+			"marker": [
+				8300.0,
+				480.0
+			],
+			"point": [
+				5813.1767578125,
+				1775.1796875
+			],
+			"region": "temple",
+			"state": "exit-approach",
+			"width": 960
+		},
+		{
+			"boss_clock": "보스까지 04:00",
+			"camera_size": 9.0,
+			"corrected_source": true,
+			"exit_raw_visible": false,
+			"exit_visible": false,
+			"file": "temple-960-main-return.png",
+			"hud": "",
+			"inside": false,
+			"marker": [
+				1215.0,
+				785.0
+			],
+			"point": [
+				1310.0,
+				920.0
+			],
+			"region": "temple",
+			"state": "main-return",
+			"width": 960
+		}
+	],
+	"checks": 355,
+	"failures": 0,
+	"scope": "real native renderer, normal threshold inputs, fixed setup, frozen combat/time; no human play"
+}

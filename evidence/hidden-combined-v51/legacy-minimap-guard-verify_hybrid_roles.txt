@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — Hybrid Court v09
+Hybrid roles verification passed: four-hit growth, five roles, depth-tested warnings, bolt hit, blocked zone and support

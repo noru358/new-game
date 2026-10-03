@@ -1,0 +1,1356 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started 프로젝트 초기화 (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | 파일 구조 스캔 중...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | 전역 클래스 이름을 불러오는 중...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | GDExtensions 검증 중...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | 오토로드 스크립트를 만드는 중...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | 플러그인을 초기화 중...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | 파일 스캔 시작 중...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started 전역 클래스를 등록하는 중... (266 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | ArenaNavigation[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | DeepWetlandTerrain[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | TrainingEnemy[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | EnemyBolt[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | EnemyDefinitions[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | EnemyZone[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | GateBoss[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | HybridMinimap[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | HybridTerrain[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | ImpactBurst[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | JunglePassTerrain[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | JungleWarden[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | PermanentGrowthCatalog[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | SandboxPlayer[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | RunGrowth[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | RunProfile[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | SealAttack[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | TempleBlock[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | TempleCircuitTrialTerrain[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | TempleEnvironmentKit[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | TempleHybridTerrain[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | TempleMinimap[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | TempleOpeningEnvironment[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | TempleSanctuaryEnvironment[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | UnlockProgress[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | ViewProp[39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | WetlandBoss[39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | WispCompanion[39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | WispChainArc[39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | WispFlash[39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | WispProjectile[39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  99% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started 액션 스캔 중... (353 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | jungle-rear-counter-1280x720-after.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | jungle-rear-counter-1280x720-before.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | jungle-rear-warning-960x540-after.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | temple-rear-counter-1280x720-after.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | temple-rear-counter-1280x720-before.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | temple-side-counter-960x540-after.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | flow-details-960x540.png[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | flow-details-1280x720.png[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | retreat-keyboard-result.png[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | 01-entry.png[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | 02-market.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | 03-waterfront.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | 04-overview.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | 05-combat.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | 06-market-960x540.png[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | 07-camp-960x540.png[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | unlock-notice-960x540.png[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | unlock-notice-1280x720.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | 01-entry.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | 02-market.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | 03-waterfront.png[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | 04-overview.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | 05-combat.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | 06-market-960x540.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | 07-camp-960x540.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | 08-warehouse.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | 09-market-street.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | 10-market-combat.png[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | 01-temple-cut-960x540.png[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | 02-result-banked-1280x720.png[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | 03-canal-sluice-960x540.png[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | 04-isolated-rank4-960x540.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | 01-enemy-hud-waterfront-1280x720.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | 02-raised-court-960x540.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | 03-card-modal-960x540.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | 01-camp-settings-960.png[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | 02-temple-settings-1280.png[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | 03-jungle-live-roles-960.png[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | 04-live-ring-warning.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | 05-live-counter-hit.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | sanctuary-01-approach-1280x720.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | sanctuary-02-arrival-1280x720.png[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | sanctuary-03-far-court-960x540.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | sanctuary-05-boss-ring-960x540.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | v33-02-arrival-1280x720.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | after-02-approach.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | after-02b-threshold-sight.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | after-02c-threshold-threat.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | after-03-sanctuary.png[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | after-04-sanctuary-960.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | before-02-approach.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | canal-city-layout-v2.png[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | canal-city-layout-v2.svg[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | canal-city-layout.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | canal-city-layout.svg[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | departure-ui-proposal.png[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | departure-ui-proposal.svg[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | river-fort-layout.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | river-fort-layout.svg[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | after-stair-high-960.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | after-stair-high-1280.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | before-stair-high-960.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | jungle-960-exit-approach.png[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-arrival.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-away.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-overview.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | jungle-960-main-return.png[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | jungle-960-main-undiscovered.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | jungle-1280-exit-approach.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-arrival.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-away.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-overview.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | jungle-1280-main-return.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | jungle-1280-main-undiscovered.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | temple-960-exit-approach.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-arrival.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-away.png[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-overview.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | temple-960-main-return.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | temple-960-main-undiscovered.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | temple-1280-exit-approach.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-arrival.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-away.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-overview.png[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | temple-1280-main-return.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | temple-1280-main-undiscovered.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | jungle-960-exit-approach.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-arrival.png[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-away.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-overview.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | jungle-960-main-return.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | jungle-960-main-undiscovered.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | jungle-1280-exit-approach.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-arrival.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-away.png[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-overview.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | jungle-1280-main-return.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | jungle-1280-main-undiscovered.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | temple-960-exit-approach.png[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-arrival.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-away.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-overview.png[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | temple-960-main-return.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | temple-960-main-undiscovered.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | temple-1280-exit-approach.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-arrival.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-away.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-overview.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | temple-1280-main-return.png[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | temple-1280-main-undiscovered.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | jungle-960-exit-approach.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | jungle-960-hidden-arrival.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | jungle-1280-exit-approach.png[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | jungle-1280-hidden-arrival.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | temple-960-exit-approach.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | temple-960-hidden-arrival.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | temple-1280-exit-approach.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | temple-1280-hidden-arrival.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-960.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-1280.png[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-reference-960.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-reference-1280.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-960.png[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-1280.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-reference-960.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-reference-1280.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-960.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-1280.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-reference-960.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-reference-1280.png[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-960.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-1280.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-reference-960.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-reference-1280.png[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | 05-first-opening-960.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | 05-first-opening-1280.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | 05-first-opening-reference-960.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | 05-first-opening-reference-1280.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-960.png[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-1280.png[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-enemy-reference-960.png[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-enemy-reference-1280.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-reference-960.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-reference-1280.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-same-fx-player-reference-960.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-same-fx-player-reference-1280.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-tell-reference-960.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-tell-reference-1280.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-960.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-1280.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-reference-960.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-reference-1280.png[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-960.png[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-1280.png[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-reference-960.png[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-reference-1280.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-960.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-1280.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-reference-960.png[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-reference-1280.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-960.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-1280.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-enemy-reference-960.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-enemy-reference-1280.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-reference-960.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-reference-1280.png[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-same-fx-player-reference-960.png[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-same-fx-player-reference-1280.png[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-tell-reference-1280.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-960.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-1280.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-reference-960.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-reference-1280.png[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | 12-west-return-960.png[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | 12-west-return-1280.png[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | 12-west-return-reference-960.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | 12-west-return-reference-1280.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | 13-return-pool-960.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | 13-return-pool-1280.png[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | 13-return-pool-reference-960.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | 13-return-pool-reference-1280.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | 14-root-passage-960.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | 14-root-passage-1280.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | 14-root-passage-reference-960.png[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | 14-root-passage-reference-1280.png[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | 15-return-turn-960.png[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | 15-return-turn-1280.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | 15-return-turn-reference-960.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | 15-return-turn-reference-1280.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-960.png[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-1280.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-reference-960.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-reference-1280.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | 17-real-exit-960.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | 17-real-exit-1280.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | 17-real-exit-reference-960.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | 17-real-exit-reference-1280.png[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | 18-main-return-960.png[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | 18-main-return-1280.png[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | 18-main-return-reference-960.png[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | 18-main-return-reference-1280.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-960.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-reference-960.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-960.png[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-reference-960.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-960.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-reference-960.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-960.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-reference-960.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | 05-first-opening-960.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | 05-first-opening-reference-960.png[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-960.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-enemy-reference-960.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-reference-960.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-same-fx-player-reference-960.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-tell-reference-960.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-960.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-reference-960.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-960.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-reference-960.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-960.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-reference-960.png[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-960.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-enemy-reference-960.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-reference-960.png[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-same-fx-player-reference-960.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-960.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-1280.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-reference-960.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | 01-main-waterfall-reference-1280.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-960.png[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-1280.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-reference-960.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | 02-real-entrance-reference-1280.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-960.png[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-1280.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-reference-960.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | 03-hidden-arrival-reference-1280.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-960.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-1280.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-reference-960.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | 04-cave-threshold-reference-1280.png[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | 05-first-opening-960.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | 05-first-opening-1280.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | 05-first-opening-reference-960.png[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | 05-first-opening-reference-1280.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-960.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-1280.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-enemy-reference-960.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-enemy-reference-1280.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-reference-960.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-reference-1280.png[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-same-fx-player-reference-960.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-same-fx-player-reference-1280.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-tell-reference-960.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | 06-receiving-clearing-tell-reference-1280.png[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-960.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-1280.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-reference-960.png[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | 07-pool-bypass-reference-1280.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-960.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-1280.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-reference-960.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | 08-stream-turn-reference-1280.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-960.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-1280.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-reference-960.png[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | 09-inner-approach-reference-1280.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-960.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-1280.png[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-enemy-reference-960.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-enemy-reference-1280.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-reference-960.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-reference-1280.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-same-fx-player-reference-960.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-same-fx-player-reference-1280.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | 10-shrine-lip-tell-reference-1280.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-960.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-1280.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-reference-960.png[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | 11-root-sanctuary-reference-1280.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | 12-west-return-960.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | 12-west-return-1280.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | 12-west-return-reference-960.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | 12-west-return-reference-1280.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | 13-return-pool-960.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | 13-return-pool-1280.png[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | 13-return-pool-reference-960.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | 13-return-pool-reference-1280.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | 14-root-passage-960.png[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | 14-root-passage-1280.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | 14-root-passage-reference-960.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | 14-root-passage-reference-1280.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | 15-return-turn-960.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | 15-return-turn-1280.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | 15-return-turn-reference-960.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | 15-return-turn-reference-1280.png[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-960.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-1280.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-reference-960.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | 16-same-mouth-reference-1280.png[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | 17-real-exit-960.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | 17-real-exit-1280.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | 17-real-exit-reference-960.png[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | 17-real-exit-reference-1280.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | 18-main-return-960.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | 18-main-return-1280.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | 18-main-return-reference-960.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | 18-main-return-reference-1280.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | gate-after.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | gate-before.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | remnant-after.png[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | remnant-before.png[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | water-after.png[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | water-before.png[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | baseline-960-rocks.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | baseline-960-stairs.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | baseline-1280-rocks.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | baseline-1280-stairs.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | candidate-960-rocks.png[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | candidate-960-stairs.png[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | candidate-1280-rocks.png[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | candidate-1280-stairs.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | jungle-worn-stone-after-1280.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | jungle-worn-stone-before-1280.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | after-jungle-gate-stairs-high.png[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | before-jungle-gate-stairs-high.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | jungle-enemy-bolt-uphill-buried.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | jungle-wisp-shot-uphill-buried.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | after-owned-960.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | before-owned-960.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | after.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | before.png[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | after-1280-sheet.png[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | before-1280-sheet.png[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | attack_1.wav[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | attack_2.wav[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | attack_3.wav[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | attack_4.wav[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | dash.wav[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | hit.wav[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | hurt.wav[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | wisp_hit.wav[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | wisp_shot.wav[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | enemy_beast.svg[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | enemy_fragment.svg[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | enemy_lamp.svg[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | enemy_support.svg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | enemy_zone.svg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | hybrid_actor.svg[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started 애셋 (다시) 가져오는 중 (353 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   1% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   1% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   1% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   1% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   2% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   2% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   2% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   3% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   3% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   3% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   3% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   4% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   4% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   4% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   5% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   5% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   5% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   5% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   6% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   6% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   6% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   7% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   7% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   7% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   7% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   8% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   8% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   8% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   9% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   9% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   9% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   9% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  10% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  10% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  10% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  11% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  11% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  11% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  11% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  12% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  12% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  12% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  12% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  13% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  13% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  13% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  14% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  14% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  14% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  14% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  15% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  15% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  15% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  16% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  16% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  16% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  16% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  17% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  17% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  17% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  18% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  18% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  18% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  18% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  19% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  19% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  19% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  20% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  20% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  20% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  20% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  21% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  21% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  21% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  22% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  22% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  22% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  22% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  23% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  23% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  23% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  24% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  24% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  24% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  24% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  25% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  25% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  25% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  25% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  26% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  26% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  26% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  27% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  27% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  27% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  27% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  28% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  28% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  28% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  29% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  29% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  29% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  29% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  30% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  30% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  30% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  31% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  31% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  31% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  31% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  32% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  32% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  32% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  33% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  33% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  33% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  33% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  34% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  34% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  34% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  35% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  35% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  35% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  35% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  36% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  36% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  36% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  37% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  37% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  37% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  37% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  38% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  38% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  38% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  38% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  39% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  39% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  39% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  40% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  40% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  40% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  40% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  41% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  41% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  41% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  42% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  42% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  42% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  42% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  43% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  43% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  43% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  44% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  44% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  44% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  44% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  45% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  45% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  45% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  46% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  46% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  46% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  46% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  47% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  47% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  47% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  48% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  48% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  48% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  48% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  49% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  49% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  49% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  50% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  50% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  50% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  50% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  51% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  51% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  51% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  51% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  52% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  52% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  52% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  53% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  53% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  53% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  53% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  54% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  54% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  54% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  55% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  55% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  55% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  55% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  56% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  56% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  56% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  57% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  57% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  57% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  57% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  58% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  58% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  58% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  59% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  59% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  59% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  59% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  60% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  60% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  60% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  61% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  61% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  61% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  61% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  62% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  62% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  62% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  62% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  63% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  63% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  63% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  64% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  64% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  64% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  64% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  65% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  65% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  65% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  66% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  66% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  66% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  66% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  67% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  67% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  67% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  68% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  68% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  68% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  68% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  69% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  69% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  69% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  70% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  70% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  70% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  70% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  71% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  71% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  71% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  72% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  72% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  72% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  72% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  73% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  73% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  73% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  74% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  74% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  74% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  74% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  75% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  75% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  75% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  75% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  76% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  76% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  76% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  77% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  77% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  77% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  77% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  78% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  78% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  78% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  79% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  79% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  79% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  79% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  80% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  80% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  80% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  81% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  81% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  81% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  81% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  82% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  82% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  82% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  83% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  83% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  83% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  83% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  84% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  84% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  84% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  85% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  85% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  85% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  85% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  86% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  86% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  86% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  87% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  87% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  87% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  87% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  88% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  88% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  88% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  88% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  89% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  89% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  89% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  90% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  90% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  90% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  90% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  91% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  91% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  91% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  92% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  92% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  92% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  92% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  93% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  93% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  93% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  94% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  94% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  94% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  94% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  95% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  95% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  95% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  96% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  96% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  96% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  96% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  97% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  97% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  97% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  98% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  98% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  98% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  98% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  99% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[  99% ] [90m[1mreimport[22m | 다시 가져올 파일을 준비 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져오기 전 작업을 수행 중...[39m[0m
+[   0% ] [90m[1mreimport[22m | 02-real-entrance-reference-1280.png[39m[0m
+[   0% ] [90m[1mreimport[22m | 02-real-entrance-reference-960.png[39m[0m
+[   0% ] [90m[1mreimport[22m | 02-real-entrance-1280.png[39m[0m
+[   0% ] [90m[1mreimport[22m | 02-real-entrance-960.png[39m[0m
+[   1% ] [90m[1mreimport[22m | 01-main-waterfall-reference-1280.png[39m[0m
+[   1% ] [90m[1mreimport[22m | 01-main-waterfall-reference-960.png[39m[0m
+[   1% ] [90m[1mreimport[22m | 01-main-waterfall-1280.png[39m[0m
+[   1% ] [90m[1mreimport[22m | 01-main-waterfall-960.png[39m[0m
+[   2% ] [90m[1mreimport[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[   2% ] [90m[1mreimport[22m | 10-shrine-lip-same-fx-player-reference-960.png[39m[0m
+[   2% ] [90m[1mreimport[22m | 10-shrine-lip-reference-960.png[39m[0m
+[   3% ] [90m[1mreimport[22m | 10-shrine-lip-enemy-reference-960.png[39m[0m
+[   3% ] [90m[1mreimport[22m | 10-shrine-lip-960.png[39m[0m
+[   3% ] [90m[1mreimport[22m | 09-inner-approach-reference-960.png[39m[0m
+[   3% ] [90m[1mreimport[22m | 09-inner-approach-960.png[39m[0m
+[   4% ] [90m[1mreimport[22m | 08-stream-turn-reference-960.png[39m[0m
+[   4% ] [90m[1mreimport[22m | 08-stream-turn-960.png[39m[0m
+[   4% ] [90m[1mreimport[22m | 07-pool-bypass-reference-960.png[39m[0m
+[   5% ] [90m[1mreimport[22m | 07-pool-bypass-960.png[39m[0m
+[   5% ] [90m[1mreimport[22m | 06-receiving-clearing-tell-reference-960.png[39m[0m
+[   5% ] [90m[1mreimport[22m | 06-receiving-clearing-same-fx-player-reference-960.png[39m[0m
+[   5% ] [90m[1mreimport[22m | 06-receiving-clearing-tell-reference-1280.png[39m[0m
+[   6% ] [90m[1mreimport[22m | 06-receiving-clearing-tell-reference-960.png[39m[0m
+[   6% ] [90m[1mreimport[22m | 06-receiving-clearing-same-fx-player-reference-1280.png[39m[0m
+[   6% ] [90m[1mreimport[22m | 06-receiving-clearing-same-fx-player-reference-960.png[39m[0m
+[   7% ] [90m[1mreimport[22m | 06-receiving-clearing-reference-1280.png[39m[0m
+[   7% ] [90m[1mreimport[22m | 06-receiving-clearing-reference-960.png[39m[0m
+[   7% ] [90m[1mreimport[22m | 06-receiving-clearing-enemy-reference-1280.png[39m[0m
+[   7% ] [90m[1mreimport[22m | 06-receiving-clearing-enemy-reference-960.png[39m[0m
+[   8% ] [90m[1mreimport[22m | 06-receiving-clearing-1280.png[39m[0m
+[   8% ] [90m[1mreimport[22m | 06-receiving-clearing-960.png[39m[0m
+[   8% ] [90m[1mreimport[22m | 05-first-opening-reference-1280.png[39m[0m
+[   9% ] [90m[1mreimport[22m | 05-first-opening-reference-960.png[39m[0m
+[   9% ] [90m[1mreimport[22m | 05-first-opening-1280.png[39m[0m
+[   9% ] [90m[1mreimport[22m | 05-first-opening-960.png[39m[0m
+[   9% ] [90m[1mreimport[22m | 04-cave-threshold-reference-1280.png[39m[0m
+[  10% ] [90m[1mreimport[22m | 04-cave-threshold-reference-960.png[39m[0m
+[  10% ] [90m[1mreimport[22m | 04-cave-threshold-1280.png[39m[0m
+[  10% ] [90m[1mreimport[22m | 04-cave-threshold-960.png[39m[0m
+[  11% ] [90m[1mreimport[22m | 03-hidden-arrival-reference-1280.png[39m[0m
+[  11% ] [90m[1mreimport[22m | 03-hidden-arrival-reference-960.png[39m[0m
+[  11% ] [90m[1mreimport[22m | 03-hidden-arrival-1280.png[39m[0m
+[  11% ] [90m[1mreimport[22m | 03-hidden-arrival-960.png[39m[0m
+[  12% ] [90m[1mreimport[22m | 16-same-mouth-reference-960.png[39m[0m
+[  12% ] [90m[1mreimport[22m | 16-same-mouth-1280.png[39m[0m
+[  12% ] [90m[1mreimport[22m | 16-same-mouth-960.png[39m[0m
+[  12% ] [90m[1mreimport[22m | 15-return-turn-reference-1280.png[39m[0m
+[  13% ] [90m[1mreimport[22m | 15-return-turn-reference-960.png[39m[0m
+[  13% ] [90m[1mreimport[22m | 15-return-turn-1280.png[39m[0m
+[  13% ] [90m[1mreimport[22m | 15-return-turn-960.png[39m[0m
+[  14% ] [90m[1mreimport[22m | 14-root-passage-reference-1280.png[39m[0m
+[  14% ] [90m[1mreimport[22m | 14-root-passage-reference-960.png[39m[0m
+[  14% ] [90m[1mreimport[22m | 14-root-passage-1280.png[39m[0m
+[  14% ] [90m[1mreimport[22m | 14-root-passage-960.png[39m[0m
+[  15% ] [90m[1mreimport[22m | 13-return-pool-reference-1280.png[39m[0m
+[  15% ] [90m[1mreimport[22m | 13-return-pool-reference-960.png[39m[0m
+[  15% ] [90m[1mreimport[22m | 13-return-pool-1280.png[39m[0m
+[  16% ] [90m[1mreimport[22m | 13-return-pool-960.png[39m[0m
+[  16% ] [90m[1mreimport[22m | 12-west-return-reference-1280.png[39m[0m
+[  16% ] [90m[1mreimport[22m | 12-west-return-reference-960.png[39m[0m
+[  16% ] [90m[1mreimport[22m | 12-west-return-1280.png[39m[0m
+[  17% ] [90m[1mreimport[22m | 12-west-return-960.png[39m[0m
+[  17% ] [90m[1mreimport[22m | 11-root-sanctuary-reference-1280.png[39m[0m
+[  17% ] [90m[1mreimport[22m | 11-root-sanctuary-reference-960.png[39m[0m
+[  18% ] [90m[1mreimport[22m | 06-receiving-clearing-reference-960.png[39m[0m
+[  18% ] [90m[1mreimport[22m | 06-receiving-clearing-enemy-reference-960.png[39m[0m
+[  18% ] [90m[1mreimport[22m | 06-receiving-clearing-960.png[39m[0m
+[  18% ] [90m[1mreimport[22m | 05-first-opening-reference-960.png[39m[0m
+[  19% ] [90m[1mreimport[22m | 05-first-opening-960.png[39m[0m
+[  19% ] [90m[1mreimport[22m | 04-cave-threshold-reference-960.png[39m[0m
+[  19% ] [90m[1mreimport[22m | 04-cave-threshold-960.png[39m[0m
+[  20% ] [90m[1mreimport[22m | 03-hidden-arrival-reference-960.png[39m[0m
+[  20% ] [90m[1mreimport[22m | 03-hidden-arrival-960.png[39m[0m
+[  20% ] [90m[1mreimport[22m | 02-real-entrance-reference-960.png[39m[0m
+[  20% ] [90m[1mreimport[22m | 02-real-entrance-960.png[39m[0m
+[  21% ] [90m[1mreimport[22m | 01-main-waterfall-reference-960.png[39m[0m
+[  21% ] [90m[1mreimport[22m | 01-main-waterfall-960.png[39m[0m
+[  21% ] [90m[1mreimport[22m | 18-main-return-reference-1280.png[39m[0m
+[  22% ] [90m[1mreimport[22m | 18-main-return-reference-960.png[39m[0m
+[  22% ] [90m[1mreimport[22m | 18-main-return-1280.png[39m[0m
+[  22% ] [90m[1mreimport[22m | 18-main-return-960.png[39m[0m
+[  22% ] [90m[1mreimport[22m | 17-real-exit-reference-1280.png[39m[0m
+[  23% ] [90m[1mreimport[22m | 17-real-exit-reference-960.png[39m[0m
+[  23% ] [90m[1mreimport[22m | 17-real-exit-1280.png[39m[0m
+[  23% ] [90m[1mreimport[22m | 17-real-exit-960.png[39m[0m
+[  24% ] [90m[1mreimport[22m | 16-same-mouth-reference-1280.png[39m[0m
+[  24% ] [90m[1mreimport[22m | baseline-1280-stairs.png[39m[0m
+[  24% ] [90m[1mreimport[22m | baseline-1280-rocks.png[39m[0m
+[  24% ] [90m[1mreimport[22m | baseline-960-stairs.png[39m[0m
+[  25% ] [90m[1mreimport[22m | baseline-960-rocks.png[39m[0m
+[  25% ] [90m[1mreimport[22m | water-before.png[39m[0m
+[  25% ] [90m[1mreimport[22m | water-after.png[39m[0m
+[  25% ] [90m[1mreimport[22m | remnant-before.png[39m[0m
+[  26% ] [90m[1mreimport[22m | remnant-after.png[39m[0m
+[  26% ] [90m[1mreimport[22m | gate-before.png[39m[0m
+[  26% ] [90m[1mreimport[22m | gate-after.png[39m[0m
+[  27% ] [90m[1mreimport[22m | 18-main-return-reference-1280.png[39m[0m
+[  27% ] [90m[1mreimport[22m | 18-main-return-reference-960.png[39m[0m
+[  27% ] [90m[1mreimport[22m | 18-main-return-1280.png[39m[0m
+[  27% ] [90m[1mreimport[22m | 18-main-return-960.png[39m[0m
+[  28% ] [90m[1mreimport[22m | 17-real-exit-reference-1280.png[39m[0m
+[  28% ] [90m[1mreimport[22m | 17-real-exit-reference-960.png[39m[0m
+[  28% ] [90m[1mreimport[22m | 17-real-exit-1280.png[39m[0m
+[  29% ] [90m[1mreimport[22m | 17-real-exit-960.png[39m[0m
+[  29% ] [90m[1mreimport[22m | 16-same-mouth-reference-1280.png[39m[0m
+[  29% ] [90m[1mreimport[22m | 16-same-mouth-reference-960.png[39m[0m
+[  29% ] [90m[1mreimport[22m | 16-same-mouth-1280.png[39m[0m
+[  30% ] [90m[1mreimport[22m | hybrid_actor.svg[39m[0m
+[  30% ] [90m[1mreimport[22m | enemy_zone.svg[39m[0m
+[  30% ] [90m[1mreimport[22m | enemy_support.svg[39m[0m
+[  31% ] [90m[1mreimport[22m | enemy_lamp.svg[39m[0m
+[  31% ] [90m[1mreimport[22m | enemy_fragment.svg[39m[0m
+[  31% ] [90m[1mreimport[22m | enemy_beast.svg[39m[0m
+[  31% ] [90m[1mreimport[22m | before-1280-sheet.png[39m[0m
+[  32% ] [90m[1mreimport[22m | after-1280-sheet.png[39m[0m
+[  32% ] [90m[1mreimport[22m | before.png[39m[0m
+[  32% ] [90m[1mreimport[22m | after.png[39m[0m
+[  33% ] [90m[1mreimport[22m | before-owned-960.png[39m[0m
+[  33% ] [90m[1mreimport[22m | after-owned-960.png[39m[0m
+[  33% ] [90m[1mreimport[22m | jungle-wisp-shot-uphill-buried.png[39m[0m
+[  33% ] [90m[1mreimport[22m | jungle-enemy-bolt-uphill-buried.png[39m[0m
+[  34% ] [90m[1mreimport[22m | before-jungle-gate-stairs-high.png[39m[0m
+[  34% ] [90m[1mreimport[22m | after-jungle-gate-stairs-high.png[39m[0m
+[  34% ] [90m[1mreimport[22m | jungle-worn-stone-before-1280.png[39m[0m
+[  35% ] [90m[1mreimport[22m | jungle-worn-stone-after-1280.png[39m[0m
+[  35% ] [90m[1mreimport[22m | candidate-1280-stairs.png[39m[0m
+[  35% ] [90m[1mreimport[22m | candidate-1280-rocks.png[39m[0m
+[  35% ] [90m[1mreimport[22m | candidate-960-stairs.png[39m[0m
+[  36% ] [90m[1mreimport[22m | candidate-960-rocks.png[39m[0m
+[  36% ] [90m[1mreimport[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[  36% ] [90m[1mreimport[22m | 10-shrine-lip-same-fx-player-reference-1280.png[39m[0m
+[  37% ] [90m[1mreimport[22m | 10-shrine-lip-same-fx-player-reference-960.png[39m[0m
+[  37% ] [90m[1mreimport[22m | 10-shrine-lip-reference-1280.png[39m[0m
+[  37% ] [90m[1mreimport[22m | 10-shrine-lip-reference-960.png[39m[0m
+[  37% ] [90m[1mreimport[22m | 10-shrine-lip-enemy-reference-1280.png[39m[0m
+[  38% ] [90m[1mreimport[22m | 10-shrine-lip-enemy-reference-960.png[39m[0m
+[  38% ] [90m[1mreimport[22m | 10-shrine-lip-1280.png[39m[0m
+[  38% ] [90m[1mreimport[22m | 10-shrine-lip-960.png[39m[0m
+[  38% ] [90m[1mreimport[22m | 09-inner-approach-reference-1280.png[39m[0m
+[  39% ] [90m[1mreimport[22m | 09-inner-approach-reference-960.png[39m[0m
+[  39% ] [90m[1mreimport[22m | 09-inner-approach-1280.png[39m[0m
+[  39% ] [90m[1mreimport[22m | 09-inner-approach-960.png[39m[0m
+[  40% ] [90m[1mreimport[22m | 08-stream-turn-reference-1280.png[39m[0m
+[  40% ] [90m[1mreimport[22m | 08-stream-turn-reference-960.png[39m[0m
+[  40% ] [90m[1mreimport[22m | 08-stream-turn-1280.png[39m[0m
+[  40% ] [90m[1mreimport[22m | 08-stream-turn-960.png[39m[0m
+[  41% ] [90m[1mreimport[22m | 07-pool-bypass-reference-1280.png[39m[0m
+[  41% ] [90m[1mreimport[22m | 07-pool-bypass-reference-960.png[39m[0m
+[  41% ] [90m[1mreimport[22m | 07-pool-bypass-1280.png[39m[0m
+[  42% ] [90m[1mreimport[22m | 07-pool-bypass-960.png[39m[0m
+[  42% ] [90m[1mreimport[22m | 16-same-mouth-960.png[39m[0m
+[  42% ] [90m[1mreimport[22m | 15-return-turn-reference-1280.png[39m[0m
+[  42% ] [90m[1mreimport[22m | 15-return-turn-reference-960.png[39m[0m
+[  43% ] [90m[1mreimport[22m | 15-return-turn-1280.png[39m[0m
+[  43% ] [90m[1mreimport[22m | 15-return-turn-960.png[39m[0m
+[  43% ] [90m[1mreimport[22m | 14-root-passage-reference-1280.png[39m[0m
+[  44% ] [90m[1mreimport[22m | 14-root-passage-reference-960.png[39m[0m
+[  44% ] [90m[1mreimport[22m | 14-root-passage-1280.png[39m[0m
+[  44% ] [90m[1mreimport[22m | 14-root-passage-960.png[39m[0m
+[  44% ] [90m[1mreimport[22m | 13-return-pool-reference-1280.png[39m[0m
+[  45% ] [90m[1mreimport[22m | 13-return-pool-reference-960.png[39m[0m
+[  45% ] [90m[1mreimport[22m | 13-return-pool-1280.png[39m[0m
+[  45% ] [90m[1mreimport[22m | 13-return-pool-960.png[39m[0m
+[  46% ] [90m[1mreimport[22m | 12-west-return-reference-1280.png[39m[0m
+[  46% ] [90m[1mreimport[22m | 12-west-return-reference-960.png[39m[0m
+[  46% ] [90m[1mreimport[22m | 12-west-return-1280.png[39m[0m
+[  46% ] [90m[1mreimport[22m | 12-west-return-960.png[39m[0m
+[  47% ] [90m[1mreimport[22m | 11-root-sanctuary-reference-1280.png[39m[0m
+[  47% ] [90m[1mreimport[22m | 11-root-sanctuary-reference-960.png[39m[0m
+[  47% ] [90m[1mreimport[22m | 11-root-sanctuary-1280.png[39m[0m
+[  48% ] [90m[1mreimport[22m | 11-root-sanctuary-960.png[39m[0m
+[  48% ] [90m[1mreimport[22m | 10-shrine-lip-tell-reference-1280.png[39m[0m
+[  48% ] [90m[1mreimport[22m | jungle-960-hidden-arrival.png[39m[0m
+[  48% ] [90m[1mreimport[22m | jungle-960-exit-approach.png[39m[0m
+[  49% ] [90m[1mreimport[22m | before-stair-high-960.png[39m[0m
+[  49% ] [90m[1mreimport[22m | after-stair-high-1280.png[39m[0m
+[  49% ] [90m[1mreimport[22m | after-stair-high-960.png[39m[0m
+[  50% ] [90m[1mreimport[22m | river-fort-layout.svg[39m[0m
+[  50% ] [90m[1mreimport[22m | river-fort-layout.png[39m[0m
+[  50% ] [90m[1mreimport[22m | departure-ui-proposal.svg[39m[0m
+[  50% ] [90m[1mreimport[22m | departure-ui-proposal.png[39m[0m
+[  51% ] [90m[1mreimport[22m | canal-city-layout.svg[39m[0m
+[  51% ] [90m[1mreimport[22m | canal-city-layout.png[39m[0m
+[  51% ] [90m[1mreimport[22m | canal-city-layout-v2.svg[39m[0m
+[  51% ] [90m[1mreimport[22m | canal-city-layout-v2.png[39m[0m
+[  52% ] [90m[1mreimport[22m | before-02-approach.png[39m[0m
+[  52% ] [90m[1mreimport[22m | after-04-sanctuary-960.png[39m[0m
+[  52% ] [90m[1mreimport[22m | after-03-sanctuary.png[39m[0m
+[  53% ] [90m[1mreimport[22m | after-02c-threshold-threat.png[39m[0m
+[  53% ] [90m[1mreimport[22m | after-02b-threshold-sight.png[39m[0m
+[  53% ] [90m[1mreimport[22m | after-02-approach.png[39m[0m
+[  53% ] [90m[1mreimport[22m | v33-02-arrival-1280x720.png[39m[0m
+[  54% ] [90m[1mreimport[22m | sanctuary-05-boss-ring-960x540.png[39m[0m
+[  54% ] [90m[1mreimport[22m | temple-1280-main-undiscovered.png[39m[0m
+[  54% ] [90m[1mreimport[22m | temple-1280-main-return.png[39m[0m
+[  55% ] [90m[1mreimport[22m | temple-1280-hidden-overview.png[39m[0m
+[  55% ] [90m[1mreimport[22m | temple-1280-hidden-away.png[39m[0m
+[  55% ] [90m[1mreimport[22m | temple-1280-hidden-arrival.png[39m[0m
+[  55% ] [90m[1mreimport[22m | temple-1280-exit-approach.png[39m[0m
+[  56% ] [90m[1mreimport[22m | temple-960-main-undiscovered.png[39m[0m
+[  56% ] [90m[1mreimport[22m | temple-960-main-return.png[39m[0m
+[  56% ] [90m[1mreimport[22m | temple-960-hidden-overview.png[39m[0m
+[  57% ] [90m[1mreimport[22m | temple-960-hidden-away.png[39m[0m
+[  57% ] [90m[1mreimport[22m | temple-960-hidden-arrival.png[39m[0m
+[  57% ] [90m[1mreimport[22m | temple-960-exit-approach.png[39m[0m
+[  57% ] [90m[1mreimport[22m | jungle-1280-main-undiscovered.png[39m[0m
+[  58% ] [90m[1mreimport[22m | jungle-1280-main-return.png[39m[0m
+[  58% ] [90m[1mreimport[22m | jungle-1280-hidden-overview.png[39m[0m
+[  58% ] [90m[1mreimport[22m | jungle-1280-hidden-away.png[39m[0m
+[  59% ] [90m[1mreimport[22m | jungle-1280-hidden-arrival.png[39m[0m
+[  59% ] [90m[1mreimport[22m | jungle-1280-exit-approach.png[39m[0m
+[  59% ] [90m[1mreimport[22m | jungle-960-main-undiscovered.png[39m[0m
+[  59% ] [90m[1mreimport[22m | jungle-960-main-return.png[39m[0m
+[  60% ] [90m[1mreimport[22m | jungle-960-hidden-overview.png[39m[0m
+[  60% ] [90m[1mreimport[22m | jungle-960-hidden-away.png[39m[0m
+[  60% ] [90m[1mreimport[22m | 03-waterfront.png[39m[0m
+[  61% ] [90m[1mreimport[22m | 02-market.png[39m[0m
+[  61% ] [90m[1mreimport[22m | 01-entry.png[39m[0m
+[  61% ] [90m[1mreimport[22m | unlock-notice-1280x720.png[39m[0m
+[  61% ] [90m[1mreimport[22m | unlock-notice-960x540.png[39m[0m
+[  62% ] [90m[1mreimport[22m | 07-camp-960x540.png[39m[0m
+[  62% ] [90m[1mreimport[22m | 06-market-960x540.png[39m[0m
+[  62% ] [90m[1mreimport[22m | 05-combat.png[39m[0m
+[  62% ] [90m[1mreimport[22m | 04-overview.png[39m[0m
+[  63% ] [90m[1mreimport[22m | 03-waterfront.png[39m[0m
+[  63% ] [90m[1mreimport[22m | 02-market.png[39m[0m
+[  63% ] [90m[1mreimport[22m | 01-entry.png[39m[0m
+[  64% ] [90m[1mreimport[22m | retreat-keyboard-result.png[39m[0m
+[  64% ] [90m[1mreimport[22m | flow-details-1280x720.png[39m[0m
+[  64% ] [90m[1mreimport[22m | flow-details-960x540.png[39m[0m
+[  64% ] [90m[1mreimport[22m | temple-side-counter-960x540-after.png[39m[0m
+[  65% ] [90m[1mreimport[22m | temple-rear-counter-1280x720-before.png[39m[0m
+[  65% ] [90m[1mreimport[22m | temple-rear-counter-1280x720-after.png[39m[0m
+[  65% ] [90m[1mreimport[22m | jungle-rear-warning-960x540-after.png[39m[0m
+[  66% ] [90m[1mreimport[22m | jungle-rear-counter-1280x720-before.png[39m[0m
+[  66% ] [90m[1mreimport[22m | jungle-rear-counter-1280x720-after.png[39m[0m
+[  66% ] [90m[1mreimport[22m | sanctuary-03-far-court-960x540.png[39m[0m
+[  66% ] [90m[1mreimport[22m | sanctuary-02-arrival-1280x720.png[39m[0m
+[  67% ] [90m[1mreimport[22m | sanctuary-01-approach-1280x720.png[39m[0m
+[  67% ] [90m[1mreimport[22m | 05-live-counter-hit.png[39m[0m
+[  67% ] [90m[1mreimport[22m | 04-live-ring-warning.png[39m[0m
+[  68% ] [90m[1mreimport[22m | 03-jungle-live-roles-960.png[39m[0m
+[  68% ] [90m[1mreimport[22m | 02-temple-settings-1280.png[39m[0m
+[  68% ] [90m[1mreimport[22m | 01-camp-settings-960.png[39m[0m
+[  68% ] [90m[1mreimport[22m | 03-card-modal-960x540.png[39m[0m
+[  69% ] [90m[1mreimport[22m | 02-raised-court-960x540.png[39m[0m
+[  69% ] [90m[1mreimport[22m | 01-enemy-hud-waterfront-1280x720.png[39m[0m
+[  69% ] [90m[1mreimport[22m | 04-isolated-rank4-960x540.png[39m[0m
+[  70% ] [90m[1mreimport[22m | 03-canal-sluice-960x540.png[39m[0m
+[  70% ] [90m[1mreimport[22m | 02-result-banked-1280x720.png[39m[0m
+[  70% ] [90m[1mreimport[22m | 01-temple-cut-960x540.png[39m[0m
+[  70% ] [90m[1mreimport[22m | 10-market-combat.png[39m[0m
+[  71% ] [90m[1mreimport[22m | 09-market-street.png[39m[0m
+[  71% ] [90m[1mreimport[22m | 08-warehouse.png[39m[0m
+[  71% ] [90m[1mreimport[22m | 07-camp-960x540.png[39m[0m
+[  72% ] [90m[1mreimport[22m | 06-market-960x540.png[39m[0m
+[  72% ] [90m[1mreimport[22m | 05-combat.png[39m[0m
+[  72% ] [90m[1mreimport[22m | 04-overview.png[39m[0m
+[  72% ] [90m[1mreimport[22m | 07-pool-bypass-1280.png[39m[0m
+[  73% ] [90m[1mreimport[22m | 07-pool-bypass-960.png[39m[0m
+[  73% ] [90m[1mreimport[22m | 06-receiving-clearing-tell-reference-1280.png[39m[0m
+[  73% ] [90m[1mreimport[22m | 06-receiving-clearing-tell-reference-960.png[39m[0m
+[  74% ] [90m[1mreimport[22m | 06-receiving-clearing-same-fx-player-reference-1280.png[39m[0m
+[  74% ] [90m[1mreimport[22m | 06-receiving-clearing-same-fx-player-reference-960.png[39m[0m
+[  74% ] [90m[1mreimport[22m | 06-receiving-clearing-reference-1280.png[39m[0m
+[  74% ] [90m[1mreimport[22m | 06-receiving-clearing-reference-960.png[39m[0m
+[  75% ] [90m[1mreimport[22m | 06-receiving-clearing-enemy-reference-1280.png[39m[0m
+[  75% ] [90m[1mreimport[22m | 06-receiving-clearing-enemy-reference-960.png[39m[0m
+[  75% ] [90m[1mreimport[22m | 06-receiving-clearing-1280.png[39m[0m
+[  75% ] [90m[1mreimport[22m | 06-receiving-clearing-960.png[39m[0m
+[  76% ] [90m[1mreimport[22m | 05-first-opening-reference-1280.png[39m[0m
+[  76% ] [90m[1mreimport[22m | 05-first-opening-reference-960.png[39m[0m
+[  76% ] [90m[1mreimport[22m | 05-first-opening-1280.png[39m[0m
+[  77% ] [90m[1mreimport[22m | 05-first-opening-960.png[39m[0m
+[  77% ] [90m[1mreimport[22m | 04-cave-threshold-reference-1280.png[39m[0m
+[  77% ] [90m[1mreimport[22m | 04-cave-threshold-reference-960.png[39m[0m
+[  77% ] [90m[1mreimport[22m | 04-cave-threshold-1280.png[39m[0m
+[  78% ] [90m[1mreimport[22m | 04-cave-threshold-960.png[39m[0m
+[  78% ] [90m[1mreimport[22m | 03-hidden-arrival-reference-1280.png[39m[0m
+[  78% ] [90m[1mreimport[22m | 11-root-sanctuary-1280.png[39m[0m
+[  79% ] [90m[1mreimport[22m | 11-root-sanctuary-960.png[39m[0m
+[  79% ] [90m[1mreimport[22m | 10-shrine-lip-tell-reference-1280.png[39m[0m
+[  79% ] [90m[1mreimport[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[  79% ] [90m[1mreimport[22m | 10-shrine-lip-same-fx-player-reference-1280.png[39m[0m
+[  80% ] [90m[1mreimport[22m | 10-shrine-lip-same-fx-player-reference-960.png[39m[0m
+[  80% ] [90m[1mreimport[22m | 10-shrine-lip-reference-1280.png[39m[0m
+[  80% ] [90m[1mreimport[22m | 10-shrine-lip-reference-960.png[39m[0m
+[  81% ] [90m[1mreimport[22m | 10-shrine-lip-enemy-reference-1280.png[39m[0m
+[  81% ] [90m[1mreimport[22m | 10-shrine-lip-enemy-reference-960.png[39m[0m
+[  81% ] [90m[1mreimport[22m | 10-shrine-lip-1280.png[39m[0m
+[  81% ] [90m[1mreimport[22m | 10-shrine-lip-960.png[39m[0m
+[  82% ] [90m[1mreimport[22m | 09-inner-approach-reference-1280.png[39m[0m
+[  82% ] [90m[1mreimport[22m | 09-inner-approach-reference-960.png[39m[0m
+[  82% ] [90m[1mreimport[22m | 09-inner-approach-1280.png[39m[0m
+[  83% ] [90m[1mreimport[22m | 09-inner-approach-960.png[39m[0m
+[  83% ] [90m[1mreimport[22m | 08-stream-turn-reference-1280.png[39m[0m
+[  83% ] [90m[1mreimport[22m | 08-stream-turn-reference-960.png[39m[0m
+[  83% ] [90m[1mreimport[22m | 08-stream-turn-1280.png[39m[0m
+[  84% ] [90m[1mreimport[22m | 08-stream-turn-960.png[39m[0m
+[  84% ] [90m[1mreimport[22m | 07-pool-bypass-reference-1280.png[39m[0m
+[  84% ] [90m[1mreimport[22m | 07-pool-bypass-reference-960.png[39m[0m
+[  85% ] [90m[1mreimport[22m | temple-1280-hidden-away.png[39m[0m
+[  85% ] [90m[1mreimport[22m | temple-1280-hidden-arrival.png[39m[0m
+[  85% ] [90m[1mreimport[22m | temple-1280-exit-approach.png[39m[0m
+[  85% ] [90m[1mreimport[22m | temple-960-main-undiscovered.png[39m[0m
+[  86% ] [90m[1mreimport[22m | temple-960-main-return.png[39m[0m
+[  86% ] [90m[1mreimport[22m | temple-960-hidden-overview.png[39m[0m
+[  86% ] [90m[1mreimport[22m | temple-960-hidden-away.png[39m[0m
+[  87% ] [90m[1mreimport[22m | temple-960-hidden-arrival.png[39m[0m
+[  87% ] [90m[1mreimport[22m | temple-960-exit-approach.png[39m[0m
+[  87% ] [90m[1mreimport[22m | jungle-1280-main-undiscovered.png[39m[0m
+[  87% ] [90m[1mreimport[22m | jungle-1280-main-return.png[39m[0m
+[  88% ] [90m[1mreimport[22m | jungle-1280-hidden-overview.png[39m[0m
+[  88% ] [90m[1mreimport[22m | jungle-1280-hidden-away.png[39m[0m
+[  88% ] [90m[1mreimport[22m | jungle-1280-hidden-arrival.png[39m[0m
+[  88% ] [90m[1mreimport[22m | jungle-1280-exit-approach.png[39m[0m
+[  89% ] [90m[1mreimport[22m | jungle-960-main-undiscovered.png[39m[0m
+[  89% ] [90m[1mreimport[22m | jungle-960-main-return.png[39m[0m
+[  89% ] [90m[1mreimport[22m | jungle-960-hidden-overview.png[39m[0m
+[  90% ] [90m[1mreimport[22m | jungle-960-hidden-away.png[39m[0m
+[  90% ] [90m[1mreimport[22m | jungle-960-hidden-arrival.png[39m[0m
+[  90% ] [90m[1mreimport[22m | jungle-960-exit-approach.png[39m[0m
+[  90% ] [90m[1mreimport[22m | 03-hidden-arrival-reference-960.png[39m[0m
+[  91% ] [90m[1mreimport[22m | 03-hidden-arrival-1280.png[39m[0m
+[  91% ] [90m[1mreimport[22m | 03-hidden-arrival-960.png[39m[0m
+[  91% ] [90m[1mreimport[22m | 02-real-entrance-reference-1280.png[39m[0m
+[  92% ] [90m[1mreimport[22m | 02-real-entrance-reference-960.png[39m[0m
+[  92% ] [90m[1mreimport[22m | 02-real-entrance-1280.png[39m[0m
+[  92% ] [90m[1mreimport[22m | 02-real-entrance-960.png[39m[0m
+[  92% ] [90m[1mreimport[22m | 01-main-waterfall-reference-1280.png[39m[0m
+[  93% ] [90m[1mreimport[22m | 01-main-waterfall-reference-960.png[39m[0m
+[  93% ] [90m[1mreimport[22m | 01-main-waterfall-1280.png[39m[0m
+[  93% ] [90m[1mreimport[22m | 01-main-waterfall-960.png[39m[0m
+[  94% ] [90m[1mreimport[22m | temple-1280-hidden-overview.png[39m[0m
+[  94% ] [90m[1mreimport[22m | temple-1280-main-return.png[39m[0m
+[  94% ] [90m[1mreimport[22m | temple-1280-main-undiscovered.png[39m[0m
+[  94% ] [90m[1mreimport[22m | jungle-960-exit-approach.png[39m[0m
+[  95% ] [90m[1mreimport[22m | jungle-960-hidden-arrival.png[39m[0m
+[  95% ] [90m[1mreimport[22m | jungle-1280-exit-approach.png[39m[0m
+[  95% ] [90m[1mreimport[22m | jungle-1280-hidden-arrival.png[39m[0m
+[  96% ] [90m[1mreimport[22m | temple-960-exit-approach.png[39m[0m
+[  96% ] [90m[1mreimport[22m | temple-960-hidden-arrival.png[39m[0m
+[  96% ] [90m[1mreimport[22m | temple-1280-exit-approach.png[39m[0m
+[  96% ] [90m[1mreimport[22m | temple-1280-hidden-arrival.png[39m[0m
+[  97% ] [90m[1mreimport[22m | 02-real-entrance-reference-1280.png[39m[0m
+[  97% ] [90m[1mreimport[22m | 02-real-entrance-reference-960.png[39m[0m
+[  97% ] [90m[1mreimport[22m | 02-real-entrance-1280.png[39m[0m
+[  98% ] [90m[1mreimport[22m | 02-real-entrance-960.png[39m[0m
+[  98% ] [90m[1mreimport[22m | 01-main-waterfall-reference-1280.png[39m[0m
+[  98% ] [90m[1mreimport[22m | 01-main-waterfall-reference-960.png[39m[0m
+[  98% ] [90m[1mreimport[22m | 01-main-waterfall-1280.png[39m[0m
+[  99% ] [90m[1mreimport[22m | 01-main-waterfall-960.png[39m[0m
+[  99% ] [90m[1mreimport[22m | 10-shrine-lip-tell-reference-960.png[39m[0m
+[  99% ] [90m[1mreimport[22m | 애셋 가져오기 마무리 중...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started 애셋 (다시) 가져오는 중 (353 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | 다시 가져오기 후 작업을 수행 중...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started 편집기를 불러오는 중 (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | 편집기 레이아웃을 불러오는 중...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | 독을 불러오는 중...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m

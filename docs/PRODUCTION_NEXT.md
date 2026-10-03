@@ -1,5 +1,27 @@
 # 다음 제작 지시 — 첫 지역을 완성품 수준으로 묶기
 
+## BUILD v49 제출 묶음 — 부모 채택 이후
+
+히든합본20359e1 정확전체CI 성공 및 대표4PNG 검토 후 부모가 다음플레이후보로 채택했다. 제출범위는 히든장소/출입·표기와 사원보상후 귀환안내 한줄이다. 본선사원 군집/표면·조명 후속 및 캐릭터시안은 제외한다.
+
+v49 previewlabel만 갱신하며 기존v45공통v7기록과 제품게임계약을 유지한다. 관련실제보상/HUD검사→정확HEAD 전체CI·Macarm64 nativeexport→압축해제/hash/파일목록/strictcodesign/개발자료·importremap배제확인→production기준draftPR 및 공식artifact/검증로컬경로 인계 순서다. 패키지검사 후에도 사용자앱/세이브를 열지 않으며 merge/canonical/main/공개release는 부모판단이다.
+
+## 세 lane 히든 후보 v51 — 부모 채택 판단 단계
+
+flow aa3ff60(9커밋)/temple d2abbff(4)/jungle e06a2fa(1)를 production1aac501 기준 독립합본에 장착했다. helper는 flow root/latch/표기를 따르고 물6개·보상/저장/240초·좌표·습지무히든 계약을 검사했다. 사원 본선 표면/조명실험은 미채택으로 제외했다.
+
+합본native a58162e의960/1280 34PNG·1644검사/0실패: 두맵 정상 출입/근접표기/발견앵커/실제보상·저장·정글후반귀환 완료. fixture수호피해합성/압박동결과 사람미감·자연완주를 구별한다. 정확87ba094 지원기본physics CI116headless/preview/depth는PASS, UI1280물97.60% 한실패는 방향미고정pose의spriteflip 상속이었다. 기존right-facing 비교계약을명시/assert하고98%기준을유지했으며 f0a26e Mac최소재현98.2990%로PASS. 반대방향/기존ramp·FX가림 한계는남긴다.
+
+다음: 이 증거commit의 정확HEAD fullCI 완료 확인 → 부모가 native34화면과 미해결가림/미감을 직접검토하여 채택판단. 로컬 고정FPS109/114와 기본physics후속5PASS를 단일정책 성공으로 섞지 않는다. 최종GitHub check와 integration/HIDDEN_COMBINED_V51.md/반환SHA를 따른다. 앱배포·merge/release/canonical 이동은 부모소유, 자연3맵완주·재미·장시간성능은 미검증이다.
+
+## 히든 합본 v51 체크포인트 — 부모 통합 판단 대기
+
+`codex/hidden-regions-combined-v51`은 production1aac501 기준의 flow aa3ff60 + temple d2abbff 두 lane 후보다. 실제 roots/발견표시/문턱0.5를 장착하고 old 장식 루프만 교체했으며, 정원·정글 기존 보상/저장/240초/좌표 계약은 유지한다. 정확한 검사 source와 변경 파일은 `integration/HIDDEN_COMBINED_V51.md` 및 반환 evidence를 따른다.
+
+다음 순서: 부모가 전달하는 정글 최종 push SHA 이후 필요한 선형커밋 전체 회수 → helper 두 root 장착/폭포 중복 없음 확인 → 사원 아트 GUI 종료 후 통합 슬롯에서 두 히든 출입·표기·아트·합법 보상접근24화면 → 정확 combined HEAD 전체회귀와 Linux fullCI. 원본 전체 렌더를 반복하지 않는다. 정글 최종공면수정과 이전 왕복렌더 source를 혼동하지 않는다. main/production/canonical merge·release·사용자앱 교체는 부모 소유다.
+
+사람 장소감·미감·재미/자연3맵완주/장시간 성능은 남는다. 사원 ALTAR 중심 기존34% 및 정글 기존 water/FX 부분 가림은 해결로 표시하지 않는다.
+
 ## 현재 실행 순서 — 2026-10-03 v48 제출 이후
 
 현재 사용자 배포 및 canonical은686228f1d2f7cad0f09311c2006f46c6c16ce9d3(v48)이다. Mac 단일19,103,364byte 첨부 수락과 사용자Mac Downloads/LoopConquest-v48의 같은hash 앱 배치/서명 확인을 완료했으며 앱은 실행하지 않았다. 합본/최종소스 CI·실제렌더·Mac패키지 증거와 한계는 DEV_STATUS 맨 위를 따른다. 다음 큰 판단은 세 맵 한 판의 장소 경험과 세 빌드·경제가 다음 출정을 바꾸는지다. 작은 문구/장식 추가를 그 자체로 다음 milestone으로 삼지 않는다. 아래 과거 계획에서 이미 완료한 기능을 다시 구현하지 않는다.
