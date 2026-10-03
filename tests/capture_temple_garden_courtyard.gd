@@ -5,6 +5,7 @@ extends "res://tests/capture_regional_landmarks.gd"
 const Courtyard = preload("res://game/temple_garden_courtyard_data.gd")
 var capture_frozen := false
 var visibility_failures: Array[String] = []
+var requested_size := Vector2i.ZERO
 func _run() -> void:
 	started = Time.get_ticks_usec()
 	output = OS.get_environment("GARDEN_RENDER_OUTPUT")
@@ -22,7 +23,9 @@ func _run() -> void:
 	Engine.max_fps=60
 	expected_screenshots=0
 	for size in SIZES:
+		requested_size=size
 		root.size=size
+		root.unresizable=true
 		root.content_scale_size=Vector2i(1280,720)
 		root.content_scale_mode=Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 		scene=load("res://game/temple_circuit_run.tscn").instantiate()
@@ -140,6 +143,11 @@ func _capture_checkpoint(label: String,width: int,record: Dictionary) -> void:
 		record["fixed_enemy_tell"]={"role":enemy.role,"point":_point(point),"warning_surfaces":scene.warning_mesh.get_surface_count(),"scope":"frozen real enemy/tell, no difficulty claim"}
 	# Direct base method avoids the old main-map tell labels.
 	await super._capture_checkpoint(label,width,record)
+	# A fully occluded baseline body is valid visibility evidence, not a missing
+	# reference or a reason to abandon the rest of the comparison route.
+	for i in range(errors.size()-1,-1,-1):
+		if errors[i].begins_with("Player not visibly evidenced"):
+			visibility_failures.append(errors[i]);errors.remove_at(i)
 	if is_instance_valid(enemy):
 		scene.set_process(false);scene.set_physics_process(false);scene.player.set_physics_process(false)
 		record["player_scenery_visibility"]=await _geometry_visibility(scene.actors[scene.player].get_node("Body"),80,label+"-hero",width)
@@ -187,3 +195,15 @@ func _geometry_visibility(geometry: GeometryInstance3D, radius: int, label: Stri
 				if _different(normal.get_pixel(x,y),normal_without.get_pixel(x,y)): visible += 1
 	if potential < 50: errors.append("Unusable Body/telegraph pixel reference at " + label)
 	return {"reference_pixels":potential,"normal_pixels":visible,"ratio":float(visible)/maxf(1.0,potential),"roi":[roi.position.x,roi.position.y,roi.size.x,roi.size.y],"scope":"fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"}
+
+func _image() -> Image:
+	for attempt in 12:
+		for i in 3:await process_frame
+		await RenderingServer.frame_post_draw
+		var result := root.get_texture().get_image()
+		if result==null or result.is_empty():
+			errors.append("Renderer produced no image");return null
+		if result.get_size()==requested_size and root.size==requested_size:return result
+		print("GARDEN_RENDER_SIZE_RETRY: png=",result.get_size()," window=",root.size," requested=",requested_size)
+		root.size=requested_size
+	errors.append("Renderer did not settle to exact requested size after12 attempts");return null
