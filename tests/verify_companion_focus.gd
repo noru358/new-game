@@ -153,6 +153,15 @@ func _run()->void:
 	focus._physics_process(0.0)
 	check(focus.target_ref.get_ref()==rear,"later same-swing hits cannot replace committed target")
 	focus._clear()
+	p.attack_sequence+=1
+	focus._on_hit(near)
+	near.remove_from_group("training_enemies")
+	focus._physics_process(0.0)
+	near.add_to_group("training_enemies")
+	focus._on_hit(rear)
+	focus._physics_process(0.0)
+	check(focus.target_ref!=null and focus.target_ref.get_ref()==rear,"invalid early candidate does not consume same-swing successful designation")
+	focus._clear()
 	var hit_count:=primary_hits
 	p.hit_targets.clear()
 	p._trigger_flow_wave(rear.position)

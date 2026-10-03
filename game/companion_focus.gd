@@ -9,6 +9,7 @@ var pending:Array[Dictionary]=[]
 var committed_sequence:=-1
 var pending_sequence:=-1
 var marker:MeshInstance3D
+var marker_target_id:=0
 func setup(owner_arena)->void:
 	arena=owner_arena
 	name="CompanionFocus"
@@ -47,6 +48,7 @@ func _better(a:Dictionary,b:Dictionary)->bool:
 func _clear()->void:
 	target_ref=null
 	remaining=0.0
+	marker_target_id=0
 	if is_instance_valid(arena.player) and arena.player.has_meta(META):arena.player.remove_meta(META)
 	if is_instance_valid(marker):marker.hide()
 func _physics_process(delta:float)->void:
@@ -63,9 +65,9 @@ func _physics_process(delta:float)->void:
 			if _valid(enemy) and _better(record,best_record):
 				best=enemy
 				best_record=record
-		committed_sequence=pending_sequence
 		pending.clear()
 		if best!=null:
+			committed_sequence=pending_sequence
 			target_ref=weakref(best)
 			arena.player.set_meta(META,target_ref)
 			remaining=DURATION
@@ -82,4 +84,6 @@ func _physics_process(delta:float)->void:
 		return
 	marker.position=arena.terrain.world_point(target.global_position,135.0 if not target is GateBoss else 235.0)
 	marker.look_at(arena.camera.global_position,Vector3.UP)
+	if not marker.visible or marker_target_id!=target.get_instance_id():marker.reset_physics_interpolation()
+	marker_target_id=target.get_instance_id()
 	marker.show()
