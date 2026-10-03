@@ -3,6 +3,19 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
+## v46 배포 후 검증 — Windows 및 새 프로세스 재출정
+
+- Windows native runner에서도 같은 v46 게임 코드의 공통 미리보기 진입·다섯 씬·저장 세대/출정ID·압축해제된 exe 재실행을 확인했다. 검증8b66552, Windows CI37092592039/전체Godot37092591993 성공, PR45를 제작 브랜치에 병합했다. 사용자 Windows GUI·SmartScreen·소리·GPU 실기기 확인은 별도다. 사용자에게 보낸 Mac 앱/canonical d1eb0f1은 바뀌지 않았다.
+- 새 프로세스3개의 유한 공유기록 시나리오를 추가했다. 로컬 공식4.6.3에서7정산/8출정/미정산종료1회,1289검사 통과. 합성 승리/재화/XP로 상태 계약을 확인한 것이며 자연 캠페인 승리나 재미·장시간성능 검사가 아니다. game/project 원본210개 해시 보존. 기존 전체verify 순회에서 분리하고 CI의 전용 launcher단계로 추가한다. 최종통합CI는 이 커밋에서 이어서 확인한다.
+
+## v46 공통 기록 반복·재실행 검사 — 로컬 검증만 / 2026-10-03 KST
+
+- 전달 v46 런타임을 변경하지 않고 실제 preview entry/기본 v45 공통 기록으로 독립 엔진3회(A/B/C)의 단일 유한 시나리오를 통과했다. 초기 resource import1회는 별도다. 총1289검사/7정산/8출정/카드 모달 중 미정산 종료1회, 각 exit0 및 스크립트 오류/누수 없음.
+- 사원→정글→습지 첫정산, W_FLOW/별도장착/VITALITY, 재실행 뒤 W_ECHO/별도장착/물자, 실제 재도전→사망·귀환취소/확정·저장실패/재시도·습지재정복을 확인했다. 승리/수입/XP·보스 진입은 명시적 fixture이며 자연 세맵 완주/재미/경제 수용 증거가 아니다.
+- 세 번째 엔진에서 구매/해금/출정 물자소모는 유지되고 미정산 수입777/임시카드/HP/시간/재도전/동행지정/모달은 초기화됐다. 최종 귀환과 재조회가 화폐519·프로필generation22·영구레벨7/generation7로 일치했다. 직전 씬 weakref해제·현 simulation그룹 귀속·프로세스 경계 저장바이트도 확인했다.
+- 매 실행은 새 owner표시 XDG HOME/복제 프로젝트에서만 실제 `LoopConquest-FieldPreview-v45` 저장명을 쓴다. 일반 사용자 기록은 조회/삭제하지 않았다. 원본 game/project210개 hash가 전후 동일하다. 런타임/프로젝트 원본/워크플로/기존 프로필/원격 게시를 바꾸지 않았다.
+- 재현: `python3 scripts/check_preview_lifecycle.py --godot /usr/local/bin/godot`. 성공/실패 원자료와 제한은 `docs/measurements/preview-lifecycle-v46/README.md` 및 `final-summary.json`에 있다. 전원중단·쓰기 도중 강제종료·장시간 GPU·사용자 Mac/Windows·사람 수용은 미검증이다. 새 플레이 빌드/배포 완료로 세지 않는다.
+
 ## 현재 제출 기준 — v46 장소 전투·동행 지정 / 2026-10-03 KST
 
 - 앱 소스 및 `codex/current-playtest`는 `d1eb0f18c6bf56c62a87146f6898414abbb824e6`이다. 정확한 최종 전체 Godot CI37090661674, 실제 렌더37090661689, native Mac 패키지37090661685가 모두 성공했다. main/과거 앱은 보존했다.
