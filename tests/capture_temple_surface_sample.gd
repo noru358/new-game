@@ -14,5 +14,9 @@ func _samples() -> Array:
 		{"name":"10-human-door","point":Vector2(2800,460)},
 	]
 func _walk(goal: Vector2) -> void:
+	# An automated off-focus window must not invoke the ordinary focus-loss pause.
+	# This fixture policy is identical for both variants; product pause is untouched.
+	for connection in root.focus_exited.get_connections(): root.focus_exited.disconnect(connection.callable)
+	scene._set_paused(false)
 	Finish.install(scene)
 	await super._walk(goal)
