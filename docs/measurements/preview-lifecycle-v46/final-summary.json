@@ -1,0 +1,98 @@
+{
+  "abandoned_departures": 1,
+  "checks": 1289,
+  "final_profile": {
+    "acquired_relic_ids": [
+      "RELIC_TEMPLE"
+    ],
+    "attack_branch": "",
+    "awakenings": [],
+    "currency": 519,
+    "discovered_places": [],
+    "equipped_accessory": "",
+    "equipped_weapon": "W_ECHO",
+    "generation": 22,
+    "growth_ranks": {
+      "FINISH": 0.0,
+      "GUARD": 0.0,
+      "MOBILITY": 0.0,
+      "POWER": 0.0,
+      "RECOVERY": 0.0,
+      "SLASH": 0.0,
+      "SLASH_POWER": 0.0,
+      "SPEED": 0.0,
+      "VITALITY": 1.0,
+      "WISP": 0.0
+    },
+    "last_launch_id": "1790998396-2570560-2786804205",
+    "last_launch_supply_used": false,
+    "last_run_id": "1790998396-2570560-2786804205",
+    "owned_gear": {
+      "W_ECHO": true,
+      "W_FLOW": true
+    },
+    "owned_mods": [
+      "STEADY"
+    ],
+    "owned_outpost_ids": [
+      "O_TEMPLE",
+      "O_JUNGLE_PASS",
+      "O_DEEP_WETLAND"
+    ],
+    "slotted_mods": {},
+    "supply_count": 0,
+    "supply_selected": false,
+    "version": 7.0
+  },
+  "final_unlocks": {
+    "generation": 7,
+    "lifetime_levelups": 7,
+    "version": 1
+  },
+  "import_process_count": 1,
+  "launcher_sha256": "8c230a58a3be28b247b0fb414634faf303c6072a1c8ecc8eb273aee13a2010b4",
+  "local_full_evidence": "attempt-05/",
+  "passed": true,
+  "processes": [
+    {
+      "exit_code": 0,
+      "log": "import.txt",
+      "passed": true,
+      "phase": "import",
+      "pid": 8
+    },
+    {
+      "exit_code": 0,
+      "log": "A.txt",
+      "passed": true,
+      "phase": "A",
+      "pid": 250
+    },
+    {
+      "exit_code": 0,
+      "log": "B.txt",
+      "passed": true,
+      "phase": "B",
+      "pid": 264
+    },
+    {
+      "exit_code": 0,
+      "log": "C.txt",
+      "passed": true,
+      "phase": "C",
+      "pid": 278
+    }
+  ],
+  "runtime_equivalent_to": "d1eb0f18c6bf56c62a87146f6898414abbb824e6",
+  "runtime_process_count": 3,
+  "save_family": "LoopConquest-FieldPreview-v45",
+  "scenario": "tests/preview_lifecycle_scenario.gd",
+  "scenario_sha256": "134d04cac63fe4d825949fd00ad045c875f21540bb98595721df40cbc1994db7",
+  "scope": "Synthetic state contracts; not natural wins, power-loss durability, balance or human acceptance",
+  "settlements": 7,
+  "source_commit": "dc719abbac2baca3f801f7ef97819b64595b10b0",
+  "source_hash_count": 210,
+  "source_hashes_preserved": true,
+  "source_manifest_after_sha256": "f3768b23abb3be860afd2d68ad4c277aabf83c8a60820d301dddcdb727325308",
+  "source_manifest_sha256": "f3768b23abb3be860afd2d68ad4c277aabf83c8a60820d301dddcdb727325308"
+}
