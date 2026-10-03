@@ -26,26 +26,13 @@ jobs:
           echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
       - name: Import project
         run: godot --headless --editor --path . --quit
-      - name: Run every verification script
-        shell: bash
-        run: |
-          mkdir -p verification-logs
-          failed=0
-          for script in tests/verify_*.gd; do
-            name="$(basename "$script" .gd)"
-            # This fixture compares rendered pixels and has its own isolated Xvfb step.
-            if [[ "$name" == "verify_actor_terrain_depth" ]]; then
-              continue
-            fi
-            if ! timeout 240 godot --headless --path . --script "res://$script" > "verification-logs/$name.log" 2>&1; then
-              failed=1
-            fi
-            cat "verification-logs/$name.log"
-            if grep -Eq 'SCRIPT ERROR:|Parse Error:|^FAIL:' "verification-logs/$name.log"; then
-              failed=1
-            fi
-          done
-          exit "$failed"
+      - name: Verify parallel runner isolation contracts
+        run: python3 -m unittest discover -s tests -p test_parallel_verifications.py -v
+      - name: Run every verification script in two isolated batches
+        run: >-
+          python3 scripts/run_parallel_verifications.py
+          --godot "$(command -v godot)"
+          --output "$RUNNER_TEMP/parallel-verification-logs"
       - name: Verify shared preview across fresh engine processes
         shell: bash
         run: |
@@ -108,6 +95,7 @@ jobs:
           name: verification-logs
           path: |
             verification-logs/
+            ${{ runner.temp }}/parallel-verification-logs/
             ${{ runner.temp }}/actor-depth-output/*/report.json
             ${{ runner.temp }}/price-trial-checks/engine-summary.json
             ${{ runner.temp }}/price-trial-checks/*/*.log
