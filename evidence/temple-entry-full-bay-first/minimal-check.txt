@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Temple circuit — isolated four-minute run
+ENTRY_CLUSTER_CHECK: {"actor_shadow_bottom":0.00799999991431832,"checks":38,"contact_max_lift":0.725000025704503,"contact_min_floor_separation":0.169999979436398,"contact_min_lift":0.669999979436398,"errors":[],"install_ms":204.807,"mesh_bounds":{"BrokenMasonry":[17.3099994659424,0.0,11.9399995803833,21.4599990844727,1.0900000333786,16.8799991607666],"ShelteredGrowth":[17.306999206543,-0.0326425060629845,13.9112901687622,18.996395111084,0.981554508209229,16.1944484710693],"StoneSoilContacts":[16.7095699310303,0.00669999979436398,12.3445997238159,17.36669921875,0.00725000025704503,16.6982746124268]},"original_hall_vertices_remaining":0,"resources":{"ground":468,"growth":6291,"stone":1200}}
