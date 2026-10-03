@@ -34,6 +34,11 @@ func _run() -> void:
 			current_scene = scene
 			scene.practice_mode = true
 			scene.wisp.set_physics_process(false)
+			await physics_frame
+			# Identical fixed-fixture policy on both sources. Product pause behavior
+			# and the user's other apps are untouched; this is not a focus test.
+			for connection in root.focus_exited.get_connections(): root.focus_exited.disconnect(connection.callable)
+			scene._set_paused(false)
 			var section = scene.temple_section
 			var layout = section.layout
 			scene.teleport(layout.RETURN_POINT)
@@ -63,6 +68,12 @@ func _run() -> void:
 	file.store_string(JSON.stringify({"checks":checks,"failures":failures,"captures":captures,"scope":"real native renderer, normal threshold inputs, fixed setup, frozen combat/time; no human play"},"\t"))
 	print("HIDDEN_RENDER ",JSON.stringify({"checks":checks,"failures":failures,"images":captures.size()}))
 	quit(1 if failures else 0)
+
+func _step() -> void:
+	await super._step()
+	# Preserve real authored hidden spawns, but freeze them before any action.
+	for actor in scene.actors:
+		if actor != scene.player: actor.set_physics_process(false)
 
 func _walk(goal: Vector2) -> void:
 	var path: PackedVector2Array = scene.navigation.find_path(scene.player.position,goal)
