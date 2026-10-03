@@ -1,0 +1,46 @@
+{
+  "source": "c8e1f3d9427c41a4fdf9f16187fd9b1664ee8e47",
+  "render_run": 37101064998,
+  "full_ci_run": 37101066509,
+  "windows_run": 37101066598,
+  "render_artifact": 11266556401,
+  "scope": "Normal input at unchanged speed/camera; frozen encounters/time pressure. Not natural-combat/fun or user-device evidence.",
+  "comparisons": [
+    {
+      "variant": "baseline",
+      "region": "temple",
+      "checkpoints": 12,
+      "screenshots": 26,
+      "active_walk_seconds": 43.8333333333321,
+      "errors": [],
+      "min_body_ratio": 0.998313659359191
+    },
+    {
+      "variant": "baseline",
+      "region": "jungle",
+      "checkpoints": 10,
+      "screenshots": 22,
+      "active_walk_seconds": 9.10000000000003,
+      "errors": [],
+      "min_body_ratio": 0.987025948103792
+    },
+    {
+      "variant": "candidate",
+      "region": "temple",
+      "checkpoints": 12,
+      "screenshots": 26,
+      "active_walk_seconds": 43.8333333333321,
+      "errors": [],
+      "min_body_ratio": 0.998875772906127
+    },
+    {
+      "variant": "candidate",
+      "region": "jungle",
+      "checkpoints": 10,
+      "screenshots": 22,
+      "active_walk_seconds": 9.10000000000003,
+      "errors": [],
+      "min_body_ratio": 0.996623522791221
+    }
+  ]
+}

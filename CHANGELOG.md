@@ -1,3 +1,12 @@
+# v47 제출 후보 — 2026-10-03
+
+- 습지 얼굴 유적의 균등2.4배 규모/조형과 연결 연못, 사원 성소/앞문 규모, 정글 거목/바위 모서리 대표 묶음
+- 카메라·자동 가림·전투/성장 규칙 유지, 실제 물리 경계와 지형 가림 비교
+- 연습모드의 기존 돌벽 겹침 스폰1개 수정
+- 새 프로세스 공통 기록 반복 검사 및 같은 일반검사103개의 격리 병렬 실행 도구
+- 실제960/1280 정상입력 보행과 정적/보스 예고 렌더 검증. 자연 재미·최종 미감·사용자 기기 GPU 확인은 별도
+- 배포 파일/최종 소스 검증 상태는 DEV_STATUS의 최신 제출 기록을 따른다
+
 ## 2026-10-02 — existing enemy roles and basic play settings v41
 
 - Complete lamp, zone and support bodies from their existing motifs, retaining the stone/horn bodies, grounded depth, hit flash, actual attack cues and all enemy rules.
