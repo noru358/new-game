@@ -4,6 +4,7 @@ extends "res://tests/capture_regional_landmarks.gd"
 const Cluster = preload("res://game/temple_entry_cluster.gd")
 var requested_size:=Vector2i(960,540)
 var walking:=false
+var visibility_failures:Array[String]=[]
 func _initialize() -> void:
 	root.mode=Window.MODE_WINDOWED
 	super._initialize()
@@ -49,6 +50,12 @@ func _run() -> void:
 			if errors.is_empty() and not measure_only:
 				expected_screenshots+=2
 				await _capture_checkpoint(target.name,size.x,record)
+				if OS.get_cmdline_user_args().has("--entry-all-sizes"):
+					var remaining:Array[String]=[]
+					for message in errors:
+						if message.begins_with("Player scenery visibility below") or message.begins_with("Enemy Body visibility below") or message.begins_with("Enemy tell visibility below"):visibility_failures.append(message)
+						else:remaining.append(message)
+					errors=remaining
 			records.append(record)
 		await _free_scene()
 		if not errors.is_empty():break
@@ -97,6 +104,7 @@ func _image() -> Image:
 	errors.append("Exact native drawable failed to settle");return null
 func _finish() -> void:
 	if finished:return
+	errors.append_array(visibility_failures)
 	finished=true
 	await _free_scene()
 	if screenshots.size()!=expected_screenshots:errors.append("Screenshot count differs from expected")
