@@ -4,10 +4,11 @@ extends RefCounted
 ## Install after the circuit's normal _ready. No terrain, collision or light edits.
 const SCALE := 0.01
 const SOURCE_AREA := Rect2(1730, 1190, 420, 500)
-const REPLACE_AREA := Rect2(1729.5, 1490, 421, 200.5)
+const REPLACE_AREA := Rect2(1729.5, 1250, 421, 200.5)
+const PLACEMENT_OFFSET := Vector3(0,0,-2.4)
 const SOLID_AREA := Rect2(1730, 1490, 420, 200)
 const CONTACT_AREA := Rect2(1690, 1490, 170, 235)
-const FLOOR_LIFT := 0.79
+const FLOOR_LIFT := 0.67
 const Kit = preload("res://game/temple_environment_kit.gd")
 var stone := SurfaceTool.new()
 var growth := SurfaceTool.new()
@@ -20,6 +21,8 @@ static func install(arena: Node3D) -> Node3D:
 	if arena.has_node("TempleEntryCluster"): return arena.get_node("TempleEntryCluster")
 	var root := Node3D.new()
 	root.name = "TempleEntryCluster"
+	# Authored mesh dimensions stay fixed; the group moves to the exposed NW bay.
+	root.position = PLACEMENT_OFFSET
 	var court:Node3D = arena.temple_sanctuary_root.get_node("ReclaimedCourtMasonry")
 	for label in ["WeatheredCourtyardWalls", "CourtyardEdgeGrowth"]:
 		var mesh: MeshInstance3D = court.get_node(label)
@@ -39,9 +42,9 @@ static func install(arena: Node3D) -> Node3D:
 		root.add_child(visual)
 	root.set_meta("visual_only", true)
 	root.set_meta("source_barrier", SOURCE_AREA)
-	root.set_meta("solid_bounds", SOLID_AREA)
-	root.set_meta("contact_bounds", CONTACT_AREA)
-	root.set_meta("max_contact_lift", FLOOR_LIFT)
+	root.set_meta("solid_bounds", Rect2(SOLID_AREA.position+Vector2(PLACEMENT_OFFSET.x,PLACEMENT_OFFSET.z)/SCALE,SOLID_AREA.size))
+	root.set_meta("contact_bounds", Rect2(CONTACT_AREA.position+Vector2(PLACEMENT_OFFSET.x,PLACEMENT_OFFSET.z)/SCALE,CONTACT_AREA.size))
+	root.set_meta("max_contact_lift", FLOOR_LIFT+0.055)
 	root.set_meta("vertex_counts", builder.counts)
 	root.set_meta("plant_scales", {"grass":14.0,"broad_leaf":44.0,"back_vine":78.0})
 	arena.add_child(root)

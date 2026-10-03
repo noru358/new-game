@@ -32,11 +32,11 @@ func _run() -> void:
 		if actor!=scene.player:actor.set_physics_process(false)
 	Cluster.install(scene)
 	for i in 5:await physics_frame
-	for point in [Vector2(2450,2100),Vector2(1650,2275),Vector2(1590,1840)]:
+	for point in [Vector2(2450,2100),Vector2(1650,2275),Vector2(1590,1840),Vector2(1450,1700)]:
 		walking=true;await super._walk(point);walking=false;_release()
 		if not errors.is_empty():break
 	if errors.is_empty():
-		var record:Dictionary={"name":"06-cloister","width":960,"height":540,"target":[1590,1840],"reached":_point(scene.player.position),"approach":"normal input: entry to court, west stairs, cloister south corner; no teleport","active_walk_seconds":active_seconds,"camera_size":scene.camera.size,"camera_position":[scene.camera.position.x,scene.camera.position.y,scene.camera.position.z],"run_time_frozen":scene.run_time}
+		var record:Dictionary={"name":"06-cloister","width":960,"height":540,"target":[1450,1700],"previous_candidate_target":[1590,1840],"reached":_point(scene.player.position),"approach":"normal input: entry to court, west stairs, past previous viewpoint, northward to actual cloister entry; no teleport","cluster_offset":[0,0,-240],"active_walk_seconds":active_seconds,"camera_size":scene.camera.size,"camera_position":[scene.camera.position.x,scene.camera.position.y,scene.camera.position.z],"run_time_frozen":scene.run_time}
 		_check_follow("entry-group",record)
 		var mesh_projected:Dictionary={}
 		if scene.has_node("TempleEntryCluster"):
