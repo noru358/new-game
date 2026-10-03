@@ -1,5 +1,13 @@
 # 다음 제작 지시 — 첫 지역을 완성품 수준으로 묶기
 
+## 히든 합본 v51 체크포인트 — 부모 통합 판단 대기
+
+`codex/hidden-regions-combined-v51`은 production1aac501 기준의 flow aa3ff60 + temple d2abbff 두 lane 후보다. 실제 roots/발견표시/문턱0.5를 장착하고 old 장식 루프만 교체했으며, 정원·정글 기존 보상/저장/240초/좌표 계약은 유지한다. 정확한 검사 source와 변경 파일은 `integration/HIDDEN_COMBINED_V51.md` 및 반환 evidence를 따른다.
+
+다음 순서: 부모가 전달하는 정글 최종 push SHA 이후 필요한 선형커밋 전체 회수 → helper 두 root 장착/폭포 중복 없음 확인 → 사원 아트 GUI 종료 후 통합 슬롯에서 두 히든 출입·표기·아트·합법 보상접근24화면 → 정확 combined HEAD 전체회귀와 Linux fullCI. 원본 전체 렌더를 반복하지 않는다. 정글 최종공면수정과 이전 왕복렌더 source를 혼동하지 않는다. main/production/canonical merge·release·사용자앱 교체는 부모 소유다.
+
+사람 장소감·미감·재미/자연3맵완주/장시간 성능은 남는다. 사원 ALTAR 중심 기존34% 및 정글 기존 water/FX 부분 가림은 해결로 표시하지 않는다.
+
 ## 현재 실행 순서 — 2026-10-03 v48 제출 이후
 
 현재 사용자 배포 및 canonical은686228f1d2f7cad0f09311c2006f46c6c16ce9d3(v48)이다. Mac 단일19,103,364byte 첨부 수락과 사용자Mac Downloads/LoopConquest-v48의 같은hash 앱 배치/서명 확인을 완료했으며 앱은 실행하지 않았다. 합본/최종소스 CI·실제렌더·Mac패키지 증거와 한계는 DEV_STATUS 맨 위를 따른다. 다음 큰 판단은 세 맵 한 판의 장소 경험과 세 빌드·경제가 다음 출정을 바꾸는지다. 작은 문구/장식 추가를 그 자체로 다음 milestone으로 삼지 않는다. 아래 과거 계획에서 이미 완료한 기능을 다시 구현하지 않는다.

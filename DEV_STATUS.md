@@ -3,6 +3,15 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
+## v51 히든 합본 후보 체크포인트 — 미배포 / 2026-10-03
+
+- 독립 `codex/hidden-regions-combined-v51`, 기준 production `1aac501`; canonical/사용자 앱은 v48 `686228f` 그대로다. 원격 `noru358/new-game`/ADMIN·관련 PR·ancestry를 확인했다. main을 기준으로 쓰거나 이동하지 않았다.
+- flow `aa3ff600f9ab5c9960d3c17f5d0ae504ed689041`의 base 이후9선형커밋과 사원 `d2abbffeda52966182b00257bb544a3cfcb5107b`의4커밋 전체를 회수했다. flow roots에 courtyard `build`/`build_entry`, 실제 layout 발견표시와 0.5 문턱을 장착했다. old slab/bush만 교체, 제단/불씨/수호3/보상/save는 보존한다. 정글 본선 미니맵 caption도 정글 지형으로 수정했다.
+- 두 lane 영향 회귀11개와 후속 실제-input 정원/장착검사35개를 통과했다. 폭포는 descendants의 정확한6개/좌표/크기/alpha재질을 검사하고 실제 입력을 도착 latch에 전달한다. 습지는 hidden root가 없으며 이전 발견이 있어도 marker가 비고 null label guard를 통과한다. 정확 두 lane 소스 `59ed6574b54e0568953357df8c15578dd37f4d94`의 import+13영향fixture 모두PASS/엔진·script errors0. `evidence/hidden-combined-v51/two-lanes-impact-summary.json`과 로그를 반환한다. 최종3lane 전체검사는 아직 아니다.
+- 정글 최종 SHA는 아직 부모에게 전달받지 않았으므로 회수/최종완료로 표시하지 않는다. 최종 정글 공면수정 source와 이전 전체 왕복 source는 구별할 예정이다. GUI 슬롯도 미배정이라 합본 native24화면·보상접근 촬영은 준비만 했다. 최종3lane HEAD 전체회귀/fullCI와 GUI가 남는다.
+- Mac 공식4.6stable 동일 SHA256 복제 엔진, 엔진1개 순차/fixture별 UUIDuserdata. 원본 project/settings·저장/성장/player·4layout 바이트 보존. 첫 sandbox userdata 생성 거절/신규fixture 오류 표본은 PASS로 세지 않았고 고쳤다. Linux전용 Python runner 테스트는 Mac platform guard로4오류이며 Linux CI에서 확인할 항목이다.
+- 기존 사원 ALTAR 정확중심 원통/불씨 Body~34%는 미해결, 합법거리85 접근 보상성공은 별도 사실이다. 기존 정글 폭포/FX 부분 가림을 전체98% 통과로 부르지 않는다. 자연 한 판·사람 미감/재미·장시간 성능·배포/사용자앱 교체는 미검증이다. 공유 MASTER는 변경하지 않았다.
+
 ## 현재 사용자 제출 기준 — v48 / 2026-10-03 KST
 
 - 실제 전달 소스/canonical은686228f1d2f7cad0f09311c2006f46c6c16ce9d3이다. 같은 소스 전체CI37116043366와 Mac 패키지37116043397 성공. 같은 게임 코드caf602c의 전체CI37114649664·렌더37114642485·Windows37114649662도 성공했다.
