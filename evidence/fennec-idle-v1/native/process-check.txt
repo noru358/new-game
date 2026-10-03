@@ -1,0 +1,5 @@
+Read-only approved Mac ps checks before/after native run:
+ps -axo pid,etime,command | rg "Godot.app/Contents/MacOS/Godot|/godot( |$)"
+Before: no matching process, rg exit1.
+After: no matching process, rg exit1.
+No existing process was terminated or manipulated.

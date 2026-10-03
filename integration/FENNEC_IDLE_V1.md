@@ -3,9 +3,9 @@
 ## Status / 진행 대시보드
 
 - 현재 단계·세부 위치: 2단계 메타 연결/첫 권역 제작 중, 3단계 진입용 주인공 아트 생산 최소 시험.
-- 이번까지 완료: 원격 기준/ancestry 확인, Library 두 원본 실제 픽셀 열람, imagegen 3방향 파생 PNG, import 정규화, 전용 adapter/preview/검사. 공식 Mac Godot4.6stable headless 실패0.
-- 바로 다음 작업: 부모 GUI 슬롯에서 native7장 촬영 → 부모가 얼굴/꼬리/실루엣·크기를 보고 animation 범위 결정.
-- 사용자 확인·미검증: 시안 시험 승인만 있음. 최종 디자인/방향별 동일성/사람 미감·실제 960·1280 가독성/native PNG는 미검증.
+- 이번까지 완료: 원격 기준/ancestry 확인, Library 두 원본 실제 픽셀 열람, imagegen 3방향 파생 PNG, import 정규화, 전용 adapter/preview/검사. 공식 Mac Godot4.6stable headless56검사/실패0 + native7PNG/56검사/실패0.
+- 바로 다음 작업: 부모가 실제7화면의 얼굴/꼬리/실루엣·크기를 보고 animation 범위 결정.
+- 사용자 확인·미검증: 시안 시험 승인만 있음. 최종 디자인/방향별 동일성/사람 미감·실제 960·1280 가독성 수용은 미검증.
 
 ## Grounded base
 
@@ -39,6 +39,12 @@ With temple camera size9, total projected height is57.6px at960 /76.8px at1280. 
 
 ## Reproduction
 
-Use Python>=3.10 with Pillow. `scripts/run_fennec_idle.py --engine /absolute/Godot --output /absolute/new-qa-dir` creates a private project and runs sequential import+headless. Add `--native` ONLY after parent's GUI slot allocation; native fixture has eight bounded process frames plus force_draw per frame and validates actual960×540/1280×720 PNG sizes. It never waits indefinitely onframe_post_draw. Engine processes have120s timeout. The parent should inspect front960, front-body-height960, side960/back960 then1280. No GUI has been launched in this lane yet.
+Use Python>=3.10 with Pillow. `scripts/run_fennec_idle.py --engine /absolute/Godot --output /absolute/new-qa-dir` creates a private project and runs sequential import+headless. Add `--native` ONLY after parent's GUI slot allocation; native fixture has eight bounded process frames plus force_draw per frame and validates actual960×540/1280×720 PNG sizes. It never waits indefinitely onframe_post_draw. Engine processes have120s timeout. The parent should inspect front960, front-body-height960, side960/back960 then1280. The completed native run below used the parent-authorized slot.
 
-Open blockers: parent GUI slot (currently palace lane), native pixel review, and parent's size/animation-scope decision. Parent-notification calls began returningTransportclosed after Mac executor reconnect; commentary and this handoff retain last successful steps.
+## Native completion after parent's conditional slot allocation
+
+The parent authorized a read-only Mac process check and immediate native use if no other GUI Godot existed. Sandbox ps was denied; approved read-only ps found no engine. Native runner completed one sequential import+capture with the unchanged engine, M3 OpenGL4.1 Metal Compatibility, UUID userdataFennecIdle-a5ace3d8-895b-4f46-85c6-11bfb2bbef3b.7actualPNG sizes passed,56assertions failed0, script/render errors0. Post-run approved ps found0Godot processes. No CUA, window manipulation, or existing engine termination.
+
+Actual seven PNGs/report/engine log are in `evidence/fennec-idle-v1/native`. Front/side/back and crown-height comparison were visually opened; actual render shows each direction, authored face, navy coat and single tail in the inherited scene/camera. At960 the baseline face is small; larger comparison improves the space available for face. This observation is not a user/parent aesthetic acceptance. Foot/ground shadow alignment and direction consistency remain review items; the test does not prove combat animation, depth at cliffs/ramps, gameplay, or full screen HUD960 suitability. Native screenshot960 inherits existing fixed1280 HUD clipping; no common UI changes were made.
+
+Remaining decision: parent's actual pixel review and size/animation scope. Parent-notification calls began returningTransportclosed after Mac executor reconnect; per parent's instruction they are no longer retried and the final report is the handoff.

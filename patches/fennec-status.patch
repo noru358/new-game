@@ -8,8 +8,8 @@
 +## Fennec idle v1 — 캐릭터 최소 샘플 / 부모 GUI 검토 전
 +
 +- 사용자 승인 시안과 꼬리 보정 원본을 소비자Mac에서 실제열람. 별도branch의 파생3PNG/adapter/전용preview/검사, commonmountpatch만 제공한다. sourceplayer/render/project/save 바이트보존.
-+- 공식Mac4.6stable 단일headless7사례56assert 실패0. 960/1280 native와 사람미감은 아직미검증이다. 전체높이기준57.6/76.8px와 귀제외몸체맞춤960한장(전체69.4px)을 비교할 준비가됐다.
-+- 현재2단계첫권역제작/3단계아트생산시험. 바로다음은 부모GUI슬롯에서7PNG촬영/화면판단→animation범위결정이다. 출시최종디자인·캐릭터전량애니메이션·패키지/merge는수행하지않았다. integration/FENNEC_IDLE_V1.md 참고.
++- 공식Mac4.6stable 단일headless7사례56assert 실패0. native7PNG/56assert도실패0이며 촬영후엔진0을확인했다. 사람미감수용은미검증이다. 전체높이기준57.6/76.8px와 귀제외몸체맞춤960한장(전체69.4px)을 비교할 준비가됐다.
++- 현재2단계첫권역제작/3단계아트생산시험. 바로다음은 부모7PNG화면판단→크기/animation범위결정이다. 출시최종디자인·캐릭터전량애니메이션·패키지/merge는수행하지않았다. integration/FENNEC_IDLE_V1.md 참고.
 +
  
  

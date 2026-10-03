@@ -1,0 +1,77 @@
+[
+  {
+    "width": 960,
+    "compare": "front vs side",
+    "difference_bounds": [
+      457,
+      228,
+      493,
+      285
+    ],
+    "changed_pixels": 1396,
+    "actual_size": [
+      960,
+      540
+    ]
+  },
+  {
+    "width": 960,
+    "compare": "front vs back",
+    "difference_bounds": [
+      458,
+      228,
+      494,
+      285
+    ],
+    "changed_pixels": 1375,
+    "actual_size": [
+      960,
+      540
+    ]
+  },
+  {
+    "width": 1280,
+    "compare": "front vs side",
+    "difference_bounds": [
+      610,
+      304,
+      657,
+      380
+    ],
+    "changed_pixels": 2483,
+    "actual_size": [
+      1280,
+      720
+    ]
+  },
+  {
+    "width": 1280,
+    "compare": "front vs back",
+    "difference_bounds": [
+      610,
+      304,
+      659,
+      380
+    ],
+    "changed_pixels": 2463,
+    "actual_size": [
+      1280,
+      720
+    ]
+  },
+  {
+    "width": 960,
+    "compare": "front vs crown-height comparison",
+    "difference_bounds": [
+      453,
+      216,
+      496,
+      285
+    ],
+    "changed_pixels": 1888,
+    "actual_size": [
+      960,
+      540
+    ]
+  }
+]
