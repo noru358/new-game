@@ -5,6 +5,7 @@ extends RefCounted
 const Layout = preload("res://game/jungle_grotto_layout.gd")
 const Data = preload("res://game/jungle_hidden_terrain.gd")
 const Vegetation = preload("res://game/jungle_emergent_tree.gd")
+const Waterfalls = preload("res://game/jungle_waterfall_sources.gd")
 const FLOOR_LIFT := 0.65
 
 static func build(arena, layout) -> Node3D:
@@ -81,15 +82,15 @@ static func build(arena, layout) -> Node3D:
 	root.set_meta("fixed_open_roof", true)
 	root.set_meta("field_bounds", layout.FIELD_BOUNDS)
 	root.set_meta("floor_lift", FLOOR_LIFT)
-	for point in [Vector2(7600,1650),Vector2(8520,1140)]: root.add_child(_water_curtain(arena,point))
+	for spec in Waterfalls.HIDDEN: root.add_child(Waterfalls.build(arena,spec,profiles))
 	return root
 
 static func build_entry(arena, _layout) -> Node3D:
-	# Preserve the v48 waterfall clue exactly. This root changes field visibility,
-	# not the authored water material or the main jungle's silhouette/terrain.
+	# Keep the four clues and existing terrain, with each drop rooted in a real
+	# rock lip instead of a detached fixed-height plate. No collision is added.
 	var root := Node3D.new()
 	root.name = "JungleHiddenEntrance"
-	for point in [Vector2(1225,690),Vector2(1340,505),Vector2(1340,800),Vector2(1120,490)]: root.add_child(_water_curtain(arena,point))
+	for spec in Waterfalls.MAIN: root.add_child(Waterfalls.build(arena,spec))
 	for point in [Vector2(1130,455),Vector2(1360,540),Vector2(1380,780)]:
 		var bush: MeshInstance3D = arena._sphere(0.35,Color("356b51"))
 		bush.name = "GrottoBush"
@@ -97,18 +98,6 @@ static func build_entry(arena, _layout) -> Node3D:
 		bush.scale = Vector3(1.4,0.75,1.0)
 		root.add_child(bush)
 	return root
-
-static func _water_curtain(arena,point: Vector2) -> MeshInstance3D:
-	var fall := MeshInstance3D.new()
-	fall.name = "AuthoredWaterCurtain"
-	var shape := BoxMesh.new()
-	shape.size = Vector3(0.10,1.8,1.25 if point == Vector2(1225,690) else 0.8)
-	fall.mesh = shape
-	fall.material_override = arena._material(Color(0.4,0.82,0.85,0.55),true)
-	(fall.material_override as StandardMaterial3D).transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	fall.position = arena.terrain.world_point(point,100)
-	fall.set_meta("existing_water",true)
-	return fall
 
 static func _bank(st: SurfaceTool, record: Dictionary, adjacent: Array = []) -> void:
 	# The continuous ground outline is precisely the blocked strip; crags vary

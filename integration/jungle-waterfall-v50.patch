@@ -1,0 +1,328 @@
+diff --git a/game/jungle_hidden_sanctuary.gd b/game/jungle_hidden_sanctuary.gd
+index cafe2b2..b12b6c2 100644
+--- a/game/jungle_hidden_sanctuary.gd
++++ b/game/jungle_hidden_sanctuary.gd
+@@ -7,0 +8 @@ const Vegetation = preload("res://game/jungle_emergent_tree.gd")
++const Waterfalls = preload("res://game/jungle_waterfall_sources.gd")
+@@ -84 +85 @@ static func build(arena, layout) -> Node3D:
+-	for point in [Vector2(7600,1650),Vector2(8520,1140)]: root.add_child(_water_curtain(arena,point))
++	for spec in Waterfalls.HIDDEN: root.add_child(Waterfalls.build(arena,spec,profiles))
+@@ -88,2 +89,2 @@ static func build_entry(arena, _layout) -> Node3D:
+-	# Preserve the v48 waterfall clue exactly. This root changes field visibility,
+-	# not the authored water material or the main jungle's silhouette/terrain.
++	# Keep the four clues and existing terrain, with each drop rooted in a real
++	# rock lip instead of a detached fixed-height plate. No collision is added.
+@@ -92 +93 @@ static func build_entry(arena, _layout) -> Node3D:
+-	for point in [Vector2(1225,690),Vector2(1340,505),Vector2(1340,800),Vector2(1120,490)]: root.add_child(_water_curtain(arena,point))
++	for spec in Waterfalls.MAIN: root.add_child(Waterfalls.build(arena,spec))
+@@ -101,12 +101,0 @@ static func build_entry(arena, _layout) -> Node3D:
+-static func _water_curtain(arena,point: Vector2) -> MeshInstance3D:
+-	var fall := MeshInstance3D.new()
+-	fall.name = "AuthoredWaterCurtain"
+-	var shape := BoxMesh.new()
+-	shape.size = Vector3(0.10,1.8,1.25 if point == Vector2(1225,690) else 0.8)
+-	fall.mesh = shape
+-	fall.material_override = arena._material(Color(0.4,0.82,0.85,0.55),true)
+-	(fall.material_override as StandardMaterial3D).transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+-	fall.position = arena.terrain.world_point(point,100)
+-	fall.set_meta("existing_water",true)
+-	return fall
+-
+diff --git a/game/jungle_waterfall_sources.gd b/game/jungle_waterfall_sources.gd
+new file mode 100644
+index 0000000..16e83b6
+--- /dev/null
++++ b/game/jungle_waterfall_sources.gd
+@@ -0,0 +1,104 @@
++extends RefCounted
++## Six static water meshes: supported headwater, rock lip, drop and receiving
++## surface. No new nodes, colliders, processing, particles or gameplay records.
++const COLOR := Color(0.4,0.82,0.85,0.55)
++const MAIN := [
++	{"id":"mouth", "field":"main", "lip":Vector2(1240,605), "out":Vector2.LEFT, "half":12.0, "bottom":Vector2(1225,690), "bottom_half":25.0, "height":185.0, "wall":Rect2(1240,590,150,30), "feed":[Vector2(1240,593),Vector2(1358,593),Vector2(1358,535),Vector2(1382,535),Vector2(1382,617),Vector2(1240,617)], "receiver":Rect2(1200,660,45,60)},
++	{"id":"upper_south", "field":"main", "lip":Vector2(1290,550), "out":Vector2.DOWN, "half":40.0, "bottom":Vector2(1290,550.35), "bottom_half":40.0, "height":185.0, "wall":Rect2(1110,440,230,110), "feed":[Vector2(1260,478),Vector2(1275,478),Vector2(1275,442),Vector2(1305,442),Vector2(1305,530),Vector2(1330,550),Vector2(1250,550),Vector2(1275,530),Vector2(1275,502),Vector2(1260,502)], "receiver":Rect2(1250,550,80,38)},
++	{"id":"lower_rim", "field":"main", "lip":Vector2(1240,780), "out":Vector2.LEFT, "half":18.0, "bottom":Vector2(1239.65,780), "bottom_half":18.0, "height":21.0, "wall":Rect2(1240,760,150,40), "feed":[Vector2(1240,762),Vector2(1380,762),Vector2(1380,798),Vector2(1240,798)], "receiver":Rect2(1205,760,35,40)},
++	{"id":"upper_west", "field":"main", "lip":Vector2(1110,490), "out":Vector2.LEFT, "half":40.0, "bottom":Vector2(1109.65,490), "bottom_half":40.0, "height":185.0, "wall":Rect2(1110,440,230,110), "feed":[Vector2(1110,450),Vector2(1145,478),Vector2(1260,478),Vector2(1260,502),Vector2(1145,502),Vector2(1110,530)], "receiver":Rect2(1078,450,32,80)},
++]
++const HIDDEN := [
++	{"id":"receiving_pool", "field":"hidden", "lip":Vector2(7820,1830), "out":Vector2.LEFT, "half":40.0, "bottom":Vector2(7819.65,1830), "bottom_half":40.0, "feed":[Vector2(7820,1790),Vector2(7855,1830),Vector2(7820,1870)], "receiver":Rect2(7780,1790,40,80)},
++	{"id":"return_pool", "field":"hidden", "lip":Vector2(8240,1130), "out":Vector2.RIGHT, "half":40.0, "bottom":Vector2(8240.35,1130), "bottom_half":40.0, "feed":[Vector2(8240,1090),Vector2(8205,1130),Vector2(8240,1170)], "receiver":Rect2(8240,1090,40,80)},
++]
++
++static func authored(node: Node) -> bool:
++	return node is MeshInstance3D and node.has_meta("waterfall_source_id") and node.get_meta("existing_water",false)
++
++static func rock_point(p: Vector2,spec: Dictionary,profiles: Array = []) -> Vector3:
++	if spec.field == "main": return Vector3(p.x,spec.height,p.y)*0.01
++	# Interpolate the producer's existing bank-cell triangles during construction.
++	# No additional BVH, whole-mesh scan or per-frame terrain query is introduced.
++	var probe := p
++	if absf((p-spec.lip).dot(spec.out)) < 0.01: probe -= spec.out*0.2
++	for record in profiles:
++		var area: Rect2 = record.area
++		if not area.has_point(probe): continue
++		var count := maxi(1,ceili(area.size.x/140.0))
++		var index := mini(count-1,floori((probe.x-area.position.x)/(area.size.x/count)))
++		var x0 := area.position.x+index*area.size.x/count
++		var x1 := area.end.x if index == count-1 else area.position.x+(index+1)*area.size.x/count
++		var center := Vector2((x0+x1)*0.5,area.get_center().y)
++		var corners := [Vector2(x0,area.position.y),Vector2(x1,area.position.y),Vector2(x1,area.end.y),Vector2(x0,area.end.y)]
++		for edge in 4:
++			var a: Vector2 = corners[edge]
++			var b: Vector2 = corners[(edge+1)%4]
++			var u := (probe-center).cross(b-center)/(a-center).cross(b-center)
++			var v := (a-center).cross(probe-center)/(a-center).cross(b-center)
++			if minf(minf(u,v),1.0-u-v) < -0.0001: continue
++			var level: float = record.height*(0.86 if record.get("foreground_edge",false) else 0.98)
++			var y := _edge_height(record,a)*u+_edge_height(record,b)*v+level*(1.0-u-v)
++			return Vector3(p.x,y,p.y)*0.01
++	assert(false,"Waterfall source has no real bank: "+spec.id)
++	return Vector3.INF
++
++static func _edge_height(record: Dictionary,p: Vector2) -> float:
++	return record.height*(0.58 if record.get("foreground_edge",false) else 0.74+0.13*sin(p.x*0.009+p.y*0.016))
++
++static func receiving_point(terrain,p: Vector2,spec: Dictionary) -> Vector3:
++	var height := 1.0 if spec.field == "hidden" else float(terrain.height_at(p))
++	if spec.field == "main":
++		for floor in terrain.floor_areas:
++			if floor.area.has_point(p): height = maxf(height,float(floor.get("height",0.7)))
++	return Vector3(p.x,height+0.1,p.y)*0.01
++
++static func build(arena,spec: Dictionary,profiles: Array = []) -> MeshInstance3D:
++	var st := SurfaceTool.new()
++	st.begin(Mesh.PRIMITIVE_TRIANGLES)
++	var tangent: Vector2 = Vector2(-spec.out.y,spec.out.x)
++	var anchors := PackedVector3Array()
++	var heads := PackedVector3Array()
++	var feet := PackedVector3Array()
++	for sign in [-1.0,1.0]:
++		var lip: Vector2 = spec.lip+tangent*spec.half*sign
++		var anchor := rock_point(lip,spec,profiles)+Vector3.UP*0.002
++		anchors.append(anchor)
++		heads.append(anchor+Vector3(spec.out.x,0,spec.out.y)*0.0035)
++		feet.append(receiving_point(arena.terrain,spec.bottom+tangent*spec.bottom_half*sign,spec))
++	# Thin water over the lip joins the upstream surface to the falling face.
++	_quad(st,anchors[0],anchors[1],heads[1],heads[0])
++	for step in 3:
++		var a := float(step)/3.0
++		var b := float(step+1)/3.0
++		_quad(st,_drop(heads[0],feet[0],a),_drop(heads[1],feet[1],a),_drop(heads[1],feet[1],b),_drop(heads[0],feet[0],b))
++	var feed := PackedVector2Array(spec.feed)
++	var indices := Geometry2D.triangulate_polygon(feed)
++	for i in range(0,indices.size(),3):
++		for j in 3: st.add_vertex(rock_point(feed[indices[i+j]],spec,profiles)+Vector3.UP*0.002)
++	var r: Rect2 = spec.receiver
++	_quad(st,receiving_point(arena.terrain,r.position,spec),receiving_point(arena.terrain,Vector2(r.end.x,r.position.y),spec),receiving_point(arena.terrain,r.end,spec),receiving_point(arena.terrain,Vector2(r.position.x,r.end.y),spec))
++	st.generate_normals()
++	var node := MeshInstance3D.new()
++	node.name = "AuthoredWaterCurtain"
++	node.mesh = st.commit()
++	var material: StandardMaterial3D = arena._material(COLOR,true)
++	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
++	material.cull_mode = BaseMaterial3D.CULL_DISABLED
++	node.material_override = material
++	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
++	node.set_meta("existing_water",true)
++	node.set_meta("waterfall_source_id",spec.id)
++	node.set_meta("source_points",anchors)
++	node.set_meta("drop_head_points",heads)
++	node.set_meta("drop_foot_points",feet)
++	node.set_meta("source_spec",spec)
++	return node
++
++static func _drop(head: Vector3,foot: Vector3,t: float) -> Vector3:
++	var point := head.lerp(foot,t)
++	point.y = lerpf(head.y,foot.y,t*t)
++	return point
++
++static func _quad(st: SurfaceTool,a: Vector3,b: Vector3,c: Vector3,d: Vector3) -> void:
++	for p in [a,b,c,a,c,d]: st.add_vertex(p)
+diff --git a/scripts/verify_jungle_waterfall_source_static.py b/scripts/verify_jungle_waterfall_source_static.py
+new file mode 100644
+index 0000000..b815654
+--- /dev/null
++++ b/scripts/verify_jungle_waterfall_source_static.py
+@@ -0,0 +1,77 @@
++"""Engine-free placement preparation, not a Godot parser/render/physics test."""
++import ast, copy, hashlib, json, math, pathlib, re, subprocess
++
++ROOT = pathlib.Path(__file__).resolve().parents[1]
++BASE = "296bde54f987372750e652c608c62b8e6309192c"
++text = (ROOT / "game/jungle_waterfall_sources.gd").read_text()
++layout = (ROOT / "game/jungle_grotto_layout.gd").read_text()
++
++def array(source, name):
++    value = re.search(r"const " + name + r" := (\[[\s\S]*?\n\])", source).group(1)
++    for label, vector in [("LEFT", "(-1,0)"), ("RIGHT", "(1,0)"), ("DOWN", "(0,1)")]:
++        value = value.replace("Vector2." + label, vector)
++    value = value.replace("ALTAR", "Vector2(9860,440)")
++    value = value.replace("FIELD_ENTRY", "Vector2(6290,2630)")
++    value = re.sub(r"(?:Vector2|Rect2)\(([^()]+)\)", r"(\1)", value)
++    return ast.literal_eval(value)
++
++main, hidden = array(text, "MAIN"), array(text, "HIDDEN")
++paths = array(layout, "PATHS")
++clears = [(7300,2060,880,440),(8920,1640,550,450),(9520,220,530,430)]
++pools = [(7450,1650,430,380),(8970,1090,390,370),(8280,930,570,350),(6300,2740,740,100),(7040,2600,560,240)]
++rims = [(1240,590,150,30,185),(1350,430,100,200,185),(1350,630,100,190,21),(1240,760,150,40,21),(1110,440,230,110,185)]
++
++def inside(rect, p, closed=False):
++    x,y,w,h = rect[:4]
++    return x <= p[0] <= x+w and y <= p[1] <= y+h if closed else x <= p[0] < x+w and y <= p[1] < y+h
++
++def walk(p):
++    if any(inside(a,p) for a in clears): return True
++    for route in paths:
++        for a,b in zip(route["points"],route["points"][1:]):
++            vx,vy=b[0]-a[0],b[1]-a[1]
++            u=max(0,min(1,((p[0]-a[0])*vx+(p[1]-a[1])*vy)/(vx*vx+vy*vy)))
++            if math.hypot(p[0]-a[0]-u*vx,p[1]-a[1]-u*vy) <= route["width"]: return True
++    return False
++
++def kind(p):
++    c=math.floor((p[0]-6000)/140);r=math.floor((p[1]-80)/140)
++    center=(6000+(c+.5)*140,80+(r+.5)*140)
++    if walk(center): return 0
++    if any(inside(a,center) for a in pools): return 1
++    return 3 if walk((center[0]-140,center[1])) or walk((center[0],center[1]-140)) else 2
++
++def valid(spec):
++    tangent=(-spec["out"][1],spec["out"][0])
++    for sign in (-1,1):
++        p=tuple(spec["lip"][i]+tangent[i]*spec["half"]*sign for i in range(2))
++        probe=tuple(p[i]-spec["out"][i]*.2 for i in range(2))
++        foot=tuple(spec["bottom"][i]+tangent[i]*spec["bottom_half"]*sign for i in range(2))
++        if not inside(spec["receiver"],foot,True): return False
++        if spec["field"] == "main":
++            if not any(tuple(r[:4])==spec["wall"] and r[4]==spec["height"] and inside(r,probe,True) for r in rims): return False
++        elif kind(probe) not in (2,3) or kind(foot) != 1: return False
++    for p in spec["feed"]:
++        if spec["field"] == "main":
++            if not any(r[4]==spec["height"] and inside(r,p,True) for r in rims): return False
++        elif kind(tuple(p[i]-spec["out"][i]*.2 for i in range(2))) not in (2,3): return False
++    return True
++
++assert len(main)==4 and len(hidden)==2 and len({s["id"] for s in main+hidden})==6
++assert all(valid(s) for s in main+hidden)
++raised=copy.deepcopy(main[2]);raised["height"]=190
++assert not valid(raised), "legacy 190-height sheet above21-rim must fail"
++floated=copy.deepcopy(hidden[0]);floated["lip"]=(7600,1650)
++assert not valid(floated), "legacy source over open pool must fail"
++for forbidden in ["generate_triangle_mesh", "_process(", "_physics_process(", "Particles", "water_areas.append", "wall_areas.append"]:
++    assert forbidden not in text, forbidden
++unchanged=[]
++for name in subprocess.check_output(["git","ls-files","game","project.godot"],cwd=ROOT,text=True).splitlines():
++    if name=="game/jungle_hidden_sanctuary.gd": continue
++    assert (ROOT/name).read_bytes()==subprocess.check_output(["git","show",BASE+":"+name],cwd=ROOT),name
++    unchanged.append(name)
++result={"base":BASE,"engine_runs":0,"scope":"Python declared placement audit only; not GDScript parse, actual mesh/physics, render or performance acceptance","sources":main+hidden,"water_mesh_nodes_before":6,"water_mesh_nodes_prepared":6,"water_triangles_before":72,"water_triangles_prepared":sum(8+2+len(s["feed"])-2 for s in main+hidden),"negative_controls":["190-height over21-rim rejected","pool-centered floating hidden source rejected"],"nonowned_game_config_byte_identical":len(unchanged),"sha256":{n:hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in ["game/jungle_hidden_sanctuary.gd","game/jungle_waterfall_sources.gd","tests/verify_jungle_waterfall_sources.gd","tests/verify_jungle_waterfall_visibility.gd"]},"remaining":["Godot import/parser and source-contact negative controls","actual fixed-camera960/1280 waterfall approach/return and actor/tell readability","bounded performance delta; no lag-fix claim"]}
++out=ROOT/"docs/measurements/jungle-waterfall-source-v50"
++out.mkdir(parents=True,exist_ok=True)
++(out/"static-preparation.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")
++print(json.dumps({k:result[k] for k in ["engine_runs","water_mesh_nodes_before","water_mesh_nodes_prepared","water_triangles_before","water_triangles_prepared","nonowned_game_config_byte_identical","negative_controls"]},ensure_ascii=False))
+diff --git a/tests/verify_jungle_waterfall_sources.gd b/tests/verify_jungle_waterfall_sources.gd
+new file mode 100644
+index 0000000..aec621c
+--- /dev/null
++++ b/tests/verify_jungle_waterfall_sources.gd
+@@ -0,0 +1,62 @@
++extends SceneTree
++## Prepared source/mesh checks. Run only in an explicitly isolated QA project.
++const Sources = preload("res://game/jungle_waterfall_sources.gd")
++var checks := 0
++var errors := 0
++func _initialize() -> void: call_deferred("_run")
++func check(ok: bool,text: String) -> void:
++	checks += 1
++	if not ok:
++		errors += 1
++		printerr("FAIL: ",text)
++func supported(node: MeshInstance3D,rock: TriangleMesh) -> bool:
++	var spec: Dictionary = node.get_meta("source_spec")
++	var heads: PackedVector3Array = node.get_meta("drop_head_points")
++	for local in heads:
++		var head := node.to_global(local)
++		var probe := Vector2(head.x,head.z)*100.0-spec.out*0.55
++		var hit := rock.intersect_segment(Vector3(probe.x,600,probe.y)*0.01,Vector3(probe.x,-10,probe.y)*0.01)
++		if hit.is_empty() or absf(head.y-hit.position.y-0.002) > 0.008: return false
++	return true
++func _run() -> void:
++	var data := OS.get_user_data_dir()
++	var xdg := OS.get_environment("XDG_DATA_HOME")
++	if not ("WaterfallSourcesV50" in data or OS.get_name() == "Linux" and xdg.is_absolute_path() and data.begins_with(xdg.trim_suffix("/")+"/")):
++		printerr("FAIL: private WaterfallSourcesV50 userdata required")
++		quit(1)
++		return
++	var scene = load("res://game/jungle_south_circuit.tscn").instantiate()
++	scene.profile_save_prefix = "user://waterfall_source_fixture"
++	scene.growth_save_prefix = scene.profile_save_prefix+"_growth"
++	root.add_child(scene)
++	var section = scene.temple_section
++	var main_rock: TriangleMesh = scene.terrain_mesh.mesh.generate_triangle_mesh()
++	var hidden_mesh: MeshInstance3D = section.hidden_visual_root.find_child("RockBanks",true,false)
++	var hidden_rock: TriangleMesh = hidden_mesh.mesh.generate_triangle_mesh()
++	var count := 0
++	var ids := {}
++	for node in section.find_children("*","MeshInstance3D",true,false):
++		if not Sources.authored(node): continue
++		count += 1
++		var spec: Dictionary = node.get_meta("source_spec")
++		check(not ids.has(spec.id),"unique source "+spec.id)
++		ids[spec.id] = true
++		var rock := main_rock if spec.field == "main" else hidden_rock
++		check(supported(node,rock),"actual drop head touches rendered rock "+spec.id)
++		var old := node.position
++		node.position.y += 0.5
++		check(not supported(node,rock),"raised detached-water negative control "+spec.id)
++		node.position = old
++		check(node.material_override.albedo_color == Sources.COLOR and node.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA,"same authored water material")
++		var vertices: PackedVector3Array = node.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
++		for head in node.get_meta("drop_head_points"): check(vertices.has(head),"support metadata is an actual emitted mesh vertex")
++		for foot in node.get_meta("drop_foot_points"):
++			check(spec.receiver.grow(0.01).has_point(Vector2(foot.x,foot.z)*100.0),"drop ends in its receiving surface")
++			if spec.field == "hidden":
++				var in_water := false
++				for area in scene.terrain.water_areas:
++					if area.has_point(Vector2(foot.x,foot.z)*100.0): in_water = true
++				check(in_water,"hidden receiving surface is existing real blocked water")
++	check(count == 6,"four main and two hidden water nodes; no count growth")
++	print("Waterfall sources: %d checks, %d failures. Native/human acceptance unverified." % [checks,errors])
++	quit(0 if errors == 0 else 1)
+diff --git a/tests/verify_jungle_waterfall_visibility.gd b/tests/verify_jungle_waterfall_visibility.gd
+index d61cc27..d4af8ad 100644
+--- a/tests/verify_jungle_waterfall_visibility.gd
++++ b/tests/verify_jungle_waterfall_visibility.gd
+@@ -6,0 +7 @@ const Layout = preload("res://game/jungle_grotto_layout.gd")
++const Sources = preload("res://game/jungle_waterfall_sources.gd")
+@@ -125,6 +126 @@ func _inspect(variant: String) -> void:
+-	var expected_water := []
+-	var center: Vector2 = section.layout.ENTRY_TRIGGER.get_center()
+-	for offset in [Vector2(-75, 5), Vector2(40, -180), Vector2(40, 115), Vector2(-180, -195)]:
+-		expected_water.append({"point": center + offset, "depth": 1.25 if offset == Vector2(-75, 5) else 0.8})
+-	for point in [Vector2(7600, 1650), Vector2(8520, 1140)]:
+-		expected_water.append({"point": point, "depth": 0.8})
++	var expected_water: Array = Sources.MAIN+Sources.HIDDEN
+@@ -133 +129 @@ func _inspect(variant: String) -> void:
+-		if child is MeshInstance3D and child.mesh is BoxMesh and is_equal_approx(child.mesh.size.y, 1.8):
++		if Sources.authored(child):
+@@ -142 +138 @@ func _inspect(variant: String) -> void:
+-			if curtain.global_position.is_equal_approx(scene.terrain.world_point(expected.point, 100)):
++			if curtain.get_meta("waterfall_source_id") == expected.id:
+@@ -144,2 +140,8 @@ func _inspect(variant: String) -> void:
+-				check(curtain.mesh.size.is_equal_approx(Vector3(0.10, 1.8, expected.depth)), "authored water sheet dimensions retained")
+-		check(matches == 1, "exactly one water sheet at authored coordinate " + str(expected.point))
++				check(curtain.mesh is ArrayMesh and curtain.get_meta("source_spec") == expected,"one authored source/drop/receiver mesh")
++				var anchors: PackedVector3Array = curtain.get_meta("source_points")
++				var heads: PackedVector3Array = curtain.get_meta("drop_head_points")
++				var feet: PackedVector3Array = curtain.get_meta("drop_foot_points")
++				for i in 2:
++					check(curtain.to_global(heads[i]).distance_to(anchors[i]) < 0.004,"actual drop starts at supported rock lip; moved mesh is rejected")
++					check(heads[i].y > feet[i].y,"water descends to receiving surface")
++		check(matches == 1, "exactly one water source " + expected.id)
+@@ -201 +203 @@ func _authored_waterfall(mesh: Node) -> bool:
+-	if not mesh is MeshInstance3D or not mesh.mesh is BoxMesh or not scene.temple_section.is_ancestor_of(mesh): return false
++	if not Sources.authored(mesh) or not scene.temple_section.is_ancestor_of(mesh): return false
+@@ -203 +205 @@ func _authored_waterfall(mesh: Node) -> bool:
+-	return is_equal_approx(mesh.mesh.size.x, 0.10) and is_equal_approx(mesh.mesh.size.y, 1.8) and material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55)
++	return mesh.mesh is ArrayMesh and material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA and material.albedo_color == Sources.COLOR

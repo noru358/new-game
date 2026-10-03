@@ -1,0 +1,339 @@
+{
+  "base": "296bde54f987372750e652c608c62b8e6309192c",
+  "engine_runs": 0,
+  "scope": "Python declared placement audit only; not GDScript parse, actual mesh/physics, render or performance acceptance",
+  "sources": [
+    {
+      "id": "mouth",
+      "field": "main",
+      "lip": [
+        1240,
+        605
+      ],
+      "out": [
+        -1,
+        0
+      ],
+      "half": 12.0,
+      "bottom": [
+        1225,
+        690
+      ],
+      "bottom_half": 25.0,
+      "height": 185.0,
+      "wall": [
+        1240,
+        590,
+        150,
+        30
+      ],
+      "feed": [
+        [
+          1240,
+          593
+        ],
+        [
+          1358,
+          593
+        ],
+        [
+          1358,
+          535
+        ],
+        [
+          1382,
+          535
+        ],
+        [
+          1382,
+          617
+        ],
+        [
+          1240,
+          617
+        ]
+      ],
+      "receiver": [
+        1200,
+        660,
+        45,
+        60
+      ]
+    },
+    {
+      "id": "upper_south",
+      "field": "main",
+      "lip": [
+        1290,
+        550
+      ],
+      "out": [
+        0,
+        1
+      ],
+      "half": 40.0,
+      "bottom": [
+        1290,
+        550.35
+      ],
+      "bottom_half": 40.0,
+      "height": 185.0,
+      "wall": [
+        1110,
+        440,
+        230,
+        110
+      ],
+      "feed": [
+        [
+          1260,
+          478
+        ],
+        [
+          1275,
+          478
+        ],
+        [
+          1275,
+          442
+        ],
+        [
+          1305,
+          442
+        ],
+        [
+          1305,
+          530
+        ],
+        [
+          1330,
+          550
+        ],
+        [
+          1250,
+          550
+        ],
+        [
+          1275,
+          530
+        ],
+        [
+          1275,
+          502
+        ],
+        [
+          1260,
+          502
+        ]
+      ],
+      "receiver": [
+        1250,
+        550,
+        80,
+        38
+      ]
+    },
+    {
+      "id": "lower_rim",
+      "field": "main",
+      "lip": [
+        1240,
+        780
+      ],
+      "out": [
+        -1,
+        0
+      ],
+      "half": 18.0,
+      "bottom": [
+        1239.65,
+        780
+      ],
+      "bottom_half": 18.0,
+      "height": 21.0,
+      "wall": [
+        1240,
+        760,
+        150,
+        40
+      ],
+      "feed": [
+        [
+          1240,
+          762
+        ],
+        [
+          1380,
+          762
+        ],
+        [
+          1380,
+          798
+        ],
+        [
+          1240,
+          798
+        ]
+      ],
+      "receiver": [
+        1205,
+        760,
+        35,
+        40
+      ]
+    },
+    {
+      "id": "upper_west",
+      "field": "main",
+      "lip": [
+        1110,
+        490
+      ],
+      "out": [
+        -1,
+        0
+      ],
+      "half": 40.0,
+      "bottom": [
+        1109.65,
+        490
+      ],
+      "bottom_half": 40.0,
+      "height": 185.0,
+      "wall": [
+        1110,
+        440,
+        230,
+        110
+      ],
+      "feed": [
+        [
+          1110,
+          450
+        ],
+        [
+          1145,
+          478
+        ],
+        [
+          1260,
+          478
+        ],
+        [
+          1260,
+          502
+        ],
+        [
+          1145,
+          502
+        ],
+        [
+          1110,
+          530
+        ]
+      ],
+      "receiver": [
+        1078,
+        450,
+        32,
+        80
+      ]
+    },
+    {
+      "id": "receiving_pool",
+      "field": "hidden",
+      "lip": [
+        7820,
+        1830
+      ],
+      "out": [
+        -1,
+        0
+      ],
+      "half": 40.0,
+      "bottom": [
+        7819.65,
+        1830
+      ],
+      "bottom_half": 40.0,
+      "feed": [
+        [
+          7820,
+          1790
+        ],
+        [
+          7855,
+          1830
+        ],
+        [
+          7820,
+          1870
+        ]
+      ],
+      "receiver": [
+        7780,
+        1790,
+        40,
+        80
+      ]
+    },
+    {
+      "id": "return_pool",
+      "field": "hidden",
+      "lip": [
+        8240,
+        1130
+      ],
+      "out": [
+        1,
+        0
+      ],
+      "half": 40.0,
+      "bottom": [
+        8240.35,
+        1130
+      ],
+      "bottom_half": 40.0,
+      "feed": [
+        [
+          8240,
+          1090
+        ],
+        [
+          8205,
+          1130
+        ],
+        [
+          8240,
+          1170
+        ]
+      ],
+      "receiver": [
+        8240,
+        1090,
+        40,
+        80
+      ]
+    }
+  ],
+  "water_mesh_nodes_before": 6,
+  "water_mesh_nodes_prepared": 6,
+  "water_triangles_before": 72,
+  "water_triangles_prepared": 80,
+  "negative_controls": [
+    "190-height over21-rim rejected",
+    "pool-centered floating hidden source rejected"
+  ],
+  "nonowned_game_config_byte_identical": 223,
+  "sha256": {
+    "game/jungle_hidden_sanctuary.gd": "f0c352335ec8d5ffd28a252820ef1ff8bf839733c0465ab7431df6927e0e98f0",
+    "game/jungle_waterfall_sources.gd": "2c9c12a87a8c440696487802d0ba979efd1a13e35c0e6dd58674cfe6e85bd972",
+    "tests/verify_jungle_waterfall_sources.gd": "cdd56315b85ff1b63bcc0af7799f2b226e22e04fc0335ad2c89fac876c22ac63",
+    "tests/verify_jungle_waterfall_visibility.gd": "20a292163c4828388aab4e16cffc74e47fc2758101a8baf654e6d09dfbbb7035"
+  },
+  "remaining": [
+    "Godot import/parser and source-contact negative controls",
+    "actual fixed-camera960/1280 waterfall approach/return and actor/tell readability",
+    "bounded performance delta; no lag-fix claim"
+  ]
+}
