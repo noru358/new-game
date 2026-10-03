@@ -1,0 +1,349 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1014)
+ERROR: Could not open 'user://' directory: 'user://'.
+   at: _get_and_create_snapshot_storage_dir (modules/objectdb_profiler/editor/objectdb_profiler_panel.cpp:154)
+[   0% ] first_scan_filesystem | Started 프로젝트 초기화 (5 steps)
+[   0% ] first_scan_filesystem | 파일 구조 스캔 중...
+[  16% ] first_scan_filesystem | 전역 클래스 이름을 불러오는 중...
+[  33% ] first_scan_filesystem | GDExtensions 검증 중...
+[  50% ] first_scan_filesystem | 오토로드 스크립트를 만드는 중...
+[  66% ] first_scan_filesystem | 플러그인을 초기화 중...
+[  83% ] first_scan_filesystem | 파일 스캔 시작 중...
+[ DONE ] first_scan_filesystem
+
+[   0% ] update_scripts_classes | Started 전역 클래스를 등록하는 중... (269 steps)
+[   0% ] update_scripts_classes | ArenaNavigation
+[   0% ] update_scripts_classes | 
+[   0% ] update_scripts_classes | 
+[   1% ] update_scripts_classes | 
+[   1% ] update_scripts_classes | 
+[   1% ] update_scripts_classes | 
+[   2% ] update_scripts_classes | 
+[   2% ] update_scripts_classes | 
+[   2% ] update_scripts_classes | 
+[   3% ] update_scripts_classes | DeepWetlandTerrain
+[   3% ] update_scripts_classes | 
+[   4% ] update_scripts_classes | 
+[   4% ] update_scripts_classes | TrainingEnemy
+[   4% ] update_scripts_classes | EnemyBolt
+[   5% ] update_scripts_classes | EnemyDefinitions
+[   5% ] update_scripts_classes | 
+[   5% ] update_scripts_classes | EnemyZone
+[   6% ] update_scripts_classes | 
+[   6% ] update_scripts_classes | 
+[   7% ] update_scripts_classes | 
+[   7% ] update_scripts_classes | GateBoss
+[   7% ] update_scripts_classes | 
+[   8% ] update_scripts_classes | 
+[   8% ] update_scripts_classes | 
+[   8% ] update_scripts_classes | HybridMinimap
+[   9% ] update_scripts_classes | 
+[   9% ] update_scripts_classes | HybridTerrain
+[  10% ] update_scripts_classes | ImpactBurst
+[  10% ] update_scripts_classes | 
+[  10% ] update_scripts_classes | 
+[  11% ] update_scripts_classes | 
+[  11% ] update_scripts_classes | 
+[  11% ] update_scripts_classes | 
+[  12% ] update_scripts_classes | JunglePassTerrain
+[  12% ] update_scripts_classes | 
+[  12% ] update_scripts_classes | 
+[  13% ] update_scripts_classes | 
+[  13% ] update_scripts_classes | 
+[  14% ] update_scripts_classes | 
+[  14% ] update_scripts_classes | 
+[  14% ] update_scripts_classes | 
+[  15% ] update_scripts_classes | JungleWarden
+[  15% ] update_scripts_classes | 
+[  15% ] update_scripts_classes | 
+[  16% ] update_scripts_classes | 
+[  16% ] update_scripts_classes | 
+[  17% ] update_scripts_classes | 
+[  17% ] update_scripts_classes | 
+[  17% ] update_scripts_classes | PermanentGrowthCatalog
+[  18% ] update_scripts_classes | SandboxPlayer
+[  18% ] update_scripts_classes | 
+[  18% ] update_scripts_classes | 
+[  19% ] update_scripts_classes | 
+[  19% ] update_scripts_classes | 
+[  20% ] update_scripts_classes | 
+[  20% ] update_scripts_classes | RunGrowth
+[  20% ] update_scripts_classes | 
+[  21% ] update_scripts_classes | RunProfile
+[  21% ] update_scripts_classes | 
+[  21% ] update_scripts_classes | SealAttack
+[  22% ] update_scripts_classes | TempleBlock
+[  22% ] update_scripts_classes | 
+[  22% ] update_scripts_classes | 
+[  23% ] update_scripts_classes | 
+[  23% ] update_scripts_classes | 
+[  24% ] update_scripts_classes | 
+[  24% ] update_scripts_classes | TempleCircuitTrialTerrain
+[  24% ] update_scripts_classes | TempleEnvironmentKit
+[  25% ] update_scripts_classes | 
+[  25% ] update_scripts_classes | 
+[  25% ] update_scripts_classes | 
+[  26% ] update_scripts_classes | TempleHybridTerrain
+[  26% ] update_scripts_classes | TempleMinimap
+[  27% ] update_scripts_classes | 
+[  27% ] update_scripts_classes | 
+[  27% ] update_scripts_classes | TempleOpeningEnvironment
+[  28% ] update_scripts_classes | 
+[  28% ] update_scripts_classes | 
+[  28% ] update_scripts_classes | TempleSanctuaryEnvironment
+[  29% ] update_scripts_classes | 
+[  29% ] update_scripts_classes | 
+[  30% ] update_scripts_classes | UnlockProgress
+[  30% ] update_scripts_classes | ViewProp
+[  30% ] update_scripts_classes | 
+[  31% ] update_scripts_classes | WetlandBoss
+[  31% ] update_scripts_classes | 
+[  31% ] update_scripts_classes | 
+[  32% ] update_scripts_classes | 
+[  32% ] update_scripts_classes | 
+[  32% ] update_scripts_classes | 
+[  33% ] update_scripts_classes | 
+[  33% ] update_scripts_classes | 
+[  34% ] update_scripts_classes | 
+[  34% ] update_scripts_classes | 
+[  34% ] update_scripts_classes | 
+[  35% ] update_scripts_classes | 
+[  35% ] update_scripts_classes | 
+[  35% ] update_scripts_classes | WispCompanion
+[  36% ] update_scripts_classes | WispChainArc
+[  36% ] update_scripts_classes | WispFlash
+[  37% ] update_scripts_classes | WispProjectile
+[  37% ] update_scripts_classes | 
+[  37% ] update_scripts_classes | 
+[  38% ] update_scripts_classes | 
+[  38% ] update_scripts_classes | 
+[  38% ] update_scripts_classes | 
+[  39% ] update_scripts_classes | 
+[  39% ] update_scripts_classes | 
+[  40% ] update_scripts_classes | 
+[  40% ] update_scripts_classes | 
+[  40% ] update_scripts_classes | 
+[  41% ] update_scripts_classes | 
+[  41% ] update_scripts_classes | 
+[  41% ] update_scripts_classes | 
+[  42% ] update_scripts_classes | 
+[  42% ] update_scripts_classes | 
+[  42% ] update_scripts_classes | 
+[  43% ] update_scripts_classes | 
+[  43% ] update_scripts_classes | 
+[  44% ] update_scripts_classes | 
+[  44% ] update_scripts_classes | 
+[  44% ] update_scripts_classes | 
+[  45% ] update_scripts_classes | 
+[  45% ] update_scripts_classes | 
+[  45% ] update_scripts_classes | 
+[  46% ] update_scripts_classes | 
+[  46% ] update_scripts_classes | 
+[  47% ] update_scripts_classes | 
+[  47% ] update_scripts_classes | 
+[  47% ] update_scripts_classes | 
+[  48% ] update_scripts_classes | 
+[  48% ] update_scripts_classes | 
+[  48% ] update_scripts_classes | 
+[  49% ] update_scripts_classes | 
+[  49% ] update_scripts_classes | 
+[  50% ] update_scripts_classes | 
+[  50% ] update_scripts_classes | 
+[  50% ] update_scripts_classes | 
+[  51% ] update_scripts_classes | 
+[  51% ] update_scripts_classes | 
+[  51% ] update_scripts_classes | 
+[  52% ] update_scripts_classes | 
+[  52% ] update_scripts_classes | 
+[  52% ] update_scripts_classes | 
+[  53% ] update_scripts_classes | 
+[  53% ] update_scripts_classes | 
+[  54% ] update_scripts_classes | 
+[  54% ] update_scripts_classes | 
+[  54% ] update_scripts_classes | 
+[  55% ] update_scripts_classes | 
+[  55% ] update_scripts_classes | 
+[  55% ] update_scripts_classes | 
+[  56% ] update_scripts_classes | 
+[  56% ] update_scripts_classes | 
+[  57% ] update_scripts_classes | 
+[  57% ] update_scripts_classes | 
+[  57% ] update_scripts_classes | 
+[  58% ] update_scripts_classes | 
+[  58% ] update_scripts_classes | 
+[  58% ] update_scripts_classes | 
+[  59% ] update_scripts_classes | 
+[  59% ] update_scripts_classes | 
+[  60% ] update_scripts_classes | 
+[  60% ] update_scripts_classes | 
+[  60% ] update_scripts_classes | 
+[  61% ] update_scripts_classes | 
+[  61% ] update_scripts_classes | 
+[  61% ] update_scripts_classes | 
+[  62% ] update_scripts_classes | 
+[  62% ] update_scripts_classes | 
+[  62% ] update_scripts_classes | 
+[  63% ] update_scripts_classes | 
+[  63% ] update_scripts_classes | 
+[  64% ] update_scripts_classes | 
+[  64% ] update_scripts_classes | 
+[  64% ] update_scripts_classes | 
+[  65% ] update_scripts_classes | 
+[  65% ] update_scripts_classes | 
+[  65% ] update_scripts_classes | 
+[  66% ] update_scripts_classes | 
+[  66% ] update_scripts_classes | 
+[  67% ] update_scripts_classes | 
+[  67% ] update_scripts_classes | 
+[  67% ] update_scripts_classes | 
+[  68% ] update_scripts_classes | 
+[  68% ] update_scripts_classes | 
+[  68% ] update_scripts_classes | 
+[  69% ] update_scripts_classes | 
+[  69% ] update_scripts_classes | 
+[  70% ] update_scripts_classes | 
+[  70% ] update_scripts_classes | 
+[  70% ] update_scripts_classes | 
+[  71% ] update_scripts_classes | 
+[  71% ] update_scripts_classes | 
+[  71% ] update_scripts_classes | 
+[  72% ] update_scripts_classes | 
+[  72% ] update_scripts_classes | 
+[  72% ] update_scripts_classes | 
+[  73% ] update_scripts_classes | 
+[  73% ] update_scripts_classes | 
+[  74% ] update_scripts_classes | 
+[  74% ] update_scripts_classes | 
+[  74% ] update_scripts_classes | 
+[  75% ] update_scripts_classes | 
+[  75% ] update_scripts_classes | 
+[  75% ] update_scripts_classes | 
+[  76% ] update_scripts_classes | 
+[  76% ] update_scripts_classes | 
+[  77% ] update_scripts_classes | 
+[  77% ] update_scripts_classes | 
+[  77% ] update_scripts_classes | 
+[  78% ] update_scripts_classes | 
+[  78% ] update_scripts_classes | 
+[  78% ] update_scripts_classes | 
+[  79% ] update_scripts_classes | 
+[  79% ] update_scripts_classes | 
+[  80% ] update_scripts_classes | 
+[  80% ] update_scripts_classes | 
+[  80% ] update_scripts_classes | 
+[  81% ] update_scripts_classes | 
+[  81% ] update_scripts_classes | 
+[  81% ] update_scripts_classes | 
+[  82% ] update_scripts_classes | 
+[  82% ] update_scripts_classes | 
+[  82% ] update_scripts_classes | 
+[  83% ] update_scripts_classes | 
+[  83% ] update_scripts_classes | 
+[  84% ] update_scripts_classes | 
+[  84% ] update_scripts_classes | 
+[  84% ] update_scripts_classes | 
+[  85% ] update_scripts_classes | 
+[  85% ] update_scripts_classes | 
+[  85% ] update_scripts_classes | 
+[  86% ] update_scripts_classes | 
+[  86% ] update_scripts_classes | 
+[  87% ] update_scripts_classes | 
+[  87% ] update_scripts_classes | 
+[  87% ] update_scripts_classes | 
+[  88% ] update_scripts_classes | 
+[  88% ] update_scripts_classes | 
+[  88% ] update_scripts_classes | 
+[  89% ] update_scripts_classes | 
+[  89% ] update_scripts_classes | 
+[  90% ] update_scripts_classes | 
+[  90% ] update_scripts_classes | 
+[  90% ] update_scripts_classes | 
+[  91% ] update_scripts_classes | 
+[  91% ] update_scripts_classes | 
+[  91% ] update_scripts_classes | 
+[  92% ] update_scripts_classes | 
+[  92% ] update_scripts_classes | 
+[  92% ] update_scripts_classes | 
+[  93% ] update_scripts_classes | 
+[  93% ] update_scripts_classes | 
+[  94% ] update_scripts_classes | 
+[  94% ] update_scripts_classes | 
+[  94% ] update_scripts_classes | 
+[  95% ] update_scripts_classes | 
+[  95% ] update_scripts_classes | 
+[  95% ] update_scripts_classes | 
+[  96% ] update_scripts_classes | 
+[  96% ] update_scripts_classes | 
+[  97% ] update_scripts_classes | 
+[  97% ] update_scripts_classes | 
+[  97% ] update_scripts_classes | 
+[  98% ] update_scripts_classes | 
+[  98% ] update_scripts_classes | 
+[  98% ] update_scripts_classes | 
+[  99% ] update_scripts_classes | 
+[ DONE ] update_scripts_classes
+
+[   0% ] _update_scan_actions | Started 액션 스캔 중... (15 steps)
+[   0% ] _update_scan_actions | attack_1.wav
+[   6% ] _update_scan_actions | attack_2.wav
+[  12% ] _update_scan_actions | attack_3.wav
+[  18% ] _update_scan_actions | attack_4.wav
+[  25% ] _update_scan_actions | dash.wav
+[  31% ] _update_scan_actions | hit.wav
+[  37% ] _update_scan_actions | hurt.wav
+[  43% ] _update_scan_actions | wisp_hit.wav
+[  50% ] _update_scan_actions | wisp_shot.wav
+[  56% ] _update_scan_actions | enemy_beast.svg
+[  62% ] _update_scan_actions | enemy_fragment.svg
+[  68% ] _update_scan_actions | enemy_lamp.svg
+[  75% ] _update_scan_actions | enemy_support.svg
+[  81% ] _update_scan_actions | enemy_zone.svg
+[  87% ] _update_scan_actions | hybrid_actor.svg
+[ DONE ] _update_scan_actions
+
+[   0% ] reimport | Started 애셋 (다시) 가져오는 중 (15 steps)
+[   0% ] reimport | 다시 가져올 파일을 준비 중...
+[   6% ] reimport | 다시 가져올 파일을 준비 중...
+[  12% ] reimport | 다시 가져올 파일을 준비 중...
+[  18% ] reimport | 다시 가져올 파일을 준비 중...
+[  25% ] reimport | 다시 가져올 파일을 준비 중...
+[  31% ] reimport | 다시 가져올 파일을 준비 중...
+[  37% ] reimport | 다시 가져올 파일을 준비 중...
+[  43% ] reimport | 다시 가져올 파일을 준비 중...
+[  50% ] reimport | 다시 가져올 파일을 준비 중...
+[  56% ] reimport | 다시 가져올 파일을 준비 중...
+[  62% ] reimport | 다시 가져올 파일을 준비 중...
+[  68% ] reimport | 다시 가져올 파일을 준비 중...
+[  75% ] reimport | 다시 가져올 파일을 준비 중...
+[  81% ] reimport | 다시 가져올 파일을 준비 중...
+[  87% ] reimport | 다시 가져올 파일을 준비 중...
+[   0% ] reimport | 다시 가져오기 전 작업을 수행 중...
+[   0% ] reimport | enemy_beast.svg
+[   6% ] reimport | enemy_fragment.svg
+[  12% ] reimport | enemy_lamp.svg
+[  18% ] reimport | enemy_support.svg
+[  25% ] reimport | enemy_zone.svg
+[  31% ] reimport | hybrid_actor.svg
+[  37% ] reimport | enemy_beast.svg
+[  43% ] reimport | enemy_fragment.svg
+[  50% ] reimport | enemy_lamp.svg
+[  56% ] reimport | enemy_support.svg
+[  62% ] reimport | enemy_zone.svg
+[  68% ] reimport | hybrid_actor.svg
+[  75% ] reimport | attack_1.wav
+[  81% ] reimport | attack_2.wav
+[  87% ] reimport | attack_3.wav
+[  93% ] reimport | 애셋 가져오기 마무리 중...
+[ DONE ] reimport
+
+[   0% ] reimport | Started 애셋 (다시) 가져오는 중 (15 steps)
+[   0% ] reimport | 다시 가져오기 후 작업을 수행 중...
+[ DONE ] reimport
+
+[   0% ] loading_editor_layout | Started 편집기를 불러오는 중 (5 steps)
+[   0% ] loading_editor_layout | 편집기 레이아웃을 불러오는 중...
+[  16% ] loading_editor_layout | 독을 불러오는 중...
+[ DONE ] loading_editor_layout
+
