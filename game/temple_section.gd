@@ -388,8 +388,8 @@ func _build_exit_label() -> void:
 	exit_label = Label3D.new()
 	exit_label.name = "HiddenExitLabel"
 	exit_label.text = _hidden_return_name()
-	exit_label.font_size = 24
-	exit_label.pixel_size = 0.005
+	exit_label.font_size = 28
+	exit_label.pixel_size = 0.010
 	exit_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	exit_label.position = arena.terrain.world_point(layout.EXIT_TRIGGER.get_center(), 70)
 	exit_label.hide()
