@@ -27,7 +27,7 @@ permissions:
 jobs:
   preview:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - name: Install official engine and software display
@@ -148,6 +148,26 @@ jobs:
           TEMPLE_MONUMENT_CAPTURE_DIR="$PWD/temple-monument-render" XDG_DATA_HOME="$RUNNER_TEMP/temple-landmark-data" LIBGL_ALWAYS_SOFTWARE=1 \
           xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_temple_monument_scale.gd
           test "$(find temple-monument-render -name '*.png' | wc -l)" -eq 16
+      - name: Capture integrated temple place sequence
+        run: |
+          mkdir -p temple-place-sequence
+          set +e
+          REGIONAL_LANDMARK_OUTPUT="$PWD/temple-place-sequence/images" REGION_LANDMARK=temple LIBGL_ALWAYS_SOFTWARE=1 \
+            xvfb-run -a -s '-screen 0 1280x720x24' timeout 240 \
+            godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_temple_place_sequence.gd \
+            > temple-place-sequence/capture.log 2>&1
+          status=$?
+          cat temple-place-sequence/capture.log
+          set -e
+          test "$status" -eq 0
+          test "$(find temple-place-sequence -name '*.png' | wc -l)" -eq 88
+          python3 - <<'PYREPORT'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('temple-place-sequence/images/report.json').read_text())
+          assert report['render'] and not report['errors']
+          assert report['normal_input'] and not report['acceleration'] and report['time_scale']==1
+          PYREPORT
       - name: Capture companion focus contract
         run: |
           mkdir -p "$RUNNER_TEMP/companion-focus" companion-focus-render
@@ -164,6 +184,7 @@ jobs:
           path: |
             regional-landmarks/
             temple-monument-render/
+            temple-place-sequence/
             companion-focus-render/
             presentation-baseline/
             presentation-candidate/

@@ -1,0 +1,12 @@
+# Parent-owned status mount patch: git apply --unidiff-zero patches/temple-place-status-v49.patch
+--- a/DEV_STATUS.md
++++ b/DEV_STATUS.md
+@@ -22,0 +23,8 @@
++
++
++## Temple place sequence v49 - delegated handoff
++
++- Temple-only environment/helper now joins washing landing, open court, articulated cloister, water walk and sanctuary reveal. Large v47 sanctuary/human door, opaque materials, main/alternate/hidden/boss paths, terrain/collision, camera, combat/spawn/economy and 240-second contract are preserved.
++- Native Mac Godot 4.6.stable.official.89cea1439: import and 9 focused tests passed; composition 13,443 checks/0 failures, 5,148 bounded rays/0 added obstruction. Rejected coplanar revision detected 7 overlaps; final 0, independent surface union delta 0.0, same lift/collision.
++- Baseline/candidate actual 960/1280 renders each completed 34 normal-input points/88 PNGs. Active walking totals both 76.30 seconds. Six fixed enemy/tell samples remain visible; the existing warning crossing hero still lowers raw Body visibility to about 94 percent and is not repaired by this change.
++- Evidence and before/after sheets: evidence/temple-place-v49/VERIFICATION.md and verification.json. Separate QA userdata; source config and user saves preserved. Parent integration/full CI/Windows native, natural combat and human place/beauty/fun acceptance remain pending. No new package or canonical movement.
