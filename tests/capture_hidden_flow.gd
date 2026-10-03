@@ -6,11 +6,18 @@ var captures := []
 var width := 0
 var region := ""
 var exit_only := false
+var only_region := ""
+var only_width := 0
+
+func _expected_capture_count() -> int:
+	return (2 if only_region != "" else 4) * (1 if only_width != 0 else 2) * (2 if exit_only else 6)
 
 func _run() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-dir="): output = argument.trim_prefix("--capture-dir=")
 		if argument == "--exit-only": exit_only = true
+		if argument.begins_with("--region="): only_region = argument.trim_prefix("--region=")
+		if argument.begins_with("--width="): only_width = argument.trim_prefix("--width=").to_int()
 	if DisplayServer.get_name() == "headless" or output.is_empty() or not output.is_absolute_path() or not "LoopConquestHiddenFlow" in OS.get_user_data_dir():
 		printerr("FAIL: real renderer, private HiddenFlow userdata and fresh absolute output required")
 		quit(1)
@@ -23,12 +30,14 @@ func _run() -> void:
 	Engine.time_scale = 1.0
 	Engine.max_fps = 60
 	for size in [Vector2i(960,540),Vector2i(1280,720)]:
+		if only_width != 0 and size.x != only_width: continue
 		root.size = size
 		root.content_scale_size = Vector2i(1280,720)
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 		width = size.x
 		for name in ["temple_circuit_run","jungle_south_circuit"]:
 			region = "temple" if name == "temple_circuit_run" else "jungle"
+			if only_region != "" and region != only_region: continue
 			scene = load("res://game/" + name + ".tscn").instantiate()
 			scene.profile_save_prefix = "user://render_hidden_%s_%d_%d" % [region,width,Time.get_ticks_usec()]
 			scene.growth_save_prefix = scene.profile_save_prefix + "_growth"
@@ -66,7 +75,7 @@ func _run() -> void:
 			await process_frame
 			if failures: break
 		if failures: break
-	check(captures.size() == (8 if exit_only else 24), "all requested rendered states captured")
+	check(captures.size() == _expected_capture_count(), "all requested rendered states captured")
 	var file := FileAccess.open(output.path_join("report.json"),FileAccess.WRITE)
 	file.store_string(JSON.stringify({"checks":checks,"failures":failures,"captures":captures,"scope":"real native renderer, normal threshold inputs, fixed setup, frozen combat/time; no human play"},"\t"))
 	print("HIDDEN_RENDER ",JSON.stringify({"checks":checks,"failures":failures,"images":captures.size()}))
@@ -76,7 +85,7 @@ func _step() -> void:
 	await super._step()
 	# Preserve real authored hidden spawns, but freeze them before any action.
 	for actor in scene.actors:
-		if actor != scene.player: actor.set_physics_process(false)
+		if is_instance_valid(actor) and actor != scene.player: actor.set_physics_process(false)
 
 func _walk(goal: Vector2) -> void:
 	var path: PackedVector2Array = scene.navigation.find_path(scene.player.position,goal)
