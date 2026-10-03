@@ -16,6 +16,8 @@ var checks := 0
 var errors: Array[String] = []
 var captures: Array[Dictionary] = []
 var output := ""
+var only_pose := ""
+var only_width := 0
 var scene
 var started := 0
 var finished := false
@@ -74,6 +76,8 @@ func _geometry_contract() -> void:
 
 func _run() -> void:
 	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--pose="): only_pose = argument.trim_prefix("--pose=")
+		if argument.begins_with("--width="): only_width = argument.trim_prefix("--width=").to_int()
 		if argument.begins_with("--capture-dir="):
 			if not output.is_empty():
 				printerr("FAIL: only one capture directory is allowed")
@@ -100,7 +104,7 @@ func _run() -> void:
 	for variant in ["baseline", "candidate"]:
 		await _inspect(variant)
 	if not output.is_empty():
-		check(captures.size() == 12, "all baseline/candidate poses at both resolutions rendered")
+		check(captures.size() == 2 * (1 if only_pose != "" else 3) * (1 if only_width != 0 else 2), "all requested baseline/candidate poses rendered")
 	_finish()
 
 func _inspect(variant: String) -> void:
@@ -167,10 +171,12 @@ func _inspect(variant: String) -> void:
 	await create_timer(0.5).timeout # Finish the real transition shade before pixels.
 	if not output.is_empty():
 		for size in SIZES:
+			if only_width != 0 and size.x != only_width: continue
 			root.size = size
 			root.content_scale_size = Vector2i(1280, 720)
 			root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-			for pose in POSES: await _capture(variant, size, pose)
+			for pose in POSES:
+				if only_pose == "" or pose.name == only_pose: await _capture(variant, size, pose)
 	scene.queue_free()
 	current_scene = null
 	for i in 3: await process_frame
@@ -178,7 +184,9 @@ func _inspect(variant: String) -> void:
 
 func _image() -> Image:
 	for i in 3: await process_frame
-	await RenderingServer.frame_post_draw
+	# Covered Mac test windows may omit frame_post_draw indefinitely.
+	# Force real rendering without changing product focus or actor depth.
+	RenderingServer.force_draw(false)
 	return root.get_texture().get_image()
 
 func _difference(a: Image, b: Image) -> int:
