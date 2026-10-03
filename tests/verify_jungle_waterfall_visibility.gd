@@ -131,6 +131,7 @@ func _inspect(variant: String) -> void:
 			var material = child.material_override
 			check(material is StandardMaterial3D and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55) and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "authored water material retained")
 	check(curtains.size() == 6, "all authored waterfall sheets retained, including nested helpers")
+	check(curtains.filter(_authored_waterfall).size() == 6, "render selector recognizes exactly the six nested water sheets")
 	for expected in expected_water:
 		var matches := 0
 		for curtain in curtains:
@@ -189,7 +190,7 @@ func _difference(a: Image, b: Image) -> int:
 	return count
 
 func _authored_waterfall(mesh: Node) -> bool:
-	if mesh.get_parent() != scene.temple_section or not mesh is MeshInstance3D or not mesh.mesh is BoxMesh: return false
+	if not mesh is MeshInstance3D or not mesh.mesh is BoxMesh or not scene.temple_section.is_ancestor_of(mesh): return false
 	var material = mesh.material_override
 	return is_equal_approx(mesh.mesh.size.x, 0.10) and is_equal_approx(mesh.mesh.size.y, 1.8) and material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55)
 
