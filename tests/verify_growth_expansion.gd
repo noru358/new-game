@@ -39,6 +39,7 @@ func _run() -> void:
 	await physics_frame
 	_check(loaded.reset_growth() and int(loaded.growth_ranks.WISP) == 0 and int(loaded.growth_ranks.GUARD) == 0 and int(loaded.growth_ranks.SPEED) == 0, "full respec clears new growth tracks")
 	var older_v3: Dictionary = loaded._snapshot()
+	older_v3.version = 3
 	for id in ["WISP", "GUARD", "SPEED"]: older_v3.growth_ranks.erase(id)
 	var legacy_file := FileAccess.open(PROFILE + "_a.json", FileAccess.WRITE)
 	legacy_file.store_string(JSON.stringify(older_v3))

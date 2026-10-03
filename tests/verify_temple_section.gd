@@ -63,12 +63,12 @@ func _run() -> void:
 	saved.load_state()
 	check(saved.awakenings.has("EMBER_GARDEN") and saved.discovered_places.has("TEMPLE_GARDEN"), "awakening survives reload before settlement")
 	section.leave_garden()
-	scene.run_time = 300.0
+	scene.run_time = scene.BOSS_TIME
 	scene.teleport(Vector2(3400, 800))
 	section.tick(0.0)
 	check(not scene.boss_spawned and scene.boss_announced, "destination spawn is announced before appearing")
 	section.tick(1.3)
-	check(scene.boss_spawned and not scene.boss.encounter_active and scene.boss.position == section.BOSS_POINT, "five minutes creates a waiting destination boss")
+	check(scene.boss_spawned and not scene.boss.encounter_active and scene.boss.position == section.BOSS_POINT, "four minutes creates a waiting destination boss")
 	var health: float = scene.boss.health
 	scene.boss.take_hit(50.0, Vector2.RIGHT, false)
 	check(scene.boss.health == health, "outside player cannot damage sleeping boss")
@@ -118,7 +118,7 @@ func _run() -> void:
 	check(revisit.temple_section.claim_garden_reward() and is_equal_approx(revisit.player.health, 30.0), "revisit reward heals 20 percent")
 	check(not revisit.temple_section.claim_garden_reward() and is_equal_approx(revisit.player.health, 30.0), "revisit healing is once per run")
 	revisit.temple_section.leave_garden()
-	revisit.run_time = 300.0
+	revisit.run_time = revisit.BOSS_TIME
 	revisit.teleport(revisit.temple_section.RETRY_POINT)
 	revisit.temple_section.tick(0.0)
 	revisit.temple_section.tick(1.3)
@@ -134,7 +134,7 @@ func _run() -> void:
 		var end_scene = fresh_scene()
 		await process_frame
 		if decline:
-			end_scene.run_time = 300.0
+			end_scene.run_time = end_scene.BOSS_TIME
 			end_scene.teleport(end_scene.temple_section.RETRY_POINT)
 			end_scene.temple_section.tick(0.0)
 			end_scene.temple_section.tick(1.3)

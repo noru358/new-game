@@ -1,31 +1,41 @@
-# Loop Conquest — Consolidated Playtest v38
+# Loop Conquest — Mac Playtest v42
 
-Includes the canal synthesis, corridor and sanctuary environment sample, movement-link/retreat-keyboard fixes, close-boss player visibility, export cleanup, and three isolated permanent-price comparisons. Ordinary `godot --path .` keeps existing saves and baseline prices.
+This local checkpoint starts from the delivered v41 `6dbe4b3e`, with the real remote `codex/current-playtest` at `93674fdb`. It combines the simplified camp/combat UI, the four-minute **boss preparation** deadline, continuous boss warnings across arena exits, ten permanent growth tracks with five ranks, a small jungle river route adjustment, and fully opaque original environment assets. Boss defeat still ends the run; one boss retry remains. The historical v41 notes below describe the earlier checkpoint.
 
-Start a **fresh separate trial** (Godot 4.6.x on PATH):
+Open `Loop Conquest - Playtest v42.app` after closing the older v41 game. Both versions use the same ordinary save location. v42 reads earlier save versions and preserves raw pre-v7 slot copies before its first v7 write. The older v41 app cannot continue a v7 save. Keep the v41 app and archive for reference, but do not resume an old open session after v42 has written progress.
+
+From source, use Godot 4.6.x and run `godot --path .`. At camp, walk to departure with WASD and press E. The first preparation page shows region, equipped items and departure; equipment, permanent growth, rewards and the save-free canal trial remain in their existing tabs. J/click attacks, Space moving slash, Shift dash, Tab map and Esc pause/close retain their controls.
+
+The four-minute spawn request budget is 352.125 by the fixed schedule, not measured kills, XP or currency. The three-run economy sample and native input/render fixtures are comparison evidence, not human fun, readability, audio or long-session acceptance. The design master still records the older five-minute baseline; this v42 timing is the user's newer bounded playtest instruction. See `DEV_STATUS.md` for integrated checks and remaining decisions.
+
+# Previous checkpoint: Readable Playtest v41
+
+Run the ordinary game with Godot4.6.x: `godot --path .`. Start at camp; existing saves, prices20/35 and ordinary card caps/offers remain unchanged. The already delivered native Mac archive remains the separate v38 `b4e9bf2` checkpoint and does not silently include this newer source.
+
+This checkpoint also gives all five ordinary enemy roles distinct bodies and adds master volume/mute plus window/fullscreen controls. Open Settings from walking camp (button or Esc), or from the combat pause menu. Closing combat settings returns to pause. Preferences use a separate local ConfigFile; progression saves are unchanged.
+
+The previous feedback batch clears only obstructing upper temple masonry while retaining solid lower courses, reduces repeated visibility switching, and makes actual banked rewards and next purchase/equip steps clear. Canal gate/sluice overheads follow the same principle; canal houses still use legacy alpha. Use `--occlusion-baseline` after `--` to compare the previous handling. Other existing environment baseline flags remain available.
+
+Use WASD, J/click, Space moving slash, Shift dash, E interaction and G retreat. Tab opens the map; Esc opens pause/gear/card details. Camp has an isolated canal-development button with no rewards/saves. Buying gear and equipping it remain separate actions.
+
+Optional isolated growth comparison (Godot on PATH):
 
 ```sh
-python3 scripts/launch_price_trial.py late3
+python3 scripts/launch_price_trial.py baseline --damage-cap-trial
 ```
 
-Use `python` on Windows if that is its Python command. Choose `baseline` (20/35), `late2` (20/70), or `late3` (20/105). These are first/second-rank permanent-growth costs; first weapons, XP, healing and combat are unchanged. `late3` is the sharper specialization comparison, not a final balance decision. If Godot is not on PATH, add `--godot "/path/to/Godot"`; macOS may pass the actual Godot.app path.
+This creates a fresh private copy/profile. Only direct and companion damage cards gain a fourth rank, at half the ordinary increment. `--offer-family-trial` independently prefers an unrepresented action family in the third offer. Both default off; the printed resume command includes the exact curve and flags. Legacy both-off copies remain resumable. Choose baseline20/35, late2 20/70 or late3 20/105 only when comparing prices. No permanent menu or ordinary-profile experiment is added.
 
-The launcher prints the copy/save locations and a complete resume command. Keep the trial copy at that location; resume with the same curve and printed `--destination ... --resume`. Each candidate starts without money, gear or unlocks. Use the launcher to resume, so its private environment and profile identity stay consistent. It never edits the source project or reuses ordinary campaign saves. A changed/moved copy or different curve is refused; choose a new destination for another trial.
+Human playtest agenda:
+1. Is the upper cutaway calmer than the old ghosting, while feet/depth and attack warnings remain understandable?
+2. Do the opening court, stone/horn enemies and compact HUD read together during combat?
+3. Does the result clearly explain what was banked, what became available, and what to buy/equip next?
+4. Do volume/mute and window/fullscreen controls work as expected without losing pause or focus?
+5. Does the existing reward→preparation→next run lead to a different intended action?
 
-Use WASD, J/click, Space moving slash, Shift dash, E interaction, G retreat. Buying gear and equipping it remain separate actions; retreat supports Tab/Enter and Escape.
+The separate v41 native package is built from an immutable validated source. Keep the v38 app if desired, but close it before opening the new app because ordinary save storage is shared. Native runner startup does not certify interactive macOS/Windows window behavior or audio listening.
 
-Batch playtest agenda (human judgment remains open):
-1. Does the canal market→warehouse→waterfront read as connected, distinct places during combat?
-2. Does the gallery→sanctuary reveal read as a place while keeping the boss, attack warnings and escape space clear?
-3. Is moving slash→empowered basic→cooldown refund understandable and useful?
-4. Do second-rank prices70/105 create worthwhile priorities while first improvements and weapons remain accessible?
-5. After success or return, is the reward→purchase→equip→next-run difference clear and worth repeating?
-
-During close boss overlap, the existing player sprite is temporarily drawn in front so its position and pose remain visible. Temple and jungle restore normal depth as soon as that occlusion clears; boss silhouettes, warnings and combat rules stay the same.
-
-The sanctuary adds a side chamber and ruined gallery beyond the existing sealed court edge, quiet paving, and selective sight protection. It is a representative environment step; final actor/boss art, sound and the complete first-region presentation remain unfinished. A developer comparison keeps the previous corridor kit: `godot --path . res://game/hybrid_region.tscn -- --sanctuary-baseline`. The older `--temple-baseline` still removes the whole environment kit.
-
-The engine checks establish isolation, displayed/charged prices, respec and reload. The budget study combines actual scripted success/retreat/loss awards with fixed-budget arithmetic; it does not establish human saving pressure or a closed-loop winning price. See `docs/PRODUCTION_NEXT.md` section15 and `docs/measurements/price-v35/`. Native macOS device/audio/long-session GPU validation remains pending; Windows runner evidence is headless and linked from the PR.
+The environment and actor assets remain representative samples. Human art/place/fun/economy acceptance, sound, interactive hardware, long sessions and the complete first region remain open. See `DEV_STATUS.md` and the exact-head PR checks for what was actually tested. Hosted startup checks are not an interactive device playtest.
 
 # Loop Conquest — Build and Economy Check v34
 

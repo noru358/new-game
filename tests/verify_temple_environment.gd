@@ -15,6 +15,8 @@ func _frames(count: int) -> void:
 
 func _fresh(enabled: bool, suffix: String, path: String = "res://game/hybrid_region.tscn", sanctuary_enabled: bool = true):
 	var scene = load(path).instantiate()
+	# Legacy visibility flags must not re-enable asset removal.
+	scene.temple_occlusion_candidate_enabled = false
 	scene.temple_environment_enabled = enabled
 	scene.temple_sanctuary_enabled = sanctuary_enabled
 	scene.profile_save_prefix = "user://verify_temple_environment_profile_" + suffix
@@ -81,7 +83,7 @@ func _run() -> void:
 	scene.teleport(Vector2(4770, 960))
 	await process_frame
 	await process_frame
-	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "court remnant fades when its real volume covers the player's feet")
+	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "court remnant remains opaque when it covers the player")
 	scene.teleport(Vector2(4320, 1150))
 	await process_frame
 	await process_frame
@@ -94,8 +96,8 @@ func _run() -> void:
 	scene.teleport(Vector2(3980, 850))
 	await process_frame
 	await process_frame
-	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "complete far threshold fades when it covers the player")
-	_check(scene.temple_environment_root.get_node("Masonry").material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "other masonry stays solid during selective threshold fade")
+	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "complete threshold remains opaque when it covers the player")
+	_check(scene.temple_environment_root.get_node("Masonry").material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "other masonry remains solid")
 	scene.teleport(Vector2(3900, 1120))
 	await process_frame
 	await process_frame
@@ -107,8 +109,8 @@ func _run() -> void:
 	enemy.locked_direction = enemy.position.direction_to(scene.player.position)
 	await process_frame
 	await process_frame
-	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "visible enemy behind the threshold receives the same sight protection")
-	_check(scene.warning_vertex_count > 0, "existing enemy attack telegraph remains present with the threshold faded")
+	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "enemy overlap never fades threshold masonry")
+	_check(scene.warning_vertex_count > 0, "existing attack telegraph is still submitted with opaque masonry")
 	scene.temple_section._remove_actor(enemy)
 	await process_frame
 	await process_frame
@@ -145,11 +147,11 @@ func _run() -> void:
 	await process_frame
 	_check(scene.temple_environment_root.visible, "returning from the garden restores the corridor kit")
 	_check(scene.temple_sanctuary_root.visible, "garden return restores the sanctuary ensemble")
-	scene.run_time = 300.0
+	scene.run_time = scene.BOSS_TIME
 	scene.teleport(Vector2(3900, 1120))
 	scene.temple_section.tick(0.0)
 	scene.temple_section.tick(1.3)
-	_check(scene.boss_spawned and scene.boss.position == scene.temple_section.BOSS_POINT, "same five-minute destination boss can spawn beside the sample")
+	_check(scene.boss_spawned and scene.boss.position == scene.temple_section.BOSS_POINT, "same four-minute destination boss can spawn beside the sample")
 	scene.teleport(scene.temple_section.RETRY_POINT)
 	scene.temple_section.tick(0.0)
 	_check(scene.temple_section.boss_active, "existing sanctuary entry still engages the boss")
@@ -158,7 +160,7 @@ func _run() -> void:
 	scene.boss.ring_warning = 0.55
 	await process_frame
 	await process_frame
-	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "visible outer-ring warning boundary receives protection even when boss and hero are clear")
+	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "boss warning overlap never fades the remnant")
 	scene.boss.ring_warning = 0
 	await process_frame
 	await process_frame

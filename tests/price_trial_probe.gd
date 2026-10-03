@@ -34,7 +34,31 @@ func _run() -> void:
 	var camp = get_tree().current_scene
 	var hub = camp.preparation
 	var profile: RunProfile = hub.profile
-	if phase == "purchase":
+	var card_trials := {}
+	if phase in ["cards-00", "cards-01", "cards-10", "cards-11"]:
+		var cap := phase.substr(6, 1) == "1"
+		var offers := phase.substr(7, 1) == "1"
+		card_trials = {"damage_cap_trial": cap, "offer_family_trial": offers}
+		_check(profile.currency == 0 and profile.generation == 0 and not profile.load_error and hub.unlocks.lifetime_levelups == 0, "card-trial copy starts fresh, without money or unlock grants")
+		_check(get_tree().change_scene_to_file("res://game/hybrid_region.tscn") == OK, "real battle scene starts from the copy")
+		await get_tree().process_frame
+		await get_tree().process_frame
+		var battle = get_tree().current_scene
+		battle.set_physics_process(false)
+		battle.simulation.process_mode = Node.PROCESS_MODE_DISABLED
+		var growth: RunGrowth = battle.growth
+		_check(growth.damage_cap_trial_enabled == cap and growth.choice_family_trial_enabled == offers, "copy-only defaults reach the actual run independently")
+		_check(growth.card_max_rank("U_EDGE") == (4 if cap else 3) and growth.card_max_rank("S_WISP_DAMAGE") == (4 if cap else 3), "selected cap policy reaches the live card pool")
+		_check(growth.card_max_rank("U_TEMPO") == 3 and growth.card_max_rank("S_WISP_COUNT") == 2 and RunProfile.GROWTH_COST.size() == 2, "other run caps and permanent cap remain fixed")
+		growth.gain_xp(8)
+		_check(growth.choosing and growth.points_earned == 1 and growth.pending_choices == 1 and get_tree().paused, "real earned XP opens the original modal")
+		_check(growth.choice_family_trial_label.visible == (cap or offers), "live modal identifies enabled experiments")
+		for i in growth.current_choices.size():
+			var id := growth.current_choices[i]
+			var next_rank := int(growth.card_ranks.get(id, 0)) + 1
+			_check(growth.choice_buttons[i].text.ends_with("등급 %d / %d" % [next_rank, growth.card_max_rank(id)]), "actual copied modal uses its current rank and effective limit")
+		_check(growth.choose_index(0) and growth.points_spent == 1 and not growth.choosing and not get_tree().paused, "copied run consumes exactly one earned choice")
+	elif phase == "purchase":
 		_check(profile.currency == 0 and profile.generation == 0 and not profile.load_error, "playable copy starts genuinely fresh")
 		_check(profile.owned_gear.is_empty() and profile.equipped_weapon == "W_START" and profile.owned_outpost_ids.is_empty(), "no gear, progress or ownership grants")
 		_check(hub.unlocks.lifetime_levelups == 0, "no permanent card-unlock grants")
@@ -83,5 +107,5 @@ func _run() -> void:
 	else:
 		_check(false, "unknown test phase")
 	if failures == 0:
-		print("PRICE_TRIAL_CHECK ", JSON.stringify({"late_cost": late_cost, "phase": phase, "user_dir": OS.get_user_data_dir(), "synthetic_fixture": true, "passed": true}))
+		print("PRICE_TRIAL_CHECK ", JSON.stringify({"late_cost": late_cost, "phase": phase, "user_dir": OS.get_user_data_dir(), "synthetic_fixture": true, "card_trials": card_trials, "passed": true}))
 	get_tree().quit(1 if failures else 0)

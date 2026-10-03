@@ -1,25 +1,28 @@
 class_name RunProfile
 extends RefCounted
 
+const SAVE_VERSION := 7
 const SUCCESS_BONUS := 20
 const FIRST_CLEAR_BONUS := 30
 const DEFEAT_LOSS_RATE := 0.50
 const RETREAT_LOSS_RATE := 0.20
 const GEAR_COST := {"W_FLOW": 35, "W_ECHO": 45, "A_EMBER": 24}
-const GROWTH_COST := [20, 35]
+const GROWTH_COST := [20, 35, 60, 95, 140]
 const ATTACK_BRANCH_COST := 60
 const ATTACK_BRANCHES := ["DIRECT", "COMPANION"]
-const GROWTH_IDS := ["POWER", "WISP", "SLASH", "FINISH", "VITALITY", "GUARD", "MOBILITY", "SPEED"]
+const GROWTH_IDS := PermanentGrowthCatalog.IDS
 const SUPPLY_COST := 12
 const SUPPLY_LIMIT := 3
 const TEMPLE_REGION := "O_TEMPLE"
 const JUNGLE_REGION := "O_JUNGLE_PASS"
+const WETLAND_REGION := "O_DEEP_WETLAND"
 const REGION_GEAR := {"O_TEMPLE": "W_FLOW", "O_JUNGLE_PASS": "W_ECHO"}
 const GEAR_AFFIXES := {"W_FLOW": ["RIPPLE", "KEEN", "SWIFT", "WEAVE"], "W_ECHO": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW"], "A_EMBER": ["EMBER_STRIKE", "BRIGHT", "STEADY", "EMBER_STEP"]}
-const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT", "EMBER_STEP"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"]}
+const REGION_MODS := {"O_TEMPLE": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "BRIGHT", "EMBER_STEP"], "O_JUNGLE_PASS": ["ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "STEADY"], "O_DEEP_WETLAND": ["RIPPLE", "KEEN", "SWIFT", "WEAVE", "ECHO_WISP", "WIDE", "HEAVY", "DRAW", "EMBER_STRIKE", "BRIGHT", "STEADY", "EMBER_STEP"]}
 
 var save_prefix := "user://loop_conquest_profile"
 var generation := 0
+var legacy_backup_pending := false
 var currency := 0
 var owned_outpost_ids: Array[String] = []
 var acquired_relic_ids: Array[String] = []
@@ -29,8 +32,11 @@ var temple_relic: bool:
 	get: return acquired_relic_ids.has("RELIC_TEMPLE")
 var jungle_owned: bool:
 	get: return owned_outpost_ids.has(JUNGLE_REGION)
+var wetland_owned: bool:
+	get: return owned_outpost_ids.has(WETLAND_REGION)
 var last_run_id := ""
 var load_error := false
+var unsupported_save_format := false
 var recovered_backup := false
 var last_award := 0
 var last_lost := 0
@@ -40,7 +46,7 @@ var owned_mods: Array[String] = []
 var slotted_mods: Dictionary = {}
 var equipped_weapon := "W_START"
 var equipped_accessory := ""
-var growth_ranks := {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+var growth_ranks := PermanentGrowthCatalog.empty_ranks()
 var discovered_places: Array[String] = []
 var awakenings: Array[String] = []
 var attack_branch := ""
@@ -100,10 +106,11 @@ static func affix_title(affix: String) -> String:
 
 
 static func affix_source(affix: String) -> String:
+	var sources: Array[String] = []
 	for region in REGION_MODS:
 		if REGION_MODS[region].has(affix):
-			return ("사원" if region == TEMPLE_REGION else "정글") + " 재클리어 보상 (미보유 1개)"
-	return ""
+			sources.append("사원" if region == TEMPLE_REGION else "정글" if region == JUNGLE_REGION else "습지")
+	return "·".join(sources) + " 재클리어 보상 (미보유 1개)" if not sources.is_empty() else ""
 
 
 static func affix_kind(affix: String) -> String:
@@ -111,12 +118,14 @@ static func affix_kind(affix: String) -> String:
 
 
 func load_state() -> void:
+	legacy_backup_pending = false
 	generation = 0
 	currency = 0
 	owned_outpost_ids.clear()
 	acquired_relic_ids.clear()
 	last_run_id = ""
 	load_error = false
+	unsupported_save_format = false
 	recovered_backup = false
 	last_award = 0
 	last_lost = 0
@@ -126,7 +135,7 @@ func load_state() -> void:
 	slotted_mods = {}
 	equipped_weapon = "W_START"
 	equipped_accessory = ""
-	growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+	growth_ranks = PermanentGrowthCatalog.empty_ranks()
 	discovered_places.clear()
 	awakenings.clear()
 	attack_branch = ""
@@ -149,9 +158,14 @@ func load_state() -> void:
 			continue
 		valid_count += 1
 		if best.is_empty() or int(data.generation) > int(best.generation): best = data
+	# A future slot is newer-format data, never a corrupt backup to replace.
+	if unsupported_save_format:
+		load_error = true
+		return
 	if best.is_empty():
 		load_error = found_any
 		return
+	legacy_backup_pending = int(best.version) < SAVE_VERSION
 	recovered_backup = invalid_count > 0 and valid_count > 0
 	discovered_places.assign(best.get("discovered_places", []))
 	awakenings.assign(best.get("awakenings", []))
@@ -188,6 +202,12 @@ func load_state() -> void:
 		else:
 			owned_mods.assign(best.owned_mods)
 			slotted_mods = (best.slotted_mods as Dictionary).duplicate(true)
+
+
+func save_block_reason() -> String:
+	if unsupported_save_format:
+		return "더 최신 버전에서 만든 저장 기록입니다. 게임을 업데이트한 뒤 다시 실행하세요. 저장 파일은 보존했으며 출정과 정산을 차단했습니다."
+	return "저장 기록과 정상 백업을 읽을 수 없습니다. 기존 파일은 보존했습니다. 저장 폴더에서 백업을 확인하세요." if load_error else ""
 
 
 func buy_gear(id: String) -> bool:
@@ -227,7 +247,7 @@ func slot_mod(gear_id: String, mod_id: String) -> bool:
 
 
 func growth_available(id: String, lifetime_levelups: int) -> bool:
-	if id == "SLASH": return lifetime_levelups >= 1
+	if id in ["SLASH", "SLASH_POWER"]: return lifetime_levelups >= 1
 	if id == "FINISH": return lifetime_levelups >= 3
 	return GROWTH_IDS.has(id)
 
@@ -296,7 +316,7 @@ func reset_growth() -> bool:
 	var candidate := _snapshot()
 	candidate.currency = currency + refund
 	candidate.attack_branch = ""
-	candidate.growth_ranks = {"POWER": 0, "WISP": 0, "SLASH": 0, "FINISH": 0, "VITALITY": 0, "GUARD": 0, "MOBILITY": 0, "SPEED": 0}
+	candidate.growth_ranks = PermanentGrowthCatalog.empty_ranks()
 	return _commit(candidate)
 
 
@@ -329,7 +349,7 @@ func begin_run(run_id: String) -> bool:
 
 
 func region_available(region_id: String) -> bool:
-	return region_id == TEMPLE_REGION or (region_id == JUNGLE_REGION and temple_owned)
+	return region_id == TEMPLE_REGION or (region_id == JUNGLE_REGION and temple_owned) or (region_id == WETLAND_REGION and jungle_owned)
 
 
 func settle(run_id: String, result: String, earned: int, region_id: String = TEMPLE_REGION) -> bool:
@@ -367,7 +387,7 @@ func settle(run_id: String, result: String, earned: int, region_id: String = TEM
 
 func _snapshot() -> Dictionary:
 	return {
-		"version": 6, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
+		"version": SAVE_VERSION, "discovered_places": discovered_places.duplicate(), "awakenings": awakenings.duplicate(), "attack_branch": attack_branch, "generation": generation + 1, "currency": currency,
 		"owned_outpost_ids": owned_outpost_ids.duplicate(), "acquired_relic_ids": acquired_relic_ids.duplicate(),
 		"last_run_id": last_run_id, "owned_gear": owned_gear.duplicate(true),
 		"owned_mods": owned_mods.duplicate(), "slotted_mods": slotted_mods.duplicate(true),
@@ -378,7 +398,30 @@ func _snapshot() -> Dictionary:
 	}
 
 
+func _preserve_legacy_slots() -> bool:
+	# Archive raw bytes before the first v7 write. Never overwrite an archive.
+	for suffix in ["_a.json", "_b.json"]:
+		var source: String = save_prefix + suffix
+		if not FileAccess.file_exists(source): continue
+		var bytes := FileAccess.get_file_as_bytes(source)
+		if FileAccess.get_open_error() != OK: return false
+		var archive: String = save_prefix + "_pre_v7" + suffix
+		if FileAccess.file_exists(archive):
+			if FileAccess.get_file_as_bytes(archive) != bytes: return false
+		else:
+			var file := FileAccess.open(archive, FileAccess.WRITE)
+			if file == null: return false
+			file.store_buffer(bytes)
+			file.flush()
+			file.close()
+			if FileAccess.get_file_as_bytes(archive) != bytes: return false
+	legacy_backup_pending = false
+	return true
+
+
 func _commit(candidate: Dictionary) -> bool:
+	if load_error or unsupported_save_format: return false
+	if legacy_backup_pending and not _preserve_legacy_slots(): return false
 	var suffix := "_a.json" if int(candidate.generation) % 2 == 1 else "_b.json"
 	var path := save_prefix + suffix
 	var file := FileAccess.open(path, FileAccess.WRITE)
@@ -417,7 +460,14 @@ func _read(path: String) -> Dictionary:
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary: return {}
 	var data: Dictionary = parser.data
-	if not [1.0, 2.0, 3.0, 4.0, 5.0, 6.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
+	# Only the version header is known for a future format; do not validate its
+	# body against today's schema or classify it as corruption.
+	var version: Variant = data.get("version")
+	if version is float and is_finite(version) and version == floor(version) and version > SAVE_VERSION:
+		unsupported_save_format = true
+		load_error = true
+		return {}
+	if not [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0].has(data.get("version")) or not data.get("generation") is float or not data.get("currency") is float:
 		return {}
 	if int(data.generation) < 1 or int(data.currency) < 0 or not data.get("owned_outpost_ids") is Array or not data.get("acquired_relic_ids") is Array or not data.get("last_run_id") is String:
 		return {}
@@ -434,9 +484,10 @@ func _read(path: String) -> Dictionary:
 		if not ["W_START", "W_FLOW", "W_ECHO"].has(data.equipped_weapon) or (data.equipped_weapon != "W_START" and not data.owned_gear.has(data.equipped_weapon)): return {}
 		if not ["", "A_EMBER"].has(data.equipped_accessory) or (data.equipped_accessory == "A_EMBER" and not data.owned_gear.has("A_EMBER")): return {}
 		for id in ["POWER", "VITALITY", "MOBILITY"]:
-			if not data.growth_ranks.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
+			if not data.growth_ranks.has(id) or not data.growth_ranks[id] is float or not is_finite(data.growth_ranks[id]) or data.growth_ranks[id] != floor(data.growth_ranks[id]) or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > (5 if int(data.version) >= 7 else 2): return {}
 		for id in data.growth_ranks:
-			if not GROWTH_IDS.has(id) or not data.growth_ranks[id] is float or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > 2: return {}
+			if int(data.version) < 7 and id in ["SLASH_POWER", "RECOVERY"] and data.growth_ranks[id] != 0.0: return {}
+			if not GROWTH_IDS.has(id) or not data.growth_ranks[id] is float or not is_finite(data.growth_ranks[id]) or data.growth_ranks[id] != floor(data.growth_ranks[id]) or int(data.growth_ranks[id]) < 0 or int(data.growth_ranks[id]) > (5 if int(data.version) >= 7 else 2): return {}
 		if int(data.supply_count) < 0 or int(data.supply_count) > SUPPLY_LIMIT: return {}
 		if int(data.version) >= 3:
 			if not data.get("owned_mods") is Array or not data.get("slotted_mods") is Dictionary: return {}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+<!-- Existing horned stone charger. Horns are a visual role cue, not a larger hitbox. -->
+<path d="M24 37L14 28L10 10L20 16L28 27L33 35Z" fill="#583e3f"/>
+<path d="M26 33L18 26L15 17L20 21L29 32Z" fill="#e9c795"/>
+<path d="M45 32L51 20L68 11L63 28L56 39Z" fill="#583e3f"/>
+<path d="M51 32L54 23L62 18L59 27L55 34Z" fill="#f8dfab"/>
+<path d="M15 48L21 34L35 27L50 30L63 40L70 49L65 60L60 65L58 74H45L40 65L32 65L28 74H16L17 62Z" fill="#583e3f"/>
+<path d="M20 48L25 37L36 31L49 34L59 42L64 51L56 62L31 61L22 58Z" fill="#b97761"/>
+<path d="M25 37L36 31L49 34L45 43L29 45L20 48Z" fill="#e0a781"/>
+<path d="M20 48L29 45L33 55L31 61L22 58Z" fill="#d29471"/>
+<path d="M45 43L59 42L64 51L58 55L44 53L35 48Z" fill="#85514b"/>
+<path d="M33 55L44 53L58 55L56 62L42 65L31 61Z" fill="#a76655"/>
+<path d="M31 43L39 45L37 50L31 48Z M48 42L57 44L56 48L48 47Z" fill="#ffd18c"/>
+<path d="M45 53L51 51L60 53L57 57L50 58Z" fill="#583e3f"/>
+<path d="M21 61L29 64L25 71H20Z M46 64L56 63L54 71H49Z" fill="#c78a6c"/>
+<path d="M36 32L35 38L41 41" fill="none" stroke="#a16b56" stroke-width="2.5" stroke-linejoin="bevel"/>
+</svg>

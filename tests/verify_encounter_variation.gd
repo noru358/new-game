@@ -14,7 +14,7 @@ func _run() -> void:
 		await process_frame
 		var actual := 0.0
 		var baseline := 0.0
-		for second in 300:
+		for second in int(scene.BOSS_TIME):
 			scene.run_time = float(second) + 0.5
 			actual += scene._spawn_rate()
 			baseline += 0.90 if second < 45 else 1.275 if second < 120 else 1.65 if second < 200 else 2.10
@@ -23,7 +23,7 @@ func _run() -> void:
 				var total := 0.0
 				for weight in phase.weights: total += weight
 				check(is_equal_approx(total, 100.0), "role weights sum to 100")
-		check(is_equal_approx(actual, baseline), "pressure and recovery preserve five-minute scheduled spawn budget")
+		check(is_equal_approx(actual, baseline) and is_equal_approx(actual, 352.125), "pressure and recovery preserve the 352.125 four-minute scheduled spawn request budget")
 		scene.run_time = 140.0
 		check(scene._spawn_rate() > 1.1, "middle wave preserves pressure increase")
 		if path.ends_with("jungle_pass.tscn"):
@@ -35,7 +35,7 @@ func _run() -> void:
 			]:
 				scene.player.position = sample.point
 				check(scene._route_role_weights(sample.point) == sample.weights, "authored jungle spawn composition is unchanged")
-				for second in [70.0, 140.0, 220.0]:
+				for second in [70.0, 140.0, 195.0]:
 					scene.run_time = second
 					check(scene._encounter_cue().contains(sample.cue) and scene._run_hud_text().contains(sample.cue), "jungle HUD describes authoritative incoming roles in each pressure phase")
 					if sample.weights[2] == 0.0: check(not scene._encounter_cue().contains("원거리"), "forest cue never promises absent ranged spawns")

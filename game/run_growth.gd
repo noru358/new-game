@@ -7,6 +7,9 @@ signal level_healed(amount: float)
 
 const WispScript = preload("res://game/wisp.gd")
 const SealScript = preload("res://game/seal_attack.gd")
+const CHOICE_FAMILY_TRIAL_NOTICE := "개발 후보 비교 · 셋째 카드는 다른 행동군 우선 · 동행 중복 후보 감소"
+const DAMAGE_CAP_TRIAL_NOTICE := "개발 상한 비교 · 평타·여우불 피해만 4등급 · 추가 증가량 절반 · 선택 상한 +2"
+const SLASH_CHAIN_CAP_TRIAL_NOTICE := "개발 상한 비교 · 이동 베기 재사용·연쇄 불꽃만 3등급 · 선택 상한 +2"
 
 const CARDS := {
 	"U_EDGE": {"name": "마력 날", "detail": "평타 피해 +15%", "max": 3, "group": "BASIC"},
@@ -37,6 +40,7 @@ var level := 1
 var xp := 0
 var pending_choices := 0
 var heal_on_levelup := false
+var level_heal_fraction := 0.20
 var points_earned := 0
 var points_spent := 0
 var exhausted_points := 0
@@ -65,6 +69,11 @@ var permanent_wisp_cadence_reduction := 0.0
 var permanent_wisp_chain_bonus := 0.0
 var last_followup_attack := -1
 var last_followup_slash := -1
+# Developer fixtures may opt in. Ordinary runs and saved profiles stay unchanged.
+var choice_family_trial_enabled := false
+var damage_cap_trial_enabled := false
+var slash_chain_cap_trial_enabled := false
+var choice_family_trial_label: Label
 
 
 func setup(battle: Node2D, actor: SandboxPlayer, starting_wisp: WispCompanion) -> void:
@@ -86,8 +95,26 @@ func _ready() -> void:
 	_update_hud()
 
 
+# Opt-in first-region pacing comparison. Live scenes keep the default curve.
+var late_xp_slope_trial := false
+# Separate alternative: keep XP, earned points, unlocks and level healing exactly.
+# Only the interruption schedule changes after the first six immediate choices.
+var choice_batch_trial_enabled := false
+var choice_batch_wait := 0.0
+const CHOICE_BATCH_MAX_WAIT := 18.0
+
+func _process(delta: float) -> void:
+	if not choice_batch_trial_enabled or growth_ended or choosing or pending_choices <= 0 or get_tree().paused: return
+	choice_batch_wait += delta
+	if choice_batch_wait >= CHOICE_BATCH_MAX_WAIT: flush_pending_choices()
+
+func flush_pending_choices() -> void:
+	if pending_choices > 0 and not choosing and not growth_ended: _start_choice()
+
+
 func next_xp() -> int:
-	return 8 + 2 * (level - 1)
+	var earned := level - 1
+	return 8 + 2 * earned + (2 * maxi(0, earned - 5) if late_xp_slope_trial else 0)
 
 
 func on_enemy_defeated(enemy: TrainingEnemy) -> void:
@@ -98,14 +125,14 @@ func gain_xp(amount: int) -> void:
 	if amount <= 0 or growth_ended:
 		return
 	# Keep every unlock earned during this choice window, including overflow XP.
-	if not choosing: unlock_notice = ""
+	if not choosing and pending_choices == 0: unlock_notice = ""
 	xp += amount
 	while xp >= next_xp():
 		xp -= next_xp()
 		level += 1
 		pending_choices += 1
 		points_earned += 1
-		if heal_on_levelup: _heal(0.20)
+		if heal_on_levelup: _heal(level_heal_fraction)
 		var newly_unlocked := unlocks.add_levelup()
 		if not newly_unlocked.is_empty():
 			var names: Array[String] = []
@@ -116,7 +143,7 @@ func gain_xp(amount: int) -> void:
 	_update_hud()
 	if choosing:
 		_refresh_choices()
-	elif pending_choices > 0:
+	elif pending_choices > 0 and (not choice_batch_trial_enabled or points_earned <= 6 or pending_choices >= 2):
 		_start_choice()
 
 
@@ -130,6 +157,7 @@ func _sync_permanent_moves() -> void:
 func _start_choice() -> void:
 	if pending_choices <= 0 or growth_ended or choosing:
 		return
+	choice_batch_wait = 0.0
 	paused_before_choice = get_tree().paused
 	last_choice_label.text = ""
 	_prepare_next_choice()
@@ -150,7 +178,7 @@ func _prepare_next_choice() -> void:
 	# No recursive UI openings when the whole card pool is exhausted.
 	if pending_choices > 0 and current_choices.is_empty():
 		if not heal_on_levelup:
-			_heal(0.20 * pending_choices)
+			_heal(level_heal_fraction * pending_choices)
 		exhausted_points += pending_choices
 		pending_choices = 0
 	_update_hud()
@@ -166,6 +194,8 @@ func end_run() -> void:
 
 func _refresh_choices() -> void:
 	choice_title.text = "레벨 %d  ·  강화 선택  ·  남은 %dpt" % [level, pending_choices]
+	choice_family_trial_label.visible = choice_family_trial_enabled or damage_cap_trial_enabled or slash_chain_cap_trial_enabled
+	choice_family_trial_label.text = _choice_trial_notice()
 	unlock_notice_label.visible = not unlock_notice.is_empty()
 	unlock_notice_label.text = unlock_notice + "\n강화 후보에 추가됨 · 직접 선택해야 이번 런에 적용" if not unlock_notice.is_empty() else ""
 	for i in range(choice_buttons.size()):
@@ -178,7 +208,7 @@ func _refresh_choices() -> void:
 		var next_rank := int(card_ranks.get(card_id, 0)) + 1
 		var detail := describe_card(card_id, next_rank)
 		button.text = "%d  %s\n\n%s\n\n등급 %d / %d" % [
-			i + 1, data.name, detail, next_rank, data.max
+			i + 1, data.name, detail, next_rank, card_max_rank(card_id)
 		]
 		button.show()
 	if reroll_button != null:
@@ -189,23 +219,64 @@ func _refresh_choices() -> void:
 func describe_card(card_id: String, next_rank: int) -> String:
 	var old_rank := next_rank - 1
 	match card_id:
-		"U_EDGE": return "평타 피해 %d%% → %d%%" % [roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * old_rank, roundi(100.0 * (1.0 + player.permanent_basic_damage_bonus)) + 15 * next_rank]
-		"U_TEMPO": return "평타가 더 빨라집니다\n공격 속도 +%d%% → +%d%%" % [roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
-		"U_REACH": return "평타가 더 멀리 닿습니다\n기본 사거리 %d → %d" % [100 + 15 * old_rank, 100 + 15 * next_rank]
+		"U_EDGE":
+			var base_percent := 100.0 * (1.0 + player.permanent_basic_damage_bonus)
+			return _damage_rank_detail("%s 피해\n%s → %s" % [_basic_attack_scope(), _percent_text(base_percent + 100.0 * _damage_card_bonus(card_id, old_rank)), _percent_text(base_percent + 100.0 * _damage_card_bonus(card_id, next_rank))], next_rank)
+		"U_TEMPO": return "%s 속도\n+%d%% → +%d%%" % [_basic_attack_scope(), roundi(100.0 * basic_speed_base) + 12 * old_rank, roundi(100.0 * basic_speed_base) + 12 * next_rank]
+		"U_REACH": return "%s 범위\n+%d%% → +%d%%" % [_basic_attack_scope(), 15 * old_rank, 15 * next_rank]
 		"U_CHAIN": return "앞의 적을 모으는 3타 추가" if next_rank == 1 else "모인 적을 터뜨리는 4타 추가"
-		"S_WISP_DAMAGE": return "여우불 한 발이 더 강해집니다\n기본 피해 %.1f → %.1f" % [10.0 * (1.0 + wisps[0].permanent_damage_bonus) + 2.0 * old_rank, 10.0 * (1.0 + wisps[0].permanent_damage_bonus) + 2.0 * next_rank]
+		"S_WISP_DAMAGE": return _damage_rank_detail("여우불 한 발이 더 강해집니다\n기본 피해 %.1f → %.1f" % [SandboxPlayer.ATTACK_DAMAGE * (WispCompanion.BASE_DAMAGE_MULTIPLIER + wisps[0].permanent_damage_bonus + _damage_card_bonus(card_id, old_rank)), SandboxPlayer.ATTACK_DAMAGE * (WispCompanion.BASE_DAMAGE_MULTIPLIER + wisps[0].permanent_damage_bonus + _damage_card_bonus(card_id, next_rank))], next_rank)
 		"S_WISP_CADENCE": return "여우불이 더 자주 쏩니다\n발사 간격 %.2f초 → %.2f초" % [1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * old_rank), 1.25 * (1.0 - permanent_wisp_cadence_reduction - 0.10 * next_rank)]
 		"S_WISP_COUNT": return "함께 공격하는 여우불 %d개 → %d개" % [1 + old_rank, 1 + next_rank]
-		"S_WISP_ORBIT": return "회전하며 닿은 적에게 피해" if next_rank == 1 else "회전 접촉 피해 4 → 7"
-		"S_WISP_CHAIN": return "연쇄 대상 %d명 → %d명" % [old_rank + int(permanent_wisp_chain_bonus), next_rank + int(permanent_wisp_chain_bonus)]
-		"S_WISP_FOLLOWUP": return "평타 적중 한 동작당\n여우불 발사 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
-		"S_WISP_SWEEP": return "이동 베기 한 동작당 첫 적중\n여우불 대기 %.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
-		"S_WISP_REPLY": return "여우불 적중마다\n이동 베기 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
+		"S_WISP_ORBIT": return "마탄 발사 유지\n회전 접촉 피해 추가" if next_rank == 1 else "마탄 발사 유지\n회전 접촉 피해 4 → 7"
+		"S_WISP_CHAIN": return "마탄 명중 후 가까운 다른 적에게\n추가 연쇄 %d명 → %d명" % [old_rank + int(permanent_wisp_chain_bonus), next_rank + int(permanent_wisp_chain_bonus)]
+		"S_WISP_FOLLOWUP": return "평타 적중 → 여우불 발사\n한 동작당 대기\n%.2f초 → %.2f초 단축" % [0.08 * old_rank, 0.08 * next_rank]
+		"S_WISP_SWEEP": return "이동 베기 적중 → 여우불 발사\n한 동작당 대기\n%.2f초 → %.2f초 단축" % [0.12 * old_rank, 0.12 * next_rank]
+		"S_WISP_REPLY": return "여우불 적중 → 이동 베기\n적중마다 재사용 대기\n%.2f초 → %.2f초 단축" % [0.06 * old_rank, 0.06 * next_rank]
 		"S_SEAL": return "적 위치에 자동 마력진 추가" if next_rank == 1 else "마력진 범위 %d → %d" % [66 + 10 * (old_rank - 1), 66 + 10 * (next_rank - 1)]
 		"U_STEP": return "대시 저장 1회 → 2회" if next_rank == 2 else "대시 재충전 %.2f초 → %.2f초" % [1.2 * (1.0 - (0.15 if old_rank > 0 else 0.0) - player.permanent_dash_cooldown_reduction), 1.2 * (1.0 - (0.30 if next_rank >= 3 else 0.15) - player.permanent_dash_cooldown_reduction)]
 		"U_SLASH_SWEEP": return "이동 베기 폭 %d → %d" % [110 + 40 * old_rank, 110 + 40 * next_rank]
 		"U_SLASH_CADENCE": return "이동 베기 재사용 %.2f초 → %.2f초" % [1.1 * (1.0 - 0.15 * old_rank - player.permanent_slash_cooldown_reduction), 1.1 * (1.0 - 0.15 * next_rank - player.permanent_slash_cooldown_reduction)]
 	return String(CARDS[card_id].detail)
+
+
+func _basic_attack_scope() -> String:
+	if player.combo_limit() >= 4: return "평타·집결·마무리"
+	if player.combo_limit() >= 3: return "평타·3타 집결"
+	return "평타"
+
+
+func card_max_rank(card_id: String) -> int:
+	if not CARDS.has(card_id): return 0
+	var base_max := int(CARDS[card_id].max)
+	if slash_chain_cap_trial_enabled and card_id in ["U_SLASH_CADENCE", "S_WISP_CHAIN"]: return base_max + 1
+	return base_max + 1 if damage_cap_trial_enabled and card_id in ["U_EDGE", "S_WISP_DAMAGE"] else base_max
+
+
+func _damage_card_bonus(card_id: String, rank: int) -> float:
+	var increment := 0.15 if card_id == "U_EDGE" else WispCompanion.DAMAGE_BONUS_PER_RANK
+	var effective_rank := clampi(rank, 0, card_max_rank(card_id))
+	var base_max := int(CARDS[card_id].max)
+	return increment * mini(effective_rank, base_max) + increment * 0.5 * maxi(0, effective_rank - base_max)
+
+
+func _percent_text(value: float) -> String:
+	return ("%.1f" % value).trim_suffix(".0") + "%"
+
+
+func _damage_rank_detail(detail: String, rank: int) -> String:
+	return detail + "\n4등급 추가 증가량 절반" if damage_cap_trial_enabled and rank == 4 else detail
+
+
+func _choice_trial_notice() -> String:
+	if slash_chain_cap_trial_enabled:
+		var notices: Array[String] = [SLASH_CHAIN_CAP_TRIAL_NOTICE]
+		if choice_family_trial_enabled: notices.append(CHOICE_FAMILY_TRIAL_NOTICE)
+		if damage_cap_trial_enabled: notices.append(DAMAGE_CAP_TRIAL_NOTICE)
+		return "\n".join(notices)
+	if choice_family_trial_enabled and damage_cap_trial_enabled:
+		return "개발 비교 · 다른 행동군 우선/동행 중복 감소 · 피해 2종만 4등급/추가 증가량 절반"
+	return DAMAGE_CAP_TRIAL_NOTICE if damage_cap_trial_enabled else CHOICE_FAMILY_TRIAL_NOTICE
 
 
 func _available_card_count() -> int:
@@ -214,7 +285,7 @@ func _available_card_count() -> int:
 		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
 		if card_id in ["S_WISP_REPLY", "S_WISP_SWEEP"] and not player.moving_slash_enabled: continue
 		if card_id == "U_CHAIN" and permanent_combo_progression: continue
-		if int(card_ranks.get(card_id, 0)) < int(CARDS[card_id].max) and unlocks.is_unlocked(card_id): count += 1
+		if int(card_ranks.get(card_id, 0)) < card_max_rank(card_id) and unlocks.is_unlocked(card_id): count += 1
 	return count
 
 
@@ -242,7 +313,7 @@ func roll_choices() -> Array[String]:
 		if card_id.begins_with("U_SLASH_") and not player.moving_slash_enabled: continue
 		if card_id in ["S_WISP_REPLY", "S_WISP_SWEEP"] and not player.moving_slash_enabled: continue
 		if card_id == "U_CHAIN" and permanent_combo_progression: continue
-		if int(card_ranks.get(card_id, 0)) >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
+		if int(card_ranks.get(card_id, 0)) >= card_max_rank(card_id) or not unlocks.is_unlocked(card_id):
 			continue
 		match CARDS[card_id].group:
 			"BASIC": basic.append(card_id)
@@ -263,8 +334,26 @@ func roll_choices() -> Array[String]:
 	remaining.append_array(wisp_cards)
 	remaining.append_array(others)
 	while result.size() < 3 and not remaining.is_empty():
-		result.append(_take_random(remaining))
+		var different_family: Array[String] = []
+		if choice_family_trial_enabled and result.size() == 2:
+			for card_id in remaining:
+				var represented := false
+				for offered_id in result:
+					if _offer_family(card_id) == _offer_family(offered_id): represented = true
+				if not represented: different_family.append(card_id)
+		if not different_family.is_empty():
+			var card_id := _take_random(different_family)
+			remaining.erase(card_id)
+			result.append(card_id)
+		else:
+			result.append(_take_random(remaining))
 	return result
+
+
+func _offer_family(card_id: String) -> String:
+	if card_id.begins_with("U_SLASH_"): return "SLASH"
+	if card_id.begins_with("S_WISP_"): return "WISP"
+	return String(CARDS[card_id].group)
 
 
 func _take_random(cards: Array[String]) -> String:
@@ -278,7 +367,7 @@ func choose_index(index: int) -> bool:
 	if not choosing or index < 0 or index >= current_choices.size():
 		return false
 	var card_id := current_choices[index]
-	if int(card_ranks.get(card_id, 0)) >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
+	if int(card_ranks.get(card_id, 0)) >= card_max_rank(card_id) or not unlocks.is_unlocked(card_id):
 		return false
 	var detail := describe_card(card_id, int(card_ranks.get(card_id, 0)) + 1)
 	apply_card(card_id)
@@ -286,7 +375,7 @@ func choose_index(index: int) -> bool:
 	if permanent_combo_progression: _sync_permanent_moves()
 	pending_choices -= 1
 	points_spent += 1
-	if not heal_on_levelup: _heal(0.20)
+	if not heal_on_levelup: _heal(level_heal_fraction)
 	player.require_attack_release()
 	_prepare_next_choice()
 	if pending_choices > 0:
@@ -304,13 +393,13 @@ func apply_card(card_id: String) -> void:
 	if not CARDS.has(card_id):
 		return
 	var rank := int(card_ranks.get(card_id, 0))
-	if rank >= int(CARDS[card_id].max) or not unlocks.is_unlocked(card_id):
+	if rank >= card_max_rank(card_id) or not unlocks.is_unlocked(card_id):
 		return
 	rank += 1
 	card_ranks[card_id] = rank
 	selected_card_ranks[card_id] = int(selected_card_ranks.get(card_id, 0)) + 1
 	match card_id:
-		"U_EDGE": player.basic_damage_bonus = 0.15 * rank
+		"U_EDGE": player.basic_damage_bonus = _damage_card_bonus(card_id, rank)
 		"U_TEMPO": player.basic_speed_bonus = basic_speed_base + 0.12 * rank
 		"U_REACH": player.basic_reach_bonus = 0.15 * rank
 		"U_CHAIN": player.set_combo_rank(rank)
@@ -345,8 +434,10 @@ func _sync_wisps() -> void:
 		wisp.follow_offset = [Vector2(-42, -30), Vector2(42, -30), Vector2(0, -57)][i]
 		wisp.orbit_phase = TAU * float(i) / float(wisps.size())
 		wisp.attack_interval = WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - permanent_wisp_cadence_reduction - 0.10 * float(card_ranks.get("S_WISP_CADENCE", 0)))
-		wisp.power_rank = int(card_ranks.get("S_WISP_DAMAGE", 0))
-		wisp.damage_multiplier = WispCompanion.BASE_DAMAGE_MULTIPLIER + WispCompanion.DAMAGE_BONUS_PER_RANK * float(wisp.power_rank)
+		var damage_rank := int(card_ranks.get("S_WISP_DAMAGE", 0))
+		# The fourth rank changes damage only, not impact strength or visual scale.
+		wisp.power_rank = mini(damage_rank, int(CARDS.S_WISP_DAMAGE.max))
+		wisp.damage_multiplier = WispCompanion.BASE_DAMAGE_MULTIPLIER + _damage_card_bonus("S_WISP_DAMAGE", damage_rank)
 		wisp.permanent_damage_bonus = wisps[0].permanent_damage_bonus
 		wisp.orbit_enabled = int(card_ranks.get("S_WISP_ORBIT", 0)) > 0
 		wisp.orbit_damage = 4.0 + 3.0 * float(int(card_ranks.get("S_WISP_ORBIT", 0)) - 1)
@@ -433,7 +524,7 @@ func build_details() -> String:
 	var lines: Array[String] = []
 	for id in CARDS:
 		if not selected_card_ranks.has(id): continue
-		lines.append("%s  %d/%d등급\n  마지막 선택: %s" % [CARDS[id].name, card_ranks[id], CARDS[id].max, describe_card(id, int(card_ranks[id])).replace("\n", " · ")])
+		lines.append("%s  %d/%d등급\n  마지막 선택: %s" % [CARDS[id].name, card_ranks[id], card_max_rank(id), describe_card(id, int(card_ranks[id])).replace("\n", " · ")])
 	return "선택한 카드가 없습니다." if lines.is_empty() else "\n\n".join(lines)
 
 
@@ -503,6 +594,15 @@ func _build_ui() -> void:
 		button.pressed.connect(choose_index.bind(i))
 		overlay.add_child(button)
 		choice_buttons.append(button)
+	choice_family_trial_label = Label.new()
+	choice_family_trial_label.text = CHOICE_FAMILY_TRIAL_NOTICE
+	choice_family_trial_label.position = Vector2(140, 500)
+	choice_family_trial_label.size = Vector2(1000, 30)
+	choice_family_trial_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	choice_family_trial_label.add_theme_font_size_override("font_size", 16)
+	choice_family_trial_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	choice_family_trial_label.hide()
+	overlay.add_child(choice_family_trial_label)
 	reroll_button = Button.new()
 	reroll_button.position = Vector2(456, 535)
 	reroll_button.size = Vector2(368, 48)

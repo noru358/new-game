@@ -27,8 +27,12 @@ var planned_charge_distance := 260.0
 var impact_flash := 0.0
 var impact_is_ring := false
 var counter_flash := 0.0
+var boundary_warning_granted := false
 const COUNTER_DAMAGE_MULTIPLIER := 1.30
 const DUEL_CHARGE_SPEED := 1000.0
+const REENTRY_WARNING_FLOOR := 0.35
+
+@export var brisk_cadence := true
 
 
 func _ready() -> void:
@@ -70,8 +74,41 @@ func gather_to(_point: Vector2) -> void:
 	pass
 
 
+func _interrupt_special() -> void:
+	# All ordinary hit paths, including companion projectiles, share this
+	# inherited hook. Only leaving the encounter can pause a boss pattern.
+	pass
+
+
 func charge_reach() -> float:
 	return planned_charge_distance
+
+
+func pause_for_boundary() -> void:
+	# Free exit preserves health and the unfinished pattern. A charge already in
+	# motion needs a fresh visible warning before it can resume on re-entry.
+	encounter_active = false
+	velocity = Vector2.ZERO
+	if charge_time > 0.0:
+		charge_time = 0.0
+		charge_pending = false
+		warning_time = maxf(warning_duration, REENTRY_WARNING_FLOOR)
+		boundary_warning_granted = true
+
+
+func resume_from_boundary() -> void:
+	encounter_active = true
+	if not boundary_warning_granted:
+		if warning_time > 0.0: warning_time = maxf(warning_time, REENTRY_WARNING_FLOOR)
+		if shock_warning > 0.0: shock_warning = maxf(shock_warning, REENTRY_WARNING_FLOOR)
+		if ring_warning > 0.0: ring_warning = maxf(ring_warning, REENTRY_WARNING_FLOOR)
+		boundary_warning_granted = warning_time > 0.0 or shock_warning > 0.0 or ring_warning > 0.0
+
+
+func tick_outside(delta: float) -> void:
+	# The player cannot pause the counter window by repeatedly crossing the gate.
+	recovery_time = maxf(0.0, recovery_time - delta)
+	attack_cooldown = maxf(0.0, attack_cooldown - delta)
 
 
 func suspend_encounter() -> void:
@@ -85,12 +122,15 @@ func suspend_encounter() -> void:
 	recovery_time = 0.0
 	charge_followups = 0
 	charge_pending = false
+	boundary_warning_granted = false
 	impact_flash = 0.0
 	counter_flash = 0.0
 
 
 func _attack_delay() -> float:
-	return 1.45 if phase == 2 else 1.20
+	# Only the exposed counter window changes. Full directional/area warnings,
+	# attack shapes and HP stay the same; disable this for A/B comparison.
+	return (1.20 if phase == 2 else 1.00) if brisk_cadence else (1.45 if phase == 2 else 1.20)
 
 
 func _physics_process(delta: float) -> void:
@@ -125,6 +165,7 @@ func _beast_velocity(delta: float) -> Vector2:
 			impact_flash = 0.18
 			impact_is_ring = false
 			if phase == 2:
+				boundary_warning_granted = false
 				ring_warning = RING_WARNING
 			else:
 				_finish_pattern(true)
@@ -153,6 +194,7 @@ func _beast_velocity(delta: float) -> Vector2:
 	var distance := global_position.distance_to(target.global_position)
 	if attack_cooldown <= 0.0 and _clear_shot_to_player():
 		if next_attack_shock and distance <= 280.0:
+			boundary_warning_granted = false
 			shock_warning = SHOCK_WARNING
 			attacks_started += 1
 			return Vector2.ZERO
@@ -166,6 +208,7 @@ func _beast_velocity(delta: float) -> Vector2:
 
 func _begin_charge(warning: float) -> void:
 	if not is_instance_valid(target): return
+	boundary_warning_granted = false
 	locked_direction = global_position.direction_to(target.global_position)
 	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
 	planned_charge_distance = clampf(global_position.distance_to(target.global_position) + 75.0, 140.0, 650.0)
@@ -175,6 +218,14 @@ func _begin_charge(warning: float) -> void:
 
 
 func _finish_pattern(pulse := false) -> void:
+	if not pulse and brisk_cadence and phase == 1 and next_attack_shock and is_instance_valid(target) and global_position.distance_to(target.global_position) <= 280.0 and _clear_shot_to_player():
+		# Staying close after the charge earns a second, separately warned pulse.
+		# The counter window begins after the full pair, not between the tells.
+		boundary_warning_granted = false
+		shock_warning = SHOCK_WARNING
+		attacks_started += 1
+		return
+	boundary_warning_granted = false
 	recovery_time = _attack_delay()
 	attack_cooldown = 0.0
 	if pulse:

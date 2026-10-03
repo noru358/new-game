@@ -17,6 +17,7 @@ var canal_trial_button: Button
 var start_button: Button
 var temple_region_button: Button
 var jungle_region_button: Button
+var wetland_region_button: Button
 var base_weapon_button: Button
 var weapon_button: Button
 var echo_weapon_button: Button
@@ -48,6 +49,7 @@ var growth_tabs: TabContainer
 
 
 func _ready() -> void:
+	preload("res://game/field_preview_session.gd").configure(self)
 	get_window().title = "Loop Conquest — 여행 준비"
 	profile = ProfileScript.new()
 	profile.save_prefix = profile_save_prefix
@@ -56,6 +58,7 @@ func _ready() -> void:
 	unlocks.save_prefix = growth_save_prefix
 	unlocks.load_progress()
 	_build_ui()
+	preload("res://game/departure_preparation_presenter.gd").new().setup(self)
 	_refresh()
 
 
@@ -98,6 +101,8 @@ func _build_ui() -> void:
 	region.add_child(region_choices)
 	temple_region_button = _button(region_choices, "", _select_region.bind(RunProfile.TEMPLE_REGION))
 	jungle_region_button = _button(region_choices, "", _select_region.bind(RunProfile.JUNGLE_REGION))
+	wetland_region_button = _button(region_choices, "", _select_region.bind(RunProfile.WETLAND_REGION))
+	wetland_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	temple_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	jungle_region_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	progress_label = _label("", 17, Color("efca8d"))
@@ -189,8 +194,8 @@ func _build_ui() -> void:
 	growth.add_child(growth_tabs)
 	var attack_growth: VBoxContainer
 	for group in [
-		{"title": "공격", "ids": ["POWER", "WISP", "SLASH", "FINISH"]},
-		{"title": "방어", "ids": ["VITALITY", "GUARD"]},
+		{"title": "공격", "ids": ["POWER", "WISP", "SLASH", "FINISH", "SLASH_POWER"]},
+		{"title": "방어", "ids": ["VITALITY", "GUARD", "RECOVERY"]},
 		{"title": "기동·편의", "ids": ["MOBILITY", "SPEED"]},
 	]:
 		var group_page := _tab_page(group.title, growth_tabs)
@@ -205,7 +210,7 @@ func _build_ui() -> void:
 	for id in RunProfile.ATTACK_BRANCHES:
 		attack_branch_buttons[id] = _button(attack_growth, "", _buy_attack_branch.bind(id))
 		attack_branch_buttons[id].add_theme_font_size_override("font_size", 17)
-		attack_branch_buttons[id].custom_minimum_size.y = 42
+		attack_branch_buttons[id].custom_minimum_size.y = 62 if id == "COMPANION" else 42
 		_apply_button_styles(attack_branch_buttons[id], 7)
 	reset_button = _button(growth, "성장 초기화 · 쓴 재화 전액 반환", _reset_growth)
 	var discoveries := _tab_page("발견·각성")
@@ -317,9 +322,11 @@ func _refresh() -> void:
 	temple_region_button.text = "청록 폐사원  ·  %s%s\n문지기" % ["완료" if profile.temple_owned else "도전 가능", "  ✓" if selected_region_id == RunProfile.TEMPLE_REGION else ""]
 	jungle_region_button.text = "정글 절벽 관문  ·  %s%s\n수호자" % ["완료" if profile.jungle_owned else "도전 가능" if profile.temple_owned else "잠김", "  ✓" if selected_region_id == RunProfile.JUNGLE_REGION else ""]
 	jungle_region_button.disabled = profile.load_error or not profile.region_available(RunProfile.JUNGLE_REGION)
-	var region_name := "정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원"
-	var unlocked := profile.jungle_owned if selected_region_id == RunProfile.JUNGLE_REGION else profile.temple_owned
-	progress_label.text = "첫 성공 → 장비 개방" if not unlocked else "재도전 성공 → 새 지역 옵션 1개"
+	wetland_region_button.text = "깊은 사원 습지"
+	wetland_region_button.disabled = profile.load_error or not profile.region_available(RunProfile.WETLAND_REGION)
+	var region_name := "깊은 사원 습지" if selected_region_id == RunProfile.WETLAND_REGION else "정글 절벽 관문" if selected_region_id == RunProfile.JUNGLE_REGION else "청록 폐사원"
+	var unlocked := profile.wetland_owned if selected_region_id == RunProfile.WETLAND_REGION else profile.jungle_owned if selected_region_id == RunProfile.JUNGLE_REGION else profile.temple_owned
+	progress_label.text = ("첫 성공 → 습지 정복" if selected_region_id == RunProfile.WETLAND_REGION else "첫 성공 → 장비 개방") if not unlocked else "재도전 성공 → 미보유 옵션 1개"
 	info_label.text = "주공격  %s  ·  %s\n장신구  %s  ·  %s" % [
 		RunProfile.gear_name(profile.equipped_weapon),
 		_mod_summary(profile.equipped_weapon),
@@ -335,6 +342,7 @@ func _refresh() -> void:
 	start_button.disabled = profile.load_error or not profile.region_available(selected_region_id)
 	temple_region_button.add_theme_stylebox_override("normal", _button_style(selected_region_id == RunProfile.TEMPLE_REGION))
 	jungle_region_button.add_theme_stylebox_override("normal", _button_style(selected_region_id == RunProfile.JUNGLE_REGION))
+	wetland_region_button.add_theme_stylebox_override("normal", _button_style(selected_region_id == RunProfile.WETLAND_REGION))
 	base_weapon_button.text = "기본 마력장\n%s" % ("장착 중" if profile.equipped_weapon == "W_START" else "보유")
 	weapon_button.text = "흐름의 마력장\n%s" % _gear_state("W_FLOW")
 	echo_weapon_button.text = "집결의 마력장\n%s" % _gear_state("W_ECHO")
@@ -373,24 +381,25 @@ func _refresh() -> void:
 	mod_behavior_label.visible = false
 	mod_numeric_label.visible = false
 	_update_mod_preview()
-	var growth_names := {"POWER": "평타 피해", "WISP": "여우불 발사 간격", "SLASH": "이동 베기 재사용", "FINISH": "3·4타 사거리", "VITALITY": "최대 HP", "GUARD": "받는 피해", "MOBILITY": "대시 충전 시간", "SPEED": "기본 이동속도"}
+	var growth_names := PermanentGrowthCatalog.NAMES
 	for id in growth_buttons:
 		var rank := int(profile.growth_ranks[id])
-		var cost := int(RunProfile.GROWTH_COST[rank]) if rank < 2 else 0
+		var cost := int(RunProfile.GROWTH_COST[rank]) if rank < PermanentGrowthCatalog.MAX_RANK else 0
 		var button: Button = growth_buttons[id]
 		var before := _growth_value(id, rank)
 		var after := _growth_value(id, rank + 1)
 		var available := profile.growth_available(id, unlocks.lifetime_levelups)
-		var locked_text := "누적 레벨업 1회 뒤 개방" if id == "SLASH" else "누적 레벨업 3회 뒤 개방"
-		button.text = "%s  %d/2  %s" % [growth_names[id], rank, locked_text if not available else "최대 · " + before if rank == 2 else before + " → " + after + " · 구매 %d" % cost]
-		button.disabled = profile.load_error or not available or rank == 2 or profile.currency < cost
+		var locked_text := "누적 레벨업 1회 뒤 개방" if id in ["SLASH", "SLASH_POWER"] else "누적 레벨업 3회 뒤 개방"
+		button.text = "%s  %d/%d  %s" % [growth_names[id], rank, PermanentGrowthCatalog.MAX_RANK, locked_text if not available else "최대 · " + before if rank == PermanentGrowthCatalog.MAX_RANK else before + " → " + after + " · 구매 %d" % cost]
+		button.disabled = profile.load_error or not available or rank == PermanentGrowthCatalog.MAX_RANK or profile.currency < cost
 	for id in attack_branch_buttons:
 		var branch_button: Button = attack_branch_buttons[id]
 		var effect := "직접 공격 · 평타/이동 베기 피해 +10%" if id == "DIRECT" else "동행 공격 · 여우불 피해 +10%"
 		branch_button.text = effect + (" · 선택됨" if profile.attack_branch == id else " · 초기화 후 변경" if not profile.attack_branch.is_empty() else " · 구매 60" if profile.attack_branch_available() else " · 공격 성장 합계 4 필요")
+		if id == "COMPANION": branch_button.text += "\n평타 명중 대상에 2초간 사격 집중"
 		branch_button.disabled = profile.load_error or not profile.attack_branch.is_empty() or not profile.attack_branch_available() or profile.currency < RunProfile.ATTACK_BRANCH_COST
 	reset_button.disabled = profile.load_error or profile.growth_ranks.values().all(func(value: Variant) -> bool: return int(value) == 0)
-	status_label.text = "저장 기록과 정상 백업을 읽을 수 없습니다. 기존 파일은 보존했습니다. 저장 폴더에서 백업을 확인하세요." if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
+	status_label.text = profile.save_block_reason() if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
 	if save_folder_button == null:
 		save_folder_button = _button(status_label.get_parent(), "저장 폴더 열기", func(): OS.shell_open(ProjectSettings.globalize_path(profile_save_prefix).get_base_dir()))
 	save_folder_button.visible = profile.load_error
@@ -428,7 +437,7 @@ func _refresh_discovery_cards() -> void:
 
 
 func _refresh_gear_effects() -> void:
-	var effects := {"W_START": "근거리 마력 타격 · 4타 전방 충격", "W_FLOW": "이동 베기 적중 → 다음 평타 +25% · 적중 시 베기 대기 -0.22초(공격당 1회)", "W_ECHO": "3타 집결 → 같은 지점에 4타 폭발", "A_EMBER": "여우불 마탄 피해 +15%"}
+	var effects := {"W_START": "근거리 마력 타격 · 4타 전방 충격", "W_FLOW": "이동 베기 적중 → 다음 적중 평타 +25% · 빗나가면 유지 · 베기 대기 -0.22초(공격당 1회)", "W_ECHO": "3타 집결 → 같은 지점에 4타 폭발", "A_EMBER": "여우불 마탄 피해 +15%"}
 	gear_effects_label.text = "[font_size=23][color=#f5d99c]%s[/color][/font_size]  %s\n%s" % [RunProfile.gear_name(selected_gear_id), _gear_state(selected_gear_id), effects[selected_gear_id]]
 	var option: String = profile.mod_for(selected_gear_id)
 	for id in AwakeningCatalog.ENTRIES:
@@ -451,16 +460,7 @@ func _mod_summary(id: String) -> String:
 
 
 func _growth_value(id: String, rank: int) -> String:
-	match id:
-		"POWER": return "%d%%" % (100 + rank * 5)
-		"WISP": return "%.2f초" % (WispCompanion.BASE_ATTACK_INTERVAL * (1.0 - rank * 0.04))
-		"VITALITY": return "%d" % (100 + rank * 10)
-		"GUARD": return "%d%%" % (100 - rank * 5)
-		"MOBILITY": return "%d%%" % (100 - rank * 4)
-		"SPEED": return "%d%%" % (100 + rank * 4)
-		"SLASH": return "%d%%" % (100 - rank * 3)
-		"FINISH": return "%d%%" % (100 + rank * 5)
-	return ""
+	return PermanentGrowthCatalog.display_value(id, rank)
 
 
 func _select_gear(id: String) -> void:
@@ -541,7 +541,7 @@ func _toggle_supply() -> void:
 
 func _depart() -> void:
 	if profile.load_error or not profile.region_available(selected_region_id): return
-	get_tree().change_scene_to_file(JUNGLE_SCENE if selected_region_id == RunProfile.JUNGLE_REGION else REGION_SCENE)
+	get_tree().change_scene_to_file(preload("res://game/field_preview_session.gd").scene_for_region(get_tree(), selected_region_id))
 
 
 func _depart_canal_trial() -> void:

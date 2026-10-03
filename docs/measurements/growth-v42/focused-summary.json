@@ -1,0 +1,72 @@
+[
+  {
+    "test": "verify_run_profile",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_meta_preparation",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_growth_expansion",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_meta_expansion",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_growth_rewards",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_stage2_loop",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_future_save_guard",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_future_save_ui",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_card_diversity",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_card_choice_trial",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_damage_cap_trial",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_behavior_mods",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_slash_chain_cap_trial",
+    "passed": true,
+    "exit": 0
+  },
+  {
+    "test": "verify_permanent_growth_v7",
+    "passed": true,
+    "exit": 0
+  }
+]

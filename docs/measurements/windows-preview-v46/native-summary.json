@@ -1,0 +1,174 @@
+{
+  "source_commit": "8b6655219f2005c8cf4309352f011efdb013be04",
+  "godot": "4.6-stable",
+  "status": "passed",
+  "scope": "Windows runner headless release export/startup only; no GPU, input, audio or play acceptance",
+  "downloads": [
+    {
+      "url": "https://github.com/godotengine/godot-builds/releases/download/4.6-stable/Godot_v4.6-stable_win64.exe.zip",
+      "sha512": "3b2f0b4b3c490cb1a78db8fd2afc924412edab996b436c08e38957388976e9dfaf203cb50a8916036bc810f68da3dd6b9f16561e6549062ef225b4a97877081b"
+    },
+    {
+      "url": "https://github.com/godotengine/godot-builds/releases/download/4.6-stable/Godot_v4.6-stable_export_templates.tpz",
+      "sha512": "88bb7c3a98e9a1e43c98796c99ac8a4ac8a82a15d8c9b049fe478e8e6a43522067559400f799949c1a43ecb1702a8eb02aa7bed506babccf177f0cb509088d19"
+    }
+  ],
+  "preview": {
+    "label": "v46",
+    "save_family": "LoopConquest-FieldPreview-v45",
+    "disposable_project_copy": true,
+    "original_project_unchanged": true
+  },
+  "import": {
+    "exit_code": 0,
+    "seconds": 15.187
+  },
+  "export": {
+    "exit_code": 0,
+    "seconds": 6.563
+  },
+  "release_contents": {
+    "packed_resources": 257,
+    "documentation_imports_checked": 82,
+    "documentation_resources_packed": 0,
+    "evidence": "Godot export Storing File records and documentation import remaps"
+  },
+  "executable": {
+    "name": "LoopConquest.exe",
+    "bytes": 105214928,
+    "sha256": "093fdf680639e55e6937948cf2414d7d3fae443a74aeaa43baef1d55d4fb77bc"
+  },
+  "startup": {
+    "exit_code": 0,
+    "seconds": 2.937,
+    "main_scene": "res://game/travel_camp.tscn",
+    "loaded_scene_resource": "res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn",
+    "quit_after_iterations_requested": 120,
+    "isolated_user_data": "D:\\a\\_temp\\new-game-windows-smoke\\runtime-appdata\\LoopConquest-FieldPreview-v45"
+  },
+  "preview_startup": [
+    {
+      "name": "camp",
+      "exit_code": 0,
+      "seconds": 2.937,
+      "main_scene": "res://game/travel_camp.tscn",
+      "loaded_scene_resource": "res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn",
+      "quit_after_iterations_requested": 120,
+      "isolated_user_data": "D:\\a\\_temp\\new-game-windows-smoke\\runtime-appdata\\LoopConquest-FieldPreview-v45"
+    },
+    {
+      "exit_code": 0,
+      "seconds": 3.047,
+      "name": "temple-circuit",
+      "scene": "res://game/temple_circuit_run.tscn",
+      "loaded_scene_resource": "res://.godot/exported/133200997/export-815f63e2ac0d124f44a2820c1bf3fd95-temple_circuit_run.scn",
+      "profile_before": null,
+      "profile_after": {
+        "generation": 1,
+        "currency": 0,
+        "last_launch_id": "1790997397-848184-109231281",
+        "last_run_id": "",
+        "owned_outpost_ids": [],
+        "acquired_relic_ids": []
+      },
+      "headless_runner_only": true
+    },
+    {
+      "exit_code": 0,
+      "seconds": 5.547,
+      "name": "jungle-south",
+      "scene": "res://game/jungle_south_circuit.tscn",
+      "loaded_scene_resource": "res://.godot/exported/133200997/export-25686aacd9a5d74d4ebbff85bb482b27-jungle_south_circuit.scn",
+      "profile_before": {
+        "generation": 1,
+        "currency": 0,
+        "last_launch_id": "1790997397-848184-109231281",
+        "last_run_id": "",
+        "owned_outpost_ids": [],
+        "acquired_relic_ids": []
+      },
+      "profile_after": {
+        "generation": 2,
+        "currency": 0,
+        "last_launch_id": "1790997403-3408254-2794365398",
+        "last_run_id": "",
+        "owned_outpost_ids": [],
+        "acquired_relic_ids": []
+      },
+      "headless_runner_only": true
+    },
+    {
+      "exit_code": 0,
+      "seconds": 3.047,
+      "name": "deep-wetland",
+      "scene": "res://game/deep_wetland_trial.tscn",
+      "loaded_scene_resource": "res://.godot/exported/133200997/export-cd2e1ac5d4955fc45f92e9094a502770-deep_wetland_trial.scn",
+      "profile_before": {
+        "generation": 2,
+        "currency": 0,
+        "last_launch_id": "1790997403-3408254-2794365398",
+        "last_run_id": "",
+        "owned_outpost_ids": [],
+        "acquired_relic_ids": []
+      },
+      "profile_after": {
+        "generation": 2,
+        "currency": 0,
+        "last_launch_id": "1790997403-3408254-2794365398",
+        "last_run_id": "",
+        "owned_outpost_ids": [],
+        "acquired_relic_ids": []
+      },
+      "headless_runner_only": true
+    },
+    {
+      "exit_code": 0,
+      "seconds": 3.86,
+      "name": "wetland-run",
+      "scene": "res://game/deep_wetland_run.tscn",
+      "loaded_scene_resource": "res://.godot/exported/133200997/export-753ca025e36b9b7b53cd6b42e103fb6b-deep_wetland_run.scn",
+      "profile_before": {
+        "generation": 2,
+        "currency": 0,
+        "last_launch_id": "1790997403-3408254-2794365398",
+        "last_run_id": "",
+        "owned_outpost_ids": [
+          "O_TEMPLE",
+          "O_JUNGLE_PASS"
+        ],
+        "acquired_relic_ids": [
+          "RELIC_TEMPLE"
+        ]
+      },
+      "profile_after": {
+        "generation": 3,
+        "currency": 0,
+        "last_launch_id": "1790997409-1689160-2275073925",
+        "last_run_id": "",
+        "owned_outpost_ids": [
+          "O_TEMPLE",
+          "O_JUNGLE_PASS"
+        ],
+        "acquired_relic_ids": [
+          "RELIC_TEMPLE"
+        ]
+      },
+      "headless_runner_only": true
+    }
+  ],
+  "wetland_startup_fixture": {
+    "runner_only": true,
+    "preseeded_temple_and_jungle_access": true,
+    "natural_campaign_win": false
+  },
+  "archive": {
+    "name": "LoopConquest-v46-Windows-x64.zip",
+    "bytes": 36465337,
+    "sha256": "562740c81dfb1ff15e17e3bf1a398cddee47a9d2c24a479225380628b21a76ee",
+    "extracted_startup": {
+      "exit_code": 0,
+      "seconds": 1.328,
+      "loaded_scene_resource": "res://.godot/exported/133200997/export-bbab815ce593f7e70f11c68873e06a79-travel_camp.scn"
+    }
+  }
+}

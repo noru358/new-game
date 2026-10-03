@@ -1,0 +1,3786 @@
+{
+  "final": {
+    "active_seconds": 258.633333333427,
+    "cards": {
+      "S_WISP_CADENCE": 3,
+      "S_WISP_CHAIN": 1,
+      "S_WISP_COUNT": 2,
+      "S_WISP_DAMAGE": 3,
+      "S_WISP_FOLLOWUP": 2,
+      "S_WISP_REPLY": 2,
+      "S_WISP_SWEEP": 2,
+      "U_EDGE": 3,
+      "U_REACH": 3,
+      "U_SLASH_CADENCE": 2,
+      "U_SLASH_SWEEP": 2,
+      "U_TEMPO": 3
+    },
+    "choice_windows": 28,
+    "combo_limit": 4,
+    "currency": 495,
+    "diagnostics": {
+      "accessory": "A_EMBER",
+      "active_seconds": 258.633333333427,
+      "active_wall_seconds": 369.352996,
+      "attack_branch": "DIRECT",
+      "boss_engagements": 2,
+      "boss_first_times": {
+        "arrive": {
+          "active_seconds": 220.533333333401,
+          "wall_seconds": 321.058528
+        },
+        "engage": {
+          "active_seconds": 241.200000000084,
+          "wall_seconds": 385.780218
+        },
+        "kill": {
+          "active_seconds": 258.633333333427,
+          "wall_seconds": 413.600696
+        },
+        "ready": {
+          "active_seconds": 241.200000000084,
+          "wall_seconds": 385.780098
+        }
+      },
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_CHAIN": 1,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_REPLY": 2,
+        "S_WISP_SWEEP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "choice_wall_seconds": 44.248316,
+      "choice_windows": 28,
+      "damage_events": 42,
+      "damage_taken_actual": 483.0,
+      "earned_currency": 495,
+      "health": 20.0,
+      "kills": 337,
+      "level": 29,
+      "level_heal_actual": 393.0,
+      "level_heal_events": 28,
+      "max_health": 110.0,
+      "pause_wall_seconds": 0.0,
+      "permanent_growth": {
+        "FINISH": 0.0,
+        "GUARD": 0.0,
+        "MOBILITY": 0.0,
+        "POWER": 2.0,
+        "RECOVERY": 0.0,
+        "SLASH": 0.0,
+        "SLASH_POWER": 0.0,
+        "SPEED": 0.0,
+        "VITALITY": 1.0,
+        "WISP": 2.0
+      },
+      "points_earned": 28,
+      "points_exhausted": 0,
+      "points_pending": 0,
+      "points_spent": 28,
+      "region": "O_DEEP_WETLAND",
+      "result": "SUCCESS",
+      "schema": "local_run_diagnostics_v1",
+      "time_scale_max": 1.0,
+      "time_scale_min": 1.0,
+      "wall_seconds": 413.601312,
+      "weapon": "W_FLOW",
+      "xp_remainder": 10
+    },
+    "health": 20.0,
+    "kills": 337,
+    "ledger": {
+      "combat": 164.733333333392,
+      "destination_wait_without_target": 6.75000000000537,
+      "stationary_without_visible_target": 22.5500000000068,
+      "travel_without_visible_target": 64.4833333333562
+    },
+    "moving_slash_enabled": true,
+    "points_earned": 28,
+    "points_spent": 28,
+    "position": {
+      "x": 5039.75537109375,
+      "y": 1158.01330566406
+    }
+  },
+  "first_destination_arrival": 220.533333333401,
+  "human_playtest": false,
+  "investment": 249,
+  "notes": "Wetland70s route, inherited combat/card priority and1.5s synthetic choice dwell. No forced XP, damage, health, boss or clock writes. Combat means reachable visible target within380; it can include travel. No-target movement is a proxy, not proof of meaningless travel. Repeated fighting cannot be identified from this aggregate.210 proposal is superseded; marks180/210/240/300 remain observation only. Missing marks mean the controller died/stopped before them.",
+  "observed_roles": {
+    "10032372518180": {
+      "fired": 0,
+      "first_player_position": [
+        2185.69921875,
+        1300.06945800781
+      ],
+      "first_time": 107.133333333329,
+      "role": 0,
+      "started": 0
+    },
+    "100847848581": {
+      "fired": 0,
+      "first_player_position": [
+        1515.56018066406,
+        2026.02136230469
+      ],
+      "first_time": 5.56666666666665,
+      "role": 0,
+      "started": 0
+    },
+    "10138219973751": {
+      "fired": 1,
+      "first_player_position": [
+        2325.24560546875,
+        1494.80908203125
+      ],
+      "first_time": 109.133333333328,
+      "role": 3,
+      "started": 1
+    },
+    "10152128285824": {
+      "fired": 0,
+      "first_player_position": [
+        2311.38720703125,
+        1524.52783203125
+      ],
+      "first_time": 109.549999999995,
+      "role": 0,
+      "started": 0
+    },
+    "1028577561721": {
+      "fired": 0,
+      "first_player_position": [
+        1127.92346191406,
+        1455.85278320312
+      ],
+      "first_time": 10.8000000000001,
+      "role": 0,
+      "started": 0
+    },
+    "10407980829933": {
+      "fired": 0,
+      "first_player_position": [
+        2261.74072265625,
+        1588.68237304688
+      ],
+      "first_time": 111.299999999995,
+      "role": 0,
+      "started": 0
+    },
+    "10755017542785": {
+      "fired": 0,
+      "first_player_position": [
+        2593.91845703125,
+        1583.66101074219
+      ],
+      "first_time": 112.083333333328,
+      "role": 0,
+      "started": 0
+    },
+    "10769127181414": {
+      "fired": 0,
+      "first_player_position": [
+        2677.91967773438,
+        1583.99633789062
+      ],
+      "first_time": 112.866666666662,
+      "role": 0,
+      "started": 0
+    },
+    "10774562999464": {
+      "fired": 0,
+      "first_player_position": [
+        2414.71508789062,
+        1584.0
+      ],
+      "first_time": 113.649999999995,
+      "role": 0,
+      "started": 0
+    },
+    "10805533740221": {
+      "fired": 0,
+      "first_player_position": [
+        2092.92309570312,
+        1552.36743164062
+      ],
+      "first_time": 114.416666666661,
+      "role": 0,
+      "started": 0
+    },
+    "10807664446649": {
+      "fired": 0,
+      "first_player_position": [
+        2074.57885742188,
+        1552.45935058594
+      ],
+      "first_time": 114.433333333328,
+      "role": 0,
+      "started": 0
+    },
+    "10813133819123": {
+      "fired": 0,
+      "first_player_position": [
+        2244.95751953125,
+        1552.00341796875
+      ],
+      "first_time": 115.199999999995,
+      "role": 0,
+      "started": 0
+    },
+    "10827998432520": {
+      "fired": 0,
+      "first_player_position": [
+        2358.28662109375,
+        1520.00415039062
+      ],
+      "first_time": 116.783333333328,
+      "role": 0,
+      "started": 0
+    },
+    "10857408892172": {
+      "fired": 0,
+      "first_player_position": [
+        1995.93798828125,
+        1519.99975585938
+      ],
+      "first_time": 117.549999999995,
+      "role": 0,
+      "started": 0
+    },
+    "10857794768005": {
+      "fired": 0,
+      "first_player_position": [
+        1980.22961425781,
+        1519.99975585938
+      ],
+      "first_time": 117.566666666661,
+      "role": 0,
+      "started": 0
+    },
+    "10871401090329": {
+      "fired": 1,
+      "first_player_position": [
+        2293.67944335938,
+        1457.55834960938
+      ],
+      "first_time": 119.133333333328,
+      "role": 3,
+      "started": 1
+    },
+    "10980234890437": {
+      "fired": 0,
+      "first_player_position": [
+        2520.47265625,
+        1487.98291015625
+      ],
+      "first_time": 119.916666666661,
+      "role": 0,
+      "started": 0
+    },
+    "10980587211895": {
+      "fired": 0,
+      "first_player_position": [
+        2526.07250976562,
+        1487.93994140625
+      ],
+      "first_time": 119.933333333328,
+      "role": 1,
+      "started": 1
+    },
+    "11026657447155": {
+      "fired": 0,
+      "first_player_position": [
+        2474.67333984375,
+        1430.60375976562
+      ],
+      "first_time": 121.333333333328,
+      "role": 1,
+      "started": 0
+    },
+    "11031858384136": {
+      "fired": 1,
+      "first_player_position": [
+        2414.193359375,
+        1498.88269042969
+      ],
+      "first_time": 121.749999999994,
+      "role": 3,
+      "started": 1
+    },
+    "11033888427192": {
+      "fired": 1,
+      "first_player_position": [
+        2376.17651367188,
+        1530.81750488281
+      ],
+      "first_time": 121.949999999994,
+      "role": 2,
+      "started": 1
+    },
+    "11043434663140": {
+      "fired": 1,
+      "first_player_position": [
+        2313.3525390625,
+        1594.85021972656
+      ],
+      "first_time": 122.349999999994,
+      "role": 3,
+      "started": 1
+    },
+    "11130055429401": {
+      "fired": 1,
+      "first_player_position": [
+        2095.98364257812,
+        1864.19396972656
+      ],
+      "first_time": 123.766666666661,
+      "role": 3,
+      "started": 1
+    },
+    "11136682429684": {
+      "fired": 0,
+      "first_player_position": [
+        2145.75805664062,
+        1705.66149902344
+      ],
+      "first_time": 124.366666666661,
+      "role": 4,
+      "started": 0
+    },
+    "11169800653907": {
+      "fired": 0,
+      "first_player_position": [
+        2191.34301757812,
+        1563.26086425781
+      ],
+      "first_time": 124.966666666661,
+      "role": 1,
+      "started": 1
+    },
+    "11349165870264": {
+      "fired": 0,
+      "first_player_position": [
+        2160.2431640625,
+        1437.73120117188
+      ],
+      "first_time": 125.383333333327,
+      "role": 0,
+      "started": 0
+    },
+    "1135968521348": {
+      "fired": 0,
+      "first_player_position": [
+        910.779235839844,
+        1399.18872070312
+      ],
+      "first_time": 11.9166666666668,
+      "role": 0,
+      "started": 0
+    },
+    "1140548701270": {
+      "fired": 0,
+      "first_player_position": [
+        912.000305175781,
+        1774.1806640625
+      ],
+      "first_time": 13.0333333333336,
+      "role": 0,
+      "started": 0
+    },
+    "11445819411647": {
+      "fired": 0,
+      "first_player_position": [
+        2122.37329101562,
+        1401.38366699219
+      ],
+      "first_time": 125.583333333327,
+      "role": 0,
+      "started": 0
+    },
+    "1161352449158": {
+      "fired": 0,
+      "first_player_position": [
+        911.999572753906,
+        1888.79211425781
+      ],
+      "first_time": 13.3333333333336,
+      "role": 0,
+      "started": 0
+    },
+    "13559597632801": {
+      "fired": 0,
+      "first_player_position": [
+        1936.01672363281,
+        990.861206054688
+      ],
+      "first_time": 126.799999999994,
+      "role": 1,
+      "started": 1
+    },
+    "13600517262514": {
+      "fired": 0,
+      "first_player_position": [
+        1877.74609375,
+        1036.89477539062
+      ],
+      "first_time": 127.999999999994,
+      "role": 0,
+      "started": 0
+    },
+    "13605718199612": {
+      "fired": 0,
+      "first_player_position": [
+        1973.5244140625,
+        1137.21203613281
+      ],
+      "first_time": 128.616666666661,
+      "role": 1,
+      "started": 1
+    },
+    "13611724442890": {
+      "fired": 0,
+      "first_player_position": [
+        2069.6943359375,
+        1233.4912109375
+      ],
+      "first_time": 129.216666666662,
+      "role": 1,
+      "started": 1
+    },
+    "13627461471369": {
+      "fired": 0,
+      "first_player_position": [
+        2186.42797851562,
+        1323.90502929688
+      ],
+      "first_time": 129.816666666662,
+      "role": 4,
+      "started": 0
+    },
+    "13672239860945": {
+      "fired": 0,
+      "first_player_position": [
+        2351.99780273438,
+        1445.5576171875
+      ],
+      "first_time": 130.433333333329,
+      "role": 0,
+      "started": 0
+    },
+    "13701029563521": {
+      "fired": 0,
+      "first_player_position": [
+        2335.70581054688,
+        1617.65222167969
+      ],
+      "first_time": 130.98333333333,
+      "role": 0,
+      "started": 0
+    },
+    "13713109159234": {
+      "fired": 1,
+      "first_player_position": [
+        2245.75390625,
+        1696.54711914062
+      ],
+      "first_time": 131.466666666663,
+      "role": 3,
+      "started": 1
+    },
+    "13729534053668": {
+      "fired": 1,
+      "first_player_position": [
+        2304.74633789062,
+        1865.75219726562
+      ],
+      "first_time": 131.93333333333,
+      "role": 3,
+      "started": 1
+    },
+    "13746562927706": {
+      "fired": 0,
+      "first_player_position": [
+        2185.84545898438,
+        1839.07055664062
+      ],
+      "first_time": 132.416666666664,
+      "role": 3,
+      "started": 0
+    },
+    "13769916812478": {
+      "fired": 0,
+      "first_player_position": [
+        2044.33032226562,
+        1832.82397460938
+      ],
+      "first_time": 132.883333333331,
+      "role": 0,
+      "started": 0
+    },
+    "13789059615841": {
+      "fired": 1,
+      "first_player_position": [
+        1874.53149414062,
+        1843.83984375
+      ],
+      "first_time": 133.049999999998,
+      "role": 3,
+      "started": 1
+    },
+    "14736737438836": {
+      "fired": 0,
+      "first_player_position": [
+        1918.22900390625,
+        1842.88916015625
+      ],
+      "first_time": 133.366666666665,
+      "role": 0,
+      "started": 0
+    },
+    "14748515044464": {
+      "fired": 1,
+      "first_player_position": [
+        2129.27197265625,
+        1738.45349121094
+      ],
+      "first_time": 134.316666666666,
+      "role": 3,
+      "started": 1
+    },
+    "14753984416909": {
+      "fired": 1,
+      "first_player_position": [
+        2197.78588867188,
+        1652.35400390625
+      ],
+      "first_time": 134.799999999999,
+      "role": 3,
+      "started": 1
+    },
+    "14779938770028": {
+      "fired": 1,
+      "first_player_position": [
+        2196.90795898438,
+        1608.51696777344
+      ],
+      "first_time": 134.95,
+      "role": 2,
+      "started": 1
+    },
+    "14885148691724": {
+      "fired": 0,
+      "first_player_position": [
+        2263.22778320312,
+        1567.61376953125
+      ],
+      "first_time": 135.266666666666,
+      "role": 4,
+      "started": 0
+    },
+    "15121053125956": {
+      "fired": 1,
+      "first_player_position": [
+        2593.26953125,
+        1659.0849609375
+      ],
+      "first_time": 136.216666666667,
+      "role": 3,
+      "started": 1
+    },
+    "15138853751974": {
+      "fired": 2,
+      "first_player_position": [
+        2508.52294921875,
+        1700.4541015625
+      ],
+      "first_time": 136.700000000001,
+      "role": 2,
+      "started": 2
+    },
+    "15147359800575": {
+      "fired": 0,
+      "first_player_position": [
+        2409.904296875,
+        1767.09851074219
+      ],
+      "first_time": 137.183333333335,
+      "role": 0,
+      "started": 0
+    },
+    "15204184231139": {
+      "fired": 0,
+      "first_player_position": [
+        2187.412109375,
+        1725.62939453125
+      ],
+      "first_time": 137.650000000002,
+      "role": 4,
+      "started": 0
+    },
+    "15297549438178": {
+      "fired": 1,
+      "first_player_position": [
+        2191.98266601562,
+        1598.07434082031
+      ],
+      "first_time": 138.133333333335,
+      "role": 3,
+      "started": 1
+    },
+    "15321641520442": {
+      "fired": 1,
+      "first_player_position": [
+        2191.97827148438,
+        1547.67456054688
+      ],
+      "first_time": 138.283333333336,
+      "role": 2,
+      "started": 1
+    },
+    "15392122604713": {
+      "fired": 1,
+      "first_player_position": [
+        2192.00024414062,
+        1463.67492675781
+      ],
+      "first_time": 138.600000000002,
+      "role": 3,
+      "started": 1
+    },
+    "15429787454733": {
+      "fired": 0,
+      "first_player_position": [
+        2192.00854492188,
+        1331.23706054688
+      ],
+      "first_time": 138.750000000003,
+      "role": 4,
+      "started": 0
+    },
+    "16326999412017": {
+      "fired": 0,
+      "first_player_position": [
+        2087.09326171875,
+        1327.9150390625
+      ],
+      "first_time": 139.233333333336,
+      "role": 1,
+      "started": 1
+    },
+    "16345236245734": {
+      "fired": 1,
+      "first_player_position": [
+        2032.8798828125,
+        1234.01501464844
+      ],
+      "first_time": 139.71666666667,
+      "role": 3,
+      "started": 1
+    },
+    "16357651385624": {
+      "fired": 0,
+      "first_player_position": [
+        1988.21862792969,
+        1131.03198242188
+      ],
+      "first_time": 140.183333333337,
+      "role": 0,
+      "started": 0
+    },
+    "16476702510349": {
+      "fired": 0,
+      "first_player_position": [
+        1627.4658203125,
+        1105.10217285156
+      ],
+      "first_time": 141.133333333338,
+      "role": 1,
+      "started": 1
+    },
+    "16517655694436": {
+      "fired": 0,
+      "first_player_position": [
+        1585.69274902344,
+        1024.96569824219
+      ],
+      "first_time": 141.466666666671,
+      "role": 0,
+      "started": 0
+    },
+    "16569967054014": {
+      "fired": 0,
+      "first_player_position": [
+        1405.74938964844,
+        840.517333984375
+      ],
+      "first_time": 142.416666666672,
+      "role": 1,
+      "started": 0
+    },
+    "16582247976155": {
+      "fired": 0,
+      "first_player_position": [
+        1280.67846679688,
+        627.642578125
+      ],
+      "first_time": 142.883333333339,
+      "role": 0,
+      "started": 0
+    },
+    "16588589763679": {
+      "fired": 1,
+      "first_player_position": [
+        1424.97302246094,
+        624.469299316406
+      ],
+      "first_time": 143.366666666673,
+      "role": 2,
+      "started": 2
+    },
+    "16590519143713": {
+      "fired": 0,
+      "first_player_position": [
+        1475.37036132812,
+        623.970336914062
+      ],
+      "first_time": 143.516666666673,
+      "role": 2,
+      "started": 1
+    },
+    "16610584694029": {
+      "fired": 0,
+      "first_player_position": [
+        1846.12536621094,
+        673.274719238281
+      ],
+      "first_time": 144.800000000007,
+      "role": 0,
+      "started": 0
+    },
+    "16617664679178": {
+      "fired": 1,
+      "first_player_position": [
+        1949.90490722656,
+        719.579284667969
+      ],
+      "first_time": 145.266666666674,
+      "role": 3,
+      "started": 1
+    },
+    "16719015841043": {
+      "fired": 1,
+      "first_player_position": [
+        1967.81469726562,
+        859.185119628906
+      ],
+      "first_time": 145.750000000008,
+      "role": 2,
+      "started": 1
+    },
+    "167419841685": {
+      "fired": 0,
+      "first_player_position": [
+        1450.78527832031,
+        2060.0390625
+      ],
+      "first_time": 6.66666666666665,
+      "role": 0,
+      "started": 0
+    },
+    "16928177392979": {
+      "fired": 0,
+      "first_player_position": [
+        1907.6162109375,
+        949.690673828125
+      ],
+      "first_time": 146.216666666675,
+      "role": 1,
+      "started": 1
+    },
+    "17106351426780": {
+      "fired": 1,
+      "first_player_position": [
+        1905.01379394531,
+        1032.18408203125
+      ],
+      "first_time": 146.700000000009,
+      "role": 1,
+      "started": 1
+    },
+    "1717248724080": {
+      "fired": 0,
+      "first_player_position": [
+        1322.53942871094,
+        2095.77197265625
+      ],
+      "first_time": 16.366666666667,
+      "role": 0,
+      "started": 0
+    },
+    "171865803861": {
+      "fired": 0,
+      "first_player_position": [
+        1353.11169433594,
+        2133.25146484375
+      ],
+      "first_time": 7.78333333333331,
+      "role": 0,
+      "started": 0
+    },
+    "1718892891286": {
+      "fired": 0,
+      "first_player_position": [
+        1367.22375488281,
+        2133.53540039062
+      ],
+      "first_time": 16.666666666667,
+      "role": 0,
+      "started": 0
+    },
+    "1722869091469": {
+      "fired": 0,
+      "first_player_position": [
+        1367.22375488281,
+        2133.53540039062
+      ],
+      "first_time": 17.7833333333336,
+      "role": 0,
+      "started": 0
+    },
+    "1726962732112": {
+      "fired": 0,
+      "first_player_position": [
+        1367.22375488281,
+        2133.53540039062
+      ],
+      "first_time": 18.9000000000002,
+      "role": 0,
+      "started": 0
+    },
+    "1734361484388": {
+      "fired": 0,
+      "first_player_position": [
+        1285.28076171875,
+        1959.88610839844
+      ],
+      "first_time": 20.8000000000001,
+      "role": 0,
+      "started": 0
+    },
+    "1753772723301": {
+      "fired": 0,
+      "first_player_position": [
+        1188.10241699219,
+        1943.28588867188
+      ],
+      "first_time": 21.1166666666667,
+      "role": 0,
+      "started": 0
+    },
+    "18634319596860": {
+      "fired": 1,
+      "first_player_position": [
+        2005.17761230469,
+        1114.87829589844
+      ],
+      "first_time": 147.183333333343,
+      "role": 3,
+      "started": 1
+    },
+    "18695623544079": {
+      "fired": 0,
+      "first_player_position": [
+        1999.62915039062,
+        1272.00463867188
+      ],
+      "first_time": 147.333333333343,
+      "role": 2,
+      "started": 0
+    },
+    "18824002800966": {
+      "fired": 0,
+      "first_player_position": [
+        2179.11352539062,
+        1328.85534667969
+      ],
+      "first_time": 148.283333333343,
+      "role": 0,
+      "started": 0
+    },
+    "18828884970762": {
+      "fired": 0,
+      "first_player_position": [
+        2285.453125,
+        1328.0693359375
+      ],
+      "first_time": 148.60000000001,
+      "role": 2,
+      "started": 0
+    },
+    "18842944277611": {
+      "fired": 0,
+      "first_player_position": [
+        2604.65869140625,
+        1328.00024414062
+      ],
+      "first_time": 149.550000000011,
+      "role": 0,
+      "started": 0
+    },
+    "18849118293238": {
+      "fired": 0,
+      "first_player_position": [
+        2767.0615234375,
+        1328.00024414062
+      ],
+      "first_time": 150.033333333345,
+      "role": 0,
+      "started": 0
+    },
+    "18885927505050": {
+      "fired": 0,
+      "first_player_position": [
+        2982.32250976562,
+        1071.43762207031
+      ],
+      "first_time": 150.983333333346,
+      "role": 0,
+      "started": 0
+    },
+    "18893561138360": {
+      "fired": 0,
+      "first_player_position": [
+        3054.68139648438,
+        1074.29064941406
+      ],
+      "first_time": 151.466666666679,
+      "role": 0,
+      "started": 0
+    },
+    "18895205305688": {
+      "fired": 0,
+      "first_player_position": [
+        3068.61938476562,
+        1108.91345214844
+      ],
+      "first_time": 151.616666666679,
+      "role": 1,
+      "started": 1
+    },
+    "18899114397015": {
+      "fired": 1,
+      "first_player_position": [
+        3163.74926757812,
+        1089.82556152344
+      ],
+      "first_time": 151.933333333346,
+      "role": 2,
+      "started": 1
+    },
+    "18916361375045": {
+      "fired": 1,
+      "first_player_position": [
+        3258.38891601562,
+        807.339416503906
+      ],
+      "first_time": 152.883333333347,
+      "role": 2,
+      "started": 1
+    },
+    "18921092549771": {
+      "fired": 0,
+      "first_player_position": [
+        3258.38891601562,
+        807.339416503906
+      ],
+      "first_time": 153.366666666681,
+      "role": 0,
+      "started": 0
+    },
+    "18927484669044": {
+      "fired": 0,
+      "first_player_position": [
+        3258.38891601562,
+        807.339416503906
+      ],
+      "first_time": 153.850000000015,
+      "role": 0,
+      "started": 0
+    },
+    "18934984084566": {
+      "fired": 1,
+      "first_player_position": [
+        3251.45776367188,
+        834.468017578125
+      ],
+      "first_time": 154.316666666682,
+      "role": 2,
+      "started": 1
+    },
+    "19316195986740": {
+      "fired": 1,
+      "first_player_position": [
+        3369.20068359375,
+        1359.57580566406
+      ],
+      "first_time": 155.750000000016,
+      "role": 3,
+      "started": 1
+    },
+    "19340522949866": {
+      "fired": 0,
+      "first_player_position": [
+        3375.98828125,
+        1175.44763183594
+      ],
+      "first_time": 156.550000000017,
+      "role": 0,
+      "started": 0
+    },
+    "19341428919382": {
+      "fired": 0,
+      "first_player_position": [
+        3375.99365234375,
+        1164.24768066406
+      ],
+      "first_time": 156.58333333335,
+      "role": 0,
+      "started": 0
+    },
+    "19392381324393": {
+      "fired": 0,
+      "first_player_position": [
+        3136.75170898438,
+        912.014709472656
+      ],
+      "first_time": 158.216666666685,
+      "role": 0,
+      "started": 0
+    },
+    "19406004423975": {
+      "fired": 0,
+      "first_player_position": [
+        3259.79833984375,
+        807.551147460938
+      ],
+      "first_time": 159.050000000019,
+      "role": 2,
+      "started": 1
+    },
+    "19444558466329": {
+      "fired": 0,
+      "first_player_position": [
+        3408.83520507812,
+        1056.88122558594
+      ],
+      "first_time": 159.883333333353,
+      "role": 0,
+      "started": 0
+    },
+    "19525793746267": {
+      "fired": 0,
+      "first_player_position": [
+        3407.98950195312,
+        1322.98083496094
+      ],
+      "first_time": 160.716666666687,
+      "role": 0,
+      "started": 0
+    },
+    "19635097308433": {
+      "fired": 1,
+      "first_player_position": [
+        3173.06103515625,
+        1293.84143066406
+      ],
+      "first_time": 161.550000000021,
+      "role": 2,
+      "started": 1
+    },
+    "19706819906862": {
+      "fired": 1,
+      "first_player_position": [
+        3135.23120117188,
+        1236.91735839844
+      ],
+      "first_time": 162.383333333355,
+      "role": 2,
+      "started": 1
+    },
+    "19755658382663": {
+      "fired": 0,
+      "first_player_position": [
+        3023.9228515625,
+        1069.80358886719
+      ],
+      "first_time": 163.216666666689,
+      "role": 4,
+      "started": 0
+    },
+    "197652384929": {
+      "fired": 0,
+      "first_player_position": [
+        1319.95788574219,
+        1866.73999023438
+      ],
+      "first_time": 8.90000000000002,
+      "role": 0,
+      "started": 0
+    },
+    "19770606881893": {
+      "fired": 0,
+      "first_player_position": [
+        3130.65014648438,
+        905.233337402344
+      ],
+      "first_time": 164.050000000023,
+      "role": 0,
+      "started": 0
+    },
+    "19781864394059": {
+      "fired": 0,
+      "first_player_position": [
+        3254.83251953125,
+        810.735107421875
+      ],
+      "first_time": 164.883333333357,
+      "role": 0,
+      "started": 0
+    },
+    "19794011098224": {
+      "fired": 1,
+      "first_player_position": [
+        3254.83251953125,
+        810.735107421875
+      ],
+      "first_time": 165.716666666691,
+      "role": 3,
+      "started": 1
+    },
+    "19824428190906": {
+      "fired": 0,
+      "first_player_position": [
+        3326.91259765625,
+        816.853942871094
+      ],
+      "first_time": 166.550000000025,
+      "role": 0,
+      "started": 0
+    },
+    "19895832022358": {
+      "fired": 1,
+      "first_player_position": [
+        3340.37133789062,
+        898.2783203125
+      ],
+      "first_time": 167.383333333359,
+      "role": 1,
+      "started": 1
+    },
+    "19909304126779": {
+      "fired": 0,
+      "first_player_position": [
+        3311.87084960938,
+        1144.85302734375
+      ],
+      "first_time": 168.216666666693,
+      "role": 0,
+      "started": 0
+    },
+    "19938261601603": {
+      "fired": 1,
+      "first_player_position": [
+        3354.830078125,
+        1455.46435546875
+      ],
+      "first_time": 169.050000000027,
+      "role": 1,
+      "started": 1
+    },
+    "19954116070591": {
+      "fired": 0,
+      "first_player_position": [
+        3320.2646484375,
+        1457.11694335938
+      ],
+      "first_time": 169.883333333361,
+      "role": 0,
+      "started": 0
+    },
+    "19954720050358": {
+      "fired": 0,
+      "first_player_position": [
+        3309.10302734375,
+        1456.18969726562
+      ],
+      "first_time": 169.916666666694,
+      "role": 0,
+      "started": 0
+    },
+    "19995304135982": {
+      "fired": 0,
+      "first_player_position": [
+        3171.98608398438,
+        1329.96154785156
+      ],
+      "first_time": 170.750000000028,
+      "role": 0,
+      "started": 0
+    },
+    "20076623301900": {
+      "fired": 0,
+      "first_player_position": [
+        3023.91455078125,
+        1031.82202148438
+      ],
+      "first_time": 173.216666666697,
+      "role": 1,
+      "started": 0
+    },
+    "20283285048488": {
+      "fired": 0,
+      "first_player_position": [
+        3130.94653320312,
+        905.39013671875
+      ],
+      "first_time": 174.050000000031,
+      "role": 0,
+      "started": 0
+    },
+    "20291589770477": {
+      "fired": 0,
+      "first_player_position": [
+        3254.826171875,
+        810.736083984375
+      ],
+      "first_time": 174.883333333365,
+      "role": 0,
+      "started": 0
+    },
+    "20295951846569": {
+      "fired": 0,
+      "first_player_position": [
+        3254.826171875,
+        810.736083984375
+      ],
+      "first_time": 175.716666666699,
+      "role": 2,
+      "started": 0
+    },
+    "20303031831751": {
+      "fired": 0,
+      "first_player_position": [
+        3254.826171875,
+        810.736083984375
+      ],
+      "first_time": 176.550000000033,
+      "role": 0,
+      "started": 0
+    },
+    "20312108305560": {
+      "fired": 1,
+      "first_player_position": [
+        3238.349609375,
+        815.976745605469
+      ],
+      "first_time": 177.383333333367,
+      "role": 2,
+      "started": 1
+    },
+    "20321302219962": {
+      "fired": 1,
+      "first_player_position": [
+        3255.14990234375,
+        816.01611328125
+      ],
+      "first_time": 178.216666666701,
+      "role": 3,
+      "started": 1
+    },
+    "20329002962088": {
+      "fired": 0,
+      "first_player_position": [
+        3255.14990234375,
+        816.01611328125
+      ],
+      "first_time": 179.050000000035,
+      "role": 0,
+      "started": 0
+    },
+    "20339589385425": {
+      "fired": 0,
+      "first_player_position": [
+        3204.7490234375,
+        816.000183105469
+      ],
+      "first_time": 179.883333333369,
+      "role": 1,
+      "started": 1
+    },
+    "20462448938306": {
+      "fired": 0,
+      "first_player_position": [
+        3215.9892578125,
+        1078.77038574219
+      ],
+      "first_time": 180.716666666703,
+      "role": 0,
+      "started": 0
+    },
+    "20563363892535": {
+      "fired": 0,
+      "first_player_position": [
+        3248.8681640625,
+        1179.19909667969
+      ],
+      "first_time": 181.150000000036,
+      "role": 3,
+      "started": 0
+    },
+    "20566383791368": {
+      "fired": 0,
+      "first_player_position": [
+        3248.5224609375,
+        1245.05639648438
+      ],
+      "first_time": 181.350000000036,
+      "role": 1,
+      "started": 1
+    },
+    "20631546498261": {
+      "fired": 1,
+      "first_player_position": [
+        3248.00122070312,
+        1463.85766601562
+      ],
+      "first_time": 182.366666666704,
+      "role": 3,
+      "started": 1
+    },
+    "20633794645208": {
+      "fired": 1,
+      "first_player_position": [
+        3247.99682617188,
+        1402.25793457031
+      ],
+      "first_time": 182.550000000037,
+      "role": 3,
+      "started": 1
+    },
+    "20640035769454": {
+      "fired": 1,
+      "first_player_position": [
+        3248.00073242188,
+        1262.25854492188
+      ],
+      "first_time": 182.966666666704,
+      "role": 1,
+      "started": 1
+    },
+    "21027740454162": {
+      "fired": 1,
+      "first_player_position": [
+        3049.93872070312,
+        989.813293457031
+      ],
+      "first_time": 184.366666666706,
+      "role": 2,
+      "started": 1
+    },
+    "2130303782004": {
+      "fired": 0,
+      "first_player_position": [
+        1155.66687011719,
+        1743.84716796875
+      ],
+      "first_time": 23.0333333333333,
+      "role": 0,
+      "started": 0
+    },
+    "21333840760021": {
+      "fired": 0,
+      "first_player_position": [
+        2848.43310546875,
+        961.138549804688
+      ],
+      "first_time": 184.783333333373,
+      "role": 3,
+      "started": 0
+    },
+    "21337766628441": {
+      "fired": 0,
+      "first_player_position": [
+        2869.55688476562,
+        977.394287109375
+      ],
+      "first_time": 184.983333333373,
+      "role": 0,
+      "started": 0
+    },
+    "21351054183716": {
+      "fired": 0,
+      "first_player_position": [
+        3187.11767578125,
+        854.479248046875
+      ],
+      "first_time": 186.183333333374,
+      "role": 0,
+      "started": 0
+    },
+    "21360382315745": {
+      "fired": 0,
+      "first_player_position": [
+        3183.98266601562,
+        704.47802734375
+      ],
+      "first_time": 186.800000000041,
+      "role": 0,
+      "started": 0
+    },
+    "21366254341375": {
+      "fired": 1,
+      "first_player_position": [
+        3247.86767578125,
+        846.144653320312
+      ],
+      "first_time": 187.400000000041,
+      "role": 2,
+      "started": 1
+    },
+    "21374861053114": {
+      "fired": 0,
+      "first_player_position": [
+        3415.77978515625,
+        847.1484375
+      ],
+      "first_time": 188.016666666708,
+      "role": 0,
+      "started": 0
+    },
+    "21385397144702": {
+      "fired": 0,
+      "first_player_position": [
+        3420.85888671875,
+        1054.20190429688
+      ],
+      "first_time": 188.416666666709,
+      "role": 0,
+      "started": 0
+    },
+    "21388417043545": {
+      "fired": 0,
+      "first_player_position": [
+        3425.6552734375,
+        1107.279296875
+      ],
+      "first_time": 188.616666666709,
+      "role": 3,
+      "started": 0
+    },
+    "21409673776372": {
+      "fired": 0,
+      "first_player_position": [
+        3381.55395507812,
+        1135.02722167969
+      ],
+      "first_time": 189.833333333377,
+      "role": 1,
+      "started": 0
+    },
+    "21417726840025": {
+      "fired": 0,
+      "first_player_position": [
+        3377.6171875,
+        934.053588867188
+      ],
+      "first_time": 190.433333333377,
+      "role": 0,
+      "started": 0
+    },
+    "21424018295958": {
+      "fired": 0,
+      "first_player_position": [
+        3301.669921875,
+        844.438720703125
+      ],
+      "first_time": 190.983333333377,
+      "role": 0,
+      "started": 0
+    },
+    "21429135346876": {
+      "fired": 0,
+      "first_player_position": [
+        3282.10668945312,
+        826.461059570312
+      ],
+      "first_time": 191.433333333378,
+      "role": 4,
+      "started": 0
+    },
+    "21434034293980": {
+      "fired": 1,
+      "first_player_position": [
+        3252.498046875,
+        842.428466796875
+      ],
+      "first_time": 191.900000000045,
+      "role": 2,
+      "started": 1
+    },
+    "21439537220724": {
+      "fired": 0,
+      "first_player_position": [
+        3252.498046875,
+        842.428466796875
+      ],
+      "first_time": 192.366666666712,
+      "role": 0,
+      "started": 0
+    },
+    "21444369059035": {
+      "fired": 0,
+      "first_player_position": [
+        3252.498046875,
+        842.428466796875
+      ],
+      "first_time": 192.816666666712,
+      "role": 0,
+      "started": 0
+    },
+    "21450459188516": {
+      "fired": 0,
+      "first_player_position": [
+        3207.08544921875,
+        860.33251953125
+      ],
+      "first_time": 193.283333333379,
+      "role": 4,
+      "started": 0
+    },
+    "21455911783767": {
+      "fired": 0,
+      "first_player_position": [
+        3172.38037109375,
+        971.164916992188
+      ],
+      "first_time": 193.73333333338,
+      "role": 0,
+      "started": 0
+    },
+    "21467555171548": {
+      "fired": 1,
+      "first_player_position": [
+        3221.05395507812,
+        1228.60131835938
+      ],
+      "first_time": 194.200000000047,
+      "role": 3,
+      "started": 1
+    },
+    "21474769374347": {
+      "fired": 0,
+      "first_player_position": [
+        3216.96533203125,
+        1127.17272949219
+      ],
+      "first_time": 194.650000000047,
+      "role": 0,
+      "started": 0
+    },
+    "21481899691279": {
+      "fired": 1,
+      "first_player_position": [
+        3181.96337890625,
+        1261.09948730469
+      ],
+      "first_time": 195.116666666714,
+      "role": 1,
+      "started": 1
+    },
+    "21498442026241": {
+      "fired": 0,
+      "first_player_position": [
+        3046.95556640625,
+        1295.92175292969
+      ],
+      "first_time": 195.583333333381,
+      "role": 0,
+      "started": 0
+    },
+    "2155134061720": {
+      "fired": 0,
+      "first_player_position": [
+        1127.6669921875,
+        1743.76599121094
+      ],
+      "first_time": 23.3333333333333,
+      "role": 0,
+      "started": 0
+    },
+    "22310559943911": {
+      "fired": 1,
+      "first_player_position": [
+        2918.26611328125,
+        1296.01574707031
+      ],
+      "first_time": 196.033333333381,
+      "role": 2,
+      "started": 1
+    },
+    "22319854521530": {
+      "fired": 0,
+      "first_player_position": [
+        2855.173828125,
+        1409.36413574219
+      ],
+      "first_time": 196.500000000049,
+      "role": 1,
+      "started": 1
+    },
+    "22328880663703": {
+      "fired": 0,
+      "first_player_position": [
+        2871.09423828125,
+        1415.43591308594
+      ],
+      "first_time": 196.950000000049,
+      "role": 3,
+      "started": 0
+    },
+    "22336061312109": {
+      "fired": 1,
+      "first_player_position": [
+        2866.05126953125,
+        1260.03723144531
+      ],
+      "first_time": 197.416666666716,
+      "role": 3,
+      "started": 1
+    },
+    "22342520540249": {
+      "fired": 0,
+      "first_player_position": [
+        2863.80590820312,
+        1103.30285644531
+      ],
+      "first_time": 197.883333333383,
+      "role": 4,
+      "started": 0
+    },
+    "22351395687767": {
+      "fired": 1,
+      "first_player_position": [
+        2994.7119140625,
+        1109.34655761719
+      ],
+      "first_time": 198.333333333383,
+      "role": 1,
+      "started": 1
+    },
+    "22367568923980": {
+      "fired": 1,
+      "first_player_position": [
+        3150.8310546875,
+        1104.30554199219
+      ],
+      "first_time": 198.80000000005,
+      "role": 3,
+      "started": 1
+    },
+    "22381796003136": {
+      "fired": 0,
+      "first_player_position": [
+        3220.91796875,
+        1200.41870117188
+      ],
+      "first_time": 199.250000000051,
+      "role": 0,
+      "started": 0
+    },
+    "22393909153095": {
+      "fired": 0,
+      "first_player_position": [
+        3402.07592773438,
+        1307.53881835938
+      ],
+      "first_time": 199.716666666718,
+      "role": 0,
+      "started": 0
+    },
+    "22400150277375": {
+      "fired": 0,
+      "first_player_position": [
+        3411.46875,
+        1153.58996582031
+      ],
+      "first_time": 200.183333333385,
+      "role": 1,
+      "started": 1
+    },
+    "22405166664914": {
+      "fired": 0,
+      "first_player_position": [
+        3407.4296875,
+        1002.51428222656
+      ],
+      "first_time": 200.633333333385,
+      "role": 4,
+      "started": 0
+    },
+    "22411038690626": {
+      "fired": 0,
+      "first_player_position": [
+        3407.89672851562,
+        862.522216796875
+      ],
+      "first_time": 201.050000000052,
+      "role": 1,
+      "started": 1
+    },
+    "22414981336356": {
+      "fired": 0,
+      "first_player_position": [
+        3314.71020507812,
+        853.34228515625
+      ],
+      "first_time": 201.416666666719,
+      "role": 0,
+      "started": 0
+    },
+    "22417732799676": {
+      "fired": 0,
+      "first_player_position": [
+        3274.16748046875,
+        808.214721679688
+      ],
+      "first_time": 201.800000000053,
+      "role": 2,
+      "started": 0
+    },
+    "22423252503864": {
+      "fired": 0,
+      "first_player_position": [
+        3268.80004882812,
+        809.811218261719
+      ],
+      "first_time": 202.183333333386,
+      "role": 1,
+      "started": 1
+    },
+    "22427279035560": {
+      "fired": 1,
+      "first_player_position": [
+        3231.22802734375,
+        820.990112304688
+      ],
+      "first_time": 202.56666666672,
+      "role": 3,
+      "started": 1
+    },
+    "22432983289092": {
+      "fired": 0,
+      "first_player_position": [
+        3231.22802734375,
+        820.990112304688
+      ],
+      "first_time": 202.950000000054,
+      "role": 4,
+      "started": 0
+    },
+    "22437664132342": {
+      "fired": 0,
+      "first_player_position": [
+        3218.49072265625,
+        926.540161132812
+      ],
+      "first_time": 203.333333333387,
+      "role": 0,
+      "started": 0
+    },
+    "22444794449234": {
+      "fired": 0,
+      "first_player_position": [
+        3215.8212890625,
+        1055.12182617188
+      ],
+      "first_time": 203.716666666721,
+      "role": 0,
+      "started": 0
+    },
+    "22454776892681": {
+      "fired": 0,
+      "first_player_position": [
+        3217.11743164062,
+        1240.84216308594
+      ],
+      "first_time": 204.050000000055,
+      "role": 1,
+      "started": 1
+    },
+    "22459692616974": {
+      "fired": 0,
+      "first_player_position": [
+        3217.73486328125,
+        1278.67443847656
+      ],
+      "first_time": 204.083333333388,
+      "role": 0,
+      "started": 0
+    },
+    "2261887487130": {
+      "fired": 0,
+      "first_player_position": [
+        944.344055175781,
+        1334.30114746094
+      ],
+      "first_time": 25.2499999999998,
+      "role": 0,
+      "started": 0
+    },
+    "2265746246814": {
+      "fired": 0,
+      "first_player_position": [
+        944.000122070312,
+        1709.46887207031
+      ],
+      "first_time": 26.3666666666665,
+      "role": 0,
+      "started": 0
+    },
+    "23401146092626": {
+      "fired": 1,
+      "first_player_position": [
+        3181.0009765625,
+        1327.14575195312
+      ],
+      "first_time": 204.466666666722,
+      "role": 3,
+      "started": 1
+    },
+    "23424432868557": {
+      "fired": 0,
+      "first_player_position": [
+        3058.662109375,
+        1288.15026855469
+      ],
+      "first_time": 205.233333333389,
+      "role": 0,
+      "started": 0
+    },
+    "2343089212568": {
+      "fired": 0,
+      "first_player_position": [
+        960.012512207031,
+        2093.14501953125
+      ],
+      "first_time": 27.4666666666664,
+      "role": 0,
+      "started": 0
+    },
+    "23434062990533": {
+      "fired": 0,
+      "first_player_position": [
+        3154.3505859375,
+        1455.45812988281
+      ],
+      "first_time": 205.616666666722,
+      "role": 0,
+      "started": 0
+    },
+    "23438710279354": {
+      "fired": 1,
+      "first_player_position": [
+        3278.84423828125,
+        1452.68701171875
+      ],
+      "first_time": 206.000000000056,
+      "role": 3,
+      "started": 1
+    },
+    "23446411021657": {
+      "fired": 0,
+      "first_player_position": [
+        3362.48486328125,
+        1457.09118652344
+      ],
+      "first_time": 206.38333333339,
+      "role": 0,
+      "started": 0
+    },
+    "23454346644710": {
+      "fired": 2,
+      "first_player_position": [
+        3419.2802734375,
+        1539.15246582031
+      ],
+      "first_time": 206.750000000057,
+      "role": 2,
+      "started": 2
+    },
+    "23460269002001": {
+      "fired": 0,
+      "first_player_position": [
+        3399.17724609375,
+        1423.68383789062
+      ],
+      "first_time": 207.100000000057,
+      "role": 0,
+      "started": 0
+    },
+    "23461393075399": {
+      "fired": 0,
+      "first_player_position": [
+        3398.54931640625,
+        1412.50146484375
+      ],
+      "first_time": 207.13333333339,
+      "role": 2,
+      "started": 1
+    },
+    "23470217891101": {
+      "fired": 1,
+      "first_player_position": [
+        3411.9423828125,
+        1298.22375488281
+      ],
+      "first_time": 207.483333333391,
+      "role": 2,
+      "started": 1
+    },
+    "23470972865740": {
+      "fired": 0,
+      "first_player_position": [
+        3409.3486328125,
+        1287.32824707031
+      ],
+      "first_time": 207.516666666724,
+      "role": 0,
+      "started": 0
+    },
+    "23482633030808": {
+      "fired": 0,
+      "first_player_position": [
+        3407.77661132812,
+        1170.08203125
+      ],
+      "first_time": 207.866666666724,
+      "role": 1,
+      "started": 1
+    },
+    "23509292027054": {
+      "fired": 1,
+      "first_player_position": [
+        3449.234375,
+        994.828125
+      ],
+      "first_time": 209.050000000059,
+      "role": 3,
+      "started": 1
+    },
+    "23514878839996": {
+      "fired": 0,
+      "first_player_position": [
+        3354.541015625,
+        977.648681640625
+      ],
+      "first_time": 209.416666666725,
+      "role": 0,
+      "started": 0
+    },
+    "23521388399725": {
+      "fired": 1,
+      "first_player_position": [
+        3281.91918945312,
+        959.323791503906
+      ],
+      "first_time": 209.800000000059,
+      "role": 1,
+      "started": 1
+    },
+    "23527444974834": {
+      "fired": 1,
+      "first_player_position": [
+        3159.45288085938,
+        932.853576660156
+      ],
+      "first_time": 210.183333333393,
+      "role": 2,
+      "started": 2
+    },
+    "23540094995703": {
+      "fired": 0,
+      "first_player_position": [
+        2937.96118164062,
+        1002.86169433594
+      ],
+      "first_time": 210.533333333393,
+      "role": 0,
+      "started": 0
+    },
+    "2370989722748": {
+      "fired": 0,
+      "first_player_position": [
+        1124.1875,
+        2303.04125976562
+      ],
+      "first_time": 28.583333333333,
+      "role": 0,
+      "started": 0
+    },
+    "2406054104198": {
+      "fired": 0,
+      "first_player_position": [
+        1232.08862304688,
+        2162.3466796875
+      ],
+      "first_time": 29.6999999999996,
+      "role": 0,
+      "started": 0
+    },
+    "24519968296218": {
+      "fired": 0,
+      "first_player_position": [
+        2936.15356445312,
+        1008.16198730469
+      ],
+      "first_time": 210.566666666726,
+      "role": 1,
+      "started": 0
+    },
+    "24536191863988": {
+      "fired": 0,
+      "first_player_position": [
+        2923.27124023438,
+        1107.43273925781
+      ],
+      "first_time": 210.95000000006,
+      "role": 0,
+      "started": 0
+    },
+    "24556223859909": {
+      "fired": 0,
+      "first_player_position": [
+        2929.52856445312,
+        977.643432617188
+      ],
+      "first_time": 211.716666666727,
+      "role": 0,
+      "started": 0
+    },
+    "24563253513564": {
+      "fired": 0,
+      "first_player_position": [
+        2925.42114257812,
+        854.833618164062
+      ],
+      "first_time": 212.083333333394,
+      "role": 1,
+      "started": 1
+    },
+    "24572900412647": {
+      "fired": 0,
+      "first_player_position": [
+        3176.8349609375,
+        856.838439941406
+      ],
+      "first_time": 212.466666666728,
+      "role": 0,
+      "started": 0
+    },
+    "24582614420817": {
+      "fired": 1,
+      "first_player_position": [
+        3301.49877929688,
+        844.177673339844
+      ],
+      "first_time": 212.850000000062,
+      "role": 1,
+      "started": 1
+    },
+    "24591137246443": {
+      "fired": 1,
+      "first_player_position": [
+        3421.34130859375,
+        863.550964355469
+      ],
+      "first_time": 213.233333333395,
+      "role": 3,
+      "started": 1
+    },
+    "24598737325284": {
+      "fired": 1,
+      "first_player_position": [
+        3511.08569335938,
+        919.929870605469
+      ],
+      "first_time": 213.583333333395,
+      "role": 2,
+      "started": 1
+    },
+    "24600230497569": {
+      "fired": 1,
+      "first_player_position": [
+        3511.08569335938,
+        919.929870605469
+      ],
+      "first_time": 213.616666666729,
+      "role": 3,
+      "started": 1
+    },
+    "24613199285438": {
+      "fired": 0,
+      "first_player_position": [
+        3737.44213867188,
+        916.198059082031
+      ],
+      "first_time": 213.950000000062,
+      "role": 0,
+      "started": 0
+    },
+    "24618534440179": {
+      "fired": 0,
+      "first_player_position": [
+        3753.83569335938,
+        912.532653808594
+      ],
+      "first_time": 214.000000000062,
+      "role": 4,
+      "started": 0
+    },
+    "24652290198680": {
+      "fired": 0,
+      "first_player_position": [
+        3915.5849609375,
+        1004.53802490234
+      ],
+      "first_time": 215.133333333397,
+      "role": 0,
+      "started": 0
+    },
+    "24659605064930": {
+      "fired": 0,
+      "first_player_position": [
+        4025.79931640625,
+        1033.87158203125
+      ],
+      "first_time": 215.51666666673,
+      "role": 4,
+      "started": 0
+    },
+    "24667171589396": {
+      "fired": 0,
+      "first_player_position": [
+        4012.59033203125,
+        1179.89721679688
+      ],
+      "first_time": 215.966666666731,
+      "role": 0,
+      "started": 0
+    },
+    "24678127111367": {
+      "fired": 0,
+      "first_player_position": [
+        4084.7998046875,
+        1328.85083007812
+      ],
+      "first_time": 216.600000000065,
+      "role": 0,
+      "started": 0
+    },
+    "24687522352259": {
+      "fired": 0,
+      "first_player_position": [
+        4016.873046875,
+        1379.34497070312
+      ],
+      "first_time": 217.083333333398,
+      "role": 0,
+      "started": 0
+    },
+    "24690944904309": {
+      "fired": 0,
+      "first_player_position": [
+        3995.05908203125,
+        1413.92626953125
+      ],
+      "first_time": 217.250000000065,
+      "role": 1,
+      "started": 1
+    },
+    "24711748652317": {
+      "fired": 1,
+      "first_player_position": [
+        4188.19677734375,
+        1454.54650878906
+      ],
+      "first_time": 218.516666666733,
+      "role": 2,
+      "started": 1
+    },
+    "24716949589172": {
+      "fired": 0,
+      "first_player_position": [
+        4237.39404296875,
+        1549.53308105469
+      ],
+      "first_time": 218.9833333334,
+      "role": 0,
+      "started": 0
+    },
+    "24718778305870": {
+      "fired": 1,
+      "first_player_position": [
+        4291.70751953125,
+        1555.51037597656
+      ],
+      "first_time": 219.150000000067,
+      "role": 3,
+      "started": 1
+    },
+    "24740488023410": {
+      "fired": 0,
+      "first_player_position": [
+        4566.16650390625,
+        1681.02307128906
+      ],
+      "first_time": 220.416666666734,
+      "role": 0,
+      "started": 0
+    },
+    "24748322983229": {
+      "fired": 0,
+      "first_player_position": [
+        4623.12646484375,
+        1608.37365722656
+      ],
+      "first_time": 220.883333333401,
+      "role": 4,
+      "started": 0
+    },
+    "24750990560495": {
+      "fired": 0,
+      "first_player_position": [
+        4659.34130859375,
+        1576.83923339844
+      ],
+      "first_time": 221.050000000068,
+      "role": 0,
+      "started": 0
+    },
+    "24766694034585": {
+      "fired": 0,
+      "first_player_position": [
+        4768.12646484375,
+        1493.71911621094
+      ],
+      "first_time": 222.316666666736,
+      "role": 1,
+      "started": 0
+    },
+    "24777314012481": {
+      "fired": 0,
+      "first_player_position": [
+        4793.55810546875,
+        1543.03405761719
+      ],
+      "first_time": 222.95000000007,
+      "role": 4,
+      "started": 0
+    },
+    "24783001488731": {
+      "fired": 1,
+      "first_player_position": [
+        4774.9541015625,
+        1450.84448242188
+      ],
+      "first_time": 223.433333333403,
+      "role": 3,
+      "started": 1
+    },
+    "24785870392706": {
+      "fired": 0,
+      "first_player_position": [
+        4787.31787109375,
+        1488.30700683594
+      ],
+      "first_time": 223.583333333403,
+      "role": 1,
+      "started": 1
+    },
+    "24794678431115": {
+      "fired": 0,
+      "first_player_position": [
+        4784.0283203125,
+        1370.96447753906
+      ],
+      "first_time": 224.066666666737,
+      "role": 0,
+      "started": 0
+    },
+    "24816891465122": {
+      "fired": 0,
+      "first_player_position": [
+        4784.15185546875,
+        1169.20581054688
+      ],
+      "first_time": 224.700000000071,
+      "role": 1,
+      "started": 1
+    },
+    "24862257056909": {
+      "fired": 0,
+      "first_player_position": [
+        4654.44873046875,
+        1259.62353515625
+      ],
+      "first_time": 226.133333333405,
+      "role": 1,
+      "started": 0
+    },
+    "24873413905773": {
+      "fired": 0,
+      "first_player_position": [
+        4656.48583984375,
+        1416.37512207031
+      ],
+      "first_time": 226.600000000072,
+      "role": 0,
+      "started": 0
+    },
+    "24876400250164": {
+      "fired": 0,
+      "first_player_position": [
+        4655.5068359375,
+        1472.36511230469
+      ],
+      "first_time": 226.766666666739,
+      "role": 0,
+      "started": 0
+    },
+    "24893664005502": {
+      "fired": 0,
+      "first_player_position": [
+        4573.82958984375,
+        1530.86401367188
+      ],
+      "first_time": 227.233333333406,
+      "role": 4,
+      "started": 0
+    },
+    "24916648791483": {
+      "fired": 0,
+      "first_player_position": [
+        4453.34619140625,
+        1548.78857421875
+      ],
+      "first_time": 227.86666666674,
+      "role": 1,
+      "started": 1
+    },
+    "24969664793738": {
+      "fired": 0,
+      "first_player_position": [
+        4191.29931640625,
+        1533.50708007812
+      ],
+      "first_time": 229.133333333408,
+      "role": 1,
+      "started": 1
+    },
+    "24977331981791": {
+      "fired": 0,
+      "first_player_position": [
+        4162.5517578125,
+        1486.66931152344
+      ],
+      "first_time": 229.300000000075,
+      "role": 4,
+      "started": 0
+    },
+    "24994847394929": {
+      "fired": 0,
+      "first_player_position": [
+        4139.703125,
+        1374.46643066406
+      ],
+      "first_time": 229.783333333408,
+      "role": 2,
+      "started": 1
+    },
+    "25424830663818": {
+      "fired": 0,
+      "first_player_position": [
+        4011.51318359375,
+        1055.61315917969
+      ],
+      "first_time": 231.216666666743,
+      "role": 0,
+      "started": 0
+    },
+    "25435735854309": {
+      "fired": 1,
+      "first_player_position": [
+        4153.15869140625,
+        882.178283691406
+      ],
+      "first_time": 231.850000000077,
+      "role": 3,
+      "started": 1
+    },
+    "25443386264878": {
+      "fired": 0,
+      "first_player_position": [
+        4311.74951171875,
+        851.489868164062
+      ],
+      "first_time": 232.48333333341,
+      "role": 0,
+      "started": 0
+    },
+    "25451221224724": {
+      "fired": 1,
+      "first_player_position": [
+        4465.8896484375,
+        774.632446289062
+      ],
+      "first_time": 233.116666666744,
+      "role": 3,
+      "started": 1
+    },
+    "25464341007792": {
+      "fired": 0,
+      "first_player_position": [
+        4595.02099609375,
+        615.837951660156
+      ],
+      "first_time": 233.750000000078,
+      "role": 1,
+      "started": 1
+    },
+    "25484205231427": {
+      "fired": 0,
+      "first_player_position": [
+        4713.8125,
+        918.148315429688
+      ],
+      "first_time": 235.016666666746,
+      "role": 0,
+      "started": 0
+    },
+    "25491352325227": {
+      "fired": 1,
+      "first_player_position": [
+        4791.65771484375,
+        1014.1591796875
+      ],
+      "first_time": 235.483333333413,
+      "role": 2,
+      "started": 1
+    },
+    "25493348814085": {
+      "fired": 0,
+      "first_player_position": [
+        4783.47412109375,
+        1069.54125976562
+      ],
+      "first_time": 235.65000000008,
+      "role": 0,
+      "started": 0
+    },
+    "25510310579666": {
+      "fired": 0,
+      "first_player_position": [
+        5029.39599609375,
+        1273.85021972656
+      ],
+      "first_time": 236.916666666747,
+      "role": 2,
+      "started": 1
+    },
+    "25519470939231": {
+      "fired": 0,
+      "first_player_position": [
+        5114.1162109375,
+        1361.27905273438
+      ],
+      "first_time": 237.566666666748,
+      "role": 2,
+      "started": 1
+    },
+    "25528262200580": {
+      "fired": 0,
+      "first_player_position": [
+        5072.734375,
+        1519.82763671875
+      ],
+      "first_time": 238.200000000082,
+      "role": 0,
+      "started": 0
+    },
+    "25548747181465": {
+      "fired": 0,
+      "first_player_position": [
+        4875.08447265625,
+        1531.47778320312
+      ],
+      "first_time": 240.100000000083,
+      "role": 0,
+      "started": 0
+    },
+    "25556129156232": {
+      "fired": 0,
+      "first_player_position": [
+        4763.77587890625,
+        1471.41918945312
+      ],
+      "first_time": 240.733333333417,
+      "role": 0,
+      "started": 0
+    },
+    "25562722602428": {
+      "fired": 0,
+      "first_player_position": [
+        4781.73193359375,
+        1488.95861816406
+      ],
+      "first_time": 241.216666666751,
+      "role": 2,
+      "started": 1
+    },
+    "25566765911364": {
+      "fired": 0,
+      "first_player_position": [
+        4642.76806640625,
+        1521.42602539062
+      ],
+      "first_time": 241.700000000084,
+      "role": 4,
+      "started": 0
+    },
+    "25907393727877": {
+      "fired": 0,
+      "first_player_position": [
+        4511.81787109375,
+        1623.34265136719
+      ],
+      "first_time": 244.18333333342,
+      "role": 0,
+      "started": 0
+    },
+    "2635113434281": {
+      "fired": 0,
+      "first_player_position": [
+        1539.46032714844,
+        2128.00122070312
+      ],
+      "first_time": 30.7999999999995,
+      "role": 0,
+      "started": 0
+    },
+    "2659054521477": {
+      "fired": 0,
+      "first_player_position": [
+        1481.90649414062,
+        2126.6552734375
+      ],
+      "first_time": 31.1166666666662,
+      "role": 0,
+      "started": 0
+    },
+    "2665966734493": {
+      "fired": 0,
+      "first_player_position": [
+        1353.1376953125,
+        2127.96655273438
+      ],
+      "first_time": 33.0333333333327,
+      "role": 0,
+      "started": 0
+    },
+    "2687240244304": {
+      "fired": 0,
+      "first_player_position": [
+        1423.91064453125,
+        1904.85961914062
+      ],
+      "first_time": 34.1333333333327,
+      "role": 0,
+      "started": 0
+    },
+    "2716650703979": {
+      "fired": 0,
+      "first_player_position": [
+        1385.24243164062,
+        1870.01745605469
+      ],
+      "first_time": 34.4499999999993,
+      "role": 0,
+      "started": 0
+    },
+    "2768911731816": {
+      "fired": 0,
+      "first_player_position": [
+        1269.11987304688,
+        2039.42504882812
+      ],
+      "first_time": 35.5666666666659,
+      "role": 0,
+      "started": 0
+    },
+    "2898515725421": {
+      "fired": 0,
+      "first_player_position": [
+        1549.05297851562,
+        2031.9912109375
+      ],
+      "first_time": 37.4666666666658,
+      "role": 0,
+      "started": 0
+    },
+    "2976160681116": {
+      "fired": 0,
+      "first_player_position": [
+        1679.99609375,
+        2355.78540039062
+      ],
+      "first_time": 38.5833333333324,
+      "role": 0,
+      "started": 0
+    },
+    "3005839576166": {
+      "fired": 0,
+      "first_player_position": [
+        1601.47766113281,
+        2344.34155273438
+      ],
+      "first_time": 39.699999999999,
+      "role": 0,
+      "started": 0
+    },
+    "3033672977506": {
+      "fired": 0,
+      "first_player_position": [
+        1520.73059082031,
+        2087.65551757812
+      ],
+      "first_time": 40.799999999999,
+      "role": 0,
+      "started": 0
+    },
+    "3035585580124": {
+      "fired": 0,
+      "first_player_position": [
+        1465.80639648438,
+        2056.28076171875
+      ],
+      "first_time": 41.1166666666656,
+      "role": 0,
+      "started": 0
+    },
+    "3164635925596": {
+      "fired": 0,
+      "first_player_position": [
+        1136.0361328125,
+        1824.49633789062
+      ],
+      "first_time": 43.0333333333322,
+      "role": 0,
+      "started": 0
+    },
+    "3185708108901": {
+      "fired": 0,
+      "first_player_position": [
+        1199.82531738281,
+        2205.97265625
+      ],
+      "first_time": 44.1333333333321,
+      "role": 0,
+      "started": 0
+    },
+    "3267295710307": {
+      "fired": 0,
+      "first_player_position": [
+        1700.669921875,
+        2160.65478515625
+      ],
+      "first_time": 46.1999999999987,
+      "role": 0,
+      "started": 0
+    },
+    "3273033518195": {
+      "fired": 0,
+      "first_player_position": [
+        1437.49328613281,
+        2159.99658203125
+      ],
+      "first_time": 46.9833333333319,
+      "role": 0,
+      "started": 0
+    },
+    "3277127158900": {
+      "fired": 0,
+      "first_player_position": [
+        1213.61303710938,
+        2127.85864257812
+      ],
+      "first_time": 47.7666666666652,
+      "role": 0,
+      "started": 0
+    },
+    "3498938731699": {
+      "fired": 0,
+      "first_player_position": [
+        1286.41357421875,
+        2128.0009765625
+      ],
+      "first_time": 48.5499999999985,
+      "role": 0,
+      "started": 0
+    },
+    "3520245795996": {
+      "fired": 0,
+      "first_player_position": [
+        1419.48034667969,
+        2286.64965820312
+      ],
+      "first_time": 49.3333333333318,
+      "role": 2,
+      "started": 1
+    },
+    "3578546621570": {
+      "fired": 0,
+      "first_player_position": [
+        1618.66821289062,
+        2361.72583007812
+      ],
+      "first_time": 50.8833333333317,
+      "role": 0,
+      "started": 0
+    },
+    "3578781502620": {
+      "fired": 1,
+      "first_player_position": [
+        1613.92370605469,
+        2358.7509765625
+      ],
+      "first_time": 50.8999999999984,
+      "role": 1,
+      "started": 1
+    },
+    "3582170500256": {
+      "fired": 0,
+      "first_player_position": [
+        1491.052734375,
+        2192.63916015625
+      ],
+      "first_time": 51.666666666665,
+      "role": 1,
+      "started": 2
+    },
+    "3589435034805": {
+      "fired": 1,
+      "first_player_position": [
+        1328.326171875,
+        1880.01806640625
+      ],
+      "first_time": 52.466666666665,
+      "role": 1,
+      "started": 1
+    },
+    "3608326179966": {
+      "fired": 0,
+      "first_player_position": [
+        1316.97863769531,
+        1751.32006835938
+      ],
+      "first_time": 54.0499999999982,
+      "role": 0,
+      "started": 0
+    },
+    "3829147897012": {
+      "fired": 0,
+      "first_player_position": [
+        1221.88781738281,
+        1967.53100585938
+      ],
+      "first_time": 55.6166666666648,
+      "role": 0,
+      "started": 0
+    },
+    "3833157651637": {
+      "fired": 0,
+      "first_player_position": [
+        1449.46130371094,
+        2000.5009765625
+      ],
+      "first_time": 56.3999999999981,
+      "role": 0,
+      "started": 0
+    },
+    "3843962178657": {
+      "fired": 0,
+      "first_player_position": [
+        1679.89526367188,
+        2062.07275390625
+      ],
+      "first_time": 57.1833333333314,
+      "role": 0,
+      "started": 0
+    },
+    "3850857614434": {
+      "fired": 0,
+      "first_player_position": [
+        1577.76989746094,
+        2187.37060546875
+      ],
+      "first_time": 57.949999999998,
+      "role": 0,
+      "started": 0
+    },
+    "3851092495469": {
+      "fired": 0,
+      "first_player_position": [
+        1572.23669433594,
+        2188.23291015625
+      ],
+      "first_time": 57.9666666666647,
+      "role": 1,
+      "started": 1
+    },
+    "3855219690691": {
+      "fired": 0,
+      "first_player_position": [
+        1315.30090332031,
+        2191.78564453125
+      ],
+      "first_time": 58.7333333333313,
+      "role": 0,
+      "started": 0
+    },
+    "3868691795118": {
+      "fired": 0,
+      "first_player_position": [
+        1192.89001464844,
+        2100.64404296875
+      ],
+      "first_time": 60.2333333333312,
+      "role": 0,
+      "started": 0
+    },
+    "3869681650826": {
+      "fired": 1,
+      "first_player_position": [
+        1217.68676757812,
+        2102.39428710938
+      ],
+      "first_time": 60.3166666666645,
+      "role": 3,
+      "started": 1
+    },
+    "3884126833762": {
+      "fired": 0,
+      "first_player_position": [
+        1197.23425292969,
+        1833.49890136719
+      ],
+      "first_time": 60.7999999999978,
+      "role": 0,
+      "started": 0
+    },
+    "3923872058578": {
+      "fired": 2,
+      "first_player_position": [
+        1481.91748046875,
+        1862.64624023438
+      ],
+      "first_time": 62.1833333333311,
+      "role": 1,
+      "started": 2
+    },
+    "3929693752493": {
+      "fired": 0,
+      "first_player_position": [
+        1606.07873535156,
+        1949.76123046875
+      ],
+      "first_time": 62.7666666666644,
+      "role": 0,
+      "started": 0
+    },
+    "3936824069336": {
+      "fired": 0,
+      "first_player_position": [
+        1730.04321289062,
+        2131.79150390625
+      ],
+      "first_time": 63.3499999999977,
+      "role": 1,
+      "started": 1
+    },
+    "4243595463777": {
+      "fired": 0,
+      "first_player_position": [
+        1647.41491699219,
+        2416.13452148438
+      ],
+      "first_time": 64.4999999999976,
+      "role": 1,
+      "started": 2
+    },
+    "4245357071498": {
+      "fired": 0,
+      "first_player_position": [
+        1581.25329589844,
+        2364.86279296875
+      ],
+      "first_time": 64.8666666666643,
+      "role": 0,
+      "started": 0
+    },
+    "4246783134918": {
+      "fired": 1,
+      "first_player_position": [
+        1540.25268554688,
+        2308.7978515625
+      ],
+      "first_time": 65.0833333333309,
+      "role": 3,
+      "started": 1
+    },
+    "4250591562921": {
+      "fired": 2,
+      "first_player_position": [
+        1426.08325195312,
+        2204.20581054688
+      ],
+      "first_time": 65.4499999999976,
+      "role": 2,
+      "started": 2
+    },
+    "4280824106073": {
+      "fired": 4,
+      "first_player_position": [
+        1362.42211914062,
+        2017.140625
+      ],
+      "first_time": 66.8166666666642,
+      "role": 3,
+      "started": 4
+    },
+    "4305939598555": {
+      "fired": 3,
+      "first_player_position": [
+        1349.98681640625,
+        2294.91748046875
+      ],
+      "first_time": 67.3999999999975,
+      "role": 3,
+      "started": 3
+    },
+    "4331155754092": {
+      "fired": 0,
+      "first_player_position": [
+        1447.88952636719,
+        2249.71606445312
+      ],
+      "first_time": 67.9833333333308,
+      "role": 0,
+      "started": 0
+    },
+    "4426450341104": {
+      "fired": 1,
+      "first_player_position": [
+        1169.40612792969,
+        2181.26733398438
+      ],
+      "first_time": 69.1333333333307,
+      "role": 1,
+      "started": 3
+    },
+    "4491478830178": {
+      "fired": 0,
+      "first_player_position": [
+        1217.15222167969,
+        2093.39038085938
+      ],
+      "first_time": 69.4999999999973,
+      "role": 0,
+      "started": 0
+    },
+    "4497787063522": {
+      "fired": 0,
+      "first_player_position": [
+        1268.22448730469,
+        2122.53735351562
+      ],
+      "first_time": 69.716666666664,
+      "role": 0,
+      "started": 0
+    },
+    "4911781645497": {
+      "fired": 1,
+      "first_player_position": [
+        1264.50866699219,
+        1807.8173828125
+      ],
+      "first_time": 70.8833333333306,
+      "role": 1,
+      "started": 1
+    },
+    "4935387188331": {
+      "fired": 0,
+      "first_player_position": [
+        1102.17077636719,
+        1782.15783691406
+      ],
+      "first_time": 71.4666666666639,
+      "role": 1,
+      "started": 2
+    },
+    "4977246342325": {
+      "fired": 0,
+      "first_player_position": [
+        1259.34802246094,
+        1631.55285644531
+      ],
+      "first_time": 71.8166666666639,
+      "role": 0,
+      "started": 0
+    },
+    "5007982201957": {
+      "fired": 0,
+      "first_player_position": [
+        1283.07592773438,
+        1617.13684082031
+      ],
+      "first_time": 72.0333333333305,
+      "role": 0,
+      "started": 0
+    },
+    "5039238155476": {
+      "fired": 0,
+      "first_player_position": [
+        1227.08520507812,
+        1616.18005371094
+      ],
+      "first_time": 72.3999999999972,
+      "role": 0,
+      "started": 0
+    },
+    "5145370823789": {
+      "fired": 2,
+      "first_player_position": [
+        798.014404296875,
+        1713.904296875
+      ],
+      "first_time": 73.7833333333304,
+      "role": 1,
+      "started": 2
+    },
+    "5182901456128": {
+      "fired": 0,
+      "first_player_position": [
+        842.788696289062,
+        1712.45166015625
+      ],
+      "first_time": 74.3666666666637,
+      "role": 0,
+      "started": 0
+    },
+    "5249624444077": {
+      "fired": 0,
+      "first_player_position": [
+        1109.30395507812,
+        1743.33679199219
+      ],
+      "first_time": 74.9333333333304,
+      "role": 0,
+      "started": 0
+    },
+    "5428016581874": {
+      "fired": 0,
+      "first_player_position": [
+        1206.46704101562,
+        1834.34069824219
+      ],
+      "first_time": 75.5166666666637,
+      "role": 0,
+      "started": 0
+    },
+    "5626390383776": {
+      "fired": 2,
+      "first_player_position": [
+        1231.07995605469,
+        1771.89282226562
+      ],
+      "first_time": 75.8833333333303,
+      "role": 1,
+      "started": 2
+    },
+    "5697559333995": {
+      "fired": 1,
+      "first_player_position": [
+        1206.34240722656,
+        1623.15356445312
+      ],
+      "first_time": 76.099999999997,
+      "role": 1,
+      "started": 1
+    },
+    "5921317063953": {
+      "fired": 0,
+      "first_player_position": [
+        1198.62219238281,
+        1310.69946289062
+      ],
+      "first_time": 77.2499999999969,
+      "role": 0,
+      "started": 0
+    },
+    "5982939778233": {
+      "fired": 2,
+      "first_player_position": [
+        1007.5302734375,
+        1184.61938476562
+      ],
+      "first_time": 77.8333333333302,
+      "role": 1,
+      "started": 2
+    },
+    "6029328780539": {
+      "fired": 0,
+      "first_player_position": [
+        977.806396484375,
+        1168.9521484375
+      ],
+      "first_time": 78.4166666666635,
+      "role": 0,
+      "started": 0
+    },
+    "6101940571432": {
+      "fired": 1,
+      "first_player_position": [
+        837.395385742188,
+        1066.41040039062
+      ],
+      "first_time": 78.9999999999968,
+      "role": 1,
+      "started": 2
+    },
+    "6348028775735": {
+      "fired": 0,
+      "first_player_position": [
+        916.065856933594,
+        1190.05639648438
+      ],
+      "first_time": 79.5833333333301,
+      "role": 0,
+      "started": 0
+    },
+    "6407789219133": {
+      "fired": 1,
+      "first_player_position": [
+        955.14111328125,
+        1234.88610839844
+      ],
+      "first_time": 80.1499999999967,
+      "role": 1,
+      "started": 1
+    },
+    "6525431057620": {
+      "fired": 0,
+      "first_player_position": [
+        974.027770996094,
+        1425.89001464844
+      ],
+      "first_time": 80.73333333333,
+      "role": 0,
+      "started": 0
+    },
+    "6678607039629": {
+      "fired": 0,
+      "first_player_position": [
+        983.839111328125,
+        1639.26452636719
+      ],
+      "first_time": 81.3166666666633,
+      "role": 0,
+      "started": 0
+    },
+    "6899630083388": {
+      "fired": 1,
+      "first_player_position": [
+        944.509033203125,
+        1842.11730957031
+      ],
+      "first_time": 81.8999999999966,
+      "role": 1,
+      "started": 1
+    },
+    "7008329665790": {
+      "fired": 0,
+      "first_player_position": [
+        943.614379882812,
+        1728.18005371094
+      ],
+      "first_time": 82.4666666666633,
+      "role": 0,
+      "started": 0
+    },
+    "7225326177375": {
+      "fired": 2,
+      "first_player_position": [
+        944.943298339844,
+        1562.22631835938
+      ],
+      "first_time": 83.0499999999966,
+      "role": 1,
+      "started": 2
+    },
+    "7282335157456": {
+      "fired": 0,
+      "first_player_position": [
+        1018.03833007812,
+        1357.17346191406
+      ],
+      "first_time": 83.6333333333299,
+      "role": 0,
+      "started": 0
+    },
+    "7398282497231": {
+      "fired": 1,
+      "first_player_position": [
+        1037.9326171875,
+        1468.78527832031
+      ],
+      "first_time": 84.2166666666632,
+      "role": 1,
+      "started": 1
+    },
+    "7482034359594": {
+      "fired": 0,
+      "first_player_position": [
+        1160.966796875,
+        1534.78796386719
+      ],
+      "first_time": 84.7999999999965,
+      "role": 0,
+      "started": 0
+    },
+    "7517199404214": {
+      "fired": 0,
+      "first_player_position": [
+        1112.56091308594,
+        1561.46374511719
+      ],
+      "first_time": 85.3666666666631,
+      "role": 0,
+      "started": 0
+    },
+    "7542298119377": {
+      "fired": 0,
+      "first_player_position": [
+        1202.36499023438,
+        1676.93225097656
+      ],
+      "first_time": 86.1166666666631,
+      "role": 0,
+      "started": 0
+    },
+    "7550955162878": {
+      "fired": 0,
+      "first_player_position": [
+        1288.86669921875,
+        1587.21411132812
+      ],
+      "first_time": 86.516666666663,
+      "role": 0,
+      "started": 0
+    },
+    "8352671206628": {
+      "fired": 1,
+      "first_player_position": [
+        1299.70520019531,
+        1340.52709960938
+      ],
+      "first_time": 87.7333333333296,
+      "role": 3,
+      "started": 1
+    },
+    "8449140198694": {
+      "fired": 1,
+      "first_player_position": [
+        1225.22375488281,
+        1620.44555664062
+      ],
+      "first_time": 88.9499999999962,
+      "role": 2,
+      "started": 1
+    },
+    "84892716119": {
+      "fired": 0,
+      "first_player_position": [
+        984.555297851562,
+        2469.7978515625
+      ],
+      "first_time": 1.91666666666666,
+      "role": 0,
+      "started": 0
+    },
+    "87845506131": {
+      "fired": 0,
+      "first_player_position": [
+        1141.49438476562,
+        2320.79663085938
+      ],
+      "first_time": 3.03333333333333,
+      "role": 0,
+      "started": 0
+    },
+    "8864929942769": {
+      "fired": 1,
+      "first_player_position": [
+        918.34521484375,
+        1271.81494140625
+      ],
+      "first_time": 92.1666666666627,
+      "role": 3,
+      "started": 1
+    },
+    "8957271739696": {
+      "fired": 0,
+      "first_player_position": [
+        1045.27697753906,
+        1216.64721679688
+      ],
+      "first_time": 93.3833333333293,
+      "role": 0,
+      "started": 0
+    },
+    "90831850603": {
+      "fired": 0,
+      "first_player_position": [
+        1301.05383300781,
+        2176.25805664062
+      ],
+      "first_time": 4.13333333333332,
+      "role": 0,
+      "started": 0
+    },
+    "9186431732925": {
+      "fired": 0,
+      "first_player_position": [
+        1478.29809570312,
+        1132.2294921875
+      ],
+      "first_time": 94.5999999999959,
+      "role": 0,
+      "started": 0
+    },
+    "92291468374": {
+      "fired": 0,
+      "first_player_position": [
+        1349.91174316406,
+        2121.900390625
+      ],
+      "first_time": 4.44999999999999,
+      "role": 0,
+      "started": 0
+    },
+    "9783952280683": {
+      "fired": 0,
+      "first_player_position": [
+        1595.32543945312,
+        1136.28039550781
+      ],
+      "first_time": 94.9999999999959,
+      "role": 0,
+      "started": 0
+    },
+    "9791250369830": {
+      "fired": 1,
+      "first_player_position": [
+        2090.802734375,
+        1302.16235351562
+      ],
+      "first_time": 97.0166666666624,
+      "role": 3,
+      "started": 1
+    },
+    "9797021731937": {
+      "fired": 0,
+      "first_player_position": [
+        2326.8095703125,
+        1461.23181152344
+      ],
+      "first_time": 98.233333333329,
+      "role": 0,
+      "started": 0
+    },
+    "9802356886644": {
+      "fired": 0,
+      "first_player_position": [
+        2350.5107421875,
+        1525.82556152344
+      ],
+      "first_time": 99.4499999999956,
+      "role": 0,
+      "started": 0
+    },
+    "9804688919760": {
+      "fired": 0,
+      "first_player_position": [
+        2350.5107421875,
+        1525.82556152344
+      ],
+      "first_time": 99.8499999999956,
+      "role": 2,
+      "started": 0
+    },
+    "9814721694801": {
+      "fired": 0,
+      "first_player_position": [
+        2350.5107421875,
+        1525.82556152344
+      ],
+      "first_time": 101.066666666662,
+      "role": 0,
+      "started": 0
+    },
+    "9831566019872": {
+      "fired": 0,
+      "first_player_position": [
+        2350.5107421875,
+        1525.82556152344
+      ],
+      "first_time": 103.083333333329,
+      "role": 0,
+      "started": 0
+    },
+    "9841112255763": {
+      "fired": 0,
+      "first_player_position": [
+        2351.783203125,
+        1548.18933105469
+      ],
+      "first_time": 104.299999999995,
+      "role": 0,
+      "started": 0
+    },
+    "9920585927812": {
+      "fired": 0,
+      "first_player_position": [
+        2287.70849609375,
+        1849.85705566406
+      ],
+      "first_time": 105.499999999995,
+      "role": 0,
+      "started": 0
+    },
+    "9923773599042": {
+      "fired": 0,
+      "first_player_position": [
+        2288.0029296875,
+        1709.8671875
+      ],
+      "first_time": 105.916666666662,
+      "role": 0,
+      "started": 0
+    }
+  },
+  "place_trial": true,
+  "preset": "grown",
+  "sample": "wetland_place_mix_v46",
+  "samples": [
+    {
+      "active_seconds": 180.000000000035,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 2,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 1,
+        "U_TEMPO": 3
+      },
+      "choice_windows": 21,
+      "combo_limit": 4,
+      "currency": 303,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 180.000000000035,
+        "active_wall_seconds": 189.973742,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 2,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 1,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 32.928227,
+        "choice_windows": 21,
+        "damage_events": 32,
+        "damage_taken_actual": 335.0,
+        "earned_currency": 303,
+        "health": 100.0,
+        "kills": 217,
+        "level": 22,
+        "level_heal_actual": 325.0,
+        "level_heal_events": 21,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 21,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 21,
+        "region": "O_DEEP_WETLAND",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 222.901969,
+        "weapon": "W_FLOW",
+        "xp_remainder": 18
+      },
+      "health": 100.0,
+      "kills": 217,
+      "ledger": {
+        "combat": 112.433333333355,
+        "destination_wait_without_target": 0.0,
+        "stationary_without_visible_target": 20.5000000000052,
+        "travel_without_visible_target": 46.9500000000089
+      },
+      "moving_slash_enabled": true,
+      "points_earned": 21,
+      "points_spent": 21,
+      "position": {
+        "x": 3221.58447265625,
+        "y": 838.39990234375
+      }
+    },
+    {
+      "active_seconds": 210.000000000059,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_SWEEP": 1,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "choice_windows": 24,
+      "combo_limit": 4,
+      "currency": 396,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 210.000000000059,
+        "active_wall_seconds": 257.032279,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_SWEEP": 1,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 37.828937,
+        "choice_windows": 24,
+        "damage_events": 35,
+        "damage_taken_actual": 369.0,
+        "earned_currency": 396,
+        "health": 98.0,
+        "kills": 274,
+        "level": 25,
+        "level_heal_actual": 357.0,
+        "level_heal_events": 24,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 24,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 24,
+        "region": "O_DEEP_WETLAND",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 294.861216,
+        "weapon": "W_FLOW",
+        "xp_remainder": 48
+      },
+      "health": 98.0,
+      "kills": 274,
+      "ledger": {
+        "combat": 131.78333333337,
+        "destination_wait_without_target": 0.0,
+        "stationary_without_visible_target": 22.3166666666733,
+        "travel_without_visible_target": 55.7833333333493
+      },
+      "moving_slash_enabled": true,
+      "points_earned": 24,
+      "points_spent": 24,
+      "position": {
+        "x": 3217.50708007812,
+        "y": 949.794738769531
+      }
+    },
+    {
+      "active_seconds": 240.000000000083,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_CHAIN": 1,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_REPLY": 1,
+        "S_WISP_SWEEP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "choice_windows": 27,
+      "combo_limit": 4,
+      "currency": 485,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 240.000000000083,
+        "active_wall_seconds": 340.883914,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+          "arrive": {
+            "active_seconds": 220.533333333401,
+            "wall_seconds": 321.058528
+          }
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_CHAIN": 1,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_REPLY": 1,
+          "S_WISP_SWEEP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 42.663325,
+        "choice_windows": 27,
+        "damage_events": 37,
+        "damage_taken_actual": 393.0,
+        "earned_currency": 485,
+        "health": 98.0,
+        "kills": 330,
+        "level": 28,
+        "level_heal_actual": 381.0,
+        "level_heal_events": 27,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 27,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 27,
+        "region": "O_DEEP_WETLAND",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 383.547239,
+        "weapon": "W_FLOW",
+        "xp_remainder": 52
+      },
+      "health": 98.0,
+      "kills": 330,
+      "ledger": {
+        "combat": 150.433333333385,
+        "destination_wait_without_target": 5.68333333333786,
+        "stationary_without_visible_target": 22.4166666666734,
+        "travel_without_visible_target": 61.3500000000204
+      },
+      "moving_slash_enabled": true,
+      "points_earned": 27,
+      "points_spent": 27,
+      "position": {
+        "x": 4873.28564453125,
+        "y": 1565.029296875
+      }
+    }
+  ],
+  "seed": 250,
+  "slash_chain_cap_trial": false,
+  "source_boss_time": 240.0,
+  "stop_reason": "SUCCESS",
+  "time_scale": 1.0
+}

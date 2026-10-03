@@ -19,15 +19,20 @@ func _run() -> void:
 	await process_frame
 	scene.set_physics_process(false)
 	scene.simulation.process_mode = Node.PROCESS_MODE_DISABLED
-	_check(scene.growth.xp_bar.visible and scene.growth.xp_bar.position.y > scene.growth.hud.position.y and scene.build_summary_label.position.x > scene.growth.xp_bar.position.x + scene.growth.xp_bar.size.x, "XP number and progress bar are visible without covering card summary")
+	var flow_progress: Label = scene.get_node("RunFlowHudPresenter").get("progress")
+	_check(flow_progress.visible and flow_progress.text.contains("XP 0 / 8") and scene.growth.xp_bar.visible and scene.growth.xp_bar.position.y > flow_progress.position.y + flow_progress.size.y and scene.growth.xp_bar.position.y + scene.growth.xp_bar.size.y <= 720.0 and not scene.build_summary_label.visible, "XP number and thin progress bar remain visible below combat content")
 	scene.growth.gain_xp(2)
-	_check(scene.growth.xp_bar.value == 2.0 and scene.growth.hud.text.contains("경험치 2 / 8"), "visible XP changes with a real award")
+	scene.get_node("RunFlowHudPresenter").refresh()
+	_check(scene.growth.xp_bar.value == 2.0 and scene.growth.hud.text.contains("경험치 2 / 8") and flow_progress.text.contains("XP 2 / 8"), "visible XP changes with a real award")
 	scene.player.attack_step = 4
 	scene._process(0.016)
 	_check(scene.actors[scene.player].get_node("Body").scale == Vector3.ONE, "fourth attack no longer enlarges the player")
 	_check(is_equal_approx(scene._spawn_rate(), 0.90) and scene.MAX_ENEMIES == 72, "early ambient rate and headroom grow by 50 percent")
 	scene.run_time = 200.0
-	_check(is_equal_approx(scene._spawn_rate(), 2.10), "late ambient rate also grows by 50 percent")
+	var late_pressure: float = scene._spawn_rate()
+	scene.run_time = 220.0
+	var late_recovery: float = scene._spawn_rate()
+	_check(is_equal_approx(late_pressure, 2.625) and is_equal_approx(late_recovery, 1.575) and is_equal_approx((late_pressure + late_recovery) * 0.5, 2.10), "late ambient rate keeps the 50 percent density increase across its balanced pressure and recovery")
 	_check(scene._route_role_weights(Vector2(900, 1000)) != scene._route_role_weights(Vector2(2900, 1100)) and scene._route_role_weights(Vector2(2900, 1100)) != scene._route_role_weights(Vector2(3000, 1950)), "forest, causeway and riverbank have different enemy compositions")
 	var foreground := 0
 	for wall in scene.terrain.wall_areas:

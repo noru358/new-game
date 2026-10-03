@@ -20,6 +20,8 @@ func _run() -> void:
 	# Read-only guard: never seed, overwrite or remove a real player's saves.
 	var original_saves := _save_bytes()
 	var scene = load("res://game/canal_city_trial.tscn").instantiate()
+	# Legacy flags cannot enable alpha architecture.
+	scene.overhead_occlusion_enabled = false
 	root.add_child(scene)
 	current_scene = scene
 	await _frames(4)
@@ -42,7 +44,7 @@ func _run() -> void:
 	for point in [Vector2(2500, 1570), Vector2(3020, 1060), Vector2(5500, 1510), scene.CityTerrain.WAREHOUSE]:
 		_check(scene.navigation.is_open(point, 30) and scene.navigation.find_path(scene.CityTerrain.MARKET, point).size() > 0, "market/cargo connections remain open: %s" % point)
 	# Compatibility ignores GeometryInstance transparency. Check the actual
-	# alpha-material path and its restoration, not that unsupported property.
+	# material opacity at player and enemy overlap checkpoints.
 	for point in [scene.CityTerrain.ENTRY, scene.CityTerrain.MARKET, scene.CityTerrain.WATERFRONT]:
 		scene.teleport(point)
 		await _frames(3)
@@ -54,7 +56,7 @@ func _run() -> void:
 				if mesh is MeshInstance3D and mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA:
 					faded_count += 1
 					_check(mesh.material_override.albedo_color.a <= 0.2, "foreground architecture gives clear actor sight")
-		_check(faded_count > 0, "foreground facade/gate fades at the real checkpoint")
+		_check(faded_count == 0, "every facade and gate remains opaque at the real checkpoint")
 	scene.overview = true
 	await _frames(3)
 	await process_frame
@@ -62,7 +64,7 @@ func _run() -> void:
 	for item in scene.building_visuals + scene.landmark_visuals:
 		for mesh in item.root.get_children():
 			if mesh is MeshInstance3D:
-				_check(mesh.material_override == mesh.get_meta("solid_material"), "overview restores solid architecture without changing collision")
+				_check(mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "overview restores solid architecture without changing collision")
 	scene.overview = false
 	# The east market enemy sits behind a new shop from the camera while the
 	# player does not. Its visible attack area needs the same protection.
@@ -73,7 +75,7 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	var east_shop: Dictionary = scene.building_visuals.filter(func(item): return item.area.position == Vector2(2360, 1720))[0]
-	_check(east_shop.root.get_child(0).material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "on-screen enemy occluder fades even when it does not cover the player")
+	_check(east_shop.root.get_child(0).material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "enemy overlap leaves the complete shop opaque")
 	scene.set_combat_enabled(false)
 	await _frames(3)
 	await process_frame

@@ -35,7 +35,7 @@ func _run() -> void:
 	var scene := _new_scene()
 	await _frames(3)
 	_check(scene.actors.size() == 1 and scene.run_time > 0.0 and not scene.show_practice_controls, "main scene begins a live timed run without fixed practice enemies")
-	_check(scene.run_hud.text.contains("문지기까지 05:00"), "the live HUD shows the five-minute boss countdown")
+	_check(scene.run_hud.text.contains("문지기까지 04:00"), "the live HUD shows the four-minute boss countdown")
 	_check(not scene.player.moving_slash_enabled and scene.player.combo_limit() == 2, "fresh live run starts with two attacks before early permanent move milestones")
 	scene.growth.gain_xp(scene.growth.next_xp())
 	_check(scene.growth.choosing and not scene.growth.current_choices.has("U_CHAIN"), "first level-up offers a card without re-selling the permanent combo")
@@ -74,15 +74,17 @@ func _run() -> void:
 	scene._set_paused(false)
 	scene.run_time = 45.0
 	scene._update_run_hud()
-	_check(scene.run_hud.text.contains("문지기까지 04:15"), "the countdown follows elapsed play time")
+	_check(scene.run_hud.text.contains("문지기까지 03:15"), "the countdown follows elapsed play time")
 	_check(is_equal_approx(scene._spawn_rate(), 1.275), "second time band raises the spawn rate")
 	scene.run_time = 120.0
 	_check(is_equal_approx(scene._spawn_rate(), 1.65), "mixed-role time band begins")
 	scene.run_time = 200.0
-	_check(is_equal_approx(scene._spawn_rate(), 2.10), "late wave is denser")
-	scene.run_time = 299.99
+	_check(is_equal_approx(scene._spawn_rate(), 2.625), "final support wave is denser before its matched recovery")
+	scene.run_time = 220.0
+	_check(is_equal_approx(scene._spawn_rate(), 1.575), "final support wave eases before the boss deadline")
+	scene.run_time = scene.BOSS_TIME - 0.01
 	await _frames(4)
-	_check(scene.boss_announced, "the boss is announced when the five-minute clock is reached")
+	_check(scene.boss_announced, "the boss is announced when the four-minute clock is reached")
 	await _frames(85)
 	_check(scene.boss_spawned and is_instance_valid(scene.boss) and scene.boss.max_health == GateBoss.BOSS_HEALTH, "one boss appears after the warning")
 	_check(scene.actors[scene.boss].has_node("HealthBar"), "the boss has the same world-space health readout")
@@ -106,9 +108,7 @@ func _run() -> void:
 	scene.boss._beast_velocity(0.01)
 	_check(scene.boss.warning_time > 0.0 and scene.boss.shock_warning == 0.0, "charge warning is not replaced by the next shock")
 	for i in 60: scene.boss._beast_velocity(1.0 / 60.0)
-	_check(scene.boss.charge_time == 0.0 and scene.boss.recovery_time > 0.0, "charge completes before the alternate pattern")
-	scene.boss._beast_velocity(scene.boss.recovery_time + 0.01)
-	scene.boss._beast_velocity(0.01)
+	_check(scene.boss.charge_time == 0.0 and scene.boss.shock_warning > 0.0 and scene.boss.recovery_time == 0.0, "early charge links into a separately warned shock before recovery")
 	scene._draw_boss_warning()
 	_check(scene.boss.shock_warning > 0.0 and scene.boss_warning_mesh.get_surface_count() > 0, "boss alternate shock has an airborne warning")
 	scene._update_run_hud()
@@ -116,6 +116,7 @@ func _run() -> void:
 	var before: float = scene.player.health
 	scene.boss._beast_velocity(0.8)
 	_check(scene.player.health == before - GateBoss.SHOCK_DAMAGE, "boss shock deals its displayed radius damage")
+	_check(scene.boss.recovery_time > 0.0, "the completed early pair opens its counter window")
 	scene.boss.take_hit(scene.boss.max_health * 0.45, Vector2.RIGHT, false)
 	scene.boss.recovery_time = 0.0
 	scene.boss.ring_warning = GateBoss.RING_WARNING

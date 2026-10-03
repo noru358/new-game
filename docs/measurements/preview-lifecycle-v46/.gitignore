@@ -1,0 +1,4 @@
+# Complete raw evidence, disposable copies and isolated userdata remain local.
+/attempt-*/
+/run-*/
+ci-run/

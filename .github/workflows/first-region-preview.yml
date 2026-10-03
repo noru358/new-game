@@ -1,0 +1,198 @@
+name: First region prototype render
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'game/deep_wetland*'
+      - 'game/wetland_boss*'
+      - 'game/companion_focus.gd'
+      - 'tests/verify_companion_focus.gd'
+      - 'tests/capture_wetland_boss.gd'
+      - 'tests/capture_wetland_run.gd'
+      - 'game/wetland_environment.gd'
+      - 'game/wetland_face_sculpture.gd'
+      - 'game/jungle_emergent_tree.gd'
+      - 'game/temple_monument_scale.gd'
+      - 'tests/capture_regional_landmarks.gd'
+      - 'tests/capture_temple_monument_scale.gd'
+      - 'game/wetland_guardian_visual.gd'
+      - 'game/temple_circuit*'
+      - 'game/jungle_south_circuit*'
+      - 'game/wetland_root_environment.gd'
+      - 'tests/capture_deep_wetland.gd'
+      - 'tests/capture_wetland_field_visibility.gd'
+      - '.github/workflows/first-region-preview.yml'
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install official engine and software display
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri fonts-noto-cjk
+          mkdir -p "$RUNNER_TEMP/godot"
+          cd "$RUNNER_TEMP/godot"
+          base=https://github.com/godotengine/godot-builds/releases/download/4.6-stable
+          curl --fail --location --retry 3 -O "$base/Godot_v4.6-stable_linux.x86_64.zip"
+          curl --fail --location --retry 3 -O "$base/SHA512-SUMS.txt"
+          grep ' Godot_v4.6-stable_linux.x86_64.zip$' SHA512-SUMS.txt | sha512sum --check --strict
+          unzip -q Godot_v4.6-stable_linux.x86_64.zip
+          chmod +x Godot_v4.6-stable_linux.x86_64
+          ln -s "$RUNNER_TEMP/godot/Godot_v4.6-stable_linux.x86_64" "$RUNNER_TEMP/godot/godot"
+          echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
+      - name: Isolate and verify prototype
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('project.godot')
+          s=p.read_text()
+          old='config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,'config/custom_user_dir_name="WetlandV44-CI"'))
+          PY
+          godot --headless --editor --path . --quit
+          godot --headless --path . --script res://tests/verify_deep_wetland.gd
+      - name: Capture actual software-rendered scene
+        run: |
+          mkdir -p wetland-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-render" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          mkdir -p temple-circuit-render
+          WETLAND_CAPTURE_DIR="$PWD/temple-circuit-render" CAPTURE_TEMPLE_CIRCUIT=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find temple-circuit-render -name '*.png' | wc -l)" -eq 10
+          test "$(find wetland-render -name '*.png' | wc -l)" -eq 10
+          mkdir -p temple-run-render
+          WETLAND_CAPTURE_DIR="$PWD/temple-run-render" CAPTURE_CIRCUIT_RUN=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find temple-run-render -name '*.png' | wc -l)" -eq 10
+          mkdir -p jungle-south-render
+          WETLAND_CAPTURE_DIR="$PWD/jungle-south-render" CAPTURE_JUNGLE_SOUTH=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find jungle-south-render -name '*.png' | wc -l)" -eq 10
+          mkdir -p wetland-field-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-field-render" CAPTURE_WETLAND_FIELD=1 LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_deep_wetland.gd
+          test "$(find wetland-field-render -name '*.png' | wc -l)" -eq 8
+          mkdir -p wetland-field-visibility
+          WETLAND_CAPTURE_DIR="$PWD/wetland-field-visibility" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_field_visibility.gd
+          mkdir -p wetland-boss-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-boss-render" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_boss.gd
+          mkdir -p wetland-run-render
+          WETLAND_CAPTURE_DIR="$PWD/wetland-run-render" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+          godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_run.gd
+          test "$(find wetland-run-render -name '*.png' | wc -l)" -eq 6
+      - name: Compare fixed wetland presentation views
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/wetland-baseline" presentation-baseline presentation-candidate
+          git fetch --no-tags origin f37e202e642d0a71ba1926dd58f7499a7af6f27f
+          git archive f37e202e642d0a71ba1926dd58f7499a7af6f27f | tar -x -C "$RUNNER_TEMP/wetland-baseline"
+          cp tests/capture_wetland_presentation.gd "$RUNNER_TEMP/wetland-baseline/tests/"
+          sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WetlandV44-PresentationBaseline#' "$RUNNER_TEMP/wetland-baseline/project.godot"
+          godot --headless --editor --path "$RUNNER_TEMP/wetland-baseline" --quit
+          WETLAND_CAPTURE_DIR="$PWD/presentation-baseline" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/wetland-baseline" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
+          WETLAND_CAPTURE_DIR="$PWD/presentation-candidate" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
+      - name: Compare normal-input regional landmark approaches
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/regional-baseline" regional-landmarks
+          git fetch --no-tags origin 8380c69b92e4c8cc880239c6b0259841259c72f5
+          git archive 8380c69b92e4c8cc880239c6b0259841259c72f5 | tar -x -C "$RUNNER_TEMP/regional-baseline"
+          cp tests/capture_regional_landmarks.gd "$RUNNER_TEMP/regional-baseline/tests/"
+          sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WetlandV44-RegionalBaseline#' "$RUNNER_TEMP/regional-baseline/project.godot"
+          godot --headless --editor --path "$RUNNER_TEMP/regional-baseline" --quit
+          for variant in baseline candidate; do
+            project="$PWD"
+            if [ "$variant" = baseline ]; then project="$RUNNER_TEMP/regional-baseline"; fi
+            for region in temple jungle; do
+              REGION_LANDMARK="$region" REGIONAL_LANDMARK_OUTPUT="$PWD/regional-landmarks/$variant/$region" LIBGL_ALWAYS_SOFTWARE=1 \
+              xvfb-run -a -s '-screen 0 1280x720x24' timeout 240 godot --path "$project" --audio-driver Dummy --rendering-method gl_compatibility --script res://tests/capture_regional_landmarks.gd
+              expected=26
+              if [ "$region" = jungle ]; then expected=22; fi
+              test "$(find "regional-landmarks/$variant/$region" -name '*.png' | wc -l)" -eq "$expected"
+            done
+          done
+          python3 - <<'PYREPORT'
+          import json
+          from pathlib import Path
+          for region in ('temple','jungle'):
+              reports=[json.loads((Path('regional-landmarks')/variant/region/'report.json').read_text()) for variant in ('baseline','candidate')]
+              for report in reports:
+                  assert report['render'] and not report['errors']
+                  assert report['normal_input'] and not report['acceleration'] and report['time_scale']==1
+              before,after=[{(row['name'],row['width']):row for row in report['samples'] if 'visibility' in row} for report in reports]
+              assert before.keys()==after.keys()
+              for key,b in before.items():
+                  c=after[key]
+                  assert b['target']==c['target'] and b['camera_size']==c['camera_size']
+                  assert b['move_speed']==c['move_speed'] and b['move_speed_multiplier']==c['move_speed_multiplier']
+                  assert c['visibility']['ratio']+0.03>=b['visibility']['ratio'], (region,key,b['visibility'],c['visibility'])
+              print(region, 'normal-input comparisons:', len(after), 'no visibility regression beyond 0.03')
+          PYREPORT
+          mkdir -p "$RUNNER_TEMP/temple-landmark-data" temple-monument-render
+          TEMPLE_MONUMENT_CAPTURE_DIR="$PWD/temple-monument-render" XDG_DATA_HOME="$RUNNER_TEMP/temple-landmark-data" LIBGL_ALWAYS_SOFTWARE=1 \
+          xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_temple_monument_scale.gd
+          test "$(find temple-monument-render -name '*.png' | wc -l)" -eq 16
+      - name: Capture integrated temple place sequence
+        run: |
+          mkdir -p temple-place-sequence
+          set +e
+          REGIONAL_LANDMARK_OUTPUT="$PWD/temple-place-sequence/images" REGION_LANDMARK=temple LIBGL_ALWAYS_SOFTWARE=1 \
+            xvfb-run -a -s '-screen 0 1280x720x24' timeout 240 \
+            godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_temple_place_sequence.gd \
+            > temple-place-sequence/capture.log 2>&1
+          status=$?
+          cat temple-place-sequence/capture.log
+          set -e
+          test "$status" -eq 0
+          test "$(find temple-place-sequence -name '*.png' | wc -l)" -eq 88
+          python3 - <<'PYREPORT'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('temple-place-sequence/images/report.json').read_text())
+          assert report['render'] and not report['errors']
+          assert report['normal_input'] and not report['acceleration'] and report['time_scale']==1
+          PYREPORT
+      - name: Capture companion focus contract
+        run: |
+          mkdir -p "$RUNNER_TEMP/companion-focus" companion-focus-render
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/companion-focus"
+          sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#CompanionFocusV46-CI#' "$RUNNER_TEMP/companion-focus/project.godot"
+          godot --headless --editor --path "$RUNNER_TEMP/companion-focus" --quit
+          FOCUS_CAPTURE_DIR="$PWD/companion-focus-render" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/companion-focus" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/verify_companion_focus.gd
+          FOCUS_CAPTURE_DIR="$PWD/companion-focus-render" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/companion-focus" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/verify_companion_branch_ui.gd
+          test "$(find companion-focus-render -name '*.png' | wc -l)" -eq 4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deep-wetland-render
+          path: |
+            regional-landmarks/
+            temple-monument-render/
+            temple-place-sequence/
+            companion-focus-render/
+            presentation-baseline/
+            presentation-candidate/
+            wetland-render/
+            temple-circuit-render/
+            temple-run-render/
+            jungle-south-render/
+            wetland-field-render/
+            wetland-field-visibility/
+            wetland-boss-render/
+            wetland-run-render/

@@ -1,4 +1,5 @@
 extends SceneTree
+const RouteTerrain = preload("res://game/jungle_route_terrain.gd")
 
 const PREFIX := "user://verify_terrain_coherence_profile"
 const UNLOCKS := "user://verify_terrain_coherence_unlocks"
@@ -49,7 +50,8 @@ func _run() -> void:
 		_check(not scene.navigation.is_open(column.area.get_center(), scene.ACTOR_CLEARANCE), "visible column blocks its own footprint")
 	_check(not scene.navigation.is_open(JunglePassTerrain.CANOPY_POINTS[0], scene.ACTOR_CLEARANCE), "tree silhouette and small trunk footprint agree")
 	_check(scene.canopy_visuals.size() == JunglePassTerrain.CANOPY_POINTS.size(), "every blocking canopy trunk has a visible tree")
-	for point in JunglePassTerrain.CANOPY_POINTS:
+	var canopy_points: Array = scene.terrain.route_canopy_points if scene.terrain is RouteTerrain else JunglePassTerrain.CANOPY_POINTS
+	for point in canopy_points:
 		var trunk: MeshInstance3D = scene.canopy_visuals.get(point)
 		_check(trunk != null and trunk.visible and Vector2(trunk.position.x, trunk.position.z).distance_to(point * JunglePassTerrain.SCALE) < 0.01, "canopy visual sits on its collision footprint: %s" % point)
 	_check(scene._attack_reach_at(Vector2(2400, 860), Vector2.DOWN.angle(), 130.0) >= 129.0, "same-height colored floor boundary does not trim the slash")

@@ -1,0 +1,40 @@
+name: macOS field preview package
+on:
+  workflow_dispatch:
+  push:
+    branches: ['codex/first-region-production-v44']
+    paths:
+      - '.github/playtest-version'
+      - '.github/workflows/macos-playtest.yml'
+      - 'scripts/macos_preview_build.py'
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and verify the native exported preview
+        run: |
+          python scripts/test_macos_preview_save_guard.py
+          python scripts/test_windows_preview_contract.py
+          python scripts/macos_preview_build.py \
+            --workspace "$GITHUB_WORKSPACE" \
+            --scratch "$RUNNER_TEMP/mac-field-preview" \
+            --output "$RUNNER_TEMP/mac-field-preview-output" \
+            --commit "$GITHUB_SHA" \
+            --label "$(cat .github/playtest-version)" \
+            --architecture arm64
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: macOS-field-preview-${{ github.sha }}
+          path: ${{ runner.temp }}/mac-field-preview-output/
+          retention-days: 14
+          if-no-files-found: error

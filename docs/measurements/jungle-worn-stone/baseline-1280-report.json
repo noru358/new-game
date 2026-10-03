@@ -1,0 +1,187 @@
+{
+  "candidate_tread_triangles": 264,
+  "complete": true,
+  "decor_meshes": 18,
+  "decor_surfaces": 18,
+  "decor_triangles": 216,
+  "engine": "4.6-stable (official)",
+  "failures": [],
+  "fixture": "Normal 60Hz movement/attack; two start placements for separate approach viewpoints, natural heights/navigation/collision/AI; seeded two enemies with higher fixture HP; ambient spawn and growth modal suppressed equally. Native GL render in offscreen test window. No full run/human aesthetics or long performance verdict.",
+  "kills": 0,
+  "render_costs": [
+    {
+      "draw_calls": 222.0,
+      "label": "stairs",
+      "render_objects": 395.0,
+      "render_primitives": 15247.0
+    },
+    {
+      "draw_calls": 232.0,
+      "label": "rocks",
+      "render_objects": 405.0,
+      "render_primitives": 32347.0
+    }
+  ],
+  "resolution": [
+    1280,
+    720
+  ],
+  "settled_costs": [
+    {
+      "draw_calls": 218.0,
+      "point": [
+        3550.0,
+        1160.0
+      ],
+      "render_objects": 394.0,
+      "render_primitives": 14809.0
+    },
+    {
+      "draw_calls": 224.0,
+      "point": [
+        3410.0,
+        1790.0
+      ],
+      "render_objects": 400.0,
+      "render_primitives": 31833.0
+    }
+  ],
+  "terrain_vertices": 23256,
+  "transforms": [
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 2.71, 9.15)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 3.51, 9.15)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5, 4.31, 9.15)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 5.11, 9.15)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 2.71, 14.35)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 3.51, 14.35)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5, 4.31, 14.35)"
+    },
+    {
+      "kind": "post",
+      "material": "Color(0.4745098, 0.49019608, 0.42352942, 1)",
+      "transform": "Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 5.11, 14.35)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.34509805, 0.42352942, 0.39607844, 1)",
+      "transform": "Transform3D(0.9784971, 0.11798653, -0.16918235, -0.119712204, 0.99280864, 0, 0.1679657, 0.02025319, 0.9855848, 32.5, 1.5, 15.8)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.45490196, 0.5137255, 0.4745098, 1)",
+      "transform": "Transform3D(0.92396235, 0.18729644, -0.3334871, -0.19866933, 0.9800666, 0, 0.32683957, 0.066253655, 0.9427547, 33.25, 1.825, 15.9)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.34509805, 0.42352942, 0.39607844, 1)",
+      "transform": "Transform3D(0.8664683, 0.104478166, -0.48817724, -0.119712204, 0.99280864, 0, 0.4846666, 0.058440775, 0.8727445, 33.9, 2.118, 16.2)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.45490196, 0.5137255, 0.4745098, 1)",
+      "transform": "Transform3D(0.76207304, 0.15447985, -0.628793, -0.19866933, 0.9800666, 0, 0.61625904, 0.12492188, 0.7775727, 35, 2.3, 16)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.34509805, 0.42352942, 0.39607844, 1)",
+      "transform": "Transform3D(0.6552369, 0.07900803, -0.7512804, -0.119712204, 0.99280864, 0, 0.7458777, 0.08993743, 0.6599831, 35.5, 2.545, 15.8)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.34509805, 0.42352942, 0.39607844, 1)",
+      "transform": "Transform3D(0.9784971, -0.11798653, 0.16918235, 0.119712204, 0.99280864, 0, -0.1679657, 0.02025319, 0.9855848, 39.4, 3.693684, 22.2)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.45490196, 0.5137255, 0.4745098, 1)",
+      "transform": "Transform3D(0.92396235, -0.18729644, 0.3334871, 0.19866933, 0.9800666, 0, -0.32683957, 0.066253655, 0.9427547, 40.5, 4.126053, 22.3)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.34509805, 0.42352942, 0.39607844, 1)",
+      "transform": "Transform3D(0.8664683, -0.104478166, 0.48817724, 0.119712204, 0.99280864, 0, -0.4846666, 0.058440775, 0.8727445, 41.4, 4.495263, 22.4)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.45490196, 0.5137255, 0.4745098, 1)",
+      "transform": "Transform3D(0.76207304, -0.15447985, 0.628793, 0.19866933, 0.9800666, 0, -0.61625904, 0.12492188, 0.7775727, 42.4, 4.6410527, 22.2)"
+    },
+    {
+      "kind": "rock",
+      "material": "Color(0.34509805, 0.42352942, 0.39607844, 1)",
+      "transform": "Transform3D(0.6552369, -0.07900803, 0.7512804, 0.119712204, 0.99280864, 0, -0.7458777, 0.08993743, 0.6599831, 43.3, 5.010263, 22.3)"
+    }
+  ],
+  "userdata": "/Users/lty/Library/Application Support/LoopConquestMapTrials/worn-ab6f69a2-e8c9-4a6b-ac4e-46381534a261",
+  "variant": "baseline",
+  "walks": [
+    {
+      "distance": 186.944779068232,
+      "goal": [
+        3550.0,
+        1160.0
+      ],
+      "height": 366.212421875,
+      "hp": 90.0,
+      "ticks": 34
+    },
+    {
+      "distance": 253.3271484375,
+      "goal": [
+        3810.0,
+        1160.0
+      ],
+      "height": 449.41875,
+      "hp": 90.0,
+      "ticks": 39
+    },
+    {
+      "distance": 183.096910476685,
+      "goal": [
+        3410.0,
+        1790.0
+      ],
+      "height": 178.355234375,
+      "hp": 90.0,
+      "ticks": 26
+    },
+    {
+      "distance": 99.8953938484192,
+      "goal": [
+        3520.0,
+        1790.0
+      ],
+      "height": 212.509609375,
+      "hp": 90.0,
+      "ticks": 16
+    }
+  ],
+  "warnings_seen": true
+}

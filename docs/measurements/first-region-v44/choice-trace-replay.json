@@ -1,0 +1,28 @@
+[
+  {
+    "active_trace_seconds": 254.283333333428,
+    "batched": false,
+    "combat_replayed": false,
+    "modal_interruptions": 27,
+    "pending": 0,
+    "points_earned": 27,
+    "points_spent": 27,
+    "replayed_levels": 27,
+    "same_click_count": 27,
+    "source_run": 1,
+    "wall_time_savings_measured": false
+  },
+  {
+    "active_trace_seconds": 254.283333333428,
+    "batched": true,
+    "combat_replayed": false,
+    "modal_interruptions": 17,
+    "pending": 0,
+    "points_earned": 27,
+    "points_spent": 27,
+    "replayed_levels": 27,
+    "same_click_count": 27,
+    "source_run": 1,
+    "wall_time_savings_measured": false
+  }
+]

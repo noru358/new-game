@@ -28,7 +28,7 @@ func _run() -> void:
 	boss._beast_velocity(0.61)
 	boss._beast_velocity(0.7)
 	boss._beast_velocity(0.01)
-	check(boss.recovery_time >= 1.2, "single opening attack ends in a full combo counter window")
+	check(boss.recovery_time >= boss._attack_delay(), "single opening attack ends in a full combo counter window")
 	check(boss._beast_velocity(0.2) == Vector2.ZERO, "boss stays still during recovery")
 	boss._beast_velocity(2.0)
 	player.position = boss.position + Vector2(60, 0)
@@ -58,7 +58,7 @@ func _run() -> void:
 	boss._beast_velocity(0.53)
 	boss._beast_velocity(0.5)
 	boss._beast_velocity(0.01)
-	check(boss.recovery_time >= 1.4, "second charge ends combo with a longer counter window")
+	check(boss.recovery_time >= boss._attack_delay(), "second charge ends combo with a longer counter window")
 	boss.recovery_time = 0
 	boss.next_attack_shock = true
 	player.position = boss.position + Vector2(250, 0)

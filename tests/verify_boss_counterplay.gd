@@ -9,6 +9,8 @@ func controls(direction: Vector2, attack: bool) -> void:
 		Input.action_press("move_down" if direction.y > 0 else "move_up", absf(direction.y))
 	if attack: Input.action_press("attack")
 func _run() -> void:
+	var brisk: bool = not OS.get_cmdline_user_args().has("--boss-cadence-baseline")
+	var late_phase: bool = not OS.get_cmdline_user_args().has("--boss-early-phase")
 	for action in ["move_left", "move_right", "move_up", "move_down", "attack", "dash", "moving_slash"]:
 		if not InputMap.has_action(action): InputMap.add_action(action)
 	Engine.time_scale = 3.0
@@ -30,10 +32,11 @@ func _run() -> void:
 			var boss = load("res://game/jungle_warden.tscn" if jungle else "res://game/gate_boss.tscn").instantiate()
 			boss.position = Vector2(1160, 700)
 			boss.target = player
+			boss.brisk_cadence = brisk
 			boss.collision_mask = 4
 			arena.add_child(boss)
-			boss.phase = 2
-			boss.charge_damage = 25
+			boss.phase = 2 if late_phase else 1
+			boss.charge_damage = 25 if late_phase else 20
 			var damage_dealt := 0.0
 			for i in 960:
 				var away: Vector2 = boss.position.direction_to(player.position)
@@ -66,9 +69,9 @@ func _run() -> void:
 				await physics_frame
 				damage_dealt += boss.max_health - boss.health
 				boss.health = boss.max_health
-			print("PROBE jungle=", jungle, " evade=", evade, " received=", 1000 - player.health, " dealt=", damage_dealt, " strikes=", boss.attacks_fired)
+			print("PROBE brisk=", brisk, " late=", late_phase, " jungle=", jungle, " evade=", evade, " received=", 1000 - player.health, " dealt=", damage_dealt, " strikes=", boss.attacks_fired)
 			var received: float = 1000 - player.health
-			if (evade and received > 22.0) or (not evade and received < 80.0) or damage_dealt < 80.0 or boss.attacks_fired < 4:
+			if (evade and received > 22.0) or (not evade and received < (80.0 if late_phase else 40.0)) or damage_dealt < 80.0 or boss.attacks_fired < 4:
 				failures += 1
 				printerr("FAIL: close pressure, readable escape and counterattack must coexist")
 			controls(Vector2.ZERO, false)

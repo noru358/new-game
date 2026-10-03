@@ -1,0 +1,62 @@
+{
+  "engine": "4.6-stable (official)",
+  "samples": [
+    {
+      "draw_calls": 81.0,
+      "name": "procession",
+      "objects": 202.0,
+      "primitives": 16192.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 99.0,
+      "name": "face-bank",
+      "objects": 221.0,
+      "primitives": 16950.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 92.0,
+      "name": "court",
+      "objects": 214.0,
+      "primitives": 16656.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 79.0,
+      "name": "inner-court",
+      "objects": 199.0,
+      "primitives": 16805.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 81.0,
+      "name": "procession",
+      "objects": 202.0,
+      "primitives": 16192.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 99.0,
+      "name": "face-bank",
+      "objects": 221.0,
+      "primitives": 16950.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 92.0,
+      "name": "court",
+      "objects": 214.0,
+      "primitives": 16656.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 79.0,
+      "name": "inner-court",
+      "objects": 199.0,
+      "primitives": 16805.0,
+      "width": 1280
+    }
+  ],
+  "scope": "Static isolated same-camera render; no frame-time or human aesthetic claim"
+}

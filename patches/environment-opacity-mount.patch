@@ -1,0 +1,950 @@
+diff --git a/game/canal_city_trial.gd b/game/canal_city_trial.gd
+index fcadfdd..a7c912a 100644
+--- a/game/canal_city_trial.gd
++++ b/game/canal_city_trial.gd
+@@ -3,2 +3,3 @@ extends "res://game/hybrid_height.gd"
+ const CityTerrain = preload("res://game/canal_city_terrain.gd")
++const EnvironmentOpacity = preload("res://game/environment_opacity.gd")
+ const OverheadOcclusion = preload("res://game/canal_overhead_occlusion.gd")
+@@ -18,3 +19,3 @@ var material_cache: Dictionary = {}
+ var faded_material_cache: Dictionary = {}
+-var overhead_occlusion_enabled := not OS.get_cmdline_user_args().has("--occlusion-baseline")
++var overhead_occlusion_enabled := false # Full opaque source assets remain visible.
+ var overhead_occlusion = OverheadOcclusion.new()
+@@ -327,47 +328,7 @@ func _process(delta: float) -> void:
+ 	if not is_instance_valid(player): return
+-	if overhead_occlusion_enabled:
+-		overhead_occlusion.update(self, delta)
+-	elif not overhead_occlusion.entries.is_empty():
+-		overhead_occlusion.restore()
+-	var visible_targets: Array[Vector2] = [player.position]
+-	if combat_enabled:
+-		for actor in actors:
+-			if not is_instance_valid(actor) or not actor is TrainingEnemy: continue
+-			if actor.position.distance_to(player.position) > 1050.0: continue
+-			var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
+-			if get_viewport().get_visible_rect().grow(40).has_point(screen): visible_targets.append(actor.position)
+-	# Fade only near-side architecture crossing the camera-to-actor ray.
+-	# Collision never changes with visibility, preserving solid silhouettes.
+-	for item in building_visuals + landmark_visuals:
+-		if overhead_occlusion_enabled and overhead_occlusion.owns(item.root): continue
+-		var obscures := false
+-		if not overview and not item.background:
+-			for target in visible_targets:
+-				var end := target + Vector2.ONE * float(item.height)
+-				if navigation._segment_hits_rect(target, end, (item.area as Rect2).grow(35.0)):
+-					obscures = true
+-					break
+-		_set_architecture_fade(item.root, obscures)
++	# Keep the original roofs, beams and houses; actor position changes nothing.
++	if not overhead_occlusion.entries.is_empty(): overhead_occlusion.restore()
+ 
+-func _set_architecture_fade(root: Node3D, obscures: bool) -> void:
+-	# GeometryInstance3D.transparency is not implemented by Compatibility.
+-	# Switch to a cached alpha material instead, without mutating shared colors
+-	# or removing collision. This also covers the tiled gate and pavilion.
+-	if root.has_meta("fade_state") and root.get_meta("fade_state") == obscures: return
+-	root.set_meta("fade_state", obscures)
+-	for child in root.get_children():
+-		if not child is MeshInstance3D: continue
+-		if not child.has_meta("solid_material"):
+-			child.set_meta("solid_material", child.material_override)
+-		var solid: StandardMaterial3D = child.get_meta("solid_material")
+-		if not obscures:
+-			child.material_override = solid
+-			continue
+-		var key := solid.get_instance_id()
+-		if not faded_material_cache.has(key):
+-			var faded := solid.duplicate() as StandardMaterial3D
+-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+-			faded.albedo_color.a = 0.16
+-			faded_material_cache[key] = faded
+-		child.material_override = faded_material_cache[key]
++func _set_architecture_fade(root: Node3D, _obscures: bool) -> void:
++	EnvironmentOpacity.restore(root)
+ 
+diff --git a/game/canal_overhead_occlusion.gd b/game/canal_overhead_occlusion.gd
+index 5a00fee..1e06d66 100644
+--- a/game/canal_overhead_occlusion.gd
++++ b/game/canal_overhead_occlusion.gd
+@@ -1,100 +1,14 @@
+ extends RefCounted
+-## Bounded canal continuation: two roof/lintel groups only. Their piers are
+-## separate authored meshes and remain opaque. Houses keep their existing path.
+-const CLEAR_HOLD := 0.35
+-const RESTORE_SECONDS := 0.18
+-const LABELS := ["TiledWardGate", "SluicePavilion"]
++## Former roof-removal API. Complete opaque landmark assets now remain visible.
+ var entries: Array[Dictionary] = []
+-var _installed := false
+-
+-func install(arena: Node3D) -> void:
+-	if _installed: return
+-	_installed = true
+-	for item in arena.landmark_visuals:
+-		if not LABELS.has(String(item.root.name)): continue
+-		var parts: Array[Dictionary] = []
+-		for mesh in item.root.get_children():
+-			if not mesh is MeshInstance3D: continue
+-			var solid: StandardMaterial3D = mesh.get_meta("solid_material", mesh.material_override)
+-			var returning := solid.duplicate() as StandardMaterial3D
+-			returning.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+-			parts.append({"mesh": mesh, "solid": solid, "returning": returning,
+-				"triangles": mesh.mesh.generate_triangle_mesh(), "shadow": mesh.cast_shadow})
+-		entries.append({"root": item.root, "parts": parts, "cleared": false,
+-			"clear_time": 0.0, "alpha": 1.0, "transitions": 0})
+-
+-func owns(root: Node3D) -> bool:
+-	for entry in entries:
+-		if entry.root == root: return true
+-	return false
+-
+-func update(arena: Node3D, delta: float) -> void:
+-	if not _installed: install(arena)
+-	var targets: Array[Vector3] = []
+-	var inactive: bool = not is_instance_valid(arena.player) or arena.overview
+-	if not inactive:
+-		for actor in arena.actors:
+-			if not is_instance_valid(actor): continue
+-			if actor != arena.player and (not arena.combat_enabled or not actor is TrainingEnemy): continue
+-			if actor.health <= 0: continue
+-			if not is_instance_valid(arena.actors[actor]) or not arena.actors[actor].is_visible_in_tree(): continue
+-			if actor.position.distance_to(arena.player.position) > 1050: continue
+-			for height in [55.0, 85.0]:
+-				var point: Vector3 = arena.terrain.world_point(actor.position, height)
+-				if arena.get_viewport().get_visible_rect().has_point(arena.camera.unproject_position(point)): targets.append(point)
+-	for entry in entries:
+-		if not is_instance_valid(entry.root): continue
+-		if inactive:
+-			_reset(entry)
+-			continue
+-		var obscures := _obscures(entry, arena, targets, 10.0 if entry.cleared else 0.0)
+-		if obscures:
+-			entry.clear_time = 0.0
+-			_set_cleared(entry, true)
+-		else:
+-			entry.clear_time += maxf(delta, 0.0)
+-			if entry.clear_time >= CLEAR_HOLD: _set_cleared(entry, false)
+-		entry.alpha = 0.0 if entry.cleared else move_toward(float(entry.alpha), 1.0, maxf(delta, 0.0) / RESTORE_SECONDS)
+-		for part in entry.parts:
+-			part.mesh.visible = not entry.cleared
+-			if entry.alpha >= 1.0 or entry.cleared:
+-				part.mesh.material_override = part.solid
+-			else:
+-				part.returning.albedo_color.a = entry.alpha
+-				part.mesh.material_override = part.returning
+-			part.mesh.cast_shadow = part.shadow if entry.alpha >= 1.0 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+-
+-func _obscures(entry: Dictionary, arena: Node3D, targets: Array[Vector3], margin: float) -> bool:
+-	var toward: Vector3 = arena.camera.global_basis.z * 40.0
+-	var side: Vector3 = arena.camera.global_basis.x * margin * 0.01
+-	var offsets: Array[Vector3] = [Vector3.ZERO]
+-	if margin > 0: offsets.append_array([side, -side, Vector3.UP * margin * 0.01])
+-	for target in targets:
+-		for offset in offsets:
+-			for part in entry.parts:
+-				if not is_instance_valid(part.mesh): continue
+-				if not part.triangles.intersect_segment(part.mesh.to_local(target + offset), part.mesh.to_local(target + offset + toward)).is_empty(): return true
+-	return false
+-
+-func _set_cleared(entry: Dictionary, cleared: bool) -> void:
+-	if entry.cleared != cleared:
+-		entry.cleared = cleared
+-		entry.transitions += 1
+-
+-func _reset(entry: Dictionary) -> void:
+-	_set_cleared(entry, false)
+-	entry.clear_time = 0.0
+-	entry.alpha = 1.0
+-	for part in entry.parts:
+-		if not is_instance_valid(part.mesh): continue
+-		part.mesh.show()
+-		part.mesh.material_override = part.solid
+-		part.mesh.cast_shadow = part.shadow
+-
++func install(_arena: Node3D) -> void: pass
++func owns(_root: Node3D) -> bool: return false
++func update(_arena: Node3D, _delta: float) -> void: restore()
+ func restore() -> void:
+ 	for entry in entries:
+-		_reset(entry)
+-		if is_instance_valid(entry.root) and entry.root.has_meta("fade_state"):
+-			entry.root.remove_meta("fade_state")
++		for part in entry.parts:
++			if not is_instance_valid(part.mesh): continue
++			part.mesh.show()
++			part.mesh.material_override = part.solid
++			part.mesh.cast_shadow = part.shadow
+ 	entries.clear()
+-	_installed = false
+diff --git a/game/hybrid_region.gd b/game/hybrid_region.gd
+index 56ffccd..d23afd3 100644
+--- a/game/hybrid_region.gd
++++ b/game/hybrid_region.gd
+@@ -9,2 +9,3 @@ const TempleSanctuaryScript = preload("res://game/temple_sanctuary_environment.g
+ const TempleOcclusionCandidateScript = preload("res://game/temple_occlusion_candidate.gd")
++const EnvironmentOpacity = preload("res://game/environment_opacity.gd")
+ const TempleOpeningScript = preload("res://game/temple_opening_environment.gd")
+@@ -22,3 +23,3 @@ var temple_opening_enabled := not OS.get_cmdline_user_args().has("--opening-base
+ var temple_opening_root: Node3D
+-var temple_occlusion_candidate_enabled := not OS.get_cmdline_user_args().has("--occlusion-baseline")
++var temple_occlusion_candidate_enabled := false # Sight-based asset removal is disabled.
+ var temple_occlusion_candidate = TempleOcclusionCandidateScript.new()
+@@ -318,12 +319,6 @@ func _process(delta: float) -> void:
+ 		temple_sanctuary_root.visible = temple_section == null or not temple_section.in_garden
+-	if temple_occlusion_candidate_enabled and region_id == RunProfile.TEMPLE_REGION:
+-		temple_occlusion_candidate.update(self, delta)
+-	else:
+-		# Restore solid source materials before the legacy path reads or fades them.
+-		if not temple_occlusion_candidate.members.is_empty(): temple_occlusion_candidate.restore()
+-		if is_instance_valid(temple_environment_root): _update_temple_environment_visibility()
+-		if is_instance_valid(temple_sanctuary_root): TempleSanctuaryScript.update_visibility(temple_sanctuary_root, self)
++	# Architecture stays fully opaque. Legacy flags cannot re-enable removal.
++	if not temple_occlusion_candidate.members.is_empty(): temple_occlusion_candidate.restore()
+ 	if is_instance_valid(temple_opening_root):
+ 		temple_opening_root.visible = temple_section == null or not temple_section.in_garden
+-		TempleOpeningScript.update_visibility(temple_opening_root, self)
+ 	if practice_mode: return
+@@ -412,30 +407,3 @@ func _boss_covers_player(body: Sprite3D) -> bool:
+ func _update_temple_environment_visibility() -> void:
+-	if not temple_environment_root.visible or not is_instance_valid(player): return
+-	var spec: Dictionary = temple_environment_root.get_meta("elevated_threshold", {})
+-	if spec.is_empty(): return
+-	var targets: Array[Vector2] = [player.position]
+-	for actor in actors:
+-		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.health <= 0.0: continue
+-		if actor.position.distance_to(player.position) > 1500.0: continue
+-		var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
+-		if get_viewport().get_visible_rect().grow(40).has_point(screen): targets.append(actor.position)
+-	var obscures := false
+-	if not overview:
+-		for target in targets:
+-			if navigation._segment_hits_rect(target, target + Vector2.ONE * float(spec.height), (spec.visual_bounds as Rect2).grow(25.0)):
+-				obscures = true
+-				break
+-	# Only the complete far threshold fades; other masonry/paving stays solid.
+-	# Alpha materials work in Compatibility, unlike instance transparency.
+-	for item in temple_environment_root.get_meta("threshold_meshes", []):
+-		var instance := item as MeshInstance3D
+-		if not instance.has_meta("solid_material"):
+-			var solid := instance.material_override as StandardMaterial3D
+-			var faded := solid.duplicate() as StandardMaterial3D
+-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+-			faded.albedo_color.a = 0.16
+-			instance.set_meta("solid_material", solid)
+-			instance.set_meta("faded_material", faded)
+-		instance.material_override = instance.get_meta("faded_material" if obscures else "solid_material")
+-		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if obscures else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
++	EnvironmentOpacity.restore(temple_environment_root)
+ 
+diff --git a/game/temple_occlusion_candidate.gd b/game/temple_occlusion_candidate.gd
+index 06ef348..bcc0bad 100644
+--- a/game/temple_occlusion_candidate.gd
++++ b/game/temple_occlusion_candidate.gd
+@@ -1,133 +1,14 @@
+ extends RefCounted
+-## Opt-in temple-only comparison. The scene owner calls update(arena, delta)
+-## instead of the two legacy threshold/sanctuary alpha updates. Nothing mounts
+-## this candidate automatically; restore() also makes a live comparison reversible.
+-
+-const Terrain = preload("res://game/hybrid_terrain.gd")
+-const Sanctuary = preload("res://game/temple_sanctuary_environment.gd")
+-const CLEAR_HOLD := 0.35
+-const RESTORE_SECONDS := 0.18
+-const HOLD_MARGIN := 10.0
+-# Existing horizontal stone-course tops, with a small gap above their caps.
+-# These opaque courses retain the obstacle's footing while the upper member clears.
+-const BASE_HEIGHTS := {
+-	"RuinedSanctuaryThreshold": 52.5,
+-	"SteppedSanctuary": 55.3,
+-	"BrokenRearGallery": 25.3,
+-	"CourtMasonryRemnant": 65.0,
+-}
+-const CUT_SHADER := """shader_type spatial;
+-render_mode cull_disabled, diffuse_toon, specular_disabled;
+-uniform float cut_height = 1000.0;
+-varying float stone_height;
+-void vertex() { stone_height = VERTEX.y; }
+-void fragment() {
+-	if (stone_height > cut_height) { discard; }
+-	ALBEDO = COLOR.rgb;
+-	ROUGHNESS = 1.0;
+-}
+-"""
+-
++## Former cutaway API, retained for callers. Sight-based removal is disabled.
++const BASE_HEIGHTS := {"RuinedSanctuaryThreshold": 52.5, "SteppedSanctuary": 55.3, "BrokenRearGallery": 25.3, "CourtMasonryRemnant": 65.0}
+ var members: Array[Dictionary] = []
+ var transition_count := 0
+-var _installed := false
+-
+-
+-func install(arena: Node3D) -> void:
+-	if _installed: return
+-	_installed = true
+-	var shader := Shader.new()
+-	shader.code = CUT_SHADER
+-	for group_root in [arena.temple_environment_root, arena.temple_sanctuary_root]:
+-		if not is_instance_valid(group_root): continue
+-		for mesh in group_root.get_children():
+-			if not mesh is MeshInstance3D or not BASE_HEIGHTS.has(String(mesh.name)): continue
+-			var original: Material = mesh.get_meta("solid_material", mesh.material_override)
+-			var material := ShaderMaterial.new()
+-			material.shader = shader
+-			var height: float = mesh.get_aabb().end.y + 0.01
+-			material.set_shader_parameter("cut_height", height)
+-			members.append({"mesh": mesh, "original": original, "material": material,
+-				"shadow": GeometryInstance3D.SHADOW_CASTING_SETTING_ON,
+-				"triangles": mesh.mesh.generate_triangle_mesh(),
+-				"base": float(BASE_HEIGHTS[String(mesh.name)]) * Terrain.SCALE,
+-				"full": height, "height": height, "cut": false,
+-				"clear_time": 0.0, "transitions": 0})
+ 
+-
+-func update(arena: Node3D, delta: float) -> void:
+-	if not _installed: install(arena)
+-	var inactive: bool = not is_instance_valid(arena.player) or arena.overview or (arena.temple_section != null and arena.temple_section.in_garden)
+-	var targets: Array[Vector3] = []
+-	if not inactive:
+-		for actor in arena.actors:
+-			if not is_instance_valid(actor): continue
+-			if actor != arena.player and (not actor is TrainingEnemy or actor.health <= 0): continue
+-			if actor == arena.player and actor.health <= 0: continue
+-			var visual = arena.actors[actor]
+-			if not is_instance_valid(visual) or not visual.is_visible_in_tree(): continue
+-			if actor.position.distance_to(arena.player.position) > 1500: continue
+-			# Preserve face and torso. Feet behind the retained low wall remain
+-			# grounded in its depth, rather than erasing the wall's entire footprint.
+-			for lift in [55.0, 120.0 if actor is GateBoss else 85.0]:
+-				targets.append(arena.terrain.world_point(actor.position, lift))
+-		Sanctuary._add_boss_warning_targets(arena, targets)
+-	var visible_targets: Array[Vector3] = []
+-	for target in targets:
+-		if arena.get_viewport().get_visible_rect().has_point(arena.camera.unproject_position(target)):
+-			visible_targets.append(target)
++func install(_arena: Node3D) -> void: pass
++func update(_arena: Node3D, _delta: float) -> void: restore()
++func restore() -> void:
+ 	for member in members:
+ 		if not is_instance_valid(member.mesh): continue
+-		if inactive or not member.mesh.is_visible_in_tree():
+-			_reset_member(member)
+-			continue
+-		var obscures := _obscures(member, arena, visible_targets, HOLD_MARGIN if member.cut else 0.0)
+-		if obscures:
+-			member.clear_time = 0.0
+-			_set_cut(member, true)
+-		else:
+-			member.clear_time += maxf(0.0, delta)
+-			if member.clear_time >= CLEAR_HOLD: _set_cut(member, false)
+-		# Entry clears immediately, including a direction reversal mid-restore.
+-		# Only the safe return animates, after the clear interval has elapsed.
+-		member.height = member.base if member.cut else move_toward(float(member.height), float(member.full), (float(member.full) - float(member.base)) * maxf(0.0, delta) / RESTORE_SECONDS)
+-		member.material.set_shader_parameter("cut_height", member.height)
+-		member.mesh.material_override = member.material
++		member.mesh.material_override = member.original
+ 		member.mesh.cast_shadow = member.shadow
+-
+-
+-func _obscures(member: Dictionary, arena: Node3D, targets: Array[Vector3], margin: float) -> bool:
+-	var toward: Vector3 = arena.camera.global_basis.z * 40.0
+-	var side: Vector3 = arena.camera.global_basis.x * margin * Terrain.SCALE
+-	var offsets: Array[Vector3] = [Vector3.ZERO]
+-	if margin > 0.0: offsets.append_array([side, -side, Vector3.UP * margin * Terrain.SCALE])
+-	for target in targets:
+-		for offset in offsets:
+-			var origin: Vector3 = member.mesh.to_local(target + offset)
+-			var end: Vector3 = member.mesh.to_local(target + offset + toward)
+-			var hit: Dictionary = member.triangles.intersect_segment(origin, end)
+-			if not hit.is_empty() and hit.position.y > float(member.base): return true
+-	return false
+-
+-
+-func _set_cut(member: Dictionary, cut: bool) -> void:
+-	if member.cut == cut: return
+-	member.cut = cut
+-	member.transitions += 1
+-	transition_count += 1
+-
+-
+-func _reset_member(member: Dictionary) -> void:
+-	_set_cut(member, false)
+-	member.clear_time = 0.0
+-	member.height = member.full
+-	member.material.set_shader_parameter("cut_height", member.full)
+-	member.mesh.material_override = member.original
+-	member.mesh.cast_shadow = member.shadow
+-
+-
+-func restore() -> void:
+-	for member in members:
+-		if is_instance_valid(member.mesh): _reset_member(member)
+ 	members.clear()
+-	_installed = false
+diff --git a/game/temple_sanctuary_environment.gd b/game/temple_sanctuary_environment.gd
+index 011f8e1..c4e2ac4 100644
+--- a/game/temple_sanctuary_environment.gd
++++ b/game/temple_sanctuary_environment.gd
+@@ -167,37 +167,5 @@ func _finish_structure(root: Node3D, label: String, volumes: Array) -> MeshInsta
+ 
+-static func update_visibility(root: Node3D, arena: Node3D) -> void:
+-	if not root.visible or not is_instance_valid(arena.player): return
+-	var targets: Array[Vector3] = []
+-	if not arena.overview:
+-		for actor in arena.actors:
+-			if not is_instance_valid(actor): continue
+-			if actor != arena.player and (not actor is TrainingEnemy or actor.health <= 0): continue
+-			if not is_instance_valid(arena.actors[actor]) or not arena.actors[actor].is_visible_in_tree(): continue
+-			if actor.position.distance_to(arena.player.position) > 1500: continue
+-			var center: Vector3 = arena.terrain.world_point(actor.position, 55)
+-			if not arena.get_viewport().get_visible_rect().grow(30).has_point(arena.camera.unproject_position(center)): continue
+-			for lift in [10.0, 65.0, 120.0 if actor is GateBoss else 85.0]:
+-				targets.append(arena.terrain.world_point(actor.position, lift))
+-		_add_boss_warning_targets(arena, targets)
+-	var visible_targets: Array[Vector3] = []
+-	for target in targets:
+-		if arena.get_viewport().get_visible_rect().grow(12).has_point(arena.camera.unproject_position(target)): visible_targets.append(target)
+-	var toward_camera: Vector3 = arena.camera.global_basis.z * 40.0
+-	for group in root.get_meta("occlusion_groups", []):
+-		var obscures := false
+-		for target in visible_targets:
+-			for volume in group.get_meta("occlusion_volumes", []):
+-				if (volume as AABB).intersects_segment(target, target + toward_camera) != null:
+-					obscures = true
+-					break
+-			if obscures: break
+-		if not group.has_meta("solid_material"):
+-			var solid: StandardMaterial3D = group.material_override
+-			var faded := solid.duplicate() as StandardMaterial3D
+-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+-			faded.albedo_color.a = 0.12
+-			group.set_meta("solid_material", solid)
+-			group.set_meta("faded_material", faded)
+-		group.material_override = group.get_meta("faded_material" if obscures else "solid_material")
+-		group.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if obscures else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
++static func update_visibility(root: Node3D, _arena: Node3D) -> void:
++	# Compatibility entry point: never hides or fades architecture.
++	preload("res://game/environment_opacity.gd").restore(root)
+ 
+diff --git a/tests/verify_canal_city.gd b/tests/verify_canal_city.gd
+index 1f0976a..271efc8 100644
+--- a/tests/verify_canal_city.gd
++++ b/tests/verify_canal_city.gd
+@@ -22,3 +22,3 @@ func _run() -> void:
+ 	var scene = load("res://game/canal_city_trial.tscn").instantiate()
+-	# Retain direct coverage of the original alpha comparison.
++	# Legacy flags cannot enable alpha architecture.
+ 	scene.overhead_occlusion_enabled = false
+@@ -46,3 +46,3 @@ func _run() -> void:
+ 	# Compatibility ignores GeometryInstance transparency. Check the actual
+-	# alpha-material path and its restoration, not that unsupported property.
++	# material opacity at player and enemy overlap checkpoints.
+ 	for point in [scene.CityTerrain.ENTRY, scene.CityTerrain.MARKET, scene.CityTerrain.WATERFRONT]:
+@@ -58,3 +58,3 @@ func _run() -> void:
+ 					_check(mesh.material_override.albedo_color.a <= 0.2, "foreground architecture gives clear actor sight")
+-		_check(faded_count > 0, "foreground facade/gate fades at the real checkpoint")
++		_check(faded_count == 0, "every facade and gate remains opaque at the real checkpoint")
+ 	scene.overview = true
+@@ -66,3 +66,3 @@ func _run() -> void:
+ 			if mesh is MeshInstance3D:
+-				_check(mesh.material_override == mesh.get_meta("solid_material"), "overview restores solid architecture without changing collision")
++				_check(mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "overview restores solid architecture without changing collision")
+ 	scene.overview = false
+@@ -77,3 +77,3 @@ func _run() -> void:
+ 	var east_shop: Dictionary = scene.building_visuals.filter(func(item): return item.area.position == Vector2(2360, 1720))[0]
+-	_check(east_shop.root.get_child(0).material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "on-screen enemy occluder fades even when it does not cover the player")
++	_check(east_shop.root.get_child(0).material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "enemy overlap leaves the complete shop opaque")
+ 	scene.set_combat_enabled(false)
+diff --git a/tests/verify_canal_overhead_occlusion.gd b/tests/verify_canal_overhead_occlusion.gd
+index e00a3f0..0f372d0 100644
+--- a/tests/verify_canal_overhead_occlusion.gd
++++ b/tests/verify_canal_overhead_occlusion.gd
+@@ -1,20 +1,8 @@
+ extends SceneTree
+-## Focused two-landmark verification. Optional real-render pairs and normal-speed
+-## local passage inputs; no house rewrite, progression, or performance acceptance.
++## Whole buildings, gate and sluice roofs retain their original opaque meshes.
+ const Candidate = preload("res://game/canal_overhead_occlusion.gd")
+-var scene
+-var candidate
+ var failures := 0
+ var checks := 0
+-var output := ""
+-var captures: Array = []
+-var routes: Array = []
+-var held: Dictionary = {}
+-
+-class Driver extends Node:
+-	var fixture
+-	func _process(delta: float) -> void: fixture.candidate.update(fixture.scene, delta)
+-
+ func _initialize() -> void: call_deferred("_run")
+-func _check(ok: bool, message: String) -> void:
++func check(ok: bool, message: String) -> void:
+ 	checks += 1
+@@ -25,103 +13,31 @@ func _check(ok: bool, message: String) -> void:
+ func _run() -> void:
+-	root.size = Vector2i(1280, 720)
+-	output = OS.get_environment("CANAL_OVERHEAD_OUTPUT")
+-	if not output.is_empty(): DirAccess.make_dir_recursive_absolute(output)
+-	scene = load("res://game/canal_city_trial.tscn").instantiate()
+-	# Independent fixture owns its candidate if a later scene mount adds this flag.
+-	for property in scene.get_property_list():
+-		if property.name == "overhead_occlusion_enabled": scene.set(property.name, false)
++	var scene = load("res://game/canal_city_trial.tscn").instantiate()
++	check(not scene.overhead_occlusion_enabled, "roof removal disabled by default")
+ 	root.add_child(scene)
+-	current_scene = scene
+-	for i in 5: await process_frame
+-	scene.set_process(false)
++	await process_frame
+ 	scene.set_physics_process(false)
+ 	scene.simulation.process_mode = Node.PROCESS_MODE_DISABLED
+-	var barriers: Array = scene.terrain.barriers().duplicate(true)
+-	var camera_size: float = scene.camera.size
+-	var original_saves := _save_bytes()
+-	candidate = Candidate.new()
+-	candidate.install(scene)
+-	_check(candidate.entries.size() == 2, "exactly gate and sluice overhead groups are selected")
+-	for entry in candidate.entries:
+-		_check(entry.root.has_node("TiledRoof"), "authored tiled roof remains in " + String(entry.root.name))
+-		for part in entry.parts:
+-			_check(part.mesh.position.y + part.mesh.get_aabb().position.y > 2.0, "all controlled meshes are above separate opaque piers")
+-			_check(part.returning.albedo_color == part.solid.albedo_color and part.returning.vertex_color_use_as_albedo == part.solid.vertex_color_use_as_albedo, "return material preserves plain or vertex-color source")
+-	for house in scene.building_visuals:
+-		_check(not candidate.owns(house.root), "house remains on legacy authored path")
+-	var gate: Dictionary = candidate.entries[0]
+-	var sluice: Dictionary = candidate.entries[1]
+-	for sample in [[gate, Vector2(6200, 4000), Vector2(6770, 4045)], [sluice, Vector2(6600, 750), Vector2(6650, 1500)]]:
+-		var entry: Dictionary = sample[0]
+-		scene.teleport(sample[1])
+-		candidate.update(scene, 1.0 / 120)
+-		_check(entry.cleared and entry.parts.all(func(p): return not p.mesh.visible), "actor ray removes overhead meshes immediately: " + String(entry.root.name))
+-		scene.teleport(sample[2])
+-		candidate.update(scene, 0.2)
+-		_check(entry.cleared, "short departure does not flicker restored roof")
+-		scene.teleport(sample[1])
+-		var count: int = entry.transitions
+-		candidate.update(scene, 0.1)
+-		_check(entry.transitions == count, "return inside hold does not trigger another transition")
+-		scene.teleport(sample[2])
+-		candidate.update(scene, 0.36)
+-		candidate.update(scene, 0.2)
+-		_check(not entry.cleared and entry.parts.all(func(p): return p.mesh.visible and p.mesh.material_override == p.solid), "complete original roof/material restores after clear interval")
+-		_check(scene.navigation.is_open(sample[1], 30) and scene.navigation.find_path(sample[1], sample[2]).size() > 0, "existing passage through separate piers stays open")
+-	# A real enemy and its ordinary attack warning remain visible under the gate.
+-	scene.teleport(Vector2(6630, 4045))
+-	scene.combat_enabled = true
+-	var enemy = scene._spawn_enemy_at(Vector2(6200, 4000), TrainingEnemy.Role.BEAST, 100)
+-	enemy.set_physics_process(false)
+-	enemy.warning_time = 0.55
+-	enemy.locked_direction = enemy.position.direction_to(scene.player.position)
+-	scene._process(0.0)
+-	candidate.update(scene, 0.02)
+-	_check(gate.cleared and scene.warning_vertex_count > 0, "enemy-only roof coverage clears while its attack warning remains drawn")
+-	scene.actors[enemy].hide()
+-	candidate.update(scene, 0.6)
+-	_check(not gate.cleared, "hidden enemy cannot keep gate roof removed")
+-	scene.set_combat_enabled(false)
+-	scene.teleport(Vector2(6200, 4000))
+-	candidate.update(scene, 0.02)
+-	scene.overview = true
+-	candidate.update(scene, 0.02)
+-	_check(not gate.cleared and gate.alpha == 1.0, "overview resets pending removals and restores the exact complete silhouette")
+-	scene.overview = false
+-	if not output.is_empty():
+-		for size in [Vector2i(1280, 720), Vector2i(960, 540)]:
+-			root.size = size
+-			root.content_scale_size = Vector2i(1280, 720)
+-			root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+-			await process_frame
+-			for sample in [["gate-behind", Vector2(6200, 4000)], ["gate-clear", Vector2(6770, 4045)], ["sluice-behind", Vector2(6600, 750)], ["sluice-clear", Vector2(6650, 1500)], ["house-baseline-kept", Vector2(2480, 1690)]]:
+-				await _capture_pair(sample[0], sample[1])
+-	# Real ordinary player input through each local passage; only initial placement
+-	# switches between the distant gate and sluice sites.
+-	scene.set_process(true)
+-	scene.set_physics_process(true)
+-	scene.simulation.process_mode = Node.PROCESS_MODE_INHERIT
+-	var driver := Driver.new()
+-	driver.fixture = self
+-	driver.process_priority = 100
+-	root.add_child(driver)
+-	scene.teleport(Vector2(6200, 4000))
+-	for point in [Vector2(6400, 4045), Vector2(6630, 4045), Vector2(6200, 4000), Vector2(6770, 4045)]: await _walk(point)
+-	await create_timer(0.6).timeout
+-	_check(not candidate.entries[0].cleared, "moving gate exit restores overhead group")
+-	scene.teleport(Vector2(6600, 750))
+-	for point in [Vector2(6710, 760), Vector2(6650, 1120), Vector2(6650, 800), Vector2(6650, 1500)]: await _walk(point)
+-	await create_timer(0.6).timeout
+-	_check(not candidate.entries[1].cleared, "moving sluice exit restores overhead group")
+-	_check(scene.terrain.barriers() == barriers and scene.camera.size == camera_size, "all original barriers and camera preserved")
+-	_check(_save_bytes() == original_saves, "ordinary save slots remain unchanged")
+-	var entries: Array = candidate.entries.duplicate()
+-	candidate.restore()
+-	for entry in entries:
+-		_check(entry.parts.all(func(p): return p.mesh.visible and p.mesh.material_override == p.solid), "candidate disable restores original roof colors/visibility")
+-	if not output.is_empty():
+-		var report := {"checks": checks, "failures": failures, "routes": routes, "captures": captures, "time_scale": Engine.time_scale, "source": FileAccess.get_sha256("res://game/canal_overhead_occlusion.gd"), "scope": "Two overhead landmark groups. Houses retain baseline whole-building alpha; their tall box walls lack an authored low cut cap. Frozen before/after renders separate from ordinary-input local passages. No human preference or performance acceptance."}
+-		var file := FileAccess.open(output.path_join("report.json"), FileAccess.WRITE)
+-		file.store_string(JSON.stringify(report, "  ") + "\n")
+-	driver.queue_free()
++	var snapshot := {}
++	for record in scene.building_visuals + scene.landmark_visuals:
++		for mesh in record.root.get_children():
++			if mesh is MeshInstance3D: snapshot[mesh] = [mesh.material_override, mesh.mesh, mesh.cast_shadow, mesh.visible]
++	var barriers: Array = scene.terrain.barriers().duplicate()
++	var removed = Candidate.new()
++	for size in [Vector2i(960, 540), Vector2i(1280, 720)]:
++		root.size = size
++		for point in [Vector2(6200, 4000), Vector2(6770, 4045), Vector2(6600, 750), Vector2(6650, 1500), Vector2(2480, 1690)]:
++			scene.teleport(point)
++			for flag in [false, true]:
++				scene.overhead_occlusion_enabled = flag
++				removed.install(scene)
++				removed.update(scene, 0.6)
++				for record in scene.building_visuals + scene.landmark_visuals:
++					scene._set_architecture_fade(record.root, true)
++				scene._process(0.1)
++				check(removed.entries.is_empty() and scene.overhead_occlusion.entries.is_empty(), "no hidden overhead groups, even with legacy toggle")
++				for mesh in snapshot:
++					check([mesh.material_override, mesh.mesh, mesh.cast_shadow, mesh.visible] == snapshot[mesh] and mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "original complete opaque building member retained")
++	check(scene.terrain.barriers() == barriers, "roof policy never changes collision")
++	for pair in [[Vector2(6200, 4000), Vector2(6770, 4045)], [Vector2(6600, 750), Vector2(6650, 1500)]]:
++		check(scene.navigation.find_path(pair[0], pair[1]).size() > 1 and scene.navigation.find_path(pair[1], pair[0]).size() > 1, "gate and sluice round trips remain open")
+ 	scene.queue_free()
+@@ -129,79 +45,3 @@ func _run() -> void:
+ 	await process_frame
+-	await _verify_native_mount()
+-	print("Canal overhead occlusion: ", checks, " checks; ", failures, " failures; ", routes.size(), " local passage goals")
++	print("Canal original opaque assets: %d checks, %d failures" % [checks, failures])
+ 	quit(1 if failures else 0)
+-
+-func _verify_native_mount() -> void:
+-	var native = load("res://game/canal_city_trial.tscn").instantiate()
+-	if native.get("overhead_occlusion") == null:
+-		native.free()
+-		return
+-	_check(native.overhead_occlusion_enabled, "production trial enables the tested overhead policy")
+-	root.add_child(native)
+-	current_scene = native
+-	for i in 3: await process_frame
+-	native.set_process(false)
+-	native.set_physics_process(false)
+-	native.simulation.process_mode = Node.PROCESS_MODE_DISABLED
+-	native.teleport(Vector2(6200, 4000))
+-	native._process(0.02)
+-	var gate: Dictionary = native.overhead_occlusion.entries[0]
+-	_check(gate.cleared and gate.parts.all(func(p): return not p.mesh.visible), "native scene immediately removes obstructing gate overhead")
+-	native.overhead_occlusion_enabled = false
+-	native._process(0.02)
+-	_check(gate.parts.all(func(p): return p.mesh.visible) and gate.parts.any(func(p): return p.mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA), "baseline toggle restores meshes and invalidates the old fade cache")
+-	native.overhead_occlusion_enabled = true
+-	native._process(0.02)
+-	gate = native.overhead_occlusion.entries[0]
+-	_check(gate.cleared, "native candidate safely re-enters after legacy comparison")
+-	native.teleport(Vector2(6770, 4045))
+-	native._process(0.6)
+-	_check(not gate.cleared and gate.parts.all(func(p): return p.mesh.visible and p.mesh.material_override == p.solid), "native departure restores the original complete roof")
+-	native.queue_free()
+-	await process_frame
+-
+-func _capture_pair(label: String, point: Vector2) -> void:
+-	for variant in ["baseline", "candidate"]:
+-		candidate.restore()
+-		scene.teleport(point)
+-		for item in scene.building_visuals + scene.landmark_visuals: item.root.remove_meta("fade_state")
+-		scene._process(0.0)
+-		if variant == "candidate": candidate.update(scene, 0.6)
+-		await RenderingServer.frame_post_draw
+-		var frame := root.get_texture().get_image()
+-		_check(frame != null and not frame.is_empty(), "actual rendered frame exists")
+-		var filename := "%s-%dx%d-%s.png" % [variant, root.size.x, root.size.y, label]
+-		frame.save_png(output.path_join(filename))
+-		captures.append(filename)
+-
+-func _walk(goal: Vector2) -> void:
+-	var started := Time.get_ticks_usec()
+-	while scene.player.position.distance_to(goal) > 8.0 and Time.get_ticks_usec() - started < 12000000:
+-		await physics_frame
+-		var path: PackedVector2Array = scene.navigation.find_path(scene.player.position, goal)
+-		var direction: Vector2 = scene.player.position.direction_to(path[1] if path.size() >= 2 else goal)
+-		var input: Vector2 = direction.rotated(-scene.player.input_rotation)
+-		_action("move_left", maxf(0, -input.x)); _action("move_right", maxf(0, input.x))
+-		_action("move_up", maxf(0, -input.y)); _action("move_down", maxf(0, input.y))
+-	for action in ["move_left", "move_right", "move_up", "move_down"]: _action(action, 0)
+-	var reached: bool = scene.player.position.distance_to(goal) <= 8.0
+-	routes.append({"goal": [goal.x, goal.y], "passed": reached})
+-	_check(reached, "actual input reaches local passage goal " + str(goal))
+-	await physics_frame
+-
+-func _action(action: String, strength: float) -> void:
+-	if is_equal_approx(float(held.get(action, 0)), strength): return
+-	held[action] = strength
+-	var event := InputEventAction.new()
+-	event.action = action
+-	event.pressed = strength > 0
+-	event.strength = strength
+-	Input.parse_input_event(event)
+-
+-func _save_bytes() -> Dictionary:
+-	var result := {}
+-	for prefix in ["user://loop_conquest_profile", "user://loop_conquest_1d_unlocks"]:
+-		for suffix in ["_a.json", "_b.json"]:
+-			var path: String = prefix + suffix
+-			result[path] = FileAccess.get_file_as_bytes(path) if FileAccess.file_exists(path) else null
+-	return result
+diff --git a/tests/verify_temple_environment.gd b/tests/verify_temple_environment.gd
+index e0ae583..fb4dde0 100644
+--- a/tests/verify_temple_environment.gd
++++ b/tests/verify_temple_environment.gd
+@@ -17,3 +17,3 @@ func _fresh(enabled: bool, suffix: String, path: String = "res://game/hybrid_reg
+ 	var scene = load(path).instantiate()
+-	# Keep the retained alpha comparison covered independently of the new default.
++	# Legacy visibility flags must not re-enable asset removal.
+ 	scene.temple_occlusion_candidate_enabled = false
+@@ -85,3 +85,3 @@ func _run() -> void:
+ 	await process_frame
+-	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "court remnant fades when its real volume covers the player's feet")
++	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "court remnant remains opaque when it covers the player")
+ 	scene.teleport(Vector2(4320, 1150))
+@@ -98,4 +98,4 @@ func _run() -> void:
+ 	await process_frame
+-	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "complete far threshold fades when it covers the player")
+-	_check(scene.temple_environment_root.get_node("Masonry").material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "other masonry stays solid during selective threshold fade")
++	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "complete threshold remains opaque when it covers the player")
++	_check(scene.temple_environment_root.get_node("Masonry").material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "other masonry remains solid")
+ 	scene.teleport(Vector2(3900, 1120))
+@@ -111,4 +111,4 @@ func _run() -> void:
+ 	await process_frame
+-	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "visible enemy behind the threshold receives the same sight protection")
+-	_check(scene.warning_vertex_count > 0, "existing enemy attack telegraph remains present with the threshold faded")
++	_check(threshold.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "enemy overlap never fades threshold masonry")
++	_check(scene.warning_vertex_count > 0, "existing attack telegraph is still submitted with opaque masonry")
+ 	scene.temple_section._remove_actor(enemy)
+@@ -153,3 +153,3 @@ func _run() -> void:
+ 	scene.temple_section.tick(1.3)
+-	_check(scene.boss_spawned and scene.boss.position == scene.temple_section.BOSS_POINT, "same five-minute destination boss can spawn beside the sample")
++	_check(scene.boss_spawned and scene.boss.position == scene.temple_section.BOSS_POINT, "same authored-time destination boss can spawn beside the sample")
+ 	scene.teleport(scene.temple_section.RETRY_POINT)
+@@ -162,3 +162,3 @@ func _run() -> void:
+ 	await process_frame
+-	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "visible outer-ring warning boundary receives protection even when boss and hero are clear")
++	_check(remnant.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "boss warning overlap never fades the remnant")
+ 	scene.boss.ring_warning = 0
+diff --git a/tests/verify_temple_occlusion_candidate.gd b/tests/verify_temple_occlusion_candidate.gd
+index 9b9318d..d9ebc56 100644
+--- a/tests/verify_temple_occlusion_candidate.gd
++++ b/tests/verify_temple_occlusion_candidate.gd
+@@ -1,3 +1,3 @@
+ extends SceneTree
+-## Focused opt-in comparison contracts, not a human preference or full-suite pass.
++## User requires original opaque assets. Old removal APIs cannot re-enable cuts.
+ const Candidate = preload("res://game/temple_occlusion_candidate.gd")
+@@ -5,6 +5,4 @@ var failures := 0
+ var checks := 0
+-
+ func _initialize() -> void: call_deferred("_run")
+-
+-func _check(ok: bool, message: String) -> void:
++func check(ok: bool, message: String) -> void:
+ 	checks += 1
+@@ -14,166 +12,43 @@ func _check(ok: bool, message: String) -> void:
+ 
+-func _advance(candidate, scene, seconds: float) -> void:
+-	for i in ceili(seconds * 60): candidate.update(scene, 1.0 / 60)
+-
+-func _member(candidate, label: String) -> Dictionary:
+-	for member in candidate.members:
+-		if String(member.mesh.name) == label: return member
+-	return {}
+-
+ func _run() -> void:
+-	root.size = Vector2i(1280, 720)
+ 	var scene = load("res://game/hybrid_region.tscn").instantiate()
+-	# Exercise this helper in isolation; native mount coverage follows below.
+-	if scene.get("temple_occlusion_candidate") != null:
+-		scene.temple_occlusion_candidate_enabled = false
+-	scene.profile_save_prefix = "user://verify_occlusion_candidate_profile"
+-	scene.growth_save_prefix = "user://verify_occlusion_candidate_unlocks"
++	check(not scene.temple_occlusion_candidate_enabled, "cutaway disabled by default")
++	scene.profile_save_prefix = "user://opaque_temple_verify_profile"
++	scene.growth_save_prefix = "user://opaque_temple_verify_unlocks"
+ 	root.add_child(scene)
+-	current_scene = scene
+-	for i in 5: await process_frame
+-	scene.set_process(false)
+-	scene.set_physics_process(false)
+-	scene.simulation.process_mode = Node.PROCESS_MODE_DISABLED
+-	for actor in scene.actors.keys():
+-		if actor != scene.player: scene.temple_section._remove_actor(actor)
+-	var barriers: Array = scene.terrain.barriers().duplicate(true)
+-	var camera_size: float = scene.camera.size
+-	var body: Sprite3D = scene.actors[scene.player].get_node("Body")
+-	var body_depth := body.no_depth_test
+-	var body_priority := body.render_priority
+-	var candidate := Candidate.new()
+-	candidate.install(scene)
+-	_check(candidate.members.size() == 4, "only four named temple members enter the opt-in comparison")
+-	for member in candidate.members:
+-		_check(member.original is StandardMaterial3D and member.original.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "original solid material remains available: " + String(member.mesh.name))
+-		_check(member.base > 0 and member.base < member.full, "authored lower footing is retained: " + String(member.mesh.name))
+-	var threshold := _member(candidate, "RuinedSanctuaryThreshold")
+-	var remnant := _member(candidate, "CourtMasonryRemnant")
+-	for size in [Vector2i(1280, 720), Vector2i(960, 540)]:
+-		root.size = size
+-		await process_frame
+-		scene.teleport(Vector2(3940, 765))
+-		candidate.update(scene, 1.0 / 120)
+-		_check(threshold.cut and is_equal_approx(threshold.height, threshold.base), "actual threshold torso ray clears upper stone at " + str(size))
+-		_check(remnant.height == remnant.full, "distant unrelated court remnant stays complete")
+-		scene.teleport(Vector2(3900, 1120))
+-		_advance(candidate, scene, 0.25)
+-		_check(threshold.cut, "brief direction reversal does not restore the upper threshold")
+-		scene.teleport(Vector2(3940, 765))
+-		var transitions_before: int = threshold.transitions
+-		_advance(candidate, scene, 0.15)
+-		_check(threshold.transitions == transitions_before, "return during grace period does not retrigger a visual change")
+-		scene.teleport(Vector2(3900, 1120))
+-		_advance(candidate, scene, 0.85)
+-		_check(not threshold.cut and is_equal_approx(threshold.height, threshold.full), "sustained departure restores full threshold silhouette")
+-		scene.teleport(Vector2(4770, 960))
+-		_advance(candidate, scene, 0.15)
+-		_check(remnant.cut and is_equal_approx(remnant.height, remnant.base), "court obstruction preserves lower opaque courses and clears upper part")
+-		_check(remnant.mesh.material_override is ShaderMaterial and not Candidate.CUT_SHADER.contains("ALPHA"), "cut material never uses translucent ghost blending")
+-		scene.teleport(Vector2(4320, 1150))
+-		_advance(candidate, scene, 0.85)
+-		_check(not remnant.cut, "court remnant reliably restores after departure")
+-		scene.teleport(Vector2(3980, 850))
+-		scene._update_temple_environment_visibility()
+-		_check(threshold.mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "legacy broad rectangle fades even without face/torso mesh coverage")
+-		candidate.update(scene, 1.0 / 60)
+-		_check(not threshold.cut, "exact camera ray avoids the legacy near-edge false positive")
+-	# An enemy must still receive protection when the player's own view is clear.
+-	var enemy = scene._spawn_enemy_at(Vector2(3940, 765), TrainingEnemy.Role.BEAST, 100.0)
+-	enemy.set_physics_process(false)
+-	scene.teleport(Vector2(3900, 1120))
+-	_advance(candidate, scene, 0.15)
+-	_check(threshold.cut, "visible enemy behind exact threshold geometry is protected")
+-	scene.actors[enemy].hide()
+-	_advance(candidate, scene, 0.85)
+-	_check(not threshold.cut, "hidden actor cannot hold a structure cut")
+-	scene.temple_section._remove_actor(enemy)
+-	# Warning-only fixture: real existing boss ring, no changed dimensions or depth.
+-	scene._spawn_now(scene.temple_section.BOSS_POINT, TrainingEnemy.Role.BEAST, true)
+-	scene.boss.set_physics_process(false)
+-	scene.boss.encounter_active = true
+-	scene.teleport(Vector2(4350, 1180))
+-	scene.boss.ring_warning = 0.55
+-	scene._draw_boss_warning()
+-	var warning_mesh: ImmediateMesh = scene.boss_warning_mesh
+-	_advance(candidate, scene, 0.15)
+-	_check(remnant.cut, "actual boss outer warning can clear the upper remnant without actor overlap")
+-	_check(scene.boss_warning_mesh == warning_mesh and warning_mesh.get_surface_count() > 0, "separate boss ring geometry remains drawn with the upper remnant removed")
+-	scene.boss.ring_warning = 0
+-	_advance(candidate, scene, 0.85)
+-	_check(not remnant.cut, "warning-only upper removal restores after warning ends")
+-	scene.boss.queue_free()
+-	await process_frame
+-	candidate.update(scene, 0.02)
+-	_check(not is_instance_valid(scene.boss), "freed boss reference is safely handled")
+-	var expired := TrainingEnemy.new()
+-	scene.actors[expired] = null
+-	expired.free()
+-	candidate.update(scene, 0.02)
+-	scene.actors.erase(expired)
+-	_check(true, "freed actor reference is skipped before type access")
+-	scene.teleport(Vector2(3940, 765))
+-	_advance(candidate, scene, 0.15)
+-	scene.overview = true
+-	candidate.update(scene, 0.02)
+-	_check(not threshold.cut and threshold.mesh.material_override == threshold.original, "overview immediately restores original solid members")
+-	scene.overview = false
+-	_advance(candidate, scene, 0.15)
+-	scene.temple_section.in_garden = true
+-	candidate.update(scene, 0.02)
+-	_check(not threshold.cut and threshold.height == threshold.full, "garden entry clears all pending cut state")
+-	scene.temple_section.in_garden = false
+-	_advance(candidate, scene, 0.15)
+-	scene.player.health = 0
+-	_advance(candidate, scene, 0.85)
+-	_check(not threshold.cut, "dead player cannot keep upper masonry removed")
+-	_check(scene.terrain.barriers() == barriers and scene.camera.size == camera_size, "candidate preserves all navigation barriers and camera size")
+-	_check(body.no_depth_test == body_depth and body.render_priority == body_priority, "existing single-sprite boss visibility ownership remains untouched")
+-	var original_members: Array = candidate.members.duplicate()
+-	candidate.restore()
+-	for member in original_members:
+-		_check(member.mesh.material_override == member.original, "disabling candidate restores exact original material: " + String(member.mesh.name))
+-	scene.queue_free()
+ 	await process_frame
+-	await _verify_native_mount()
+-	print("Temple occlusion candidate: ", checks, " checks; ", failures, " failures")
+-	quit(1 if failures else 0)
+-
+-
+-func _verify_native_mount() -> void:
+-	var scene = load("res://game/hybrid_region.tscn").instantiate()
+-	if scene.get("temple_occlusion_candidate") == null:
+-		scene.free()
+-		return
+-	_check(scene.temple_occlusion_candidate_enabled, "production temple enables the tested cutaway by default")
+-	scene.profile_save_prefix = "user://verify_occlusion_native_profile"
+-	scene.growth_save_prefix = "user://verify_occlusion_native_unlocks"
+-	root.add_child(scene)
+-	current_scene = scene
+-	for i in 3: await process_frame
+-	scene.set_process(false)
+ 	scene.set_physics_process(false)
+ 	scene.simulation.process_mode = Node.PROCESS_MODE_DISABLED
+-	scene.teleport(Vector2(3940, 765))
+-	scene._process(1.0 / 60)
+-	var member := _member(scene.temple_occlusion_candidate, "RuinedSanctuaryThreshold")
+-	_check(member.cut and member.mesh.material_override is ShaderMaterial, "native frame clears the actual upper obstruction")
+-	scene.temple_occlusion_candidate_enabled = false
+-	scene._process(1.0 / 60)
+-	_check(member.mesh.material_override is StandardMaterial3D and member.mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "disabling first restores source material then runs the exact legacy fade")
+-	_check(scene.temple_occlusion_candidate.members.is_empty(), "legacy comparison releases candidate state")
+-	scene.temple_occlusion_candidate_enabled = true
+-	scene._process(1.0 / 60)
+-	var returned := _member(scene.temple_occlusion_candidate, "RuinedSanctuaryThreshold")
+-	_check(returned.cut and returned.original is StandardMaterial3D, "re-enabling never captures the shader as its original material")
++	var snapshot := {}
++	for group in [scene.temple_environment_root, scene.temple_sanctuary_root, scene.temple_opening_root]:
++		for mesh in group.get_children():
++			snapshot[mesh] = [mesh.material_override, mesh.mesh, mesh.cast_shadow, mesh.visible]
++	var barriers: Array = scene.terrain.barriers().duplicate()
++	var removed = Candidate.new()
++	for size in [Vector2i(960, 540), Vector2i(1280, 720)]:
++		root.size = size
++		for point in [Vector2(416, 1550), Vector2(3980, 850), Vector2(3940, 765), Vector2(4770, 960), Vector2(4320, 1150)]:
++			scene.teleport(point)
++			for flag in [false, true]:
++				scene.temple_occlusion_candidate_enabled = flag
++				removed.install(scene)
++				removed.update(scene, 0.1)
++				scene._update_temple_environment_visibility()
++				scene.TempleSanctuaryScript.update_visibility(scene.temple_sanctuary_root, scene)
++				scene.TempleOpeningScript.update_visibility(scene.temple_opening_root, scene)
++				scene._process(0.1)
++				check(removed.members.is_empty() and scene.temple_occlusion_candidate.members.is_empty(), "no removed upper members, even with legacy toggle")
++				for mesh in snapshot:
++					check([mesh.material_override, mesh.mesh, mesh.cast_shadow, mesh.visible] == snapshot[mesh] and mesh.material_override is StandardMaterial3D and mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "exact original mesh/material/shadow/visibility remain: " + mesh.name)
++	check(scene.terrain.barriers() == barriers, "asset opacity never changes collision")
++	scene.temple_section.enter_garden()
++	scene._process(0.1)
++	check(not scene.temple_environment_root.visible and not scene.temple_sanctuary_root.visible, "separate field transition remains distinct from camera occlusion")
++	scene.temple_section.leave_garden()
++	scene._process(0.1)
++	check(scene.temple_environment_root.visible and scene.temple_sanctuary_root.visible, "main-field return restores environmental roots")
+ 	scene.queue_free()
+ 	await process_frame
+-	var jungle = load("res://game/jungle_pass.tscn").instantiate()
+-	jungle.profile_save_prefix = "user://verify_occlusion_native_jungle_profile"
+-	jungle.growth_save_prefix = "user://verify_occlusion_native_jungle_unlocks"
+-	root.add_child(jungle)
+-	current_scene = jungle
+-	for i in 3: await process_frame
+-	_check(jungle.temple_occlusion_candidate.members.is_empty(), "jungle does not mount temple cut materials")
+-	jungle.queue_free()
+ 	await process_frame
++	print("Temple original opaque assets: %d checks, %d failures" % [checks, failures])
++	quit(1 if failures else 0)

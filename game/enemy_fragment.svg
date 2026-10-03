@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="80" viewBox="0 0 64 80">
+<!-- Existing stone-fragment motif. Lower corners meet the shared ground anchor at y=74. -->
+<path d="M9 50L12 29L25 12L41 9L53 24L57 48L50 65L44 74H34L31 68L25 74H14L10 64Z" fill="#294f4c"/>
+<path d="M13 47L16 30L27 16L39 13L49 27L51 47L43 60L22 61Z" fill="#8fb4a4"/>
+<path d="M16 30L27 16L39 13L35 33L23 40Z" fill="#c4d8bd"/>
+<path d="M39 13L49 27L51 47L40 43L35 33Z" fill="#769c8b"/>
+<path d="M13 47L23 40L40 43L43 60L22 61Z" fill="#a9cbb2"/>
+<path d="M13 49L22 61L25 69L23 71H17L14 63Z" fill="#557f70"/>
+<path d="M43 60L51 47L47 62L42 71H37L35 67Z" fill="#557f70"/>
+<path d="M21 36L29 40L32 36L37 40L47 42L44 46L35 44L31 48L26 44L20 42Z" fill="#294f4c"/>
+<path d="M24 34L29 35L29 39L24 38Z M38 35L45 36L45 40L38 39Z" fill="#75f0d4"/>
+<path d="M33 18L31 25L35 30L33 35" fill="none" stroke="#557f70" stroke-width="2.5" stroke-linejoin="bevel"/>
+<path d="M22 54L30 51L35 55L33 61" fill="none" stroke="#6f9683" stroke-width="2.5" stroke-linejoin="bevel"/>
+</svg>

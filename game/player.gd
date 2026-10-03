@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal defeated
 signal health_changed
 signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool)
+signal basic_target_struck(enemy: TrainingEnemy)
 signal hurt_received(hit_position: Vector2, direction: Vector2)
 signal damage_received(amount: float)
 signal moving_slash_landed(hit_position: Vector2)
@@ -135,6 +136,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	clear_flow_weave()
 	attack_audio.stop()
 	impact_audio.stop()
 
@@ -415,7 +417,9 @@ func _start_attack() -> void:
 	attack_sequence += 1
 	attack_step = next_combo_step
 	flow_weave_attack = flow_weave_ready
-	flow_weave_ready = false
+	# Keep the prepared weave across empty swings while the player repositions.
+	# The first damaging swing consumes it; every target in that swing keeps
+	# the same enhancement and the cooldown refund remains once per swing.
 	flow_weave_refund_used = false
 	flow_wave_used = false
 	ember_followup_attack = ember_followup_timer > 0.0
@@ -441,7 +445,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 	var new_gathered := false
 	var flow_wave_center := Vector2.INF
 	for enemy in get_tree().get_nodes_in_group("training_enemies"):
-		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion():
+		if not is_instance_valid(enemy) or not enemy is TrainingEnemy or enemy.is_queued_for_deletion() or enemy.health <= 0.0:
 			continue
 		var id := enemy.get_instance_id()
 		if hit_targets.has(id):
@@ -458,19 +462,24 @@ func _hit_enemies(attack: Dictionary) -> void:
 		var push_direction := offset.normalized() if offset.length_squared() > 0.01 else attack_direction
 		var finisher := attack_step == combo_limit()
 		hit_targets[id] = true
-		if flow_wave_enabled and flow_weave_attack and not flow_wave_used:
-			flow_wave_used = true
-			flow_wave_center = enemy.global_position
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
+		var health_before: float = enemy.health
 		var counter: bool = enemy.take_direct_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0) * (1.0 + echo_finisher_damage_bonus if echo_finisher_enabled and attack_step == 4 else 1.0), push_direction, finisher)
-		if flow_weave_attack and not flow_weave_refund_used:
+		var dealt_damage: bool = health_before > 0.0 and enemy.health < health_before
+		if flow_weave_attack and dealt_damage and not flow_wave_used and flow_wave_enabled:
+			flow_wave_used = true
+			flow_wave_center = enemy.global_position
+		if flow_weave_attack and dealt_damage and not flow_weave_refund_used:
+			flow_weave_ready = false
 			moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - 0.22 - flow_weave_refund_bonus)
 			flow_weave_refund_used = true
 		if attack_step == 3 and not enemy.is_queued_for_deletion():
 			gathered_enemies.append(enemy)
 			new_gathered = true
 		var effect_direction: Vector2 = (gather_target_global - enemy.global_position).normalized() if attack_step == 3 else push_direction
+		if enemy.health < health_before and enemy.health > 0.0 and not enemy.is_queued_for_deletion():
+			basic_target_struck.emit(enemy)
 		attack_landed.emit(enemy.global_position, effect_direction, attack_step, finisher)
 		if not impact_played_this_attack:
 			impact_played_this_attack = true
@@ -600,6 +609,13 @@ func receive_hit(damage: float, source_position: Vector2 = Vector2.ZERO) -> void
 		defeated.emit()
 
 
+func clear_flow_weave() -> void:
+	flow_weave_ready = false
+	flow_weave_attack = false
+	flow_weave_refund_used = false
+	flow_wave_used = false
+
+
 func restore_for_boss_retry() -> void:
 	health = max_health
 	velocity = Vector2.ZERO
@@ -619,8 +635,7 @@ func restore_for_boss_retry() -> void:
 	hurt_recoil = Vector2.ZERO
 	hit_flash = 0.0
 	hurt_immunity = HURT_INVULNERABILITY
-	flow_weave_ready = false
-	flow_weave_attack = false
+	clear_flow_weave()
 	ember_followup_timer = 0.0
 	ember_followup_attack = false
 	hit_targets.clear()

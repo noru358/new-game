@@ -1,0 +1,51 @@
+{
+  "base_commit": "d59279916697ab9774905fb4ff55f21459d9fa80",
+  "source_sha256": {
+    "game/hybrid_region.gd": "d749d28a899f2823ee1f739da73738d080a83f58035d14d3aca33cf9f862e688",
+    "game/canal_city_trial.gd": "1fc5df14acd6242e1f631c3e439631ad640d3b61f944e044e8c076566e234b66",
+    "game/temple_occlusion_candidate.gd": "5cfb2f934aa0122f7b440b3f7d877d6d2360c54ae5df52027146df89e91e3299",
+    "game/canal_overhead_occlusion.gd": "2edb2d9fc6b2b2fd5c71d4844bb2aee47bb41df7598e9a1154a2ac5879612b95",
+    "game/run_growth.gd": "c2b3c1b992e78d4b19ea3914ae1772863fbc72b7d436f5b717f2c7d8b9f63493",
+    "game/run_result_presenter.gd": "410b6512900b831de11519605998b44e254a54161e955c5dac9594fed9ba2d20",
+    "scripts/launch_price_trial.py": "a53c6f9dff4f0d5441991b9a5d9e4009252e430ccb80c203a8725a883cc0874d",
+    "tests/capture_temple_occlusion_candidate.gd": "e73147811ba3a008ec35e7dd3fd7aabf8d2c13ffd1c4ff4c1a2d3941899e87c7"
+  },
+  "engine": "Godot4.6.3 GL Compatibility / llvmpipe; Dummy audio",
+  "retained_images": {
+    "01-temple-cut-960x540.png": "281b7e277e2ff19b0354e1434afee647ba0944d9366e169ee48bf98095b66d54",
+    "02-result-banked-1280x720.png": "4b823fad6923181bb4ca0c7a583481c1efa70a26467719583184884605605539",
+    "03-canal-sluice-960x540.png": "9e64d3fddc1afbb6f76ae131a1302136db1ceadfc7ea764536ca26302f955112",
+    "04-isolated-rank4-960x540.png": "873ce21ec83b26afa3a5351c5e0f4a8e74912aee366c0e881d4a99499f695d75"
+  },
+  "final_integrated_render": {
+    "result_frames": 16,
+    "result_checks": 755,
+    "canal_frames": 20,
+    "canal_checks": 113,
+    "temple_native_route_frames": 10,
+    "temple_route_waypoints": 19,
+    "temple_state_transitions": 6,
+    "failures": 0
+  },
+  "fixtures": {
+    "result": "Synthetic combat totals; real settlement/retry/UI input and visible labels. Not a normal earned run or balance sample.",
+    "temple": "Normal-speed directional passage, ambient combat and growth disabled; later frozen actual ring-warning geometry. Native scene owns material updates. Baseline standalone route14 transitions vs candidate6 at both sizes; native integrated960 confirms6.",
+    "canal": "Two overhead landmarks only; frozen pairs plus8 ordinary-input local passage goals. Houses remain legacy alpha.",
+    "rank4": "Isolated first/overflow card modal with seeded prior ranks, real XP/key input. Image comes from the dedicated worker fixture; final run_growth source is identical. Neither candidate is enabled in normal source."
+  },
+  "local_checks": {
+    "full_before_last_canal_addition": "60/60",
+    "additional_native_canal": "93 checks plus retained canal regression, passed",
+    "isolated_copy_guards": "9/9 after fixing a probe assumption about the existing rank2 dash starter",
+    "final_remote": "See exact PR head; do not infer from local results"
+  },
+  "capture_cleanup": "A baseline and initial native capture reported one resource still in use at shutdown. Capture helper now restores comparison resources and frees nodes before quit; final native capture exited without that warning. Game material behavior is unchanged by this fixture cleanup.",
+  "source_and_saves": "Private fixture slot byte/absence and explicit source hash guards pass. Source/copy flags and resume identity are separately verified by the existing launcher tests.",
+  "limits": [
+    "human visual/fun/economy acceptance",
+    "house wall occlusion",
+    "interactive real-device/audio/long-session testing",
+    "full first-region completion"
+  ],
+  "publication": "Only relative source/evidence paths and hashes; temporary host paths omitted. Movies remain local review evidence; no large movie is packed or published."
+}

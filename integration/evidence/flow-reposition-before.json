@@ -1,0 +1,63 @@
+{
+  "engine": "4.6-stable (official)",
+  "fixture": "flow_reposition_v48",
+  "human_playtest": false,
+  "rendered": false,
+  "time_scale": 1.0,
+  "trace": [
+    {
+      "attack_sequence": 0,
+      "empowered": false,
+      "health": 986.0,
+      "label": "after_slash",
+      "position": [
+        1010.00012207031,
+        700.0
+      ],
+      "prepared": true,
+      "refunded": false,
+      "slash_cooldown": 0.756666666666666,
+      "step": 0,
+      "target_position": [
+        870.0,
+        700.0
+      ]
+    },
+    {
+      "attack_sequence": 1,
+      "empowered": true,
+      "health": 986.0,
+      "label": "empty_basic",
+      "position": [
+        1010.00012207031,
+        700.0
+      ],
+      "prepared": false,
+      "refunded": false,
+      "slash_cooldown": 0.423333333333332,
+      "step": 0,
+      "target_position": [
+        870.0,
+        700.0
+      ]
+    },
+    {
+      "attack_sequence": 2,
+      "empowered": false,
+      "health": 974.0,
+      "label": "reposition_basic",
+      "position": [
+        975.000122070312,
+        700.0
+      ],
+      "prepared": false,
+      "refunded": false,
+      "slash_cooldown": 0.156666666666665,
+      "step": 2,
+      "target_position": [
+        870.0,
+        700.0
+      ]
+    }
+  ]
+}

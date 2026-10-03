@@ -1,0 +1,245 @@
+{
+  "cases": [
+    {
+      "point": [
+        520.0,
+        2550.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        1350.0,
+        2140.0
+      ],
+      "ratio": 0.993020937188435,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 996,
+      "width": 960
+    },
+    {
+      "point": [
+        2350.0,
+        1510.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        3260.0,
+        830.0
+      ],
+      "ratio": 0.998005982053839,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1001,
+      "width": 960
+    },
+    {
+      "point": [
+        3620.0,
+        970.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        3980.0,
+        970.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        4060.0,
+        690.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        4600.0,
+        690.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        4920.0,
+        1040.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        4780.0,
+        1670.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        4010.0,
+        1730.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        3420.0,
+        1630.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1003,
+      "visible_pixels": 1003,
+      "width": 960
+    },
+    {
+      "point": [
+        520.0,
+        2550.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        1350.0,
+        2140.0
+      ],
+      "ratio": 0.989313835770529,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1759,
+      "width": 1280
+    },
+    {
+      "point": [
+        2350.0,
+        1510.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        3260.0,
+        830.0
+      ],
+      "ratio": 0.997750281214848,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1774,
+      "width": 1280
+    },
+    {
+      "point": [
+        3620.0,
+        970.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        3980.0,
+        970.0
+      ],
+      "ratio": 0.999437570303712,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1777,
+      "width": 1280
+    },
+    {
+      "point": [
+        4060.0,
+        690.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        4600.0,
+        690.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        4920.0,
+        1040.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        4780.0,
+        1670.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        4010.0,
+        1730.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    },
+    {
+      "point": [
+        3420.0,
+        1630.0
+      ],
+      "ratio": 1.0,
+      "unobstructed_pixels": 1778,
+      "visible_pixels": 1778,
+      "width": 1280
+    }
+  ],
+  "failures": 0
+}

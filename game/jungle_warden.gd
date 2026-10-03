@@ -30,10 +30,6 @@ func _ready() -> void:
 	contact_margin = 5.0
 
 
-func _attack_delay() -> float:
-	return 1.45 if phase == 2 else 1.20
-
-
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	sweep_burst_time = maxf(0.0, sweep_burst_time - delta)
@@ -78,6 +74,7 @@ func _beast_velocity(delta: float) -> Vector2:
 
 func _begin_warden_attack(gust: bool) -> void:
 	if not is_instance_valid(target): return
+	boundary_warning_granted = false
 	locked_direction = global_position.direction_to(target.global_position)
 	if locked_direction == Vector2.ZERO: locked_direction = Vector2.RIGHT
 	warning_duration = 0.70 if phase == 1 else 0.62
@@ -97,6 +94,7 @@ func _after_warden_strike(gust_next: bool) -> void:
 		pending_gust = gust_next
 		combo_gap = 0.18
 	else:
+		boundary_warning_granted = false
 		recovery_time = _attack_delay()
 		attack_cooldown = 0.0
 
@@ -109,6 +107,14 @@ func suspend_encounter() -> void:
 	gust_burst_time = 0.0
 	combo_gap = 0.0
 	combo_attacks_left = 0
+
+
+func resume_from_boundary() -> void:
+	super.resume_from_boundary()
+	if not boundary_warning_granted:
+		if sweep_warning > 0.0: sweep_warning = maxf(sweep_warning, REENTRY_WARNING_FLOOR)
+		if gust_warning > 0.0: gust_warning = maxf(gust_warning, REENTRY_WARNING_FLOOR)
+		boundary_warning_granted = sweep_warning > 0.0 or gust_warning > 0.0
 
 
 func combat_cue() -> String:

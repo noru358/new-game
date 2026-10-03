@@ -6,7 +6,10 @@ const AwakeningCatalog = preload("res://game/awakening_catalog.gd")
 const DiagnosticsScript = preload("res://game/run_diagnostics.gd")
 const TempleEnvironmentScript = preload("res://game/temple_environment_kit.gd")
 const TempleSanctuaryScript = preload("res://game/temple_sanctuary_environment.gd")
-const BOSS_TIME := 300.0
+const TempleOcclusionCandidateScript = preload("res://game/temple_occlusion_candidate.gd")
+const EnvironmentOpacity = preload("res://game/environment_opacity.gd")
+const TempleOpeningScript = preload("res://game/temple_opening_environment.gd")
+const BOSS_TIME := 240.0
 const MAX_ENEMIES := 72
 const TempleSectionScript = preload("res://game/temple_section.gd")
 var temple_section: Node
@@ -16,6 +19,10 @@ var temple_environment_enabled := not OS.get_cmdline_user_args().has("--temple-b
 var temple_environment_root: Node3D
 var temple_sanctuary_enabled := not OS.get_cmdline_user_args().has("--sanctuary-baseline")
 var temple_sanctuary_root: Node3D
+var temple_opening_enabled := not OS.get_cmdline_user_args().has("--opening-baseline")
+var temple_opening_root: Node3D
+var temple_occlusion_candidate_enabled := false # Sight-based asset removal is disabled.
+var temple_occlusion_candidate = TempleOcclusionCandidateScript.new()
 
 var practice_mode := false
 var region_id := RunProfile.TEMPLE_REGION
@@ -50,12 +57,15 @@ var replay_button: Button
 var retry_button: Button
 var boss_warning_mesh := ImmediateMesh.new()
 var echo_wisp_mod_enabled := false
+var companion_focus_trial := true
 var ember_strike_mod_enabled := false
 var echo_wisp_fired_sequence := -1
 var grotto_awakening_applied := false
 var echo_grotto_fired_sequence := -1
 var echo_grotto_blasts: Array[Dictionary] = []
 var pause_menu: ColorRect
+var settings_panel: CanvasLayer
+var settings_button: Button
 var build_details_label: RichTextLabel
 var pause_equipment_label: RichTextLabel
 var awakening_overlay: ColorRect
@@ -123,13 +133,13 @@ func _ready() -> void:
 		run_ended = true
 		paused = true
 		get_tree().paused = true
-		result_text.text = "저장 기록과 정상 백업을 읽을 수 없습니다.\n기존 파일은 보존했습니다.\n저장 폴더를 열어 백업 파일을 확인하세요."
+		result_text.text = profile.save_block_reason()
 		replay_button.disabled = true
 		retry_button.hide()
 		save_folder_button.show()
 		result_overlay.show()
 	else:
-		if region_id in [RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION]:
+		if region_id in [RunProfile.TEMPLE_REGION, RunProfile.JUNGLE_REGION, RunProfile.WETLAND_REGION]:
 			temple_section = _create_region_section()
 			temple_section.setup(self)
 			add_child(temple_section)
@@ -141,6 +151,8 @@ func _ready() -> void:
 			growth.choice_state_changed.connect(func(): diagnostics.observe(self))
 			diagnostics.observe(self)
 
+	preload("res://game/run_flow_hud_presenter.gd").new().setup(self)
+
 
 func _create_region_section() -> Node:
 	return TempleSectionScript.new()
@@ -148,19 +160,16 @@ func _create_region_section() -> Node:
 
 func _apply_preparation() -> void:
 	var ranks: Dictionary = profile.growth_ranks
-	player.permanent_basic_damage_bonus = 0.05 * int(ranks.POWER)
-	player.max_health += 10.0 * int(ranks.VITALITY)
-	player.permanent_dash_cooldown_reduction = 0.04 * int(ranks.MOBILITY)
-	player.permanent_slash_cooldown_reduction = 0.03 * int(ranks.SLASH)
-	player.permanent_finisher_reach_bonus = 0.05 * int(ranks.FINISH)
-	player.permanent_damage_reduction = 0.05 * int(ranks.GUARD)
-	player.permanent_move_speed_bonus = 0.04 * int(ranks.SPEED)
-	growth.permanent_wisp_cadence_reduction = 0.04 * int(ranks.WISP)
+	PermanentGrowthCatalog.apply_to_run(self)
 	if profile.attack_branch == "DIRECT":
 		player.permanent_basic_damage_bonus += 0.10
 		player.moving_slash_damage_bonus += 0.10
 	elif profile.attack_branch == "COMPANION":
 		wisp.permanent_damage_bonus += 0.10
+		if companion_focus_trial:
+			var focus=preload("res://game/companion_focus.gd").new()
+			focus.setup(self)
+			add_child(focus)
 	if profile.equipped_weapon == "W_FLOW":
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20
@@ -304,10 +313,12 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	if is_instance_valid(temple_environment_root):
 		temple_environment_root.visible = temple_section == null or not temple_section.in_garden
-		_update_temple_environment_visibility()
 	if is_instance_valid(temple_sanctuary_root):
 		temple_sanctuary_root.visible = temple_section == null or not temple_section.in_garden
-		TempleSanctuaryScript.update_visibility(temple_sanctuary_root, self)
+	# Architecture stays fully opaque. Legacy flags cannot re-enable removal.
+	if not temple_occlusion_candidate.members.is_empty(): temple_occlusion_candidate.restore()
+	if is_instance_valid(temple_opening_root):
+		temple_opening_root.visible = temple_section == null or not temple_section.in_garden
 	if practice_mode: return
 	if diagnostics != null: diagnostics.observe(self)
 	if ending_remaining > 0.0:
@@ -392,34 +403,7 @@ func _boss_covers_player(body: Sprite3D) -> bool:
 
 
 func _update_temple_environment_visibility() -> void:
-	if not temple_environment_root.visible or not is_instance_valid(player): return
-	var spec: Dictionary = temple_environment_root.get_meta("elevated_threshold", {})
-	if spec.is_empty(): return
-	var targets: Array[Vector2] = [player.position]
-	for actor in actors:
-		if not is_instance_valid(actor) or not actor is TrainingEnemy or actor.health <= 0.0: continue
-		if actor.position.distance_to(player.position) > 1500.0: continue
-		var screen := camera.unproject_position(terrain.world_point(actor.position, 60))
-		if get_viewport().get_visible_rect().grow(40).has_point(screen): targets.append(actor.position)
-	var obscures := false
-	if not overview:
-		for target in targets:
-			if navigation._segment_hits_rect(target, target + Vector2.ONE * float(spec.height), (spec.visual_bounds as Rect2).grow(25.0)):
-				obscures = true
-				break
-	# Only the complete far threshold fades; other masonry/paving stays solid.
-	# Alpha materials work in Compatibility, unlike instance transparency.
-	for item in temple_environment_root.get_meta("threshold_meshes", []):
-		var instance := item as MeshInstance3D
-		if not instance.has_meta("solid_material"):
-			var solid := instance.material_override as StandardMaterial3D
-			var faded := solid.duplicate() as StandardMaterial3D
-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			faded.albedo_color.a = 0.16
-			instance.set_meta("solid_material", solid)
-			instance.set_meta("faded_material", faded)
-		instance.material_override = instance.get_meta("faded_material" if obscures else "solid_material")
-		instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if obscures else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	EnvironmentOpacity.restore(temple_environment_root)
 
 
 func _warning_strength(remaining: float, duration: float) -> float:
@@ -459,9 +443,9 @@ func _encounter_phase() -> Dictionary:
 		return {"name": "원거리 진형 · 뒤의 적부터 돌파", "rate": 0.30, "weights": [40.0, 15.0, 30.0, 10.0, 5.0]}
 	if run_time >= 155.0 and run_time < 180.0:
 		return {"name": "숨 고르기 · 남은 적 정리", "rate": -0.30, "weights": [70.0, 15.0, 5.0, 5.0, 5.0]}
-	if run_time >= 210.0 and run_time < 235.0:
+	if run_time >= 190.0 and run_time < 215.0:
 		return {"name": "지원 진형 · 지원 적 우선 처치", "rate": 0.35, "weights": [35.0, 20.0, 15.0, 10.0, 20.0]}
-	if run_time >= 235.0 and run_time < 260.0:
+	if run_time >= 215.0 and run_time < BOSS_TIME:
 		return {"name": "숨 고르기 · 보스전 준비", "rate": -0.35, "weights": [65.0, 15.0, 10.0, 5.0, 5.0]}
 	return {}
 
@@ -655,6 +639,7 @@ func _finish_run(result: String) -> void:
 	if diagnostics != null: diagnostics.finish(self, result)
 	if temple_section != null: temple_section.retry_overlay.hide()
 	run_ended = true
+	player.clear_flow_weave()
 	end_result = result
 	paused = true
 	get_tree().paused = true
@@ -703,6 +688,7 @@ func _show_result() -> void:
 	var heading := boss_name + " 격파 · 성공" if end_result == "SUCCESS" else "런 종료 · 사망" if end_result == "DEFEAT" else "런 종료 · 귀환"
 	if settlement_pending:
 		result_text.text = "%s\n정산 저장에 실패했습니다. 저장을 재시도하세요.\n종료하면 미저장 화폐가 사라집니다.\n현재 획득 화폐 %d" % [heading, run_currency]
+		preload("res://game/run_result_presenter.gd").present(self)
 		return
 	result_text.text = "%s\n생존 시간 %02d:%02d  ·  처치 %d\n획득 %d  ·  손실 %d  ·  정산 +%d  ·  누적 %d%s\n\n야영지에서 다음 지역과 장비를 고를 수 있습니다." % [
 		heading, floori(run_time / 60.0), floori(fmod(run_time, 60.0)), kills,
@@ -711,6 +697,8 @@ func _show_result() -> void:
 	if not profile.last_mod_award.is_empty():
 		var option_gear := RunProfile.gear_for_affix(profile.last_mod_award)
 		result_text.text += "\n%s 옵션 획득: %s\n야영지 장비창에서 장착할 수 있습니다." % [RunProfile.gear_name(option_gear), RunProfile.affix_description(profile.last_mod_award)]
+
+	preload("res://game/run_result_presenter.gd").present(self)
 
 
 func _retry_settlement() -> void:
@@ -728,6 +716,9 @@ func _update_run_hud() -> void:
 		if boss_health_bar.visible:
 			boss_health_bar.max_value = boss.max_health
 			boss_health_bar.value = boss.health
+		if is_instance_valid(boss) and actors.has(boss):
+			var world_bar: Node3D = actors[boss].get_node_or_null("HealthBar")
+			if world_bar != null: world_bar.visible = not boss_health_bar.visible
 
 
 func _encounter_cue() -> String:
@@ -859,6 +850,7 @@ func _build_run_ui() -> void:
 	retry_button.pressed.connect(_retry_settlement)
 	result_overlay.add_child(retry_button)
 	var quit_button := Button.new()
+	quit_button.name = "ResultQuit"
 	quit_button.text = "게임 종료"
 	quit_button.position = Vector2(475, 595)
 	quit_button.size = Vector2(330, 54)
@@ -901,13 +893,23 @@ func _build_pause_menu(canvas: CanvasLayer) -> void:
 	var resume := Button.new()
 	resume.text = "계속  [Esc]"
 	resume.position = Vector2(32, 490)
-	resume.size = Vector2(342, 50)
+	resume.size = Vector2(220, 50)
 	resume.pressed.connect(func(): _set_paused(false))
 	pause_menu.add_child(resume)
+	settings_panel = preload("res://game/play_settings_panel.gd").new()
+	settings_panel.setup(self)
+	settings_panel.can_resume = func(): return not run_ended and not growth.choosing and not awakening_overlay.visible and not retreat_overlay.visible and not (temple_section != null and temple_section.retry_pending)
+	settings_button = Button.new()
+	settings_button.name = "PlaySettingsButton"
+	settings_button.text = "설정"
+	settings_button.position = Vector2(280, 490)
+	settings_button.size = Vector2(220, 50)
+	settings_button.pressed.connect(func(): settings_panel.open(settings_button))
+	pause_menu.add_child(settings_button)
 	var retreat := Button.new()
 	retreat.text = "귀환…  [G]"
-	retreat.position = Vector2(406, 490)
-	retreat.size = Vector2(342, 50)
+	retreat.position = Vector2(528, 490)
+	retreat.size = Vector2(220, 50)
 	retreat.pressed.connect(_request_retreat)
 	pause_menu.add_child(retreat)
 	pause_menu.hide()
@@ -1038,6 +1040,9 @@ func _return_to_hub() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if settings_panel != null and settings_panel.is_open():
+		settings_panel.handle_input(event)
+		return
 	if awakening_overlay != null and awakening_overlay.visible:
 		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE: _close_awakening_receipt()
 		# Leave mouse/keyboard focus activation to the receipt's own button.
@@ -1085,6 +1090,7 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	var layout = region_layout()
 	var use_temple_kit := region_id == RunProfile.TEMPLE_REGION and temple_environment_enabled
 	var use_sanctuary := use_temple_kit and temple_sanctuary_enabled
+	var use_opening := use_temple_kit and temple_opening_enabled
 	if region_id == RunProfile.TEMPLE_REGION:
 		for wall in terrain.wall_areas:
 			if TempleEnvironmentScript.replaces_wall(wall): wall["visual"] = not use_temple_kit
@@ -1093,9 +1099,10 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	var main_mesh := terrain_mesh
 	var main_faces := resolved_vertical_faces.duplicate(true)
 	var main_lips := resolved_lips.duplicate(true)
-	super._build_terrain(layout.FIELD_BOUNDS)
-	garden_terrain_mesh = terrain_mesh
-	garden_terrain_mesh.hide()
+	if layout.FIELD_BOUNDS.has_area():
+		super._build_terrain(layout.FIELD_BOUNDS)
+		garden_terrain_mesh = terrain_mesh
+		garden_terrain_mesh.hide()
 	terrain_mesh = main_mesh
 	resolved_vertical_faces = main_faces
 	resolved_lips = main_lips
@@ -1105,3 +1112,6 @@ func _build_terrain(render_bounds := Rect2()) -> void:
 	if use_sanctuary:
 		temple_sanctuary_root = TempleSanctuaryScript.build(self)
 		add_child(temple_sanctuary_root)
+	if use_opening:
+		temple_opening_root = TempleOpeningScript.build(self)
+		add_child(temple_opening_root)

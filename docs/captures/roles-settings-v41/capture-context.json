@@ -1,0 +1,37 @@
+{
+  "base_commit": "020ef79f2c576ddd790730d0ed693781d9bc47a0",
+  "engine": "Godot4.6.3 GL Compatibility / llvmpipe; Dummy audio",
+  "source_sha256": {
+    "game/enemy_role_visual.gd": "8de5e24095453086857cd69d8bb435662aa7f036bead1d5410532defaafc92e8",
+    "game/enemy_lamp.svg": "22145019b353d7536060d6d9a5bcf700e2a43c1a6e3ef3c41e7f402632b9de2e",
+    "game/enemy_zone.svg": "6fc32fbaad444b0e3e4ee84b5059406f998d495617f4a5d624f6110dc9e402f0",
+    "game/enemy_support.svg": "32fad677a42d9763cbd6c106f91df0ae12ad77c82f75221c8da8c9497c67b4b6",
+    "game/play_settings.gd": "ec5626d183891248098eed6ca68bb7fc2d5134f24926385e4c603b9b9a84ca8b",
+    "game/play_settings_panel.gd": "42b735cac0968d903c0c9b41df741a1508bc48c4b514493018b60935e90b3803",
+    "game/hybrid_region.gd": "645f921276daf119d6122f78af60866f256225978953f26f783c254f2542049b",
+    "game/travel_camp.gd": "eb84ea32ec8389327a925b9c7f38ae03d8aa5ac2b677ab62a5e8d7da72ac1278",
+    "tests/verify_play_settings.gd": "1deeff7d62acc203deee1a26f549ded2de68070ae6bbd2440c5fe0ab5c890f05",
+    "tests/sample_remaining_enemy_roles.gd": "d7d42eb449eb54b8843b49b6bb71ea957c749e6784efdf16e3bdb782a2daf842"
+  },
+  "retained_images": {
+    "01-camp-settings-960.png": "e1b04e73df6ba94ba75a4b7c44da8031258a335c367699551fe4661aea81ae98",
+    "02-temple-settings-1280.png": "3bb5514f3f1140512da7c4be4c11d9887c8ec502ff1631704df6afbc0687ddb7",
+    "03-jungle-live-roles-960.png": "26c27fa7caea1901f09fa8c60113ae21925839cb41909c28f37e9b646c69ae09"
+  },
+  "checks": {
+    "local_scripts": "62/62",
+    "isolated_copies": "9/9",
+    "native_settings_GL": "220 checks,0 failures",
+    "role_GL": "356 checks,0 failures",
+    "role_live": "Two final compact10-second existing-AI/input fixtures;0 failures, normal saves preserved"
+  },
+  "fixture": "Combat starts with the five existing roles injected near the entrance and suppresses ambient spawns. Stats,time scale and actual behavior remain original. This is not natural-run balance or human acceptance. UI values/profile history are isolated fixtures.",
+  "settings": "Real scene mounts are required in final tests. Actual Linux X11 window/fullscreen round trip, gain/mute values, new-process restore, bad values/write failure,pause/focus/hotkey boundaries and normal-slot preservation checked. Deliberately corrupt ConfigFile fixture emits an expected parse-error log; assertions pass. Audio uses Dummy and was not heard.",
+  "limits": [
+    "macOS/Windows interactive window behavior",
+    "audio listening",
+    "long-session hardware performance",
+    "human art/place/fun/economy acceptance"
+  ],
+  "publication": "Relative source and evidence paths only. No temporary machine paths or large movies included."
+}

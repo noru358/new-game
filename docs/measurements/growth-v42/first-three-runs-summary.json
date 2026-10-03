@@ -1,0 +1,79 @@
+{
+  "complete": true,
+  "checkpoint_state_equal": true,
+  "time_scale": 1,
+  "human_playtest": false,
+  "source_commit": "56fb84619c9403c81cef143ffea04024168fa2f6",
+  "source_boss_time": 240,
+  "rows": [
+    {
+      "run": 1,
+      "active_seconds": 240.000000000083,
+      "choice_seconds": 42.149081,
+      "choices": 28,
+      "settlement": {
+        "awarded": 394,
+        "earned": 493,
+        "first_clear": false,
+        "lost": 99,
+        "result": "RETREAT",
+        "save_pending": false
+      },
+      "purchases": [
+        {
+          "kind": "growth",
+          "id": "VITALITY"
+        },
+        {
+          "kind": "gear",
+          "id": "A_EMBER"
+        }
+      ],
+      "bank": 350,
+      "disk_reload_stable": true,
+      "result_to_camp_stable": true
+    },
+    {
+      "run": 2,
+      "active_seconds": 240.000000000083,
+      "choice_seconds": 40.616495,
+      "choices": 27,
+      "settlement": {
+        "awarded": 388,
+        "earned": 486,
+        "first_clear": false,
+        "lost": 98,
+        "result": "RETREAT",
+        "save_pending": false
+      },
+      "purchases": [
+        {
+          "kind": "growth",
+          "id": "POWER"
+        }
+      ],
+      "bank": 718,
+      "disk_reload_stable": true,
+      "result_to_camp_stable": true
+    },
+    {
+      "run": 3,
+      "active_seconds": 240.000000000083,
+      "choice_seconds": 40.628764,
+      "choices": 27,
+      "settlement": {
+        "awarded": 388,
+        "earned": 485,
+        "first_clear": false,
+        "lost": 97,
+        "result": "RETREAT",
+        "save_pending": false
+      },
+      "purchases": [],
+      "bank": 1106,
+      "disk_reload_stable": true,
+      "result_to_camp_stable": true
+    }
+  ],
+  "note": "Actual camp/result/shop input. Three real confirmed retreats at240active seconds; no boss clear or victory/first-clear bonuses. Host-disconnect split after run1; remaining2 start from its recorded after-shopping state in a new UUID fixture. First observation-controller death at77s is a separate input-context sample, not this journey."
+}

@@ -1,0 +1,75 @@
+# First-region v44 measurements
+
+These are automated diagnostic samples, not human playtests or acceptance of fun/art.
+
+## Normal-speed first-three-run journey
+
+Source: `09bcf2f4b86713a0a9fcf63505b9a2f91cdd2093`; official Godot 4.6.3, Linux headless, time scale 1.0, seed250, 270-active-second bound per run. Existing `sample_fresh_economy.gd` was not changed. Fresh marked XDG storage; original user saves/apps were not used. Source hashes at start/end match in the raw JSON.
+
+The driver uses actual input, offered cards with 1.5-second dwell per selection, result/camp UI, purchases and separate equip actions. No forced XP, money, health or victory.
+
+| Run | Outcome | Active / wall seconds | Card interruptions | Earned / awarded |
+|---|---|---:|---:|---:|
+| 1 | Boss success | 254.18 / 296.66 | 27 | 462 / 512 |
+| 2 | Boss success | 254.32 / 298.21 | 28 | 496 / 516 |
+| 3 | Confirmed retreat at bound | 270.00 / 273.21 | 2 | 9 / 7 |
+
+After run1 the driver bought VITALITY1 (20) and W_FLOW (35), then equipped W_FLOW separately. After run2 it bought/equipped A_EMBER (24). Purchases, departure effects and disk/camp reloads agreed. Final currency956 reflects the deliberately sparse purchase policy, not a user preference to hoard currency.
+
+Run3 stopped accumulating kills after9 and traveled much less despite continued clock/input. Its position was not recorded, so neither a game navigation bug nor a controller failure is established. It must not be averaged into a representative earning rate. A synthetic third-run equipment/unlock repro with seed250 did not repeat the stall and died after about80seconds; this is not a matched replay or balance distribution.
+
+Run1 selected27 upgrades; the chosen fixed1.5-second dwell consumed42.18 wall seconds. This supports investigating interruption frequency, not a claim that human play takes the same time.
+
+## Interruption-schedule replay
+
+`replay_choice_interruption_trace.gd` replays run1's observed active-time level-up timestamps. It does not replay damage, combat, movement or player decisions.
+
+The default produced27 modal interruptions. Opt-in batching (first6 immediate, later2 points/window,18-active-second lone-point limit, boss-ready flush) produced17. Both earned/spent27 points with0 pending and require27 clicks. Wall-time savings and human preference were NOT measured. Separate contract tests preserve immediate level healing, unlocks and XP; pending card effects arrive later, so combat outcomes can still differ.
+
+## Navigation diagnosis
+
+A64-unit sampling audit of open30-radius floor found points unable to attach to the32-unit A* grid. Some points are outside useful routes; this is not proof that a player was trapped there.
+
+Two independent focused failures were reproduced:
+- Grid padding of20 beyond actor radius erased a100-wide corridor even though a60-diameter actor fits. Candidate margin4 retains physical radius and path safety; a50-wide corridor remains closed.
+- Rect2 excludes its bottom/right boundary, whereas segment intersection includes it. Exact32-unit padded-edge contact incorrectly rejected outward escape on those two sides. Candidate inclusive tolerance0.001 treats all four sides consistently and still rejects inward crossing.
+
+The original temple's sampled unattached points went2→0 (one still disconnected); jungle15→6 with10 disconnected; candidate circuit19→0 with0 disconnected. Do not claim whole-map navigation solved or that either defect caused the unlocated run3 stall.
+
+A previous hybrid-height test assumed the second route waypoint must already be belowy1670. The candidate takes additional safe waypoints before going around the water. The assertion now checks every point/segment against physical clearance and verifies the lower dry detour, rather than assuming a particular waypoint index. Focused/full regression outcomes belong in DEV_STATUS after they finish.
+
+
+## Three build behavior samples
+
+Pinned source8353c91, the existing normal-speed `sample_build_comparison.gd`, three separate fresh XDG roots run in parallel. Each uses synthetic prior history and294 cumulative expenditure; these are not fresh-earned economic runs. Gather/movement use their tailored policies; companion uses the existing single-hit/reposition link policy. Same seed250,270-active-second bound; different controllers and card offerings prevent causal build-strength ranking.
+
+- Gather reached the boss retry offer at250.23active seconds,341kills,27choices. The diagnostic deliberately stops at that offer, so this is neither settled defeat nor victory. Fourth hits75; movement-slash hits46.
+- Movement succeeded at252.63active seconds,346kills,28choices. Fourth hits38; movement-slash hits174; empowered-basic refund events114. These counters show the intended action patterns are exercised under their different policies, not proof of human preference.
+- Companion link policy died at60.73active seconds,46kills,6choices. It had no S_WISP_COUNT choice. Third/fourth hit counts2/0 reflect its deliberate single-hit retreat controller, so do not infer that the companion branch itself is weak. The bounded common-controller follow-up reached the boss retry offer at252.77active seconds,344kills/28choices; it did not settle a defeat or victory. Wisp hits700 versus50 in the short link-policy sample, and fourth hits31 versus0, show why the early failure cannot diagnose branch strength. Different resulting fights/cards still prevent a causal numerical ranking. No buff was applied based on that early failure.
+
+Time scale1 and source hashes/fixture/input details are recorded in each raw JSON. Headless concurrent runs do not validate frame-rate performance or art.
+
+## Jungle southern circuit candidate
+
+The existing ridge, upper stone bridge, lower gate approach, boss, hidden grotto and economy remain. A separate development scene extends the main bounds from5600×2400 to5600×3600, with an80→0 riverbank descent, an actually walkable40-high landing, a ruined transit court and a return to the original forest/ridge. New water and landing holes share collision/render records; the enlarged bounds do not bypass the hidden-field separator. Normal progression scenes are unchanged.
+
+Development access explicitly seeds a temple clear with0earned currency (existing50first-clear award) and6prior unlock levelups in separate trial save prefixes. It is not a naturally unlocked fresh campaign. No ordinary save was used for the tests.
+
+Normal-speed input measurement, enemies/arena scheduling disabled: original riverbank→west forest route2509.45distance/8.07nominal physics seconds; the optional southern route between the same endpoints with its place checkpoints4018.35/12.02seconds. Wall times7.90/11.91seconds, time scale1. This compares different chosen routes, not a claim of50%more meaningful content. Combat, exploration dwell and human place perception remain unverified.
+
+The first narrow landing approach failed path connectivity because its lower entry overlapped the riverbank ramp's side. The landing was widened to260 and water was cut beneath both its platform and ramp; all authored points then connected. A boss-time/engagement/injected-kill/settlement/reload check also passes using the unchanged jungle boss contract. These are construction/lifecycle checks, not a natural full-run victory.
+
+The latest courtyard render exposed a new decorative paving surface coplanar with the top of the fake shadow cylinder. New paving tops were lowered below the shadow's bottom and a mesh-height assertion added, rather than moving actors in front of terrain. The correction and new southern field still require their next rendered inspection.
+
+The first southern render succeeded at960/1280 and showed the landing/transit court/return in the same field. The corrected temple paving now renders a round unobstructed fake shadow. The new southern descent still inherited large raised rock slabs, so the candidate alone replaces those with slope-following stone bands below the shadow bottom. The candidate also removes the construction checker pattern, retaining actual terrain boundaries. Updated images remain pending.
+
+A fixed-seed spawn audit found100/100 reachable spawn candidates at the old bank, new transit court and new landing. With the companion disabled and a stationary player, one enemy from an actual valid bank spawn physically followed the route and dealt10contact damage (137frames at4× time scale). This rules out the sampled landing being completely disconnected/safe from pursuit; it does not establish pressure balance or prevent every possible exploit.
+
+## v45 습지 정상속도 한 판
+- 실제 게임파일205개를 원격 `baa68b5740a84e3a3974ea8ae4f28c2119143678`와 바이트 비교해 일치 확인. UUID 격리 복사본, Godot4.6.3, seed250, time_scale1.0이며 실행 후 source/copy 해시 가드 통과.
+- 선행 사원/정글 성공과6누적레벨은 합성 준비값이다.249투자(POWER2/WISP2/VITALITY1, W_FLOW/A_EMBER, DIRECT) 이후 습지 안의 XP/피해/회복/시계/보스/승리는 주입하지 않았다. 자연스러운 신규3맵 캠페인 완주 증거는 아니다.
+- 실제 입력 컨트롤러:70초 단위 목표 경로, 가까운 적 직접 공격/베기/대시, 제시된 카드 중 기존 선호순위, 선택마다 합성1.5초 읽기 대기. 사람 플레이가 아니다.
+- 성공251.97 active초 /331.92 wall초, 보스진입241.20→처치251.97, HP2/110. 325킬·455획득·505실정산, 잔액251→756 및 O_DEEP_WETLAND 저장 확인.
+-26선택/40.78초 카드 정지, 누적 피격475/레벨회복367. no-target이동55.95·정지21.93은 컨트롤러/시야 기준 proxy이며 무의미한 이동·버그 확정이 아니다. 고정70초 목표에 도착해 기다리는 정책도 포함된다.
+-4분은 보스 준비 active시간이다. 실제 총 wall시간에는 카드 정지/보스전/이 실행기의 처리 지연이 포함된다. 이 headless 호스트 시간을 사용자Mac 프레임/체감으로 일반화하지 않는다.26회 중단과 회복·경제의 연결은 후속 체감 검증 과제다.
+- 원자료: `wetland-normal-speed-grown.json`. 재현 fixture `tests/sample_wetland_run.gd`, UUID 복사본 launcher `scripts/launch_flow_sample.py`.

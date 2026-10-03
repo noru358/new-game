@@ -1,0 +1,20 @@
+{
+  "source": "3f3d8ecf407348b11dd078b2ff15b08befa8d80c",
+  "run": 37098234365,
+  "job": 111132450428,
+  "artifact": 11264958302,
+  "runner_duration_seconds": 264.985,
+  "generic_step_seconds": 265,
+  "whole_job_seconds": 363,
+  "serial_generic_seconds": 446,
+  "serial_whole_job_seconds": 525,
+  "exact_coverage": true,
+  "headless_count": 103,
+  "dedicated": [
+    "tests/verify_actor_terrain_depth.gd"
+  ],
+  "all_passed": true,
+  "generic_reduction_percent": 40.582959641255606,
+  "whole_job_reduction_percent": 30.857142857142854,
+  "scope": "One matched-code runner sample; no universal speed guarantee. Peak RSS not measured."
+}

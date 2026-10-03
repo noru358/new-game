@@ -5,6 +5,8 @@ const Terrain = preload("res://game/hybrid_terrain.gd")
 
 var arena: Node3D
 var refresh_time := 0.0
+var title_text := "높이·동선"
+var legend_override := ""
 var cached_projection_limits := Rect2()
 var cached_bounds := Rect2()
 
@@ -28,7 +30,7 @@ func _draw() -> void:
 	if not is_instance_valid(arena):
 		return
 	draw_rect(Rect2(Vector2.ZERO, size), Color(0.05, 0.13, 0.15, 0.91))
-	draw_string(get_theme_default_font(), Vector2(12, 22), "높이·동선", HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("e9eee4"))
+	draw_string(get_theme_default_font(), Vector2(12, 22), title_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("e9eee4"))
 	var bounds: Rect2 = arena.display_bounds()
 	var world_size: Vector2 = bounds.size
 	var ground_outline := PackedVector2Array([
@@ -68,8 +70,7 @@ func _draw() -> void:
 				var last := Vector2(area.end.x, seam)
 				draw_line(_map_point_at(first, arena.terrain.ramp_height(ramp, first)), _map_point_at(last, arena.terrain.ramp_height(ramp, last)), Color("244742"), 1.1)
 	for wall in arena.terrain.wall_areas:
-		if not wall.get("visual", true) or not bounds.intersects(wall.area): continue
-		if not _discovered_geometry(wall): continue
+		if not _wall_visible(wall, bounds): continue
 		if wall.get("collidable", true):
 			_draw_world_area(wall.area, func(_p): return wall.height, wall.color)
 	for plateau in arena.terrain.plateaus:
@@ -89,6 +90,7 @@ func _draw() -> void:
 	var legend := "물 · 중정 · 테라스 · 뜰 · 회랑 · 성소" if world_size.x > 2500.0 else "청록 물 · 금빛 중정 · 밝은 테라스"
 	if bounds.position.x > 5100:
 		legend = "물길 · 바위 갈림길 · 안쪽 유적" if arena.region_id == RunProfile.JUNGLE_REGION else "굽은 진입로 · 연못 갈림길 · 안쪽 제단"
+	if not legend_override.is_empty(): legend = legend_override
 	draw_string(get_theme_default_font(), Vector2(12, 208), legend, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("d8e5dc"))
 	var footprint := camera_ground_footprint()
 	if footprint.size() == 4:
@@ -191,3 +193,7 @@ func camera_ground_footprint() -> PackedVector2Array:
 		var world: Vector3 = origin + direction * ((plane_y - origin.y) / direction.y)
 		result.append(Vector2(world.x, world.z) / Terrain.SCALE)
 	return result
+
+func _wall_visible(wall: Dictionary, bounds: Rect2) -> bool:
+	# Mesh replacement may hide only the primitive, not the obstacle on the map.
+	return bool(wall.get("minimap_visible", wall.get("visual", true))) and bounds.intersects(wall.area) and _discovered_geometry(wall)

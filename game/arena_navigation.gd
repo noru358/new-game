@@ -4,6 +4,8 @@ extends RefCounted
 const CELL_SIZE := 32.0
 const DEFAULT_ARENA_SIZE := Vector2(2400, 1400)
 const ENEMY_RADIUS := 17.0
+# Match physical/path clearance; +20 erased legal 100-unit corridors on the 32-unit grid.
+const GRID_CLEARANCE_MARGIN := 4.0
 
 var agent_radius := ENEMY_RADIUS
 var strict_contact_escape := false
@@ -36,7 +38,7 @@ func setup(props: Array, arena_size: Vector2 = DEFAULT_ARENA_SIZE) -> void:
 	for y in range(grid_size.y):
 		for x in range(grid_size.x):
 			var point := Vector2(float(x) + 0.5, float(y) + 0.5) * CELL_SIZE
-			if not is_open(point, agent_radius + 20.0):
+			if not is_open(point, agent_radius + GRID_CLEARANCE_MARGIN):
 				grid.set_point_solid(Vector2i(x, y), true)
 
 
@@ -75,7 +77,9 @@ func has_clear_path(from: Vector2, to: Vector2) -> bool:
 		var local_from: Vector2 = (from - obstacle.center).rotated(-obstacle.angle)
 		var local_to: Vector2 = (to - obstacle.center).rotated(-obstacle.angle)
 		var expanded := Rect2(-obstacle.half_size, obstacle.half_size * 2.0).grow(agent_radius + 2.0)
-		if expanded.has_point(local_from):
+		# Rect2 excludes bottom/right edges, but segment intersection includes them.
+		# Treat exact padded-edge contact symmetrically so outward escape is legal.
+		if expanded.grow(0.001).has_point(local_from):
 			if not strict_contact_escape and local_from.dot(local_to - local_from) >= 0.0:
 				continue
 			if strict_contact_escape:

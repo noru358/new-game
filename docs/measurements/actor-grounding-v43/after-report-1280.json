@@ -1,0 +1,160 @@
+{
+  "cases": [
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 265.6,
+      "name": "jungle-stair-low",
+      "point": [
+        3230.0,
+        1180.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1509,
+      "visible_ratio": 0.99669749009247
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 352.0,
+      "name": "jungle-stair-mid",
+      "point": [
+        3500.0,
+        1180.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1509,
+      "visible_ratio": 0.99669749009247
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 441.6,
+      "name": "jungle-stair-high",
+      "point": [
+        3780.0,
+        1180.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1510,
+      "visible_ratio": 0.997357992073976
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 464.0,
+      "name": "jungle-stair-crest",
+      "point": [
+        3850.0,
+        1320.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1509,
+      "visible_ratio": 0.99669749009247
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 328.421052631579,
+      "name": "jungle-rock-path",
+      "point": [
+        3880.0,
+        1880.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1497,
+      "visible_ratio": 0.988771466314399
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 480.0,
+      "name": "jungle-plateau",
+      "point": [
+        4450.0,
+        1100.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1514,
+      "visible_ratio": 1.0
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 272.0,
+      "name": "temple-terrace-ramp",
+      "point": [
+        700.0,
+        1120.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1514,
+      "visible_ratio": 1.0
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 106.666666666667,
+      "name": "temple-south-stones",
+      "point": [
+        940.0,
+        1645.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1514,
+      "visible_ratio": 1.0
+    },
+    {
+      "body_position": [
+        0.0,
+        0.0399999991059303,
+        0.0
+      ],
+      "height": 0.0,
+      "name": "canal-bridge",
+      "point": [
+        3800.0,
+        2180.0
+      ],
+      "sprite_offset_y": 34.0,
+      "visible_body_pixels_bare": 1514,
+      "visible_body_pixels_with_terrain": 1514,
+      "visible_ratio": 1.0
+    }
+  ],
+  "engine": "4.6-stable (official)",
+  "failures": [],
+  "user_data_dir": "/Users/lty/Library/Application Support/LoopConquestMapTrials/CodexActorTerrainV43-Integrated"
+}

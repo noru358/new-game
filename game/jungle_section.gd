@@ -17,9 +17,8 @@ func _init() -> void:
 	destination_point = Vector2(4320, 1120)
 
 
-func tick(delta: float) -> void:
-	super.tick(delta)
-	destination_label.text = "관문 수호자의 영역\n" + ("경계 진입 시 교전 · 출입 자유" if boss_ready else "5분 이후 접근하여 교전")
+func _destination_place_name() -> String:
+	return "관문"
 
 
 func _tick_garden(delta: float) -> void:
@@ -103,7 +102,7 @@ func handle_input(event: InputEvent) -> bool:
 
 
 func _update_hud() -> void:
-	section_hud.text = "관문 수호자 · 5분 이후 관문 안쪽에 접근하여 교전"
+	section_hud.text = "관문 수호자 · 4분 이후 관문 안쪽에 접근하여 교전"
 	if boss_ready: section_hud.text = "관문 수호자가 깨어났습니다 · 관문 안쪽으로"
 	if boss_entered:
 		section_hud.text = ("관문 교전 중" if boss_active else "관문 밖 · 보스 대기 / HP 유지") + "\n보스전 재도전 " + ("사용 완료" if retry_used else "1회 남음") + " · 출입 자유"

@@ -97,16 +97,16 @@ func tick(delta: float) -> void:
 			if inside:
 				boss_entered = true
 				if arena.diagnostics != null: arena.diagnostics.boss_event("engage", arena.run_time)
-				arena.boss.encounter_active = true
+				arena.boss.resume_from_boundary()
 				arena.boss.add_to_group("training_enemies")
 			else:
-				arena.boss.suspend_encounter()
+				arena.boss.pause_for_boundary()
 				arena.boss.remove_from_group("training_enemies")
 		if boss_active: _clear_arena_intruders()
+		else: arena.boss.tick_outside(delta)
 	_sync_field_actors()
 	_tick_garden(delta)
-	destination_label.visible = arena.player.global_position.distance_to(destination_point) < 650.0
-	destination_label.text = "성소 · 문지기의 영역\n" + ("경계 진입 시 교전 · 출입 자유" if boss_ready else "5분 이후 접근하여 교전")
+	_refresh_destination_label()
 	_update_hud()
 
 
@@ -219,6 +219,7 @@ func retry_boss() -> void:
 	arena.boss.arena_bounds = boss_area
 	arena.boss.encounter_area = boss_area
 	boss_active = true
+	_refresh_destination_label()
 	arena.boss.attack_cooldown = 1.0
 	arena.ember_step_cooldown = 0.0
 	arena._set_paused(false)
@@ -260,7 +261,7 @@ func _clear_transients() -> void:
 
 
 func _update_hud() -> void:
-	section_hud.text = "성소의 문지기 · 5분 이후 성소에 접근하여 교전"
+	section_hud.text = "성소의 문지기 · 4분 이후 성소에 접근하여 교전"
 	if boss_ready:
 		section_hud.text = "성소의 문지기가 깨어났습니다 · 동쪽 성소로"
 	if boss_entered:
@@ -270,6 +271,15 @@ func _update_hud() -> void:
 		section_hud.text = "숨은 정원 · 수호 적 %d / 3 · 안쪽 제단으로" % guardians_defeated
 		section_hud.text += "\n서쪽 입구로 회랑 복귀"
 	if garden_message.contains("실패"): section_hud.text += "\n" + garden_message
+
+
+func _destination_place_name() -> String:
+	return "성소"
+
+
+func _refresh_destination_label() -> void:
+	destination_label.text = _destination_place_name()
+	destination_label.visible = not boss_active and not in_garden and arena.player.global_position.distance_to(destination_point) < 650.0
 
 
 func _build_destination() -> void:
@@ -285,7 +295,7 @@ func _build_destination() -> void:
 		boundary_visual.add_child(mark)
 	var title := Label3D.new()
 	destination_label = title
-	title.text = "성소 · 문지기의 영역\n5분 이후 접근하여 교전"
+	_refresh_destination_label()
 	title.font_size = 34
 	title.pixel_size = 0.006
 	title.billboard = BaseMaterial3D.BILLBOARD_ENABLED
@@ -406,6 +416,7 @@ func _set_field(value: bool) -> void:
 	arena.overview = false
 	arena.camera.size = arena.combat_camera_size
 	arena.teleport(layout.FIELD_ENTRY if value else layout.RETURN_POINT)
+	_refresh_destination_label()
 	altar_label.visible = false
 	altar_ember.visible = false
 	_sync_field_actors()

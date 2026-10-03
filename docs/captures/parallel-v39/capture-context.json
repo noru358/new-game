@@ -1,0 +1,47 @@
+{
+  "base_commit": "b4e9bf256c47a11e2ce396df6569f8f108bf2337",
+  "captured_game_commit": "8441e155b98210f732d75272930fcd13b473fd61",
+  "engine": "Godot 4.6.3 GL Compatibility / llvmpipe; Dummy audio",
+  "source_sha256": {
+    "game/enemy_role_visual.gd": "0f3cc1d90197643ec546790d543d7fb76a6c4b7e5342ccf62c9a951ce9e7da8a",
+    "game/enemy_fragment.svg": "aacc4974630aff9f9e92538b36f430d0932b76d6313fce169ff2fffdf44126b8",
+    "game/enemy_beast.svg": "394da9f4655975669ef8f18b8497a431b41fab0d49d786d980f6ce7562a07239",
+    "game/temple_opening_environment.gd": "797d7ba96d13fd804fd5e936c89778a554191ea78178dc0c2d996a7210ea38ca",
+    "game/run_hud_presenter.gd": "d596b956891e8e01599ac674238602efb00a4655c024829d76150364467498ac",
+    "game/run_growth.gd": "5483303a6d2874532009a73fd61cc90b4aeab3b4576f25d058f787dd9600016b",
+    "game/hybrid_height.gd": "58d1f2f5e851e23cafd4e25b54dca0cfaa841bff660bffa616bb1075e4a88edd",
+    "game/hybrid_region.gd": "e9d7ae0f7c6e1d519b1abfbd5af47d94da246484b781a68072e9a82fb32056dc",
+    "tests/sample_enemy_role_encounter.gd": "f70282369316186ab2352794f531c23c485d5d38997759190e7a05e28274ce85"
+  },
+  "captured_frames": {
+    "enemy_posed": 20,
+    "hud_frozen_states": 24,
+    "opening_frozen_positions": 12,
+    "live_events": 6
+  },
+  "retained_frames": {
+    "01-enemy-hud-waterfront-1280x720.png": "b74c423baa0ced043094fef4eabbbfc1c094db93ec043d0b8eef6170799583d5",
+    "02-raised-court-960x540.png": "009c6654b8bf5f96164e9d7da7efa171df09af507977510705e9961efd1ea032",
+    "03-card-modal-960x540.png": "06c4c28b8911fa9b4ef5057137d3208d7cc2e4c276797dee149763cea32cf329"
+  },
+  "fixture": "Posed/frozen screenshots preserve actual camera and actors but are not normal-play or performance evidence. In the already mounted integration, HUD before-labelled captures also contain the presenter; only after frames are retained here.",
+  "live": "Separate normal-time fresh camp departure with existing input controller, real earned-card keyboard choices, no enemy injection/stat boost/clock jump. Named private fixture slots; not a human playtest. Results in live-encounter.json.",
+  "checks": {
+    "local_full_before_compact_surface_adjustment": "57/57",
+    "isolated_price_copies": "4/4",
+    "final_compact_HUD_headless": "501 checks, 0 failures",
+    "final_integrated_enemy_GL": "251 checks, 0 failures",
+    "final_integrated_HUD_GL": "549 checks, 0 failures",
+    "opening_native_mount": "70 checks, 0 failures; terrain/input/toggles/garden/jungle guard",
+    "final_remote": "See exact PR head runs; not inferred from local results"
+  },
+  "unverified": [
+    "human place/art/fun/economy acceptance",
+    "interactive real-device graphics/input",
+    "audio listening",
+    "long-session performance",
+    "full first-region completion"
+  ],
+  "card_trial": "Default false, in-memory only. card-choice-report.json preserves the fixed512-seed/3-priority distribution comparison; no combat simulation in that comparison.",
+  "publication": "Only relative source/evidence paths and hashes; temporary host paths omitted. Documentation images excluded from release packs."
+}

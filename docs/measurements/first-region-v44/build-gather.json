@@ -1,0 +1,3287 @@
+{
+  "active_window_limit": 270.0,
+  "basic_wisp_timings": [
+    {
+      "latest_attack_sequence": 41,
+      "shot_active_seconds": 41.4166666666656,
+      "since_first_trigger_seconds": 0.549999999999969,
+      "since_latest_trigger_seconds": 0.549999999999969,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 43,
+      "shot_active_seconds": 42.5166666666655,
+      "since_first_trigger_seconds": 0.69999999999996,
+      "since_latest_trigger_seconds": 0.46666666666664,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 44,
+      "shot_active_seconds": 49.8666666666651,
+      "since_first_trigger_seconds": 0.5833333333333,
+      "since_latest_trigger_seconds": 0.5833333333333,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 49,
+      "shot_active_seconds": 50.8833333333317,
+      "since_first_trigger_seconds": 0.883333333333283,
+      "since_latest_trigger_seconds": 0.383333333333312,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 52,
+      "shot_active_seconds": 51.9833333333317,
+      "since_first_trigger_seconds": 0.949999999999946,
+      "since_latest_trigger_seconds": 0.0166666666666657,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 56,
+      "shot_active_seconds": 53.0833333333316,
+      "since_first_trigger_seconds": 0.399999999999977,
+      "since_latest_trigger_seconds": 0.0999999999999943,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 60,
+      "shot_active_seconds": 54.0166666666649,
+      "since_first_trigger_seconds": 0.81666666666662,
+      "since_latest_trigger_seconds": 0.0499999999999972,
+      "trigger_entries_before_shot": 4,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 63,
+      "shot_active_seconds": 55.0999999999982,
+      "since_first_trigger_seconds": 0.666666666666629,
+      "since_latest_trigger_seconds": 0.433333333333309,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 64,
+      "shot_active_seconds": 56.2833333333314,
+      "since_first_trigger_seconds": 0.93333333333328,
+      "since_latest_trigger_seconds": 0.93333333333328,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 72,
+      "shot_active_seconds": 63.9499999999977,
+      "since_first_trigger_seconds": 0.799999999999955,
+      "since_latest_trigger_seconds": 0.199999999999989,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 76,
+      "shot_active_seconds": 64.8833333333309,
+      "since_first_trigger_seconds": 0.88333333333329,
+      "since_latest_trigger_seconds": 0.149999999999991,
+      "trigger_entries_before_shot": 4,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 79,
+      "shot_active_seconds": 65.8999999999975,
+      "since_first_trigger_seconds": 0.916666666666615,
+      "since_latest_trigger_seconds": 0.46666666666664,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 83,
+      "shot_active_seconds": 66.9166666666642,
+      "since_first_trigger_seconds": 0.899999999999949,
+      "since_latest_trigger_seconds": 0.23333333333332,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 87,
+      "shot_active_seconds": 68.0166666666641,
+      "since_first_trigger_seconds": 1.08333333333327,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 91,
+      "shot_active_seconds": 69.2499999999974,
+      "since_first_trigger_seconds": 0.34999999999998,
+      "since_latest_trigger_seconds": 0.34999999999998,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 93,
+      "shot_active_seconds": 70.4333333333306,
+      "since_first_trigger_seconds": 0.283333333333317,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 98,
+      "shot_active_seconds": 71.5333333333306,
+      "since_first_trigger_seconds": 0.683333333333294,
+      "since_latest_trigger_seconds": 0.0166666666666657,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 100,
+      "shot_active_seconds": 72.5499999999972,
+      "since_first_trigger_seconds": 0.81666666666662,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 103,
+      "shot_active_seconds": 73.3333333333305,
+      "since_first_trigger_seconds": 0.616666666666632,
+      "since_latest_trigger_seconds": 0.133333333333326,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 106,
+      "shot_active_seconds": 74.1166666666637,
+      "since_first_trigger_seconds": 0.666666666666629,
+      "since_latest_trigger_seconds": 0.183333333333323,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 109,
+      "shot_active_seconds": 75.049999999997,
+      "since_first_trigger_seconds": 0.899999999999949,
+      "since_latest_trigger_seconds": 0.0333333333333314,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 111,
+      "shot_active_seconds": 75.9833333333303,
+      "since_first_trigger_seconds": 0.716666666666626,
+      "since_latest_trigger_seconds": 0.499999999999972,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 116,
+      "shot_active_seconds": 77.0166666666636,
+      "since_first_trigger_seconds": 0.649999999999963,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 119,
+      "shot_active_seconds": 77.8833333333302,
+      "since_first_trigger_seconds": 0.599999999999966,
+      "since_latest_trigger_seconds": 0.166666666666657,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 120,
+      "shot_active_seconds": 78.9833333333301,
+      "since_first_trigger_seconds": 0.166666666666657,
+      "since_latest_trigger_seconds": 0.166666666666657,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 122,
+      "shot_active_seconds": 79.9833333333301,
+      "since_first_trigger_seconds": 0.93333333333328,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 123,
+      "shot_active_seconds": 84.6833333333298,
+      "since_first_trigger_seconds": 4.48333333333308,
+      "since_latest_trigger_seconds": 4.48333333333308,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 126,
+      "shot_active_seconds": 88.2833333333296,
+      "since_first_trigger_seconds": 0.149999999999991,
+      "since_latest_trigger_seconds": 0.149999999999991,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 129,
+      "shot_active_seconds": 89.0666666666629,
+      "since_first_trigger_seconds": 0.716666666666626,
+      "since_latest_trigger_seconds": 0.23333333333332,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 130,
+      "shot_active_seconds": 90.1666666666628,
+      "since_first_trigger_seconds": 0.0499999999999972,
+      "since_latest_trigger_seconds": 0.0499999999999972,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 133,
+      "shot_active_seconds": 91.0999999999961,
+      "since_first_trigger_seconds": 0.166666666666657,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 135,
+      "shot_active_seconds": 92.0333333333294,
+      "since_first_trigger_seconds": 0.249999999999986,
+      "since_latest_trigger_seconds": 0.0166666666666657,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 137,
+      "shot_active_seconds": 92.9666666666627,
+      "since_first_trigger_seconds": 0.69999999999996,
+      "since_latest_trigger_seconds": 0.483333333333306,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 141,
+      "shot_active_seconds": 93.7833333333293,
+      "since_first_trigger_seconds": 0.449999999999974,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 145,
+      "shot_active_seconds": 94.9499999999959,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 148,
+      "shot_active_seconds": 95.7333333333292,
+      "since_first_trigger_seconds": 0.533333333333303,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 149,
+      "shot_active_seconds": 96.8499999999958,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 152,
+      "shot_active_seconds": 98.6999999999957,
+      "since_first_trigger_seconds": 1.18333333333327,
+      "since_latest_trigger_seconds": 1.18333333333327,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 156,
+      "shot_active_seconds": 104.049999999995,
+      "since_first_trigger_seconds": 0.516666666666637,
+      "since_latest_trigger_seconds": 0.299999999999983,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 160,
+      "shot_active_seconds": 108.299999999995,
+      "since_first_trigger_seconds": 3.71666666666646,
+      "since_latest_trigger_seconds": 3.4999999999998,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 161,
+      "shot_active_seconds": 109.916666666662,
+      "since_first_trigger_seconds": 0.5833333333333,
+      "since_latest_trigger_seconds": 0.5833333333333,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 163,
+      "shot_active_seconds": 111.999999999995,
+      "since_first_trigger_seconds": 0.683333333333294,
+      "since_latest_trigger_seconds": 0.683333333333294,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 165,
+      "shot_active_seconds": 112.683333333328,
+      "since_first_trigger_seconds": 0.399999999999977,
+      "since_latest_trigger_seconds": 0.133333333333326,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 167,
+      "shot_active_seconds": 113.366666666662,
+      "since_first_trigger_seconds": 0.483333333333306,
+      "since_latest_trigger_seconds": 0.266666666666652,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 170,
+      "shot_active_seconds": 116.083333333328,
+      "since_first_trigger_seconds": 0.266666666666652,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 174,
+      "shot_active_seconds": 117.899999999995,
+      "since_first_trigger_seconds": 0.616666666666632,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 176,
+      "shot_active_seconds": 118.583333333328,
+      "since_first_trigger_seconds": 0.46666666666664,
+      "since_latest_trigger_seconds": 0.216666666666654,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 177,
+      "shot_active_seconds": 119.433333333328,
+      "since_first_trigger_seconds": 0.733333333333292,
+      "since_latest_trigger_seconds": 0.733333333333292,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 179,
+      "shot_active_seconds": 120.283333333328,
+      "since_first_trigger_seconds": 0.183333333333323,
+      "since_latest_trigger_seconds": 0.183333333333323,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 180,
+      "shot_active_seconds": 121.133333333328,
+      "since_first_trigger_seconds": 0.799999999999955,
+      "since_latest_trigger_seconds": 0.799999999999955,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 181,
+      "shot_active_seconds": 121.983333333328,
+      "since_first_trigger_seconds": 0.166666666666657,
+      "since_latest_trigger_seconds": 0.166666666666657,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 182,
+      "shot_active_seconds": 122.816666666661,
+      "since_first_trigger_seconds": 0.716666666666626,
+      "since_latest_trigger_seconds": 0.716666666666626,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 184,
+      "shot_active_seconds": 124.583333333328,
+      "since_first_trigger_seconds": 0.46666666666664,
+      "since_latest_trigger_seconds": 0.23333333333332,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 188,
+      "shot_active_seconds": 126.433333333327,
+      "since_first_trigger_seconds": 0.183333333333323,
+      "since_latest_trigger_seconds": 0.183333333333323,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 191,
+      "shot_active_seconds": 127.116666666661,
+      "since_first_trigger_seconds": 0.599999999999966,
+      "since_latest_trigger_seconds": 0.166666666666657,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 193,
+      "shot_active_seconds": 127.916666666661,
+      "since_first_trigger_seconds": 0.749999999999957,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 195,
+      "shot_active_seconds": 128.599999999994,
+      "since_first_trigger_seconds": 0.450000000000358,
+      "since_latest_trigger_seconds": 0.200000000000159,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 198,
+      "shot_active_seconds": 129.233333333328,
+      "since_first_trigger_seconds": 0.616666666667157,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 200,
+      "shot_active_seconds": 130.083333333329,
+      "since_first_trigger_seconds": 0.0833333333333997,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 203,
+      "shot_active_seconds": 130.93333333333,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 204,
+      "shot_active_seconds": 131.78333333333,
+      "since_first_trigger_seconds": 0.633333333333837,
+      "since_latest_trigger_seconds": 0.633333333333837,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 205,
+      "shot_active_seconds": 132.633333333331,
+      "since_first_trigger_seconds": 0.11666666666676,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 208,
+      "shot_active_seconds": 133.316666666665,
+      "since_first_trigger_seconds": 0.533333333333758,
+      "since_latest_trigger_seconds": 0.0166666666666799,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 210,
+      "shot_active_seconds": 135.05,
+      "since_first_trigger_seconds": 0.233333333333519,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 211,
+      "shot_active_seconds": 135.9,
+      "since_first_trigger_seconds": 0.600000000000477,
+      "since_latest_trigger_seconds": 0.600000000000477,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 216,
+      "shot_active_seconds": 138.833333333336,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 217,
+      "shot_active_seconds": 140.533333333337,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.216666666666839,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 220,
+      "shot_active_seconds": 141.100000000004,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 223,
+      "shot_active_seconds": 141.683333333338,
+      "since_first_trigger_seconds": 0.250000000000199,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 225,
+      "shot_active_seconds": 142.250000000005,
+      "since_first_trigger_seconds": 0.350000000000279,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 226,
+      "shot_active_seconds": 142.966666666673,
+      "since_first_trigger_seconds": 0.583333333333798,
+      "since_latest_trigger_seconds": 0.583333333333798,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 228,
+      "shot_active_seconds": 143.53333333334,
+      "since_first_trigger_seconds": 0.450000000000358,
+      "since_latest_trigger_seconds": 0.233333333333519,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 232,
+      "shot_active_seconds": 144.983333333341,
+      "since_first_trigger_seconds": 0.450000000000358,
+      "since_latest_trigger_seconds": 0.233333333333519,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 233,
+      "shot_active_seconds": 145.700000000008,
+      "since_first_trigger_seconds": 0.283333333333559,
+      "since_latest_trigger_seconds": 0.283333333333559,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 234,
+      "shot_active_seconds": 146.700000000009,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.516666666667078,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 235,
+      "shot_active_seconds": 148.30000000001,
+      "since_first_trigger_seconds": 0.183333333333479,
+      "since_latest_trigger_seconds": 0.183333333333479,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 237,
+      "shot_active_seconds": 148.883333333344,
+      "since_first_trigger_seconds": 0.533333333333758,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 238,
+      "shot_active_seconds": 149.600000000011,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 241,
+      "shot_active_seconds": 150.183333333345,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 244,
+      "shot_active_seconds": 150.850000000012,
+      "since_first_trigger_seconds": 0.450000000000358,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 246,
+      "shot_active_seconds": 151.416666666679,
+      "since_first_trigger_seconds": 0.266666666666879,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 248,
+      "shot_active_seconds": 152.083333333347,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 250,
+      "shot_active_seconds": 152.650000000014,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 251,
+      "shot_active_seconds": 153.366666666681,
+      "since_first_trigger_seconds": 0.150000000000119,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 253,
+      "shot_active_seconds": 154.816666666682,
+      "since_first_trigger_seconds": 0.300000000000239,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 255,
+      "shot_active_seconds": 155.383333333349,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.166666666666799,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 257,
+      "shot_active_seconds": 155.98333333335,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 259,
+      "shot_active_seconds": 156.550000000017,
+      "since_first_trigger_seconds": 0.266666666666879,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 260,
+      "shot_active_seconds": 157.266666666684,
+      "since_first_trigger_seconds": 0.11666666666676,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 262,
+      "shot_active_seconds": 157.600000000018,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 263,
+      "shot_active_seconds": 157.833333333351,
+      "since_first_trigger_seconds": 0.283333333333559,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 263,
+      "shot_active_seconds": 158.316666666685,
+      "since_first_trigger_seconds": 0.550000000000438,
+      "since_latest_trigger_seconds": 0.550000000000438,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 264,
+      "shot_active_seconds": 158.716666666685,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 265,
+      "shot_active_seconds": 159.050000000019,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 265,
+      "shot_active_seconds": 159.433333333352,
+      "since_first_trigger_seconds": 0.483333333333718,
+      "since_latest_trigger_seconds": 0.483333333333718,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 266,
+      "shot_active_seconds": 161.033333333354,
+      "since_first_trigger_seconds": 0.11666666666676,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 267,
+      "shot_active_seconds": 161.383333333354,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 267,
+      "shot_active_seconds": 161.750000000021,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.466666666667038,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 268,
+      "shot_active_seconds": 165.716666666691,
+      "since_first_trigger_seconds": 3.06666666666911,
+      "since_latest_trigger_seconds": 3.06666666666911,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 268,
+      "shot_active_seconds": 165.716666666691,
+      "since_first_trigger_seconds": 3.06666666666911,
+      "since_latest_trigger_seconds": 3.06666666666911,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 271,
+      "shot_active_seconds": 171.816666666696,
+      "since_first_trigger_seconds": 0.150000000000119,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 271,
+      "shot_active_seconds": 172.283333333363,
+      "since_first_trigger_seconds": 0.616666666667157,
+      "since_latest_trigger_seconds": 0.616666666667157,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 273,
+      "shot_active_seconds": 174.016666666697,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 274,
+      "shot_active_seconds": 174.266666666697,
+      "since_first_trigger_seconds": 0.250000000000199,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 275,
+      "shot_active_seconds": 174.566666666698,
+      "since_first_trigger_seconds": 0.300000000000239,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 275,
+      "shot_active_seconds": 174.966666666698,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.466666666667038,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 277,
+      "shot_active_seconds": 175.383333333365,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 277,
+      "shot_active_seconds": 175.683333333365,
+      "since_first_trigger_seconds": 0.300000000000239,
+      "since_latest_trigger_seconds": 0.300000000000239,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 278,
+      "shot_active_seconds": 176.383333333366,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 278,
+      "shot_active_seconds": 176.400000000033,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.516666666667078,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 279,
+      "shot_active_seconds": 183.533333333372,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 279,
+      "shot_active_seconds": 183.933333333372,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.400000000000318,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 280,
+      "shot_active_seconds": 184.650000000039,
+      "since_first_trigger_seconds": 0.166666666666799,
+      "since_latest_trigger_seconds": 0.166666666666799,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 280,
+      "shot_active_seconds": 185.133333333373,
+      "since_first_trigger_seconds": 0.650000000000517,
+      "since_latest_trigger_seconds": 0.650000000000517,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 283,
+      "shot_active_seconds": 185.85000000004,
+      "since_first_trigger_seconds": 0.10000000000008,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 283,
+      "shot_active_seconds": 186.25000000004,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 284,
+      "shot_active_seconds": 187.450000000041,
+      "since_first_trigger_seconds": 0.433333333333678,
+      "since_latest_trigger_seconds": 0.433333333333678,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 284,
+      "shot_active_seconds": 187.450000000041,
+      "since_first_trigger_seconds": 0.433333333333678,
+      "since_latest_trigger_seconds": 0.433333333333678,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 286,
+      "shot_active_seconds": 188.883333333376,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 286,
+      "shot_active_seconds": 188.883333333376,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 288,
+      "shot_active_seconds": 189.500000000043,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 288,
+      "shot_active_seconds": 189.500000000043,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 290,
+      "shot_active_seconds": 191.100000000044,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.216666666666839,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 290,
+      "shot_active_seconds": 191.100000000044,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.216666666666839,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 291,
+      "shot_active_seconds": 191.816666666711,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.333333333333599,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 291,
+      "shot_active_seconds": 191.816666666711,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.333333333333599,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 295,
+      "shot_active_seconds": 193.58333333338,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 295,
+      "shot_active_seconds": 193.58333333338,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 297,
+      "shot_active_seconds": 194.150000000047,
+      "since_first_trigger_seconds": 0.350000000000279,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 297,
+      "shot_active_seconds": 194.150000000047,
+      "since_first_trigger_seconds": 0.350000000000279,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 298,
+      "shot_active_seconds": 194.866666666714,
+      "since_first_trigger_seconds": 0.483333333333718,
+      "since_latest_trigger_seconds": 0.483333333333718,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 298,
+      "shot_active_seconds": 194.866666666714,
+      "since_first_trigger_seconds": 0.483333333333718,
+      "since_latest_trigger_seconds": 0.483333333333718,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 299,
+      "shot_active_seconds": 195.583333333381,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.400000000000318,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 299,
+      "shot_active_seconds": 195.583333333381,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.400000000000318,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 301,
+      "shot_active_seconds": 196.150000000048,
+      "since_first_trigger_seconds": 0.250000000000199,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 301,
+      "shot_active_seconds": 196.166666666715,
+      "since_first_trigger_seconds": 0.266666666666879,
+      "since_latest_trigger_seconds": 0.0166666666666799,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 304,
+      "shot_active_seconds": 198.733333333384,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 304,
+      "shot_active_seconds": 198.733333333384,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 304,
+      "shot_active_seconds": 198.983333333384,
+      "since_first_trigger_seconds": 0.250000000000199,
+      "since_latest_trigger_seconds": 0.250000000000199,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 306,
+      "shot_active_seconds": 200.683333333385,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 307,
+      "shot_active_seconds": 201.066666666719,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.133333333333439,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 307,
+      "shot_active_seconds": 201.066666666719,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.133333333333439,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 308,
+      "shot_active_seconds": 201.400000000052,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.250000000000199,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 308,
+      "shot_active_seconds": 201.783333333386,
+      "since_first_trigger_seconds": 0.633333333333837,
+      "since_latest_trigger_seconds": 0.633333333333837,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 308,
+      "shot_active_seconds": 201.800000000053,
+      "since_first_trigger_seconds": 0.650000000000517,
+      "since_latest_trigger_seconds": 0.650000000000517,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 309,
+      "shot_active_seconds": 202.61666666672,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 309,
+      "shot_active_seconds": 202.61666666672,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 309,
+      "shot_active_seconds": 203.000000000054,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.383333333333638,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 311,
+      "shot_active_seconds": 203.433333333387,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 311,
+      "shot_active_seconds": 203.433333333387,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 311,
+      "shot_active_seconds": 203.716666666721,
+      "since_first_trigger_seconds": 0.283333333333559,
+      "since_latest_trigger_seconds": 0.283333333333559,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 313,
+      "shot_active_seconds": 205.033333333389,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 313,
+      "shot_active_seconds": 205.033333333389,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 314,
+      "shot_active_seconds": 205.283333333389,
+      "since_first_trigger_seconds": 0.300000000000239,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 315,
+      "shot_active_seconds": 205.600000000056,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 315,
+      "shot_active_seconds": 205.600000000056,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 315,
+      "shot_active_seconds": 206.000000000056,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 316,
+      "shot_active_seconds": 206.316666666723,
+      "since_first_trigger_seconds": 0.200000000000159,
+      "since_latest_trigger_seconds": 0.200000000000159,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 316,
+      "shot_active_seconds": 206.316666666723,
+      "since_first_trigger_seconds": 0.200000000000159,
+      "since_latest_trigger_seconds": 0.200000000000159,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 316,
+      "shot_active_seconds": 206.716666666723,
+      "since_first_trigger_seconds": 0.600000000000477,
+      "since_latest_trigger_seconds": 0.600000000000477,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 317,
+      "shot_active_seconds": 207.916666666724,
+      "since_first_trigger_seconds": 0.300000000000239,
+      "since_latest_trigger_seconds": 0.300000000000239,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 317,
+      "shot_active_seconds": 207.916666666724,
+      "since_first_trigger_seconds": 0.300000000000239,
+      "since_latest_trigger_seconds": 0.300000000000239,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 317,
+      "shot_active_seconds": 208.316666666725,
+      "since_first_trigger_seconds": 0.700000000000557,
+      "since_latest_trigger_seconds": 0.700000000000557,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 318,
+      "shot_active_seconds": 208.633333333392,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 318,
+      "shot_active_seconds": 208.633333333392,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 318,
+      "shot_active_seconds": 209.033333333392,
+      "since_first_trigger_seconds": 0.450000000000358,
+      "since_latest_trigger_seconds": 0.450000000000358,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 320,
+      "shot_active_seconds": 209.483333333392,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 320,
+      "shot_active_seconds": 209.483333333392,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 320,
+      "shot_active_seconds": 209.750000000059,
+      "since_first_trigger_seconds": 0.266666666666879,
+      "since_latest_trigger_seconds": 0.266666666666879,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 321,
+      "shot_active_seconds": 211.45000000006,
+      "since_first_trigger_seconds": 1.55000000000123,
+      "since_latest_trigger_seconds": 1.55000000000123,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 321,
+      "shot_active_seconds": 211.566666666727,
+      "since_first_trigger_seconds": 1.66666666666799,
+      "since_latest_trigger_seconds": 1.66666666666799,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 321,
+      "shot_active_seconds": 211.716666666727,
+      "since_first_trigger_seconds": 1.81666666666811,
+      "since_latest_trigger_seconds": 1.81666666666811,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 325,
+      "shot_active_seconds": 216.783333333398,
+      "since_first_trigger_seconds": 0.366666666666958,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 325,
+      "shot_active_seconds": 216.850000000065,
+      "since_first_trigger_seconds": 0.433333333333678,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 325,
+      "shot_active_seconds": 216.966666666731,
+      "since_first_trigger_seconds": 0.550000000000438,
+      "since_latest_trigger_seconds": 0.183333333333479,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 327,
+      "shot_active_seconds": 217.333333333398,
+      "since_first_trigger_seconds": 0.250000000000199,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 327,
+      "shot_active_seconds": 217.400000000065,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 327,
+      "shot_active_seconds": 217.516666666732,
+      "since_first_trigger_seconds": 0.433333333333678,
+      "since_latest_trigger_seconds": 0.233333333333519,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 328,
+      "shot_active_seconds": 218.283333333399,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 328,
+      "shot_active_seconds": 218.283333333399,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 330,
+      "shot_active_seconds": 218.766666666733,
+      "since_first_trigger_seconds": 0.483333333333718,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 330,
+      "shot_active_seconds": 218.850000000066,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 330,
+      "shot_active_seconds": 218.850000000066,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 331,
+      "shot_active_seconds": 219.4833333334,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 332,
+      "shot_active_seconds": 219.516666666733,
+      "since_first_trigger_seconds": 0.533333333333758,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 332,
+      "shot_active_seconds": 219.516666666733,
+      "since_first_trigger_seconds": 0.533333333333758,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 333,
+      "shot_active_seconds": 220.033333333401,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.283333333333559,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 334,
+      "shot_active_seconds": 220.083333333401,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 334,
+      "shot_active_seconds": 220.083333333401,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 335,
+      "shot_active_seconds": 220.600000000068,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.300000000000239,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 335,
+      "shot_active_seconds": 220.800000000068,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 335,
+      "shot_active_seconds": 220.800000000068,
+      "since_first_trigger_seconds": 0.500000000000398,
+      "since_latest_trigger_seconds": 0.500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 336,
+      "shot_active_seconds": 221.200000000068,
+      "since_first_trigger_seconds": 0.166666666666799,
+      "since_latest_trigger_seconds": 0.166666666666799,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 337,
+      "shot_active_seconds": 221.250000000068,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 337,
+      "shot_active_seconds": 221.250000000068,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 337,
+      "shot_active_seconds": 221.916666666735,
+      "since_first_trigger_seconds": 0.666666666667197,
+      "since_latest_trigger_seconds": 0.666666666667197,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 341,
+      "shot_active_seconds": 229.083333333408,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 341,
+      "shot_active_seconds": 229.133333333408,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 342,
+      "shot_active_seconds": 229.483333333408,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 343,
+      "shot_active_seconds": 229.650000000075,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 343,
+      "shot_active_seconds": 229.700000000075,
+      "since_first_trigger_seconds": 0.366666666666958,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 343,
+      "shot_active_seconds": 230.200000000075,
+      "since_first_trigger_seconds": 0.650000000000517,
+      "since_latest_trigger_seconds": 0.650000000000517,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 344,
+      "shot_active_seconds": 235.266666666746,
+      "since_first_trigger_seconds": 0.150000000000119,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 344,
+      "shot_active_seconds": 235.300000000079,
+      "since_first_trigger_seconds": 0.183333333333479,
+      "since_latest_trigger_seconds": 0.183333333333479,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 344,
+      "shot_active_seconds": 235.683333333413,
+      "since_first_trigger_seconds": 0.566666666667118,
+      "since_latest_trigger_seconds": 0.566666666667118,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 345,
+      "shot_active_seconds": 236.916666666747,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 345,
+      "shot_active_seconds": 236.916666666747,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 346,
+      "shot_active_seconds": 237.150000000081,
+      "since_first_trigger_seconds": 0.233333333333519,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 347,
+      "shot_active_seconds": 237.483333333414,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 347,
+      "shot_active_seconds": 237.483333333414,
+      "since_first_trigger_seconds": 0.333333333333599,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 348,
+      "shot_active_seconds": 237.716666666748,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 348,
+      "shot_active_seconds": 238.200000000082,
+      "since_first_trigger_seconds": 0.583333333333798,
+      "since_latest_trigger_seconds": 0.583333333333798,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 348,
+      "shot_active_seconds": 238.200000000082,
+      "since_first_trigger_seconds": 0.583333333333798,
+      "since_latest_trigger_seconds": 0.583333333333798,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 353,
+      "shot_active_seconds": 242.450000000085,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 353,
+      "shot_active_seconds": 242.450000000085,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 353,
+      "shot_active_seconds": 242.533333333418,
+      "since_first_trigger_seconds": 0.0833333333333997,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 355,
+      "shot_active_seconds": 243.016666666752,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 355,
+      "shot_active_seconds": 243.016666666752,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 355,
+      "shot_active_seconds": 243.100000000086,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.166666666666799,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 357,
+      "shot_active_seconds": 243.583333333419,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 357,
+      "shot_active_seconds": 243.583333333419,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 357,
+      "shot_active_seconds": 243.666666666753,
+      "since_first_trigger_seconds": 0.483333333333718,
+      "since_latest_trigger_seconds": 0.200000000000159,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 359,
+      "shot_active_seconds": 244.150000000086,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 359,
+      "shot_active_seconds": 244.150000000086,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.11666666666676,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 359,
+      "shot_active_seconds": 244.23333333342,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.200000000000159,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 361,
+      "shot_active_seconds": 244.716666666754,
+      "since_first_trigger_seconds": 0.433333333333678,
+      "since_latest_trigger_seconds": 0.216666666666839,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 361,
+      "shot_active_seconds": 244.716666666754,
+      "since_first_trigger_seconds": 0.433333333333678,
+      "since_latest_trigger_seconds": 0.216666666666839,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 361,
+      "shot_active_seconds": 244.800000000087,
+      "since_first_trigger_seconds": 0.516666666667078,
+      "since_latest_trigger_seconds": 0.300000000000239,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 365,
+      "shot_active_seconds": 245.433333333421,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 365,
+      "shot_active_seconds": 245.433333333421,
+      "since_first_trigger_seconds": 0.0500000000000398,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 365,
+      "shot_active_seconds": 245.516666666754,
+      "since_first_trigger_seconds": 0.133333333333439,
+      "since_latest_trigger_seconds": 0.133333333333439,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 369,
+      "shot_active_seconds": 246.316666666755,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 369,
+      "shot_active_seconds": 246.316666666755,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 369,
+      "shot_active_seconds": 246.316666666755,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 372,
+      "shot_active_seconds": 247.083333333422,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 372,
+      "shot_active_seconds": 247.083333333422,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 372,
+      "shot_active_seconds": 247.083333333422,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 374,
+      "shot_active_seconds": 247.650000000089,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 374,
+      "shot_active_seconds": 247.650000000089,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 374,
+      "shot_active_seconds": 247.650000000089,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 377,
+      "shot_active_seconds": 248.20000000009,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 377,
+      "shot_active_seconds": 248.20000000009,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 377,
+      "shot_active_seconds": 248.20000000009,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 379,
+      "shot_active_seconds": 248.766666666757,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 379,
+      "shot_active_seconds": 248.766666666757,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 379,
+      "shot_active_seconds": 248.766666666757,
+      "since_first_trigger_seconds": 0.316666666666919,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 381,
+      "shot_active_seconds": 249.333333333424,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 381,
+      "shot_active_seconds": 249.333333333424,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 381,
+      "shot_active_seconds": 249.333333333424,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    },
+    {
+      "latest_attack_sequence": 383,
+      "shot_active_seconds": 249.900000000091,
+      "since_first_trigger_seconds": 0.366666666666958,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 50969184004
+    },
+    {
+      "latest_attack_sequence": 383,
+      "shot_active_seconds": 249.900000000091,
+      "since_first_trigger_seconds": 0.366666666666958,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 29394840062224
+    },
+    {
+      "latest_attack_sequence": 383,
+      "shot_active_seconds": 249.900000000091,
+      "since_first_trigger_seconds": 0.366666666666958,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 33195751901520
+    }
+  ],
+  "build": "gather",
+  "card_priority": [
+    "U_TEMPO",
+    "U_REACH",
+    "U_EDGE",
+    "S_WISP_FOLLOWUP",
+    "S_WISP_COUNT",
+    "S_WISP_DAMAGE",
+    "S_WISP_CHAIN",
+    "S_WISP_CADENCE",
+    "U_SLASH_SWEEP",
+    "U_SLASH_CADENCE",
+    "S_WISP_SWEEP",
+    "S_WISP_REPLY",
+    "U_STEP",
+    "S_WISP_ORBIT",
+    "S_SEAL"
+  ],
+  "checkpoints": [
+    {
+      "active_seconds": 0.116666666666667,
+      "active_wall_drift_seconds": 0.0951003333333334,
+      "cards": {
+
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 0,
+        "mean_since_latest_trigger_seconds": 0.0,
+        "next_shots_observed": 0,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "cumulative": {
+        "attack_presses": 0,
+        "basic_attacks_hitting": 0,
+        "basic_attacks_started": 0,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 0,
+        "close_samples_under_120": 0,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 0.0,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 0,
+        "fourth_attacks_started": 0,
+        "fourth_hit_targets": 0,
+        "nearest_enemy_distance_sum": 0.0,
+        "proximity_samples": 0,
+        "slash_hit_targets": 0,
+        "slash_requests": 0,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 0,
+        "slashes_performed": 0,
+        "third_attacks_hitting": 0,
+        "third_attacks_started": 0,
+        "third_hit_targets": 0,
+        "wisp_hit_events": 0,
+        "wisp_shots": 0,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 0.116666666666667,
+        "active_wall_seconds": 0.211767,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+
+        },
+        "choice_wall_seconds": 0.0,
+        "choice_windows": 0,
+        "damage_events": 0,
+        "damage_taken_actual": 0.0,
+        "earned_currency": 0,
+        "health": 110.0,
+        "kills": 0,
+        "level": 1,
+        "level_heal_actual": 0.0,
+        "level_heal_events": 0,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 2.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 0,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 0,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 0.211767,
+        "weapon": "W_ECHO",
+        "xp_remainder": 0
+      },
+      "label": "initial",
+      "points_spent": 0,
+      "position": {
+        "x": 650.0,
+        "y": 1870.0
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 0,
+        "basic_attacks_hitting": 0,
+        "basic_attacks_started": 0,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 0,
+        "close_samples_under_120": 0,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 0.0,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 0,
+        "fourth_attacks_started": 0,
+        "fourth_hit_targets": 0,
+        "nearest_enemy_distance_sum": 0.0,
+        "proximity_samples": 0,
+        "slash_hit_targets": 0,
+        "slash_requests": 0,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 0,
+        "slashes_performed": 0,
+        "third_attacks_hitting": 0,
+        "third_attacks_started": 0,
+        "third_hit_targets": 0,
+        "wisp_hit_events": 0,
+        "wisp_shots": 0,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "span_active_seconds": 0.116666666666667,
+      "span_from_points": 0,
+      "wisp_shots_counter_crosscheck": 0
+    },
+    {
+      "active_seconds": 23.7333333333333,
+      "active_wall_drift_seconds": -0.0246663333332684,
+      "cards": {
+        "S_WISP_DAMAGE": 1,
+        "U_REACH": 1,
+        "U_TEMPO": 1
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 0,
+        "mean_since_latest_trigger_seconds": 0.0,
+        "next_shots_observed": 0,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "cumulative": {
+        "attack_presses": 8,
+        "basic_attacks_hitting": 11,
+        "basic_attacks_started": 12,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 20,
+        "close_samples_under_120": 19,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 5059.14159345627,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 2,
+        "fourth_attacks_started": 2,
+        "fourth_hit_targets": 6,
+        "nearest_enemy_distance_sum": 14564.6106414795,
+        "proximity_samples": 69,
+        "slash_hit_targets": 5,
+        "slash_requests": 6,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 5,
+        "slashes_performed": 6,
+        "third_attacks_hitting": 2,
+        "third_attacks_started": 2,
+        "third_hit_targets": 3,
+        "wisp_hit_events": 7,
+        "wisp_shots": 8,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 23.7333333333333,
+        "active_wall_seconds": 23.708667,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_DAMAGE": 1,
+          "U_REACH": 1,
+          "U_TEMPO": 1
+        },
+        "choice_wall_seconds": 4.701418,
+        "choice_windows": 3,
+        "damage_events": 0,
+        "damage_taken_actual": 0.0,
+        "earned_currency": 15,
+        "health": 110.0,
+        "kills": 15,
+        "level": 4,
+        "level_heal_actual": 0.0,
+        "level_heal_events": 3,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 2.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 3,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 3,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 28.410085,
+        "weapon": "W_ECHO",
+        "xp_remainder": 0
+      },
+      "label": "after_3_points",
+      "points_spent": 3,
+      "position": {
+        "x": 654.324340820312,
+        "y": 1471.80432128906
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 8,
+        "basic_attacks_hitting": 11,
+        "basic_attacks_started": 12,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 20,
+        "close_samples_under_120": 19,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 5059.14159345627,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 2,
+        "fourth_attacks_started": 2,
+        "fourth_hit_targets": 6,
+        "nearest_enemy_distance_sum": 14564.6106414795,
+        "proximity_samples": 69,
+        "slash_hit_targets": 5,
+        "slash_requests": 6,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 5,
+        "slashes_performed": 6,
+        "third_attacks_hitting": 2,
+        "third_attacks_started": 2,
+        "third_hit_targets": 3,
+        "wisp_hit_events": 7,
+        "wisp_shots": 8,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "span_active_seconds": 23.6166666666666,
+      "span_from_points": 0,
+      "wisp_shots_counter_crosscheck": 8
+    },
+    {
+      "active_seconds": 50.2666666666651,
+      "active_wall_drift_seconds": -0.0355826666650927,
+      "cards": {
+        "S_WISP_CHAIN": 1,
+        "S_WISP_DAMAGE": 1,
+        "S_WISP_FOLLOWUP": 1,
+        "U_REACH": 1,
+        "U_TEMPO": 2
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 6,
+        "mean_since_latest_trigger_seconds": 0.533333333333303,
+        "next_shots_observed": 3,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 2,
+        "wisp_timer_followup_triggers": 6
+      },
+      "cumulative": {
+        "attack_presses": 17,
+        "basic_attacks_hitting": 25,
+        "basic_attacks_started": 48,
+        "basic_followup_trigger_actions": 6,
+        "basic_hit_targets": 48,
+        "close_samples_under_120": 72,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 10747.2521228194,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 1.59999999999991,
+        "followup_trigger_entries_consumed": 4,
+        "fourth_attacks_hitting": 10,
+        "fourth_attacks_started": 10,
+        "fourth_hit_targets": 27,
+        "nearest_enemy_distance_sum": 44455.3488540649,
+        "proximity_samples": 202,
+        "slash_hit_targets": 13,
+        "slash_requests": 12,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 9,
+        "slashes_performed": 12,
+        "third_attacks_hitting": 4,
+        "third_attacks_started": 10,
+        "third_hit_targets": 5,
+        "wisp_hit_events": 20,
+        "wisp_shots": 23,
+        "wisp_shots_after_followup": 3,
+        "wisp_timer_followup_triggers": 6
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 50.2666666666651,
+        "active_wall_seconds": 50.231084,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CHAIN": 1,
+          "S_WISP_DAMAGE": 1,
+          "S_WISP_FOLLOWUP": 1,
+          "U_REACH": 1,
+          "U_TEMPO": 2
+        },
+        "choice_wall_seconds": 9.46523,
+        "choice_windows": 6,
+        "damage_events": 7,
+        "damage_taken_actual": 70.0,
+        "earned_currency": 39,
+        "health": 106.0,
+        "kills": 38,
+        "level": 7,
+        "level_heal_actual": 66.0,
+        "level_heal_events": 6,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 2.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 6,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 6,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 59.696314,
+        "weapon": "W_ECHO",
+        "xp_remainder": 0
+      },
+      "label": "after_6_points",
+      "points_spent": 6,
+      "position": {
+        "x": 303.302429199219,
+        "y": 1164.44116210938
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 9,
+        "basic_attacks_hitting": 14,
+        "basic_attacks_started": 36,
+        "basic_followup_trigger_actions": 6,
+        "basic_hit_targets": 28,
+        "close_samples_under_120": 53,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 5688.11052936316,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 1.59999999999991,
+        "followup_trigger_entries_consumed": 4,
+        "fourth_attacks_hitting": 8,
+        "fourth_attacks_started": 8,
+        "fourth_hit_targets": 21,
+        "nearest_enemy_distance_sum": 29890.7382125854,
+        "proximity_samples": 133,
+        "slash_hit_targets": 8,
+        "slash_requests": 6,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 4,
+        "slashes_performed": 6,
+        "third_attacks_hitting": 2,
+        "third_attacks_started": 8,
+        "third_hit_targets": 2,
+        "wisp_hit_events": 13,
+        "wisp_shots": 15,
+        "wisp_shots_after_followup": 3,
+        "wisp_timer_followup_triggers": 6
+      },
+      "span_active_seconds": 26.5333333333318,
+      "span_from_points": 3,
+      "wisp_shots_counter_crosscheck": 23
+    },
+    {
+      "active_seconds": 66.9333333333308,
+      "active_wall_drift_seconds": -0.0424143333308251,
+      "cards": {
+        "S_WISP_CHAIN": 2,
+        "S_WISP_DAMAGE": 1,
+        "S_WISP_FOLLOWUP": 1,
+        "U_EDGE": 1,
+        "U_REACH": 1,
+        "U_TEMPO": 3
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 31,
+        "mean_since_latest_trigger_seconds": 0.351282051282031,
+        "next_shots_observed": 13,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 1,
+        "wisp_timer_followup_triggers": 31
+      },
+      "cumulative": {
+        "attack_presses": 28,
+        "basic_attacks_hitting": 50,
+        "basic_attacks_started": 84,
+        "basic_followup_trigger_actions": 31,
+        "basic_hit_targets": 90,
+        "close_samples_under_120": 129,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 14687.850186497,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 4.56666666666641,
+        "followup_trigger_entries_consumed": 30,
+        "fourth_attacks_hitting": 18,
+        "fourth_attacks_started": 18,
+        "fourth_hit_targets": 44,
+        "nearest_enemy_distance_sum": 65949.5483079553,
+        "proximity_samples": 318,
+        "slash_hit_targets": 20,
+        "slash_requests": 18,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 13,
+        "slashes_performed": 18,
+        "third_attacks_hitting": 9,
+        "third_attacks_started": 19,
+        "third_hit_targets": 13,
+        "wisp_hit_events": 34,
+        "wisp_shots": 36,
+        "wisp_shots_after_followup": 13,
+        "wisp_timer_followup_triggers": 31
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 66.9333333333308,
+        "active_wall_seconds": 66.890919,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CHAIN": 2,
+          "S_WISP_DAMAGE": 1,
+          "S_WISP_FOLLOWUP": 1,
+          "U_EDGE": 1,
+          "U_REACH": 1,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 14.123094,
+        "choice_windows": 9,
+        "damage_events": 10,
+        "damage_taken_actual": 99.0,
+        "earned_currency": 73,
+        "health": 110.0,
+        "kills": 64,
+        "level": 10,
+        "level_heal_actual": 99.0,
+        "level_heal_events": 9,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 2.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 9,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 9,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 81.014013,
+        "weapon": "W_ECHO",
+        "xp_remainder": 2
+      },
+      "label": "after_9_points",
+      "points_spent": 9,
+      "position": {
+        "x": 802.08154296875,
+        "y": 1395.0068359375
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 11,
+        "basic_attacks_hitting": 25,
+        "basic_attacks_started": 36,
+        "basic_followup_trigger_actions": 25,
+        "basic_hit_targets": 42,
+        "close_samples_under_120": 57,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 3940.59806367755,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 2.9666666666665,
+        "followup_trigger_entries_consumed": 26,
+        "fourth_attacks_hitting": 8,
+        "fourth_attacks_started": 8,
+        "fourth_hit_targets": 17,
+        "nearest_enemy_distance_sum": 21494.1994538903,
+        "proximity_samples": 116,
+        "slash_hit_targets": 7,
+        "slash_requests": 6,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 4,
+        "slashes_performed": 6,
+        "third_attacks_hitting": 5,
+        "third_attacks_started": 9,
+        "third_hit_targets": 8,
+        "wisp_hit_events": 14,
+        "wisp_shots": 13,
+        "wisp_shots_after_followup": 10,
+        "wisp_timer_followup_triggers": 25
+      },
+      "span_active_seconds": 16.6666666666657,
+      "span_from_points": 6,
+      "wisp_shots_counter_crosscheck": 36
+    },
+    {
+      "active_seconds": 250.233333333425,
+      "active_wall_drift_seconds": 0.0178796665753964,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_CHAIN": 2,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_SWEEP": 2,
+        "U_EDGE": 3,
+        "U_REACH": 3,
+        "U_SLASH_CADENCE": 2,
+        "U_SLASH_SWEEP": 2,
+        "U_TEMPO": 3
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 250,
+        "mean_since_latest_trigger_seconds": 0.261574074074209,
+        "next_shots_observed": 252,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 3,
+        "wisp_timer_followup_triggers": 400
+      },
+      "cumulative": {
+        "attack_presses": 161,
+        "basic_attacks_hitting": 269,
+        "basic_attacks_started": 385,
+        "basic_followup_trigger_actions": 250,
+        "basic_hit_targets": 398,
+        "close_samples_under_120": 510,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 63086.916551018,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 65.9166666667006,
+        "followup_trigger_entries_consumed": 397,
+        "fourth_attacks_hitting": 75,
+        "fourth_attacks_started": 78,
+        "fourth_hit_targets": 149,
+        "nearest_enemy_distance_sum": 548507.002370417,
+        "proximity_samples": 2027,
+        "slash_hit_targets": 56,
+        "slash_requests": 87,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 46,
+        "slashes_performed": 87,
+        "third_attacks_hitting": 62,
+        "third_attacks_started": 86,
+        "third_hit_targets": 87,
+        "wisp_hit_events": 471,
+        "wisp_shots": 413,
+        "wisp_shots_after_followup": 252,
+        "wisp_timer_followup_triggers": 400
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 250.233333333425,
+        "active_wall_seconds": 250.251213,
+        "attack_branch": "DIRECT",
+        "boss_engagements": 1,
+        "boss_first_times": {
+          "arrive": {
+            "active_seconds": 211.333333333394,
+            "wall_seconds": 248.946679
+          },
+          "engage": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 283.545003
+          },
+          "ready": {
+            "active_seconds": 241.200000000084,
+            "wall_seconds": 283.544921
+          }
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_CHAIN": 2,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_SWEEP": 2,
+          "U_EDGE": 3,
+          "U_REACH": 3,
+          "U_SLASH_CADENCE": 2,
+          "U_SLASH_SWEEP": 2,
+          "U_TEMPO": 3
+        },
+        "choice_wall_seconds": 42.349098,
+        "choice_windows": 27,
+        "damage_events": 39,
+        "damage_taken_actual": 442.0,
+        "earned_currency": 482,
+        "health": 0.0,
+        "kills": 341,
+        "level": 28,
+        "level_heal_actual": 332.0,
+        "level_heal_events": 27,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.019191,
+        "permanent_growth": {
+          "FINISH": 2.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 0.0
+        },
+        "points_earned": 27,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 27,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 292.619502,
+        "weapon": "W_ECHO",
+        "xp_remainder": 46
+      },
+      "label": "final",
+      "points_spent": 27,
+      "position": {
+        "x": 4751.318359375,
+        "y": 897.287048339844
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 133,
+        "basic_attacks_hitting": 219,
+        "basic_attacks_started": 301,
+        "basic_followup_trigger_actions": 219,
+        "basic_hit_targets": 308,
+        "close_samples_under_120": 381,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 48399.066364521,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 61.3500000000342,
+        "followup_trigger_entries_consumed": 367,
+        "fourth_attacks_hitting": 57,
+        "fourth_attacks_started": 60,
+        "fourth_hit_targets": 105,
+        "nearest_enemy_distance_sum": 482557.454062462,
+        "proximity_samples": 1709,
+        "slash_hit_targets": 36,
+        "slash_requests": 69,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 33,
+        "slashes_performed": 69,
+        "third_attacks_hitting": 53,
+        "third_attacks_started": 67,
+        "third_hit_targets": 74,
+        "wisp_hit_events": 437,
+        "wisp_shots": 377,
+        "wisp_shots_after_followup": 239,
+        "wisp_timer_followup_triggers": 369
+      },
+      "span_active_seconds": 183.300000000094,
+      "span_from_points": 9,
+      "wisp_shots_counter_crosscheck": 413
+    }
+  ],
+  "choice_dwell_seconds": 1.5,
+  "choices": [
+    {
+      "active_seconds": 12.9833333333336,
+      "chosen": "U_REACH",
+      "key": 1,
+      "offered": [
+        "U_REACH",
+        "S_WISP_REPLY",
+        "U_EDGE"
+      ],
+      "points_after": 1,
+      "points_before": 0
+    },
+    {
+      "active_seconds": 21.75,
+      "chosen": "U_TEMPO",
+      "key": 1,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_CADENCE",
+        "S_WISP_CHAIN"
+      ],
+      "points_after": 2,
+      "points_before": 1
+    },
+    {
+      "active_seconds": 23.7333333333333,
+      "chosen": "S_WISP_DAMAGE",
+      "key": 3,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_ORBIT",
+        "S_WISP_DAMAGE"
+      ],
+      "points_after": 3,
+      "points_before": 2
+    },
+    {
+      "active_seconds": 35.3333333333326,
+      "chosen": "U_TEMPO",
+      "key": 1,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_SWEEP",
+        "S_WISP_FOLLOWUP"
+      ],
+      "points_after": 4,
+      "points_before": 3
+    },
+    {
+      "active_seconds": 39.1666666666657,
+      "chosen": "S_WISP_FOLLOWUP",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_FOLLOWUP",
+        "S_WISP_REPLY"
+      ],
+      "points_after": 5,
+      "points_before": 4
+    },
+    {
+      "active_seconds": 50.2666666666651,
+      "chosen": "S_WISP_CHAIN",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_CHAIN",
+        "S_WISP_CADENCE"
+      ],
+      "points_after": 6,
+      "points_before": 5
+    },
+    {
+      "active_seconds": 54.1833333333315,
+      "chosen": "U_EDGE",
+      "key": 1,
+      "offered": [
+        "U_EDGE",
+        "S_WISP_COUNT",
+        "S_WISP_FOLLOWUP"
+      ],
+      "points_after": 7,
+      "points_before": 6
+    },
+    {
+      "active_seconds": 64.4999999999976,
+      "chosen": "U_TEMPO",
+      "key": 1,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_CHAIN",
+        "S_WISP_COUNT"
+      ],
+      "points_after": 8,
+      "points_before": 7
+    },
+    {
+      "active_seconds": 66.9333333333308,
+      "chosen": "S_WISP_CHAIN",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_CHAIN",
+        "S_SEAL"
+      ],
+      "points_after": 9,
+      "points_before": 8
+    },
+    {
+      "active_seconds": 71.7333333333305,
+      "chosen": "S_WISP_FOLLOWUP",
+      "key": 3,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_ORBIT",
+        "S_WISP_FOLLOWUP"
+      ],
+      "points_after": 10,
+      "points_before": 9
+    },
+    {
+      "active_seconds": 76.3666666666636,
+      "chosen": "U_EDGE",
+      "key": 1,
+      "offered": [
+        "U_EDGE",
+        "S_WISP_COUNT",
+        "U_STEP"
+      ],
+      "points_after": 11,
+      "points_before": 10
+    },
+    {
+      "active_seconds": 88.8333333333296,
+      "chosen": "U_EDGE",
+      "key": 3,
+      "offered": [
+        "U_SLASH_CADENCE",
+        "S_WISP_SWEEP",
+        "U_EDGE"
+      ],
+      "points_after": 12,
+      "points_before": 11
+    },
+    {
+      "active_seconds": 95.1999999999959,
+      "chosen": "S_WISP_CADENCE",
+      "key": 3,
+      "offered": [
+        "U_SLASH_CADENCE",
+        "S_WISP_ORBIT",
+        "S_WISP_CADENCE"
+      ],
+      "points_after": 13,
+      "points_before": 12
+    },
+    {
+      "active_seconds": 111.166666666662,
+      "chosen": "S_WISP_CADENCE",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_CADENCE",
+        "S_WISP_ORBIT"
+      ],
+      "points_after": 14,
+      "points_before": 13
+    },
+    {
+      "active_seconds": 122.266666666661,
+      "chosen": "U_SLASH_CADENCE",
+      "key": 1,
+      "offered": [
+        "U_SLASH_CADENCE",
+        "S_WISP_SWEEP",
+        "S_WISP_ORBIT"
+      ],
+      "points_after": 15,
+      "points_before": 14
+    },
+    {
+      "active_seconds": 129.033333333328,
+      "chosen": "U_REACH",
+      "key": 1,
+      "offered": [
+        "U_REACH",
+        "S_WISP_REPLY",
+        "S_WISP_ORBIT"
+      ],
+      "points_after": 16,
+      "points_before": 15
+    },
+    {
+      "active_seconds": 138.966666666669,
+      "chosen": "S_WISP_CADENCE",
+      "key": 2,
+      "offered": [
+        "U_SLASH_CADENCE",
+        "S_WISP_CADENCE",
+        "U_STEP"
+      ],
+      "points_after": 17,
+      "points_before": 16
+    },
+    {
+      "active_seconds": 143.300000000006,
+      "chosen": "U_REACH",
+      "key": 1,
+      "offered": [
+        "U_REACH",
+        "S_WISP_SWEEP",
+        "U_STEP"
+      ],
+      "points_after": 18,
+      "points_before": 17
+    },
+    {
+      "active_seconds": 151.566666666679,
+      "chosen": "U_SLASH_CADENCE",
+      "key": 1,
+      "offered": [
+        "U_SLASH_CADENCE",
+        "S_WISP_ORBIT",
+        "S_SEAL"
+      ],
+      "points_after": 19,
+      "points_before": 18
+    },
+    {
+      "active_seconds": 157.150000000017,
+      "chosen": "S_WISP_COUNT",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_COUNT",
+        "S_SEAL"
+      ],
+      "points_after": 20,
+      "points_before": 19
+    },
+    {
+      "active_seconds": 174.283333333364,
+      "chosen": "S_WISP_DAMAGE",
+      "key": 3,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_REPLY",
+        "S_WISP_DAMAGE"
+      ],
+      "points_after": 21,
+      "points_before": 20
+    },
+    {
+      "active_seconds": 188.266666666709,
+      "chosen": "S_WISP_DAMAGE",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_DAMAGE",
+        "S_WISP_REPLY"
+      ],
+      "points_after": 22,
+      "points_before": 21
+    },
+    {
+      "active_seconds": 196.150000000048,
+      "chosen": "S_WISP_COUNT",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_COUNT",
+        "S_WISP_ORBIT"
+      ],
+      "points_after": 23,
+      "points_before": 22
+    },
+    {
+      "active_seconds": 205.500000000056,
+      "chosen": "U_SLASH_SWEEP",
+      "key": 1,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_SWEEP",
+        "S_WISP_ORBIT"
+      ],
+      "points_after": 24,
+      "points_before": 23
+    },
+    {
+      "active_seconds": 217.100000000065,
+      "chosen": "U_SLASH_SWEEP",
+      "key": 1,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_REPLY",
+        "U_STEP"
+      ],
+      "points_after": 25,
+      "points_before": 24
+    },
+    {
+      "active_seconds": 219.9333333334,
+      "chosen": "S_WISP_SWEEP",
+      "key": 1,
+      "offered": [
+        "S_WISP_SWEEP",
+        "S_WISP_REPLY",
+        "U_STEP"
+      ],
+      "points_after": 26,
+      "points_before": 25
+    },
+    {
+      "active_seconds": 229.550000000075,
+      "chosen": "S_WISP_SWEEP",
+      "key": 3,
+      "offered": [
+        "S_WISP_ORBIT",
+        "S_SEAL",
+        "S_WISP_SWEEP"
+      ],
+      "points_after": 27,
+      "points_before": 26
+    }
+  ],
+  "companion_link": {
+    "basic_followup_trigger_actions": 250,
+    "mean_since_latest_trigger_seconds": 0.261574074074209,
+    "next_shots_observed": 252,
+    "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+    "pending_trigger_entries": 3,
+    "wisp_timer_followup_triggers": 400
+  },
+  "controller": "Same route; approach 85 units, hold position through gather/fourth. Q only as entry outside basic range and between complete combos. Emergency dash only below 30% HP between combos.",
+  "controller_hz": 10,
+  "diagnostics": {
+    "accessory": "A_EMBER",
+    "active_seconds": 250.233333333425,
+    "active_wall_seconds": 250.251213,
+    "attack_branch": "DIRECT",
+    "boss_engagements": 1,
+    "boss_first_times": {
+      "arrive": {
+        "active_seconds": 211.333333333394,
+        "wall_seconds": 248.946679
+      },
+      "engage": {
+        "active_seconds": 241.200000000084,
+        "wall_seconds": 283.545003
+      },
+      "ready": {
+        "active_seconds": 241.200000000084,
+        "wall_seconds": 283.544921
+      }
+    },
+    "cards": {
+      "S_WISP_CADENCE": 3,
+      "S_WISP_CHAIN": 2,
+      "S_WISP_COUNT": 2,
+      "S_WISP_DAMAGE": 3,
+      "S_WISP_FOLLOWUP": 2,
+      "S_WISP_SWEEP": 2,
+      "U_EDGE": 3,
+      "U_REACH": 3,
+      "U_SLASH_CADENCE": 2,
+      "U_SLASH_SWEEP": 2,
+      "U_TEMPO": 3
+    },
+    "choice_wall_seconds": 42.349098,
+    "choice_windows": 27,
+    "damage_events": 39,
+    "damage_taken_actual": 442.0,
+    "earned_currency": 482,
+    "health": 0.0,
+    "kills": 341,
+    "level": 28,
+    "level_heal_actual": 332.0,
+    "level_heal_events": 27,
+    "max_health": 110.0,
+    "pause_wall_seconds": 0.022876,
+    "permanent_growth": {
+      "FINISH": 2.0,
+      "GUARD": 0.0,
+      "MOBILITY": 0.0,
+      "POWER": 2.0,
+      "RECOVERY": 0.0,
+      "SLASH": 0.0,
+      "SLASH_POWER": 0.0,
+      "SPEED": 0.0,
+      "VITALITY": 1.0,
+      "WISP": 0.0
+    },
+    "points_earned": 27,
+    "points_exhausted": 0,
+    "points_pending": 0,
+    "points_spent": 27,
+    "region": "O_TEMPLE",
+    "result": "IN_PROGRESS",
+    "schema": "local_run_diagnostics_v1",
+    "time_scale_max": 1.0,
+    "time_scale_min": 1.0,
+    "wall_seconds": 292.623187,
+    "weapon": "W_ECHO",
+    "xp_remainder": 46
+  },
+  "engine": "4.6.3-stable (official)",
+  "error": "",
+  "fixture": {
+    "attack_branch": "DIRECT",
+    "awakenings": [],
+    "bank": 6,
+    "cumulative_expenditure": 294,
+    "equality_basis": "Equal cumulative expenditure and prior history, not equal equipped price. Shared inventory W_FLOW/W_ECHO/A_EMBER costs104; VITALITY1 costs20; two offensive axes at rank2 cost110; branch costs60.",
+    "equipped_accessory": "A_EMBER",
+    "equipped_weapon": "W_ECHO",
+    "fresh_earned": false,
+    "growth_ranks": {
+      "FINISH": 2,
+      "GUARD": 0,
+      "MOBILITY": 0,
+      "POWER": 2,
+      "RECOVERY": 0,
+      "SLASH": 0,
+      "SLASH_POWER": 0,
+      "SPEED": 0,
+      "VITALITY": 1,
+      "WISP": 0
+    },
+    "history": "Six prior levelups through add_levelup; temple SUCCESS earned100 then jungle SUCCESS earned100 through settle; each awards150 including success20/first-clear30.",
+    "lifetime_levelups": 6,
+    "owned_gear": {
+      "A_EMBER": true,
+      "W_ECHO": true,
+      "W_FLOW": true
+    },
+    "owned_mods": [],
+    "slotted_mods": {
+
+    },
+    "supplies": 0,
+    "synthetic_prior_history": true,
+    "total_currency_awarded": 300
+  },
+  "human_playtest": false,
+  "input_events": 4459,
+  "measurement_notes": "Attack/slash starts use existing sequence counters. Hitting actions and refund triggers are deduplicated per sequence; cooldown floors mean a trigger is not necessarily a full0.22s effective reduction; hit_targets count target events, not attacks. Wisp hits include projectile/chain/orbit events and are not shot accuracy. Requests failing to produce an action within0.4 active seconds are separate from actions; end-pending requests remain separate. No forced cards/XP, rerolls, damage tuning, health restoration or growth caps. First life only. Tactical policies are scripted assumptions. Unsettled limits are IN_PROGRESS, never economy settlement proof.",
+  "physics_hz": 60,
+  "policy": "tailored",
+  "result": "IN_PROGRESS",
+  "sample": "equal_investment_build_comparison_v2",
+  "seed": 250,
+  "source_sha256": {
+    "game/hybrid_height.gd": "17057b90ef9b72c6f09e612db41c23ee9c8939778411858c0cf0f652d6514aa6",
+    "game/hybrid_region.gd": "d062931d008534a2c7a1b1e82aaba780646a0cbc14f86da86020407330db3770",
+    "game/player.gd": "3353c98344d7c7fd72bd77927ed0fa810d2df9ffb6b29194e2f9cdecc239c380",
+    "game/run_diagnostics.gd": "418c96719ea551259383dbc4afd82be44786788053e459c66a366d5c3a880436",
+    "game/run_growth.gd": "3c3e54a7e647202753298c67d106bee38e32bbd2a042d6f8936cf9f32c3ac227",
+    "game/run_profile.gd": "b885bf2c70db22b42cdbf7403773c998401e878448d2a27c7f3c4d47bdc48fd4",
+    "game/temple_section.gd": "b6533876caef5d523be0827c2520c61dc56a922cb2a23d888ae85a98a228a1dd",
+    "game/wisp.gd": "620639c1cee3970a0ccf5c837644d0f3164219b438b6b6d51d2306f1d396c9a1",
+    "game/wisp_projectile.gd": "ac5eed69f8073d18004e1271bc03da7a0783b5b63e364d0f3cd1e712495746c4",
+    "tests/sample_build_comparison.gd": "4cfc351eb8d9d3f743cb0914954546d6249ccea5946be02f282ee1594929518b",
+    "tests/sample_run_baseline.gd": "628e99ac19b4a0c6eb6165fbba822e4533419da435426cd2e0859028a5022718"
+  },
+  "stop_reason": "boss_death_retry_available",
+  "time_scale": 1.0
+}

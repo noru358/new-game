@@ -1,0 +1,306 @@
+{
+  "modal": [
+    {
+      "checkpoints": [
+        {
+          "cards": {
+            "S_WISP_REPLY": 1,
+            "S_WISP_SWEEP": 1,
+            "U_SLASH_CADENCE": 1
+          },
+          "chosen": "S_WISP_REPLY",
+          "health": 70.0,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_DAMAGE",
+            "S_WISP_REPLY"
+          ],
+          "points": 3,
+          "windows": 3
+        },
+        {
+          "cards": {
+            "S_WISP_REPLY": 1,
+            "S_WISP_SWEEP": 1,
+            "U_SLASH_CADENCE": 1,
+            "U_SLASH_SWEEP": 2,
+            "U_TEMPO": 1
+          },
+          "chosen": "U_TEMPO",
+          "health": 100.0,
+          "offered": [
+            "U_REACH",
+            "S_WISP_COUNT",
+            "U_TEMPO"
+          ],
+          "points": 6,
+          "windows": 6
+        },
+        {
+          "cards": {
+            "S_WISP_REPLY": 1,
+            "S_WISP_SWEEP": 2,
+            "U_EDGE": 1,
+            "U_SLASH_CADENCE": 2,
+            "U_SLASH_SWEEP": 2,
+            "U_TEMPO": 1
+          },
+          "chosen": "U_EDGE",
+          "health": 100.0,
+          "offered": [
+            "U_EDGE",
+            "S_WISP_DAMAGE",
+            "S_WISP_COUNT"
+          ],
+          "points": 9,
+          "windows": 9
+        }
+      ],
+      "mode": "baseline"
+    },
+    {
+      "checkpoints": [
+        {
+          "cards": {
+            "U_SLASH_CADENCE": 2,
+            "U_SLASH_SWEEP": 1
+          },
+          "chosen": "U_SLASH_SWEEP",
+          "health": 70.0,
+          "offered": [
+            "U_SLASH_SWEEP",
+            "S_WISP_DAMAGE",
+            "U_TEMPO"
+          ],
+          "points": 3,
+          "windows": 3
+        },
+        {
+          "cards": {
+            "S_WISP_SWEEP": 1,
+            "U_SLASH_CADENCE": 2,
+            "U_SLASH_SWEEP": 2,
+            "U_TEMPO": 1
+          },
+          "chosen": "U_TEMPO",
+          "health": 100.0,
+          "offered": [
+            "U_TEMPO",
+            "S_WISP_COUNT",
+            "U_STEP"
+          ],
+          "points": 6,
+          "windows": 6
+        },
+        {
+          "cards": {
+            "S_WISP_SWEEP": 2,
+            "U_REACH": 1,
+            "U_SLASH_CADENCE": 2,
+            "U_SLASH_SWEEP": 2,
+            "U_TEMPO": 2
+          },
+          "chosen": "S_WISP_SWEEP",
+          "health": 100.0,
+          "offered": [
+            "U_EDGE",
+            "S_WISP_SWEEP",
+            "U_STEP"
+          ],
+          "points": 9,
+          "windows": 9
+        }
+      ],
+      "mode": "trial"
+    }
+  ],
+  "offers": {
+    "baseline": {
+      "companion": {
+        "3": {
+          "no_slash_cadence_offered": 189,
+          "no_slash_card_offered": 68,
+          "selected_families": {
+            "WISP": 1536
+          },
+          "two_family_choices": 1044
+        },
+        "6": {
+          "no_slash_cadence_offered": 70,
+          "no_slash_card_offered": 8,
+          "selected_families": {
+            "WISP": 3072
+          },
+          "two_family_choices": 2049
+        },
+        "9": {
+          "no_slash_cadence_offered": 27,
+          "no_slash_card_offered": 1,
+          "selected_families": {
+            "WISP": 4608
+          },
+          "two_family_choices": 3016
+        }
+      },
+      "gather": {
+        "3": {
+          "no_slash_cadence_offered": 189,
+          "no_slash_card_offered": 67,
+          "selected_families": {
+            "BASIC": 1052,
+            "SLASH": 89,
+            "WISP": 395
+          },
+          "two_family_choices": 1046
+        },
+        "6": {
+          "no_slash_cadence_offered": 67,
+          "no_slash_card_offered": 9,
+          "selected_families": {
+            "BASIC": 2086,
+            "SLASH": 193,
+            "WISP": 793
+          },
+          "two_family_choices": 2078
+        },
+        "9": {
+          "no_slash_cadence_offered": 19,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "BASIC": 3031,
+            "SLASH": 302,
+            "WISP": 1275
+          },
+          "two_family_choices": 3097
+        }
+      },
+      "movement": {
+        "3": {
+          "no_slash_cadence_offered": 192,
+          "no_slash_card_offered": 67,
+          "selected_families": {
+            "BASIC": 476,
+            "SLASH": 745,
+            "WISP": 315
+          },
+          "two_family_choices": 1057
+        },
+        "6": {
+          "no_slash_cadence_offered": 69,
+          "no_slash_card_offered": 10,
+          "selected_families": {
+            "BASIC": 1038,
+            "SLASH": 1359,
+            "WISP": 675
+          },
+          "two_family_choices": 2104
+        },
+        "9": {
+          "no_slash_cadence_offered": 20,
+          "no_slash_card_offered": 2,
+          "selected_families": {
+            "BASIC": 1832,
+            "SLASH": 1749,
+            "WISP": 1027
+          },
+          "two_family_choices": 3210
+        }
+      }
+    },
+    "trial": {
+      "companion": {
+        "3": {
+          "no_slash_cadence_offered": 120,
+          "no_slash_card_offered": 10,
+          "selected_families": {
+            "WISP": 1536
+          },
+          "two_family_choices": 0
+        },
+        "6": {
+          "no_slash_cadence_offered": 34,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "WISP": 3072
+          },
+          "two_family_choices": 0
+        },
+        "9": {
+          "no_slash_cadence_offered": 5,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "WISP": 4608
+          },
+          "two_family_choices": 0
+        }
+      },
+      "gather": {
+        "3": {
+          "no_slash_cadence_offered": 119,
+          "no_slash_card_offered": 10,
+          "selected_families": {
+            "BASIC": 1294,
+            "SLASH": 85,
+            "WISP": 157
+          },
+          "two_family_choices": 0
+        },
+        "6": {
+          "no_slash_cadence_offered": 32,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "BASIC": 2558,
+            "SLASH": 193,
+            "WISP": 321
+          },
+          "two_family_choices": 0
+        },
+        "9": {
+          "no_slash_cadence_offered": 7,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "BASIC": 3690,
+            "SLASH": 342,
+            "WISP": 576
+          },
+          "two_family_choices": 0
+        }
+      },
+      "movement": {
+        "3": {
+          "no_slash_cadence_offered": 114,
+          "no_slash_card_offered": 10,
+          "selected_families": {
+            "BASIC": 374,
+            "SLASH": 1035,
+            "WISP": 127
+          },
+          "two_family_choices": 0
+        },
+        "6": {
+          "no_slash_cadence_offered": 24,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "BASIC": 977,
+            "SLASH": 1767,
+            "WISP": 328
+          },
+          "two_family_choices": 0
+        },
+        "9": {
+          "no_slash_cadence_offered": 4,
+          "no_slash_card_offered": 0,
+          "selected_families": {
+            "BASIC": 1969,
+            "SLASH": 2001,
+            "WISP": 638
+          },
+          "two_family_choices": 0
+        }
+      }
+    }
+  },
+  "scope": "512 seeded offer sequences per existing v34 priority, then isolated earned-XP modal fixtures; not combat, human preference or balance acceptance",
+  "seeds": 512,
+  "tradeoff": "개발 후보 비교 · 셋째 카드는 다른 행동군 우선 · 동행 중복 후보 감소"
+}

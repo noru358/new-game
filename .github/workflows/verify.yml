@@ -8,7 +8,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - name: Install Godot 4.6 stable
@@ -26,22 +26,92 @@ jobs:
           echo "$RUNNER_TEMP/godot" >> "$GITHUB_PATH"
       - name: Import project
         run: godot --headless --editor --path . --quit
-      - name: Run every verification script
+      - name: Verify parallel runner isolation contracts
+        run: python3 -m unittest discover -s tests -p test_parallel_verifications.py -v
+      - name: Run every verification script in two isolated batches
+        run: >-
+          python3 scripts/run_parallel_verifications.py
+          --godot "$(command -v godot)"
+          --output "$RUNNER_TEMP/parallel-verification-logs"
+      - name: Verify shared preview across fresh engine processes
         shell: bash
         run: |
-          mkdir -p verification-logs
-          failed=0
-          for script in tests/verify_*.gd; do
-            name="$(basename "$script" .gd)"
-            if ! timeout 240 godot --headless --path . --script "res://$script" > "verification-logs/$name.log" 2>&1; then
-              failed=1
-            fi
-            cat "verification-logs/$name.log"
-            if grep -Eq 'SCRIPT ERROR:|Parse Error:|^FAIL:' "verification-logs/$name.log"; then
-              failed=1
-            fi
+          evidence="$GITHUB_WORKSPACE/docs/measurements/preview-lifecycle-v46/ci-run"
+          set +e
+          python3 scripts/check_preview_lifecycle.py --godot "$(command -v godot)" --output "$evidence"
+          status=$?
+          mkdir -p verification-logs/preview-lifecycle
+          for file in "$evidence"/summary.json "$evidence"/*-report.json "$evidence"/*first-divergence.json "$evidence"/*.txt; do
+            if [[ -f "$file" ]]; then cp "$file" verification-logs/preview-lifecycle/; fi
           done
-          exit "$failed"
+          exit "$status"
+      - name: Verify actor depth with isolated software rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb libgl1-mesa-dri fonts-noto-cjk
+          private="$RUNNER_TEMP/actor-depth-private"
+          mkdir -p "$private" verification-logs
+          git archive HEAD | tar -x -C "$private"
+          python3 - "$private/project.godot" <<'PY'
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          text = path.read_text()
+          original = 'config/custom_user_dir_name="Godot/app_userdata/Loop Conquest - 1G Complete Run v03"'
+          assert text.count(original) == 1
+          path.write_text(text.replace(original, 'config/custom_user_dir_name="CodexActorTerrainV43-CI"'))
+          PY
+          godot --headless --editor --path "$private" --quit > verification-logs/actor-depth-import.log 2>&1
+          for size in 960 1280; do
+            output="$RUNNER_TEMP/actor-depth-output/$size"
+            mkdir -p "$output"
+            args=()
+            if [[ "$size" == 1280 ]]; then args=(-- --large); fi
+            if ! ACTOR_DEPTH_OUTPUT="$output" LIBGL_ALWAYS_SOFTWARE=1 \
+              xvfb-run -a -s '-screen 0 1280x720x24' \
+              timeout 240 godot --path "$private" --rendering-driver opengl3 \
+              --script res://tests/verify_actor_terrain_depth.gd "${args[@]}" \
+              > "verification-logs/actor-depth-$size.log" 2>&1; then
+              cat "verification-logs/actor-depth-$size.log"
+              exit 1
+            fi
+            cat "verification-logs/actor-depth-$size.log"
+            test -s "$output/report.json"
+            python3 - "$output/report.json" <<'PY'
+          import json, sys
+          report = json.load(open(sys.argv[1]))
+          assert len(report['cases']) == 9, report
+          assert not report['failures'], report
+          assert 'CodexActorTerrainV43' in report['user_data_dir'], report
+          PY
+          done
+      - name: Render concise world labels and growth descriptions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for fixture in verify_growth_card_descriptions capture_world_destination_labels verify_jungle_waterfall_visibility verify_equipment_followthrough; do
+            private="$RUNNER_TEMP/ui-copy-$fixture"
+            mkdir -p "$private" "verification-logs/ui-copy/$fixture"
+            git archive HEAD | tar -x -C "$private"
+            sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WorldDestinationLabelsV48#' "$private/project.godot"
+            if [[ "$fixture" = verify_jungle_waterfall_visibility ]]; then sed -i 's/WorldDestinationLabelsV48/WaterfallVisibilityV48/' "$private/project.godot"; fi
+            export HOME="$RUNNER_TEMP/ui-home-$fixture"
+            export XDG_DATA_HOME="$HOME/data" XDG_CONFIG_HOME="$HOME/config" XDG_CACHE_HOME="$HOME/cache"
+            mkdir -p "$XDG_DATA_HOME" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME"
+            godot --headless --editor --path "$private" --quit > "verification-logs/ui-copy/$fixture/import.log" 2>&1
+            LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 180 \
+              godot --path "$private" --audio-driver Dummy --rendering-method gl_compatibility \
+              --script "res://tests/$fixture.gd" -- --capture-dir="$GITHUB_WORKSPACE/verification-logs/ui-copy/$fixture/images" \
+              > "verification-logs/ui-copy/$fixture/render.log" 2>&1
+            cat "verification-logs/ui-copy/$fixture/render.log"
+            if grep -E 'SCRIPT ERROR:|Parse Error:|^FAIL:' "verification-logs/ui-copy/$fixture/"*.log; then exit 1; fi
+          done
+          test "$(find verification-logs/ui-copy/verify_growth_card_descriptions -name '*.png' | wc -l)" -eq 4
+          test "$(find verification-logs/ui-copy/capture_world_destination_labels -name '*.png' | wc -l)" -eq 50
+          test "$(find verification-logs/ui-copy/verify_jungle_waterfall_visibility -name '*.png' | wc -l)" -eq 96
+          test "$(find verification-logs/ui-copy/verify_equipment_followthrough -name '*.png' | wc -l)" -eq 10
       - name: Verify isolated price-trial copies
         run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
@@ -50,5 +120,7 @@ jobs:
           name: verification-logs
           path: |
             verification-logs/
+            ${{ runner.temp }}/parallel-verification-logs/
+            ${{ runner.temp }}/actor-depth-output/*/report.json
             ${{ runner.temp }}/price-trial-checks/engine-summary.json
             ${{ runner.temp }}/price-trial-checks/*/*.log

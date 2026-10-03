@@ -1,3 +1,28 @@
+# v47 제출 — 2026-10-03
+
+- 습지 얼굴 유적의 균등2.4배 규모/조형과 연결 연못, 사원 성소/앞문 규모, 정글 거목/바위 모서리 대표 묶음
+- 카메라·자동 가림·전투/성장 규칙 유지, 실제 물리 경계와 지형 가림 비교
+- 연습모드의 기존 돌벽 겹침 스폰1개 수정
+- 새 프로세스 공통 기록 반복 검사 및 같은 일반검사103개의 격리 병렬 실행 도구
+- 실제960/1280 정상입력 보행과 정적/보스 예고 렌더 검증. 자연 재미·최종 미감·사용자 기기 GPU 확인은 별도
+- 배포 파일/최종 소스 검증 상태는 DEV_STATUS의 최신 제출 기록을 따른다
+
+## 2026-10-02 — existing enemy roles and basic play settings v41
+
+- Complete lamp, zone and support bodies from their existing motifs, retaining the stone/horn bodies, grounded depth, hit flash, actual attack cues and all enemy rules.
+- Add master gain/mute and window/fullscreen choices to walking camp and the existing pause menu; preserve station closing, modal pause/focus and input blocking.
+- Store only a separate local ConfigFile, preserve authored relative sound levels, validate bad values and show write failure without changing progression files.
+- Verify actual scene mounts,62 integrated scripts,9 isolated-copy tests, real X11 controls and short explicitly injected combat fixtures. Keep audio listening, other-platform interactive modes and human acceptance open.
+- Prepare one separate v41 Mac checkpoint after exact-head validation; preserve the user's existing v38 app and baseline gameplay.
+
+## 2026-10-02 — readable occlusion, results and isolated cap comparison v40
+
+- Keep opaque temple lower masonry while removing actual upper obstructions, with immediate entry,350ms clear hold and180ms restoration; preserve a legacy comparison switch.
+- Apply overhead-only handling to canal gate/sluice landmarks. Keep houses explicitly unchanged where their tall box walls lack a proper low cut cap.
+- Prioritize banked net reward and exact purchase/equip availability in results; preserve failed-save blocking/retry and single settlement.
+- Add opt-in fourth ranks to two existing damage cards with half-sized final increments; expose independent cap/offer flags only through isolated copies with bound resume identity.
+- Retain ordinary saves, prices, combat, camera and all other rank caps. Preserve the delivered v38 Mac while extending the verified v39 source.
+
 ## 2026-10-01 — preserve player visibility during boss overlap v38
 
 - Draw the existing player sprite in front only when a visible animated temple/jungle boss mesh covers its face/body; restore ordinary depth on separation or invalid/hidden/offscreen states.
@@ -470,3 +495,22 @@
 - 경험치 막대를 전투 HUD에 표시하고 카드 요약과 겹치지 않게 조정. 4타의 본체 확대 제거.
 - 정글 히든과 사원 정원의 카메라 앞쪽 벽을 낮추되 충돌 보존. 정글 히든에 낮은 돌·식생 추가. 보스 마당의 가리는 기둥·벽·처마를 이동/축소.
 - 일반 적 상한 72, 스폰율 1.5배와 가까운 생성 거리로 난이도 시험. 정글 숲·석교 폐허·강변의 바닥/장식/적 역할 차별화. 난이도와 탐험 체감은 실제 플레이 검증 전.
+## 2026-10-01 — parallel first-encounter production v39
+
+- Combine independent existing-role silhouettes, HUD hierarchy, accurate card scope/range descriptions and the temple opening environment in one production batch.
+- Give the stone fragment and horned beast their own grounded body, warning/charge pose and visible hit flash while preserving all gameplay values and the opening spawn schedule.
+- Dress the existing waterfront-to-raised-court approach using blocked edges, masonry, water-bank remnants and low growth; retain routes, heights and camera.
+- Keep an alternate third-card family distribution opt-in and in memory only. Baseline runs and save data retain the existing offer policy and prices.
+- Preserve the delivered v38 Mac checkpoint independently; native arm64/Intel startup is evidence for that exact archive, not automatic certification of later code or human play quality.
+## 2026-10-03 — v43 Mac visibility and playtest handoff
+
+- Keep the v42 four-minute boss and v7 save contract. Restore an independent, always visible countdown during preparation and distinct ready/fight/retry statuses without replacing the destination line.
+- Fix a measured jungle gate-stair enemy burial: move one opaque canopy and its actual blocker from `(4060,1390)` to `(4250,1390)`; raise only ordinary enemy billboards 0.04 world units above painted surfaces while keeping shadows and gameplay coordinates grounded. Preserve collision sizes, enemy rules, assets and opacity.
+- Mount one bounded worn-stone sample on the existing 8 gate posts, 10 rocks and 12 stair courses. Keep the original transforms and terrain heights; static drawcalls are unchanged in the Mac sample, with 1,064 more geometry triangles.
+- Verify the combined source with the previous 72 script regressions, 9 actor/terrain depth poses at both Mac resolutions, native boss countdown/UI and normal-input jungle stone/route samples. A capture-only route script still reports one resource at process exit; its walk and images complete, while the ordinary route regression exits cleanly.
+- Export the exact `8c1986f` source as an ad-hoc signed Universal2 Mac app and intact ZIP, copy both to a new Downloads folder and reveal the app in Finder. Confirm 179 packed resources, no development resources, and unchanged ordinary save/config hashes.
+- Preserve v42 app and saves. Human visual acceptance, longer play/performance, audio and remaining map-wide occlusion audit stay open.
+
+
+## v48 submission preparation (2026-10-03)
+- Temple place sequence, W_FLOW first-effective-hit consumption, and owned/equipped gear follow-through integrated for review. Shared finish reset and accurate hub description mounted. Individual Mac evidence retained; exact integrated caf602c aggregate/render/Windows checks passed. Final v48 Mac package pending; delivered v47 remains unchanged.

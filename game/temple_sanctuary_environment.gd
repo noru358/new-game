@@ -165,41 +165,9 @@ func _finish_structure(root: Node3D, label: String, volumes: Array) -> MeshInsta
 	return mesh
 
 
-static func update_visibility(root: Node3D, arena: Node3D) -> void:
-	if not root.visible or not is_instance_valid(arena.player): return
-	var targets: Array[Vector3] = []
-	if not arena.overview:
-		for actor in arena.actors:
-			if not is_instance_valid(actor): continue
-			if actor != arena.player and (not actor is TrainingEnemy or actor.health <= 0): continue
-			if not is_instance_valid(arena.actors[actor]) or not arena.actors[actor].is_visible_in_tree(): continue
-			if actor.position.distance_to(arena.player.position) > 1500: continue
-			var center: Vector3 = arena.terrain.world_point(actor.position, 55)
-			if not arena.get_viewport().get_visible_rect().grow(30).has_point(arena.camera.unproject_position(center)): continue
-			for lift in [10.0, 65.0, 120.0 if actor is GateBoss else 85.0]:
-				targets.append(arena.terrain.world_point(actor.position, lift))
-		_add_boss_warning_targets(arena, targets)
-	var visible_targets: Array[Vector3] = []
-	for target in targets:
-		if arena.get_viewport().get_visible_rect().grow(12).has_point(arena.camera.unproject_position(target)): visible_targets.append(target)
-	var toward_camera: Vector3 = arena.camera.global_basis.z * 40.0
-	for group in root.get_meta("occlusion_groups", []):
-		var obscures := false
-		for target in visible_targets:
-			for volume in group.get_meta("occlusion_volumes", []):
-				if (volume as AABB).intersects_segment(target, target + toward_camera) != null:
-					obscures = true
-					break
-			if obscures: break
-		if not group.has_meta("solid_material"):
-			var solid: StandardMaterial3D = group.material_override
-			var faded := solid.duplicate() as StandardMaterial3D
-			faded.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			faded.albedo_color.a = 0.12
-			group.set_meta("solid_material", solid)
-			group.set_meta("faded_material", faded)
-		group.material_override = group.get_meta("faded_material" if obscures else "solid_material")
-		group.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if obscures else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+static func update_visibility(root: Node3D, _arena: Node3D) -> void:
+	# Compatibility entry point: never hides or fades architecture.
+	preload("res://game/environment_opacity.gd").restore(root)
 
 
 static func _add_boss_warning_targets(arena: Node3D, targets: Array[Vector3]) -> void:

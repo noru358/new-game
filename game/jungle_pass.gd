@@ -1,5 +1,8 @@
 extends "res://game/hybrid_region.gd"
 
+const WornStone = preload("res://game/jungle_worn_stone_visuals.gd")
+const RouteTerrain = preload("res://game/jungle_route_terrain.gd")
+const RouteEnvironment = preload("res://game/jungle_route_environment.gd")
 const PassTerrain = preload("res://game/jungle_pass_terrain.gd")
 const GATE_BOSS_POINTS := [Vector2(4700, 800), Vector2(4700, 1200), Vector2(4700, 1650)]
 var canopy_visuals: Dictionary = {}
@@ -18,10 +21,10 @@ func _create_region_section() -> Node:
 
 func _init() -> void:
 	super._init()
-	terrain = PassTerrain.new()
+	terrain = PassTerrain.new() if OS.get_cmdline_user_args().has("--jungle-route-baseline") else RouteTerrain.new()
 	start_point = Vector2(430, 1210)
 	enemy_points = [
-		Vector2(500, 1120), Vector2(970, 820), Vector2(1110, 1750),
+		Vector2(500, 1120), Vector2(970, 820), Vector2(1160, 1750),
 		Vector2(1860, 1120), Vector2(2530, 830), Vector2(3300, 1210),
 		Vector2(4210, 1100), Vector2(5080, 1150)
 	]
@@ -60,6 +63,7 @@ func _ready() -> void:
 	_build_gate_approaches()
 	_build_river_route()
 	_build_route_scenery()
+	if terrain is RouteTerrain: add_child(RouteEnvironment.build(self))
 	for child in get_children():
 		if child is Node3D and not before.has(child): main_decor.append(child)
 
@@ -204,7 +208,7 @@ func _encounter_cue() -> String:
 
 func _run_hud_text() -> String:
 	var result := super._run_hud_text()
-	if run_time >= 270.0 and not boss_spawned:
+	if run_time >= BOSS_TIME - 30.0 and not boss_spawned:
 		result += "\n관문 상단에 수호자 출현 예정"
 	if not is_instance_valid(boss) or not boss is JungleWarden: return result
 	if boss.global_position.distance_to(player.global_position) > 850.0:
@@ -271,8 +275,9 @@ func _build_gate_silhouette() -> void:
 
 func _build_jungle_silhouette() -> void:
 	# Decorative canopy massing sits beside the clear navigation routes.
-	for i in PassTerrain.CANOPY_POINTS.size():
-		var point: Vector2 = PassTerrain.CANOPY_POINTS[i]
+	var canopy_points: Array = terrain.route_canopy_points if terrain is RouteTerrain else PassTerrain.CANOPY_POINTS
+	for i in canopy_points.size():
+		var point: Vector2 = canopy_points[i]
 		var root := terrain.world_point(point)
 		var height := 2.9 + float(int(point.x + point.y) % 5) * 0.32
 		var trunk := MeshInstance3D.new()
@@ -310,7 +315,8 @@ func _build_gate_approaches() -> void:
 			post.name = "StairPost"
 			var shape := BoxMesh.new()
 			shape.size = Vector3(0.24, 0.62, 0.30)
-			post.mesh = shape
+			post.set_meta("worn_stone_kind", "post")
+			post.mesh = WornStone.post_mesh(shape.size, step / 4) if WornStone.enabled() else shape
 			post.material_override = _material(Color("797d6c"))
 			post.position = Vector3(x * PassTerrain.SCALE, (height + 31.0) * PassTerrain.SCALE, side_y * PassTerrain.SCALE)
 			add_child(post)
@@ -319,11 +325,17 @@ func _build_gate_approaches() -> void:
 			var x: float = rocks.area.position.x + rocks.area.size.x * (float(step) + 0.5) / 5.0
 			var y: float = rocks.area.position.y - 24.0 if side < 0.0 else rocks.area.end.y + 24.0
 			var height: float = terrain.ramp_height(rocks, Vector2(x, y))
+			if terrain is RouteTerrain:
+				var point: Vector2 = RouteTerrain.ROCK_EDGE_POINTS[step + (0 if side < 0 else 5)]
+				x = point.x
+				y = point.y
+				height = terrain.height_at(point)
 			var shard := MeshInstance3D.new()
 			shard.name = "RockEdge"
 			var shape := BoxMesh.new()
 			shape.size = Vector3(0.38, 0.44 + float(step % 3) * 0.17, 0.52)
-			shard.mesh = shape
+			shard.set_meta("worn_stone_kind", "rock")
+			shard.mesh = WornStone.rock_mesh(shape.size, step + (0 if side < 0 else 5)) if WornStone.enabled() else shape
 			shard.material_override = _material(Color("586c65") if step % 2 == 0 else Color("748379"))
 			shard.position = Vector3(x * PassTerrain.SCALE, (height + shape.size.y * 50.0) * PassTerrain.SCALE, y * PassTerrain.SCALE)
 			shard.rotation.y = float(step + 1) * 0.17 * side
@@ -333,17 +345,19 @@ func _build_gate_approaches() -> void:
 
 func _build_river_route() -> void:
 	# Low water ribbons and rooted banks keep the path and actors readable.
-	for i in 28:
-		var point := Vector2(2790 + i * 48, 2200 + sin(i * 0.7) * 14)
-		var water := MeshInstance3D.new()
-		water.name = "RiverRibbon"
-		var shape := BoxMesh.new()
-		shape.size = Vector3(0.52, 0.025, 0.55)
-		water.mesh = shape
-		water.position = terrain.world_point(point, 2)
-		water.material_override = _material(Color("76b2ad"))
-		add_child(water)
-	for point in [Vector2(2790, 2030), Vector2(3170, 2090), Vector2(2810, 1590)]:
+	if not terrain is RouteTerrain:
+		for i in 28:
+			var point := Vector2(2790 + i * 48, 2200 + sin(i * 0.7) * 14)
+			var water := MeshInstance3D.new()
+			water.name = "RiverRibbon"
+			var shape := BoxMesh.new()
+			shape.size = Vector3(0.52, 0.025, 0.55)
+			water.mesh = shape
+			water.position = terrain.world_point(point, 2)
+			water.material_override = _material(Color("76b2ad"))
+			add_child(water)
+	var root_points: Array = RouteTerrain.RIVER_ROOT_POINTS if terrain is RouteTerrain else [Vector2(2790, 2030), Vector2(3170, 2090), Vector2(2810, 1590)]
+	for point in root_points:
 		var root := MeshInstance3D.new()
 		root.name = "RiverRoot"
 		var shape := BoxMesh.new()
@@ -378,6 +392,7 @@ func _build_route_scenery() -> void:
 		add_child(fragment)
 	for i in 24:
 		var point := Vector2(2770 + i * 57, 2180 + sin(float(i) * 0.72) * 26.0)
+		if terrain is RouteTerrain: point = terrain.route_reed_points[i]
 		var reed := MeshInstance3D.new()
 		reed.name = "RiverReed"
 		var shape := CylinderMesh.new()

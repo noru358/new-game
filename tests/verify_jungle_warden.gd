@@ -22,7 +22,7 @@ func _run() -> void:
 	var hp := player.health
 	boss._beast_velocity(0.71)
 	check(player.health == hp - JungleWarden.SWEEP_DAMAGE, "point blank no longer bypasses the sweep")
-	check(boss.recovery_time >= 1.2 and boss._beast_velocity(0.2) == Vector2.ZERO, "early attack gives stationary counter time")
+	check(boss.recovery_time >= boss._attack_delay() and boss._beast_velocity(0.2) == Vector2.ZERO, "early attack gives stationary counter time")
 	boss.recovery_time = 0
 	boss.next_attack_gust = false
 	player.hurt_immunity = 0
@@ -52,7 +52,7 @@ func _run() -> void:
 			check(boss.combo_gap > 0 and boss.recovery_time == 0, "late sequence continues before recovery")
 			player.position = boss.position + Vector2(0, 100) if i == 0 else boss.position - Vector2(100, 0)
 			boss._beast_velocity(0.19)
-	check(boss.attacks_fired == before + 3 and boss.recovery_time >= 1.4, "late sweep/gust/sweep combo ends in full counter opportunity")
+	check(boss.attacks_fired == before + 3 and boss.recovery_time >= boss._attack_delay(), "late sweep/gust/sweep combo ends in full counter opportunity")
 	boss.suspend_encounter()
 	check(boss.combo_attacks_left == 0 and boss.combo_gap == 0 and boss.sweep_warning == 0, "suspension clears follow-ups")
 	arena.queue_free()

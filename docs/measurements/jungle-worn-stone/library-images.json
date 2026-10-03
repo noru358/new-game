@@ -1,0 +1,14 @@
+[
+  {
+    "status": "succeeded",
+    "library_file_id": "libfile_ca4fffae1aa0819184c9c7ce4acf0ab0",
+    "file_id": "file_00000000031082069a06f1be599f481d",
+    "path": "/jungle-worn-stone-before-1280.png"
+  },
+  {
+    "status": "succeeded",
+    "library_file_id": "libfile_46fbb8651c688191b081eb08d3278392",
+    "file_id": "file_00000000c43882069e8f05a9ebe96960",
+    "path": "/jungle-worn-stone-after-1280.png"
+  }
+]
