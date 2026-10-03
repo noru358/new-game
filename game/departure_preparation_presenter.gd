@@ -26,6 +26,7 @@ func setup(scene: Control) -> void:
 	var equipment: VBoxContainer = scene.gear_list_scroll.get_child(0).get_child(0)
 	purchase_explanation = _label("구매는 보유 · 출정에 적용하려면 별도 장착", 16, MUTED)
 	equipment.add_child(purchase_explanation)
+	equipment.move_child(purchase_explanation, scene.gear_action_button.get_index())
 	equipment.add_child(_label("회복 부적", 20))
 	var supplies: HBoxContainer = scene.supply_buy_button.get_parent()
 	supplies.reparent(equipment)
@@ -95,6 +96,20 @@ func refresh() -> void:
 	hub.wetland_region_button.text = "깊은 사원 습지%s" % (" · 잠김" if not hub.profile.region_available(Profile.WETLAND_REGION) else " · 선택" if hub.selected_region_id == Profile.WETLAND_REGION else "")
 	gate_reason.text = ("정글 절벽 관문 첫 성공 후 출정 가능" if hub.selected_region_id == Profile.WETLAND_REGION else "청록 폐사원 첫 성공 후 출정 가능") if not hub.profile.region_available(hub.selected_region_id) and not hub.profile.load_error else ""
 	gate_reason.visible = first_page and not gate_reason.text.is_empty()
+	_refresh_equipment_action()
+
+func _refresh_equipment_action() -> void:
+	# Read committed state after Hub's purchase/equip callback. Never perform either.
+	var id: String = hub.selected_gear_id
+	var equipped: bool = id == hub.profile.equipped_weapon or id == hub.profile.equipped_accessory
+	var owned: bool = id == "W_START" or hub.profile.owned_gear.has(id)
+	if equipped:
+		purchase_explanation.text = "장착됨 · 출정 탭에서 시작"
+	elif owned:
+		purchase_explanation.text = "보유 중 · 아래 장착 버튼으로 적용"
+		hub.gear_action_button.text = Profile.gear_name(id) + " 장착"
+	else:
+		purchase_explanation.text = "구매는 보유 · 구매 뒤 별도 장착"
 
 func _label(value: String, pixels: int, tint: Color = INK) -> Label:
 	var control := Label.new()
