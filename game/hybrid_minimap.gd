@@ -88,7 +88,7 @@ func _draw() -> void:
 			var b := Vector2(area.end.x, a.y) if ramp.axis == 0 else Vector2(a.x, area.end.y)
 			draw_line(_map_point_at(a, arena.terrain.ramp_height(ramp, a)), _map_point_at(b, arena.terrain.ramp_height(ramp, b)), Color("354c47"), 1.1)
 	var legend := "물 · 중정 · 테라스 · 뜰 · 회랑 · 성소" if world_size.x > 2500.0 else "청록 물 · 금빛 중정 · 밝은 테라스"
-	if arena.region_id == RunProfile.JUNGLE_REGION:
+	if arena.get("region_id") == RunProfile.JUNGLE_REGION:
 		legend = "숲길 · 석교 · 강변 · 능선 · 관문"
 	if bounds.position.x > 5100:
 		legend = "물길 · 바위 갈림길 · 안쪽 유적" if arena.region_id == RunProfile.JUNGLE_REGION else "굽은 진입로 · 연못 갈림길 · 안쪽 제단"
