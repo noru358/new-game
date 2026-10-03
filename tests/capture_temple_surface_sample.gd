@@ -3,6 +3,7 @@ extends "res://tests/capture_temple_place_sequence.gd"
 const Finish = preload("res://game/temple_surface_sample.gd")
 var requested_size := Vector2i(960,540)
 var walking := false
+var visibility_failures: Array[String] = []
 func _process(delta: float) -> bool:
 	if not walking: _release()
 	return super._process(delta)
@@ -44,6 +45,16 @@ func _capture_checkpoint(label: String, width: int, record: Dictionary) -> void:
 	root.size = requested_size
 	for i in 5: await process_frame
 	await super._capture_checkpoint(label,width,record)
+	if OS.get_cmdline_user_args().has("--collect-failed-visibility"):
+		var remaining: Array[String] = []
+		for error in errors:
+			if error.begins_with("Player scenery visibility below") or error.begins_with("Enemy Body visibility below") or error.begins_with("Enemy tell visibility below"):
+				visibility_failures.append(error)
+			else: remaining.append(error)
+		errors = remaining
+func _finish() -> void:
+	errors.append_array(visibility_failures)
+	await super._finish()
 func _image() -> Image:
 	# macOS Window.size can briefly differ from the GL drawable during native resize.
 	# Wait for the exact requested drawable; never rescale/crop a wrong-size frame.

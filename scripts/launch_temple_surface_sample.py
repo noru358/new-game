@@ -34,6 +34,8 @@ def main():
     parser.add_argument("--baseline", action="store_true")
     parser.add_argument("--measure-only", action="store_true")
     parser.add_argument("--native-slot-granted", action="store_true")
+    parser.add_argument("--collect-failed-visibility", action="store_true",
+                        help="Collect both views while retaining every visibility failure and nonzero exit")
     args = parser.parse_args()
     native = args.kind != "verify" and not args.measure_only
     if native and not args.native_slot_granted:
@@ -73,6 +75,7 @@ def main():
     user_args = []
     if args.baseline: user_args.append("--temple-surface-baseline")
     if args.measure_only: user_args.append("--measure-only")
+    if args.collect_failed_visibility: user_args.append("--collect-failed-visibility")
     if user_args: command += ["--", *user_args]
     commands.append(command)
     env = dict(os.environ, REGION_LANDMARK="temple",
