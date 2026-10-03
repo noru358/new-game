@@ -4,6 +4,7 @@ extends SceneTree
 ## Render: isolated project userdata containing WaterfallVisibilityV48, then
 ## -- --capture-dir=<fresh absolute directory>. No runtime baseline switch is added.
 const Layout = preload("res://game/jungle_grotto_layout.gd")
+const Sources = preload("res://game/jungle_waterfall_sources.gd")
 const OLD_RIMS := [Rect2(1240, 590, 150, 30), Rect2(1350, 430, 100, 390), Rect2(1240, 760, 150, 40), Rect2(1110, 440, 230, 110)]
 const SIZES := [Vector2i(960, 540), Vector2i(1280, 720)]
 const POSES := [
@@ -122,15 +123,10 @@ func _inspect(variant: String) -> void:
 	var section = scene.temple_section
 	check(scene.camera.size == 9.0 and scene.camera_offset == Vector3(14, 13.864, 14), "unchanged authored combat camera")
 	check(scene.terrain_mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "terrain remains opaque")
-	var expected_water := []
-	var center: Vector2 = section.layout.ENTRY_TRIGGER.get_center()
-	for offset in [Vector2(-75, 5), Vector2(40, -180), Vector2(40, 115), Vector2(-180, -195)]:
-		expected_water.append({"point": center + offset, "depth": 1.25 if offset == Vector2(-75, 5) else 0.8})
-	for point in [Vector2(7600, 1650), Vector2(8520, 1140)]:
-		expected_water.append({"point": point, "depth": 0.8})
+	var expected_water: Array = Sources.MAIN+Sources.HIDDEN
 	var curtains := []
 	for child in _descendants(section):
-		if child is MeshInstance3D and child.mesh is BoxMesh and is_equal_approx(child.mesh.size.y, 1.8):
+		if Sources.authored(child):
 			curtains.append(child)
 			var material = child.material_override
 			check(material is StandardMaterial3D and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55) and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "authored water material retained")
@@ -139,10 +135,16 @@ func _inspect(variant: String) -> void:
 	for expected in expected_water:
 		var matches := 0
 		for curtain in curtains:
-			if curtain.global_position.is_equal_approx(scene.terrain.world_point(expected.point, 100)):
+			if curtain.get_meta("waterfall_source_id") == expected.id:
 				matches += 1
-				check(curtain.mesh.size.is_equal_approx(Vector3(0.10, 1.8, expected.depth)), "authored water sheet dimensions retained")
-		check(matches == 1, "exactly one water sheet at authored coordinate " + str(expected.point))
+				check(curtain.mesh is ArrayMesh and curtain.get_meta("source_spec") == expected,"one authored source/drop/receiver mesh")
+				var anchors: PackedVector3Array = curtain.get_meta("source_points")
+				var heads: PackedVector3Array = curtain.get_meta("drop_head_points")
+				var feet: PackedVector3Array = curtain.get_meta("drop_foot_points")
+				for i in 2:
+					check(curtain.to_global(heads[i]).distance_to(anchors[i]) < 0.004,"actual drop starts at supported rock lip; moved mesh is rejected")
+					check(heads[i].y > feet[i].y,"water descends to receiving surface")
+		check(matches == 1, "exactly one water source " + expected.id)
 	for pose in POSES:
 		check(scene.navigation.is_open(pose.point, scene.ACTOR_CLEARANCE), "actor never placed inside collision: " + pose.name)
 		check(not scene.navigation.find_path(scene.start_point, pose.point).is_empty(), "local pose remains reachable: " + pose.name)
@@ -198,9 +200,9 @@ func _difference(a: Image, b: Image) -> int:
 	return count
 
 func _authored_waterfall(mesh: Node) -> bool:
-	if not mesh is MeshInstance3D or not mesh.mesh is BoxMesh or not scene.temple_section.is_ancestor_of(mesh): return false
+	if not Sources.authored(mesh) or not scene.temple_section.is_ancestor_of(mesh): return false
 	var material = mesh.material_override
-	return is_equal_approx(mesh.mesh.size.x, 0.10) and is_equal_approx(mesh.mesh.size.y, 1.8) and material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55)
+	return mesh.mesh is ArrayMesh and material is StandardMaterial3D and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA and material.albedo_color == Sources.COLOR
 
 func _capture(variant: String, size: Vector2i, pose: Dictionary) -> void:
 	scene.teleport(pose.point)
