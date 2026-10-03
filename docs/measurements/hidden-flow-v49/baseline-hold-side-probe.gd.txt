@@ -1,0 +1,40 @@
+extends SceneTree
+var reports := []
+func _initialize() -> void: call_deferred("run")
+func release() -> void:
+	for action in ["move_left","move_right","move_up","move_down"]: Input.action_release(action)
+func press(scene, direction: Vector2) -> void:
+	release()
+	var input := direction.rotated(-scene.player.input_rotation)
+	if input.x < -0.1: Input.action_press("move_left", -input.x)
+	if input.x > 0.1: Input.action_press("move_right", input.x)
+	if input.y < -0.1: Input.action_press("move_up", -input.y)
+	if input.y > 0.1: Input.action_press("move_down", input.y)
+func run() -> void:
+	for variant in [{"name":"temple_circuit_run","offset":Vector2(180,0)},{"name":"temple_circuit_run","offset":Vector2(0,180)},{"name":"jungle_south_circuit","offset":Vector2(-180,100)}]:
+		var name: String = variant.name
+		var scene = load("res://game/"+name+".tscn").instantiate()
+		scene.profile_save_prefix = "user://"+name+"_hold"
+		scene.growth_save_prefix = scene.profile_save_prefix+"_growth"
+		root.add_child(scene)
+		await process_frame
+		scene.set_physics_process(false)
+		scene.wisp.set_physics_process(false)
+		var section = scene.temple_section
+		var layout = section.layout
+		scene.teleport(layout.ENTRY_TRIGGER.get_center()+variant.offset)
+		press(scene,scene.player.position.direction_to(layout.ENTRY_TRIGGER.get_center()))
+		var transitions := []
+		for frame in 150:
+			await physics_frame
+			var before: bool = section.in_garden
+			section.tick(1.0/60.0)
+			if before != section.in_garden: transitions.append({"frame":frame,"inside":section.in_garden,"point":[scene.player.position.x,scene.player.position.y]})
+		release()
+		reports.append({"scene":name,"offset":[variant.offset.x,variant.offset.y],"transitions":transitions,"point":[scene.player.position.x,scene.player.position.y],"nominal_seconds":2.5,"normal_speed":SandboxPlayer.MOVE_SPEED,"time_scale":Engine.time_scale,"scope":"real player physics/input; scene time and spawn pressure frozen"})
+		scene.queue_free()
+		await process_frame
+	var file := FileAccess.open("res://hold-side-report.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(reports,"\t"))
+	print("HOLD_PROBE ",JSON.stringify(reports))
+	quit()

@@ -1,0 +1,33 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3
+
+Hybrid scene ready: Temple circuit — isolated four-minute run
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"settle80","state":"main-undiscovered","ticks_usec":979204,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"force-render","state":"main-undiscovered","ticks_usec":2428501,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5840.0,1770.0],"region":"temple","stage":"settle80","state":"hidden-arrival","ticks_usec":2747389,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5840.0,1770.0],"region":"temple","stage":"force-render","state":"hidden-arrival","ticks_usec":4067350,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6186.7177734375,1776.0],"region":"temple","stage":"normal-walk-start","state":"reward-approach","ticks_usec":5118287,"width":960}
+SCRIPT ERROR: Invalid call. Nonexistent function 'set_physics_process' in base 'previously freed'.
+          at: _step (res://tests/capture_hidden_flow.gd:79)
+          GDScript backtrace (most recent call first):
+              [0] _step (res://tests/capture_hidden_flow.gd:79)
+              [1] _step (res://tests/verify_hidden_flow.gd:26)
+SCRIPT ERROR: Invalid call. Nonexistent function 'set_physics_process' in base 'previously freed'.
+          at: _step (res://tests/capture_hidden_flow.gd:79)
+          GDScript backtrace (most recent call first):
+              [0] _step (res://tests/capture_hidden_flow.gd:79)
+              [1] _step (res://tests/verify_hidden_flow.gd:26)
+HIDDEN_CAPTURE_STAGE {"point":[8362.8271484375,528.819458007812],"region":"temple","stage":"normal-walk-end","state":"reward-approach","ticks_usec":14451059,"width":960}
+FAIL: real guardian spawns and defeated signals; synthetic damage
+FAIL: temple actual reward at legal approach
+FAIL: temple discovery and awakening persisted
+HIDDEN_CAPTURE_STAGE {"point":[8362.8271484375,528.819458007812],"region":"temple","stage":"settle80","state":"reward-approach","ticks_usec":14452232,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.8271484375,528.819458007812],"region":"temple","stage":"force-render","state":"reward-approach","ticks_usec":15784778,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.8271484375,528.819458007812],"region":"temple","stage":"settle80","state":"hidden-overview","ticks_usec":15814046,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8362.8271484375,528.819458007812],"region":"temple","stage":"force-render","state":"hidden-overview","ticks_usec":17118967,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5813.1767578125,1775.1796875],"region":"temple","stage":"settle80","state":"exit-approach","ticks_usec":27801658,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[5813.1767578125,1775.1796875],"region":"temple","stage":"force-render","state":"exit-approach","ticks_usec":29135188,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"settle80","state":"main-return","ticks_usec":29318339,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1310.0,920.0],"region":"temple","stage":"force-render","state":"main-return","ticks_usec":30651656,"width":960}
+FAIL: all requested rendered states captured
+HIDDEN_RENDER {"checks":294,"failures":4,"images":6}

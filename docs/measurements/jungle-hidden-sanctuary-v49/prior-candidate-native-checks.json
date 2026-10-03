@@ -1,0 +1,13 @@
+{
+  "variant": "candidate",
+  "engine": "4.6.stable.official.89cea1439",
+  "results": [
+    {
+      "name": "threshold-shrine-return",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 123.955,
+      "passed": true
+    }
+  ]
+}

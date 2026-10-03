@@ -1,0 +1,5 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+1G soak: 245.1 game seconds in 10.2 wall seconds, 1847 physics samples, 57 kills, 8 choices, max 72 active, 62 currency
+1G accelerated full-run soak passed

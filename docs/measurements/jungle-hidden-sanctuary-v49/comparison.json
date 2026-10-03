@@ -1,0 +1,383 @@
+{
+  "scope": "Bounded final native first10 960 samples only. Same fixed actors/FX/camera/input policy. Raw Body includes other FX; same-FX values only two defender points. Whole visibility, natural combat, human aesthetics/fun, focus policy and long performance unverified.",
+  "summary": {
+    "status": "Final source native incomplete:10 checkpoints at960 only. Earlier whole candidate success is a different geometry revision.",
+    "final_source_checked_headless": {
+      "checks": 7008,
+      "failures": 0,
+      "camera_rays": 1268,
+      "existing_bank_occlusions": 20,
+      "new_obstructions": 0,
+      "negative_coplanar_pairs": 1584,
+      "final_coplanar_pairs": 0
+    },
+    "final_native_completed_960_samples": {
+      "count": 10,
+      "raw_body_min": 0.837162837162837,
+      "same_fx_player_min": 0.986315789473684,
+      "enemy_body_min": 1.0,
+      "tell_min": 1.0,
+      "hidden_primitives_range": [
+        8884.0,
+        9176.0
+      ],
+      "hidden_draw_calls_range": [
+        199.0,
+        204.0
+      ]
+    },
+    "reuse": "baseline-render.json is unchanged pinned baseline. headless-regressions.json and headless-walk.json passed before final bank surface correction; not rerun broad. Exact final geometry/impact and last advance diagnostic ran on final source."
+  },
+  "samples": [
+    {
+      "name": "01-main-waterfall",
+      "width": 960,
+      "in_hidden": false,
+      "baseline_reached": [
+        1146.01232910156,
+        697.315856933594
+      ],
+      "candidate_reached": [
+        1146.01232910156,
+        697.315856933594
+      ],
+      "raw_body": {
+        "baseline": 0.999000999000999,
+        "candidate": 0.999000999000999,
+        "delta": 0.0
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 354.0,
+          "candidate": 354.0
+        },
+        "primitives": {
+          "baseline": 12723.0,
+          "candidate": 12723.0
+        },
+        "objects": {
+          "baseline": 567.0,
+          "candidate": 567.0
+        }
+      }
+    },
+    {
+      "name": "02-real-entrance",
+      "width": 960,
+      "in_hidden": false,
+      "baseline_reached": [
+        1299.47058105469,
+        685.292419433594
+      ],
+      "candidate_reached": [
+        1299.47058105469,
+        685.292419433594
+      ],
+      "raw_body": {
+        "baseline": 0.837162837162837,
+        "candidate": 0.837162837162837,
+        "delta": 0.0
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 354.0,
+          "candidate": 354.0
+        },
+        "primitives": {
+          "baseline": 12458.0,
+          "candidate": 12458.0
+        },
+        "objects": {
+          "baseline": 567.0,
+          "candidate": 567.0
+        }
+      }
+    },
+    {
+      "name": "03-hidden-arrival",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        6290.0,
+        2630.0
+      ],
+      "candidate_reached": [
+        6290.0,
+        2630.0
+      ],
+      "raw_body": {
+        "baseline": 0.996011964107677,
+        "candidate": 1.0,
+        "delta": 0.003988035892322994
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 198.0,
+          "candidate": 199.0
+        },
+        "primitives": {
+          "baseline": 3042.0,
+          "candidate": 9040.0
+        },
+        "objects": {
+          "baseline": 342.0,
+          "candidate": 343.0
+        }
+      }
+    },
+    {
+      "name": "04-cave-threshold",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        6701.39892578125,
+        2634.63842773438
+      ],
+      "candidate_reached": [
+        6701.39892578125,
+        2634.63842773438
+      ],
+      "raw_body": {
+        "baseline": 0.998001998001998,
+        "candidate": 1.0,
+        "delta": 0.0019980019980020414
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 201.0,
+          "candidate": 199.0
+        },
+        "primitives": {
+          "baseline": 3234.0,
+          "candidate": 9040.0
+        },
+        "objects": {
+          "baseline": 345.0,
+          "candidate": 343.0
+        }
+      }
+    },
+    {
+      "name": "05-first-opening",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        7140.49169921875,
+        2519.86474609375
+      ],
+      "candidate_reached": [
+        7143.49853515625,
+        2516.52172851562
+      ],
+      "raw_body": {
+        "baseline": 0.996007984031936,
+        "candidate": 0.999001996007984,
+        "delta": 0.0029940119760479833
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 203.0,
+          "candidate": 199.0
+        },
+        "primitives": {
+          "baseline": 3570.0,
+          "candidate": 9040.0
+        },
+        "objects": {
+          "baseline": 347.0,
+          "candidate": 343.0
+        }
+      }
+    },
+    {
+      "name": "06-receiving-clearing",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        7468.962890625,
+        2283.26538085938
+      ],
+      "candidate_reached": [
+        7469.39697265625,
+        2282.48876953125
+      ],
+      "raw_body": {
+        "baseline": 0.939121756487026,
+        "candidate": 0.936063936063936,
+        "delta": -0.0030578204230899964
+      },
+      "player_same_fx_visibility": {
+        "baseline": 0.989484752891693,
+        "candidate": 0.986315789473684,
+        "delta": -0.0031689634180089854
+      },
+      "enemy_body_visibility": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "tell_visibility": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 206.0,
+          "candidate": 204.0
+        },
+        "primitives": {
+          "baseline": 3526.0,
+          "candidate": 9176.0
+        },
+        "objects": {
+          "baseline": 350.0,
+          "candidate": 348.0
+        }
+      }
+    },
+    {
+      "name": "07-pool-bypass",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        7490.05517578125,
+        1429.96850585938
+      ],
+      "candidate_reached": [
+        7490.05517578125,
+        1429.96850585938
+      ],
+      "raw_body": {
+        "baseline": 1.0,
+        "candidate": 0.996007984031936,
+        "delta": -0.003992015968063978
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 197.0,
+          "candidate": 199.0
+        },
+        "primitives": {
+          "baseline": 2406.0,
+          "candidate": 8884.0
+        },
+        "objects": {
+          "baseline": 341.0,
+          "candidate": 343.0
+        }
+      }
+    },
+    {
+      "name": "08-stream-turn",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        8187.64892578125,
+        1527.68383789062
+      ],
+      "candidate_reached": [
+        8187.64892578125,
+        1527.68383789062
+      ],
+      "raw_body": {
+        "baseline": 0.936191425722832,
+        "candidate": 0.996011964107677,
+        "delta": 0.05982053838484502
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 199.0,
+          "candidate": 200.0
+        },
+        "primitives": {
+          "baseline": 2898.0,
+          "candidate": 8896.0
+        },
+        "objects": {
+          "baseline": 343.0,
+          "candidate": 344.0
+        }
+      }
+    },
+    {
+      "name": "09-inner-approach",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        9190.4482421875,
+        1318.17639160156
+      ],
+      "candidate_reached": [
+        9190.4482421875,
+        1318.17639160156
+      ],
+      "raw_body": {
+        "baseline": 0.999001996007984,
+        "candidate": 0.996007984031936,
+        "delta": -0.0029940119760479833
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 199.0,
+          "candidate": 199.0
+        },
+        "primitives": {
+          "baseline": 2898.0,
+          "candidate": 8884.0
+        },
+        "objects": {
+          "baseline": 343.0,
+          "candidate": 343.0
+        }
+      }
+    },
+    {
+      "name": "10-shrine-lip",
+      "width": 960,
+      "in_hidden": true,
+      "baseline_reached": [
+        9739.84765625,
+        971.149963378906
+      ],
+      "candidate_reached": [
+        9739.84765625,
+        971.149963378906
+      ],
+      "raw_body": {
+        "baseline": 0.919080919080919,
+        "candidate": 0.913086913086913,
+        "delta": -0.005994005994006013
+      },
+      "player_same_fx_visibility": {
+        "baseline": 0.996749729144095,
+        "candidate": 0.990249187432286,
+        "delta": -0.006500541711809027
+      },
+      "enemy_body_visibility": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "tell_visibility": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0
+      },
+      "static_render": {
+        "draw_calls": {
+          "baseline": 201.0,
+          "candidate": 203.0
+        },
+        "primitives": {
+          "baseline": 2998.0,
+          "candidate": 9164.0
+        },
+        "objects": {
+          "baseline": 345.0,
+          "candidate": 347.0
+        }
+      }
+    }
+  ]
+}

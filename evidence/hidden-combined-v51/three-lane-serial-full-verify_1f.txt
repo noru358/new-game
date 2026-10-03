@@ -1,0 +1,3 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+1F verification passed: region identity, scrolling bounds, water crossing, stair and terrace boundary, spawn areas, repeat wave

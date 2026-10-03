@@ -1,0 +1,6 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+PROBE brisk=true late=true jungle=false evade=false received=204.0 dealt=748.799999999999 strikes=12
+PROBE brisk=true late=true jungle=false evade=true received=0.0 dealt=335.399999999999 strikes=12
+PROBE brisk=true late=true jungle=true evade=false received=154.0 dealt=718.799999999999 strikes=13
+PROBE brisk=true late=true jungle=true evade=true received=0.0 dealt=395.999999999999 strikes=13

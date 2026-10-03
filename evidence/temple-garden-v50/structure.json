@@ -1,0 +1,36 @@
+{
+  "checks": 128545,
+  "engine": "4.6-stable (official)",
+  "failures": [],
+  "records": [
+    {
+      "floor_pieces": 70,
+      "legal_actor_rays": 2084,
+      "mesh_counts": {
+        "leaf_groups": 37,
+        "masonry_pieces": 205,
+        "mesh_instances": 3,
+        "paving_pieces": 117,
+        "root_strands": 31,
+        "vertices": 59646
+      },
+      "obstructed_rays": 0,
+      "scene": "hybrid_region"
+    },
+    {
+      "floor_pieces": 70,
+      "legal_actor_rays": 2084,
+      "mesh_counts": {
+        "leaf_groups": 37,
+        "masonry_pieces": 205,
+        "mesh_instances": 3,
+        "paving_pieces": 117,
+        "root_strands": 31,
+        "vertices": 59646
+      },
+      "obstructed_rays": 0,
+      "scene": "temple_circuit_run"
+    }
+  ],
+  "scope": "structure + coarse legal actor rays; no rendered pixels, natural combat or human place/fun acceptance"
+}

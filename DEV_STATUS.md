@@ -3,6 +3,31 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
+## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03
+
+- 부모가 합본 대표4PNG와 마지막diff를 검토하고 히든 장소/입출구 개선을 다음 플레이후보로 채택했다. 세lane 통합20359e1의 정확전체CI37129486967은116headless/preview/depth18사례/UI160PNG를 통과했다. 사원표면/조명 후속·캐릭터시안은 이 묶음에 포함하지 않는다.
+- 사원 실제보상claim 뒤 상단의 기존한줄을 `정원 보상 획득 · 들어온 회랑으로 복귀`로 갱신한다. 새UI/보상규칙 없음. 기존제단접근fixture에 미수령→실제claim→귀환 HUD상태검사를 추가했다.
+- 배포label은 .github/playtest-version의v49이며 패키지제목/앱/아카이브에 적용된다. 원본project.godot·v45공통v7 save-family·profile/player/growth는 유지한다. 모든프리셋의 docs/tests/scripts/patches/integration/evidence와 remapped개발texture 배제검사는 그대로다.
+- 정확최종소스의 전체CI와Macarm64패키지를 진행하고, production1aac501 기준draftPR·공식artifact·로컬hash/파일목록/strictcodesign 검증경로로 인계한다. 사용자앱 실행/교체/저장·main/production/canonical merge·공개release는 하지 않는다. 미감/기존가림전부/자연완주/장기성능은 여전히미검증이다.
+
+## v51 세 lane 히든 — native 완료·정확HEAD CI 확인 / 2026-10-03
+
+- production1aac501 기준 flow aa3ff60의9/temple d2abbff의4/부모지정 jungle e06a2fa의1 전체선형커밋을 독립후보에 통합했다. flow roots/latch/표기 아래 두 helper를 장착했고 정글 물은 정확 main4+hidden2다. 보상/저장/240초/포탈4/무리6/altar 보존, 문턱0.5, 습지 null·가짜marker 검사 완료. 미채택 본선사원 표면·조명실험은 통합하지 않았다.
+- 합본native source a58162e: 공식Mac4.6stable960/1280 두히든34PNG·1644검사/실패0. 정상보행 입출구/근접표기/미니맵·보상·재지급거부·저장재로드·정글후반귀환12~16 확인. 사원79.78거리/실제수호3, 정글96.94거리 접근보상 성공. 수호적 피해는 합성/시간·압박은동결하며 자연전투 성공이 아니다. native 모든게임/fixture 의존파일은 후속 f0a26e와 동일하다.
+- 마지막f0a26e의 import+6영향검사를 지원기본physics로 다시PASS(정상입력flow290/0 포함). 실제장착13영향PASS/정글7009·1268ray·새가림0·bank공면0, 물duplicate/moved/material3음성 검출. 로컬114고정FPS109PASS/5FAIL과 기본physics5PASS는 분리한다. 지원기본physics인 정확87ba094 CI37128031291은116전체headless·runner·preview·depth960/1280 PASS. UI물1280 한건 실패/price skip을 보존했으며 최종 증거HEAD 전체CI 결과는 해당GitHub check로 확인한다.
+- 물실패는 기존 고정pose가 새귀환방향의 좌우flip을 상속한97.60% 결과다. 기존right-facing98.30%와 비교 가능하게 fixture 방향을 명시/assert했고98%기준·입력·6물계약을 유지했다. f0a26e Mac 해당1280 최소재현29601/0·98.2990%. 반대방향97.60% 원자료도 보존; 전구간98% 해결로 쓰지 않는다. 제품geometry 변경 없이 fixture만 고쳤다.
+- 첫native87ba094의 freed actor/실제수호1개 미소환 fixture실패도 보존하고 정상 접근/경고대기/valid guard로 수정했다. 엔진1개·UUIDuserdata·bounded force_draw 사용, 사용자OSfocus/앱/저장/checkout·MASTER·main/production/canonical은 보존했다. 증거와 변경목록은 integration/HIDDEN_COMBINED_V51.md 및 evidence/hidden-combined-v51에 있다.
+- 현재는 첫권역의 히든통합 테스트후보다. 다음은 정확최종HEAD CI완료와 부모의34화면 직접검토/채택판단이다. 사원정확ALTAR Body~34%, 정글물/FX·방향별가림, 사람미감/재미·자연완주·장시간성능은 미검증. merge/release/패키지/앱교체는 부모 소유다.
+
+## v51 히든 합본 후보 체크포인트 — 미배포 / 2026-10-03
+
+- 독립 `codex/hidden-regions-combined-v51`, 기준 production `1aac501`; canonical/사용자 앱은 v48 `686228f` 그대로다. 원격 `noru358/new-game`/ADMIN·관련 PR·ancestry를 확인했다. main을 기준으로 쓰거나 이동하지 않았다.
+- flow `aa3ff600f9ab5c9960d3c17f5d0ae504ed689041`의 base 이후9선형커밋과 사원 `d2abbffeda52966182b00257bb544a3cfcb5107b`의4커밋 전체를 회수했다. flow roots에 courtyard `build`/`build_entry`, 실제 layout 발견표시와 0.5 문턱을 장착했다. old slab/bush만 교체, 제단/불씨/수호3/보상/save는 보존한다. 정글 본선 미니맵 caption도 정글 지형으로 수정했다.
+- 두 lane 영향 회귀11개와 후속 실제-input 정원/장착검사35개를 통과했다. 폭포는 descendants의 정확한6개/좌표/크기/alpha재질을 검사하고 실제 입력을 도착 latch에 전달한다. 습지는 hidden root가 없으며 이전 발견이 있어도 marker가 비고 null label guard를 통과한다. 정확 두 lane 소스 `59ed6574b54e0568953357df8c15578dd37f4d94`의 import+13영향fixture 모두PASS/엔진·script errors0. `evidence/hidden-combined-v51/two-lanes-impact-summary.json`과 로그를 반환한다. 최종3lane 전체검사는 아직 아니다.
+- 정글 최종 SHA는 아직 부모에게 전달받지 않았으므로 회수/최종완료로 표시하지 않는다. 최종 정글 공면수정 source와 이전 전체 왕복 source는 구별할 예정이다. GUI 슬롯도 미배정이라 합본 native24화면·보상접근 촬영은 준비만 했다. 최종3lane HEAD 전체회귀/fullCI와 GUI가 남는다.
+- Mac 공식4.6stable 동일 SHA256 복제 엔진, 엔진1개 순차/fixture별 UUIDuserdata. 원본 project/settings·저장/성장/player·4layout 바이트 보존. 첫 sandbox userdata 생성 거절/신규fixture 오류 표본은 PASS로 세지 않았고 고쳤다. Linux전용 Python runner 테스트는 Mac platform guard로4오류이며 Linux CI에서 확인할 항목이다.
+- 기존 사원 ALTAR 정확중심 원통/불씨 Body~34%는 미해결, 합법거리85 접근 보상성공은 별도 사실이다. 기존 정글 폭포/FX 부분 가림을 전체98% 통과로 부르지 않는다. 자연 한 판·사람 미감/재미·장시간 성능·배포/사용자앱 교체는 미검증이다. 공유 MASTER는 변경하지 않았다.
+
 ## 현재 사용자 제출 기준 — v48 / 2026-10-03 KST
 
 - 실제 전달 소스/canonical은686228f1d2f7cad0f09311c2006f46c6c16ce9d3이다. 같은 소스 전체CI37116043366와 Mac 패키지37116043397 성공. 같은 게임 코드caf602c의 전체CI37114649664·렌더37114642485·Windows37114649662도 성공했다.

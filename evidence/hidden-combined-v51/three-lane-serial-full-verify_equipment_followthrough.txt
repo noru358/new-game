@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Equipment followthrough userdata: /Users/lty/Library/Application Support/CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-8d538bdc-968d-40cf-9bd0-5d34710c3f93 · synthetic settlement fixtures
+Equipment followthrough: 136 checks, 0 failures

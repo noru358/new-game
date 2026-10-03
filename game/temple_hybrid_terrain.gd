@@ -51,13 +51,7 @@ func _init() -> void:
 	floor_areas.append({"area": Rect2(3030, 180, 210, 160), "height": 1.0, "color": Color("719c69"), "discovery_id": "TEMPLE_GARDEN"})
 	for rect in [Rect2(3030, 155, 235, 25), Rect2(3240, 155, 25, 210), Rect2(3030, 340, 235, 25)]:
 		wall_areas.append({"area": rect, "height": 145.0, "color": Color("52715e"), "discovery_id": "TEMPLE_GARDEN"})
-	floor_areas.append({"area": Garden.FIELD_BOUNDS, "height": 0.8, "color": Color("71966e"), "discovery_id": "TEMPLE_GARDEN"})
-	for rect in [Rect2(5740, 1680, 900, 210), Rect2(6200, 550, 220, 1190), Rect2(6370, 430, 1650, 220), Rect2(6390, 1450, 1650, 230), Rect2(7910, 510, 230, 1070), Rect2(8090, 310, 390, 350)]:
-		floor_areas.append({"area": rect, "height": 1.2, "color": Color("b7bd98"), "discovery_id": "TEMPLE_GARDEN"})
-	water_areas.append(Garden.POND)
-	for rect in [Rect2(5600, 80, 3000, 45), Rect2(5600, 2035, 3000, 45), Rect2(5600, 80, 45, 2000), Rect2(8555, 80, 45, 2000), Rect2(5680, 900, 470, 650), Rect2(6450, 250, 120, 980), Rect2(6750, 1780, 860, 190), Rect2(7770, 140, 120, 620), Rect2(8220, 1700, 210, 170)]:
-		var foreground: bool = rect.position.y >= 1700.0 or rect.position.x >= 8550.0 or rect.position.x == 6450.0 or rect.position.x == 8220.0
-		wall_areas.append({"area": rect, "height": 45.0 if foreground else 115.0, "color": Color("668477") if foreground else Color("52715e"), "discovery_id": "TEMPLE_GARDEN"})
+	preload("res://game/temple_garden_courtyard_data.gd").install(self)
 	# No walking/attacking path connects the two fields behind the transition.
 	wall_areas.append({"area": Rect2(5090, 0, 510, 2160), "height": 200.0, "color": Color("607f78"), "visual": false})
 

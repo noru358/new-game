@@ -1,0 +1,9 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Deep wetland whole-field candidate
+AUDIO_PROBE (5030.0, 1470.0) listener=default viewport center frames=12288
+AUDIO_PROBE (5030.0, 1470.0) listener=(5000.0, 1500.0) frames=12288
+AUDIO_PROBE (1030.0, 1470.0) listener=(1000.0, 1500.0) frames=12288
+AUDIO_PROBE (1160.0, 1340.0) listener=(1000.0, 1500.0) frames=12288
+AUDIO_PROBE (840.0, 1660.0) listener=(1000.0, 1500.0) frames=12288
+Hybrid audio capture: {"checks":7,"failures":0,"far_with":"(0.008119, 0.008393)","far_without":"(0.0, 0.0)","human_listening":false,"left":"(0.009402, 0.007875)","near_with":"(0.009376, 0.009691)","right":"(0.007875, 0.009402)"}

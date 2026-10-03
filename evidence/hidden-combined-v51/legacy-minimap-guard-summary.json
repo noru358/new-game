@@ -1,0 +1,98 @@
+{
+  "source_sha": "78a2cd2394727aa0b31c05fdaa8bfc198128960b",
+  "engine": "/Users/lty/Documents/Codex/2026-10-03/task-10/runtime/Godot.app/Contents/MacOS/Godot",
+  "scripts": [
+    "tests/verify_hybrid_corner_ai.gd",
+    "tests/verify_hybrid_growth.gd",
+    "tests/verify_hybrid_combat_feedback.gd",
+    "tests/verify_hybrid_feedback.gd",
+    "tests/verify_hybrid_height.gd",
+    "tests/verify_hybrid_roles.gd",
+    "tests/verify_hidden_combined_mount.gd"
+  ],
+  "results": [
+    {
+      "script": "import",
+      "exit_code": 0,
+      "seconds": 6.93,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/import.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-c5fad6e7-4dad-4881-9ba9-36ebf1ac4e7a",
+      "passed": true
+    },
+    {
+      "script": "verify_hybrid_corner_ai",
+      "exit_code": 0,
+      "seconds": 1.12,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hybrid_corner_ai.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-0deb4ac2-5ea8-4caa-8017-11a80a277f9d",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hybrid_corner_ai.txt"
+    },
+    {
+      "script": "verify_hybrid_growth",
+      "exit_code": 0,
+      "seconds": 0.51,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hybrid_growth.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-34ccf848-b82a-4f5e-9295-11d931432276",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hybrid_growth.txt"
+    },
+    {
+      "script": "verify_hybrid_combat_feedback",
+      "exit_code": 0,
+      "seconds": 0.52,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hybrid_combat_feedback.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-79e82855-0862-4442-a809-8fc274a36ead",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hybrid_combat_feedback.txt"
+    },
+    {
+      "script": "verify_hybrid_feedback",
+      "exit_code": 0,
+      "seconds": 0.84,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hybrid_feedback.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-4114c37e-15e7-4cf3-aa99-b8bfc8a0ac98",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hybrid_feedback.txt"
+    },
+    {
+      "script": "verify_hybrid_height",
+      "exit_code": 0,
+      "seconds": 0.88,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hybrid_height.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-b7773dee-dac4-4da0-a197-5e71b7b44517",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hybrid_height.txt"
+    },
+    {
+      "script": "verify_hybrid_roles",
+      "exit_code": 0,
+      "seconds": 0.5,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hybrid_roles.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-a79f1069-fe6f-4edd-adb0-fad9e298b393",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hybrid_roles.txt"
+    },
+    {
+      "script": "verify_hidden_combined_mount",
+      "exit_code": 0,
+      "seconds": 3.83,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/legacy-minimap-guard/verify_hidden_combined_mount.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-5b83a3fc-98ab-4164-983d-6ad290e321b9",
+      "passed": true,
+      "portable_log": "legacy-minimap-guard-verify_hidden_combined_mount.txt"
+    }
+  ],
+  "engine_concurrency": 1,
+  "dedicated_excluded": "tests/verify_actor_terrain_depth.gd",
+  "scope": "serialized headless engine checks; isolated UUID userdata per fixture; no user save access",
+  "passed": true
+}

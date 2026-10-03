@@ -1,0 +1,3349 @@
+{
+  "acceleration": false,
+  "active_walk_seconds": 80.3666666666634,
+  "engine": "4.6-stable (official)",
+  "errors": [],
+  "expected_screenshots": 84,
+  "measure_only": false,
+  "normal_input": true,
+  "region": "jungle",
+  "rejected_targets": [],
+  "render": true,
+  "resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "samples": [
+    {
+      "active_walk_seconds": 3.54999999999999,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 354.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "camera_error_world": 0.000361955520929769,
+        "expected_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "expected_camera_world": [
+          25.4601230621338,
+          14.2140007019043,
+          20.9731578826904
+        ]
+      },
+      "height": 540,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "01-main-waterfall",
+      "objects": 567.0,
+      "primitives": 12723.0,
+      "projection": {
+        "image_body_center": [
+          480.016723632812,
+          260.910278320312
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.022277832031,
+          347.88037109375
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1146.01232910156,
+        697.315856933594
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1000,
+        "ratio": 0.999000999000999,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.533333333333332,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 354.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "camera_error_world": 0.000336478144163266,
+        "expected_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "expected_camera_world": [
+          26.9947052001953,
+          14.2140007019043,
+          20.8529243469238
+        ]
+      },
+      "height": 540,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "02-real-entrance",
+      "objects": 567.0,
+      "primitives": 12458.0,
+      "projection": {
+        "image_body_center": [
+          480.015197753906,
+          260.909973144531
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.020263671875,
+          347.879974365234
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1299.47058105469,
+        685.292419433594
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1300.0,
+        685.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 838,
+        "ratio": 0.837162837162837,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "expected_camera_world": [
+          76.8999938964844,
+          14.2140007019043,
+          40.2999992370605
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "03-hidden-arrival",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          480.000183105469,
+          260.902496337891
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.000244140625,
+          347.869995117188
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6290.0,
+        2630.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6290.0,
+        2630.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1003,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.28333333333333,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "camera_error_world": 0.000316136924084276,
+        "expected_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "expected_camera_world": [
+          81.0139846801758,
+          14.2140007019043,
+          40.3463821411133
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "04-cave-threshold",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          480.015106201172,
+          260.908935546875
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.020141601562,
+          347.878601074219
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6701.39892578125,
+        2634.63842773438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6700.0,
+        2630.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1001,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.71666666666666,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "camera_error_world": 0.000316067860694602,
+        "expected_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "expected_camera_world": [
+          85.4349822998047,
+          14.2140007019043,
+          39.1652145385742
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "05-first-opening",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          480.017578125,
+          260.906494140625
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.0234375,
+          347.875305175781
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7143.49853515625,
+        2516.52172851562
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7140.0,
+        2520.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1001,
+        "ratio": 0.999001996007984,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.6166666666667,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 204.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 804,
+        "ratio": 1.0,
+        "reference_pixels": 804,
+        "roi": [
+          354,
+          202,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          7410.0,
+          2330.0
+        ],
+        "scope": "same fixed actor/attack tell in both variants; no combat AI or difficulty claim",
+        "warning_surfaces": 1
+      },
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "camera_error_world": 0.000351283699274063,
+        "expected_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "expected_camera_world": [
+          88.6939697265625,
+          14.2140007019043,
+          36.8248863220215
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "06-receiving-clearing",
+      "objects": 348.0,
+      "player_same_fx_visibility": {
+        "normal_pixels": 938,
+        "ratio": 0.986330178759201,
+        "reference_pixels": 951,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 11613.0,
+      "projection": {
+        "image_body_center": [
+          480.009826660156,
+          260.903442382812
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.013122558594,
+          347.871246337891
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7469.39697265625,
+        2282.48876953125
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7470.0,
+        2280.0
+      ],
+      "tell_visibility": {
+        "normal_pixels": 821,
+        "ratio": 1.0,
+        "reference_pixels": 821,
+        "roi": [
+          254,
+          104,
+          360,
+          360
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "visibility": {
+        "normal_actor_pixels": 938,
+        "ratio": 0.936127744510978,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.40000000000017,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "camera_error_world": 0.000334477401338518,
+        "expected_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "expected_camera_world": [
+          88.9005508422852,
+          14.2140007019043,
+          28.2996845245361
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "07-pool-bypass",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          480.020080566406,
+          260.902404785156
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.026794433594,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7490.05517578125,
+        1429.96850585938
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7490.0,
+        1430.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 997,
+        "ratio": 0.99500998003992,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.36666666666678,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 200.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "camera_error_world": 0.000344512780429795,
+        "expected_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "expected_camera_world": [
+          95.8764877319336,
+          14.2140007019043,
+          29.2768383026123
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "08-stream-turn",
+      "objects": 344.0,
+      "primitives": 11333.0,
+      "projection": {
+        "image_body_center": [
+          479.998809814453,
+          260.914245605469
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.998413085938,
+          347.885681152344
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8187.64892578125,
+        1527.68383789062
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        8190.0,
+        1530.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 999,
+        "ratio": 0.996011964107677,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.73333333333328,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "camera_error_world": 0.000336234777932987,
+        "expected_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "expected_camera_world": [
+          105.904479980469,
+          14.2140007019043,
+          27.1817626953125
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "09-inner-approach",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          480.006896972656,
+          260.913299560547
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.009216308594,
+          347.884399414062
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        9190.4482421875,
+        1318.17639160156
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        9190.0,
+        1320.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 998,
+        "ratio": 0.996007984031936,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.56666666666652,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 812,
+        "ratio": 1.0,
+        "reference_pixels": 812,
+        "roi": [
+          362,
+          187,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          9660.0,
+          980.0
+        ],
+        "scope": "same fixed actor/attack tell in both variants; no combat AI or difficulty claim",
+        "warning_surfaces": 1
+      },
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "camera_error_world": 0.000330186245264485,
+        "expected_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "expected_camera_world": [
+          111.398475646973,
+          14.2140007019043,
+          23.711498260498
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "10-shrine-lip",
+      "objects": 347.0,
+      "player_same_fx_visibility": {
+        "normal_pixels": 914,
+        "ratio": 0.990249187432286,
+        "reference_pixels": 923,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 11601.0,
+      "projection": {
+        "image_body_center": [
+          480.015075683594,
+          260.903076171875
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.020080566406,
+          347.870758056641
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        9739.84765625,
+        971.149963378906
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        9740.0,
+        970.0
+      ],
+      "tell_visibility": {
+        "normal_pixels": 766,
+        "ratio": 1.0,
+        "reference_pixels": 766,
+        "roi": [
+          262,
+          89,
+          360,
+          360
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "visibility": {
+        "normal_actor_pixels": 914,
+        "ratio": 0.913086913086913,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.99999999999989,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 198.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "camera_error_world": 0.000330538634443656,
+        "expected_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "expected_camera_world": [
+          112.610336303711,
+          14.2140007019043,
+          18.3965644836426
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "11-root-sanctuary",
+      "objects": 342.0,
+      "primitives": 11309.0,
+      "projection": {
+        "image_body_center": [
+          480.017822265625,
+          260.897369384766
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.023742675781,
+          347.863159179688
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        9861.0341796875,
+        439.656341552734
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        9860.0,
+        440.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1001,
+        "ratio": 0.999001996007984,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.81666666666651,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "camera_error_world": 0.000354176707332954,
+        "expected_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "expected_camera_world": [
+          103.486511230469,
+          14.2140007019043,
+          18.3708305358887
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "12-west-return",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          479.983062744141,
+          260.895050048828
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.977416992188,
+          347.860076904297
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8948.6513671875,
+        437.083129882812
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        8950.0,
+        440.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 997,
+        "ratio": 0.997,
+        "reference_actor_pixels": 1000,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.09999999999988,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "camera_error_world": 0.000350703281583264,
+        "expected_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "expected_camera_world": [
+          99.2953491210938,
+          14.2140007019043,
+          21.4230690002441
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "13-return-pool",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          479.97900390625,
+          260.902221679688
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.971984863281,
+          347.86962890625
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8529.53515625,
+        742.306945800781
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        8530.0,
+        740.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 998,
+        "ratio": 0.996007984031936,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.73333333333318,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 200.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "camera_error_world": 0.000363678933354095,
+        "expected_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "expected_camera_world": [
+          90.3026809692383,
+          14.2140007019043,
+          21.4111289978027
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "14-root-passage",
+      "objects": 344.0,
+      "primitives": 11333.0,
+      "projection": {
+        "image_body_center": [
+          479.989105224609,
+          260.891540527344
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.985473632812,
+          347.855407714844
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7630.2685546875,
+        741.112854003906
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7630.0,
+        740.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 999,
+        "ratio": 0.996011964107677,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.48333333333314,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "camera_error_world": 0.000331159884808585,
+        "expected_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "expected_camera_world": [
+          81.9382019042969,
+          14.2140007019043,
+          25.0088062286377
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "15-return-turn",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          479.982116699219,
+          260.8974609375
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.976135253906,
+          347.86328125
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6793.8203125,
+        1100.88061523438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6790.0,
+        1100.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 997,
+        "ratio": 0.996003996003996,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.34999999999981,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "camera_error_world": 0.000359554192982614,
+        "expected_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "expected_camera_world": [
+          79.0023345947266,
+          14.2140007019043,
+          33.2022552490234
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "16-same-mouth",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          479.981018066406,
+          260.896606445312
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.974670410156,
+          347.862121582031
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6500.2333984375,
+        1920.22546386719
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6500.0,
+        1920.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 998,
+        "ratio": 0.996007984031936,
+        "reference_actor_pixels": 1002,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.93333333333317,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 199.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "camera_error_world": 0.000352689326973632,
+        "expected_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "expected_camera_world": [
+          75.8287811279297,
+          14.2140007019043,
+          40.177921295166
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "17-real-exit",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          479.97900390625,
+          260.901062011719
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          639.971984863281,
+          347.868103027344
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6182.87841796875,
+        2617.79223632812
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6180.0,
+        2620.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 902,
+        "ratio": 0.901098901098901,
+        "reference_actor_pixels": 1001,
+        "roi": [
+          399,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 360.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "expected_camera_world": [
+          25.5,
+          14.2140007019043,
+          21.0
+        ]
+      },
+      "height": 540,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "18-main-return",
+      "objects": 574.0,
+      "primitives": 12965.0,
+      "projection": {
+        "image_body_center": [
+          480.0,
+          260.902404785156
+        ],
+        "image_size": [
+          960,
+          540
+        ],
+        "logical_body_center": [
+          640.0,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          0.75,
+          0.75
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1150.0,
+        700.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1002,
+        "ratio": 0.999002991026919,
+        "reference_actor_pixels": 1003,
+        "roi": [
+          400,
+          180,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.5499999999998,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 357.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "camera_error_world": 0.000350568385329098,
+        "expected_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "expected_camera_world": [
+          25.4601230621338,
+          14.2140007019043,
+          20.9731578826904
+        ]
+      },
+      "height": 720,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "01-main-waterfall",
+      "objects": 567.0,
+      "primitives": 12723.0,
+      "projection": {
+        "image_body_center": [
+          640.021606445312,
+          347.879913330078
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.021606445312,
+          347.879913330078
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1146.01232910156,
+        697.315856933594
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1778,
+        "ratio": 0.999437886453064,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.533333333333303,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 357.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "camera_error_world": 0.000353734765667468,
+        "expected_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "expected_camera_world": [
+          26.9947052001953,
+          14.2140007019043,
+          20.8529243469238
+        ]
+      },
+      "height": 720,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "02-real-entrance",
+      "objects": 567.0,
+      "primitives": 12458.0,
+      "projection": {
+        "image_body_center": [
+          640.021362304688,
+          347.880432128906
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.021362304688,
+          347.880432128906
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1299.47058105469,
+        685.292419433594
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1300.0,
+        685.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1484,
+        "ratio": 0.834176503653738,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "expected_camera_world": [
+          76.8999938964844,
+          14.2140007019043,
+          40.2999992370605
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "03-hidden-arrival",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          640.000244140625,
+          347.869995117188
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.000244140625,
+          347.869995117188
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6290.0,
+        2630.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6290.0,
+        2630.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1778,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.28333333333326,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "camera_error_world": 0.000354992371285334,
+        "expected_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "expected_camera_world": [
+          81.0139846801758,
+          14.2140007019043,
+          40.3463821411133
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "04-cave-threshold",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          640.022705078125,
+          347.879608154297
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.022705078125,
+          347.879608154297
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6701.39892578125,
+        2634.63842773438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6700.0,
+        2630.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1779,
+        "ratio": 1.0,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.71666666666657,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "camera_error_world": 0.000324585678754374,
+        "expected_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "expected_camera_world": [
+          85.4349822998047,
+          14.2140007019043,
+          39.1652145385742
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "05-first-opening",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          640.024108886719,
+          347.875366210938
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.024108886719,
+          347.875366210938
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7143.49853515625,
+        2516.52172851562
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7140.0,
+        2520.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1776,
+        "ratio": 0.999437253798537,
+        "reference_actor_pixels": 1777,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.61666666666657,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 208.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1440,
+        "ratio": 1.0,
+        "reference_pixels": 1440,
+        "roi": [
+          499,
+          296,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          7410.0,
+          2330.0
+        ],
+        "scope": "same fixed actor/attack tell in both variants; no combat AI or difficulty claim",
+        "warning_surfaces": 1
+      },
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "camera_error_world": 0.000325950211845338,
+        "expected_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "expected_camera_world": [
+          88.6939697265625,
+          14.2140007019043,
+          36.8248863220215
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "06-receiving-clearing",
+      "objects": 348.0,
+      "player_same_fx_visibility": {
+        "normal_pixels": 1664,
+        "ratio": 0.986366330764671,
+        "reference_pixels": 1687,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 11613.0,
+      "projection": {
+        "image_body_center": [
+          640.015319824219,
+          347.871459960938
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.015319824219,
+          347.871459960938
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7469.39697265625,
+        2282.48876953125
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7470.0,
+        2280.0
+      ],
+      "tell_visibility": {
+        "normal_pixels": 1205,
+        "ratio": 1.0,
+        "reference_pixels": 1205,
+        "roi": [
+          399,
+          199,
+          360,
+          360
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "visibility": {
+        "normal_actor_pixels": 1664,
+        "ratio": 0.935883014623172,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.39999999999981,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "camera_error_world": 0.000333131407387555,
+        "expected_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "expected_camera_world": [
+          88.9005508422852,
+          14.2140007019043,
+          28.2996845245361
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "07-pool-bypass",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          640.026733398438,
+          347.869964599609
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.026733398438,
+          347.869964599609
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7490.05517578125,
+        1429.96850585938
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7490.0,
+        1430.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1765,
+        "ratio": 0.993247045582442,
+        "reference_actor_pixels": 1777,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.36666666666653,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 204.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "camera_error_world": 0.0003430895449128,
+        "expected_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "expected_camera_world": [
+          95.8764877319336,
+          14.2140007019043,
+          29.2768383026123
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "08-stream-turn",
+      "objects": 344.0,
+      "primitives": 11333.0,
+      "projection": {
+        "image_body_center": [
+          639.998474121094,
+          347.885589599609
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.998474121094,
+          347.885589599609
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8187.64892578125,
+        1527.68383789062
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        8190.0,
+        1530.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1764,
+        "ratio": 0.992125984251969,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.73333333333312,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "camera_error_world": 0.000335438584443182,
+        "expected_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "expected_camera_world": [
+          105.904479980469,
+          14.2140007019043,
+          27.1817626953125
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "09-inner-approach",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          640.009399414062,
+          347.884338378906
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.009399414062,
+          347.884338378906
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        9190.4482421875,
+        1318.17639160156
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        9190.0,
+        1320.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1765,
+        "ratio": 0.992688413948256,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.56666666666652,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 207.0,
+      "enemy_body_visibility": {
+        "normal_pixels": 1435,
+        "ratio": 1.0,
+        "reference_pixels": 1435,
+        "roi": [
+          509,
+          277,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "fixed_enemy_tell": {
+        "point": [
+          9660.0,
+          980.0
+        ],
+        "scope": "same fixed actor/attack tell in both variants; no combat AI or difficulty claim",
+        "warning_surfaces": 1
+      },
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "camera_error_world": 0.000327731133438647,
+        "expected_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "expected_camera_world": [
+          111.398475646973,
+          14.2140007019043,
+          23.711498260498
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "10-shrine-lip",
+      "objects": 347.0,
+      "player_same_fx_visibility": {
+        "normal_pixels": 1628,
+        "ratio": 0.990870359099209,
+        "reference_pixels": 1643,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "primitives": 11601.0,
+      "projection": {
+        "image_body_center": [
+          640.019836425781,
+          347.870910644531
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.019836425781,
+          347.870910644531
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        9739.84765625,
+        971.149963378906
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        9740.0,
+        970.0
+      ],
+      "tell_visibility": {
+        "normal_pixels": 1365,
+        "ratio": 1.0,
+        "reference_pixels": 1365,
+        "roi": [
+          409,
+          179,
+          360,
+          360
+        ],
+        "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+      },
+      "visibility": {
+        "normal_actor_pixels": 1628,
+        "ratio": 0.915120854412591,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.99999999999989,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 202.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "camera_error_world": 0.000328734167851508,
+        "expected_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "expected_camera_world": [
+          112.610336303711,
+          14.2140007019043,
+          18.3965644836426
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "11-root-sanctuary",
+      "objects": 342.0,
+      "primitives": 11309.0,
+      "projection": {
+        "image_body_center": [
+          640.023681640625,
+          347.863220214844
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.023681640625,
+          347.863220214844
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        9861.0341796875,
+        439.656341552734
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        9860.0,
+        440.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1774,
+        "ratio": 0.998311761395611,
+        "reference_actor_pixels": 1777,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.81666666666651,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "camera_error_world": 0.000354176707332954,
+        "expected_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "expected_camera_world": [
+          103.486511230469,
+          14.2140007019043,
+          18.3708305358887
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "12-west-return",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          639.977416992188,
+          347.860076904297
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.977416992188,
+          347.860076904297
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8948.6513671875,
+        437.083129882812
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        8950.0,
+        440.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1762,
+        "ratio": 0.991001124859393,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.09999999999988,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "camera_error_world": 0.000349378155078739,
+        "expected_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "expected_camera_world": [
+          99.2953491210938,
+          14.2140007019043,
+          21.4230690002441
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "13-return-pool",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          639.972045898438,
+          347.869567871094
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.972045898438,
+          347.869567871094
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        8529.53515625,
+        742.306945800781
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        8530.0,
+        740.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1765,
+        "ratio": 0.993247045582442,
+        "reference_actor_pixels": 1777,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.73333333333318,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 204.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "camera_error_world": 0.000363678933354095,
+        "expected_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "expected_camera_world": [
+          90.3026809692383,
+          14.2140007019043,
+          21.4111289978027
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "14-root-passage",
+      "objects": 344.0,
+      "primitives": 11333.0,
+      "projection": {
+        "image_body_center": [
+          639.985473632812,
+          347.855407714844
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.985473632812,
+          347.855407714844
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        7630.2685546875,
+        741.112854003906
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        7630.0,
+        740.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1765,
+        "ratio": 0.992688413948256,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.48333333333314,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "camera_error_world": 0.000330538634443656,
+        "expected_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "expected_camera_world": [
+          81.9382019042969,
+          14.2140007019043,
+          25.0088062286377
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "15-return-turn",
+      "objects": 343.0,
+      "primitives": 11321.0,
+      "projection": {
+        "image_body_center": [
+          639.976257324219,
+          347.863189697266
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.976257324219,
+          347.863189697266
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6793.8203125,
+        1100.88061523438
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6790.0,
+        1100.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1764,
+        "ratio": 0.991568296795953,
+        "reference_actor_pixels": 1779,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.34999999999981,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "camera_error_world": 0.000359554192982614,
+        "expected_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "expected_camera_world": [
+          79.0023345947266,
+          14.2140007019043,
+          33.2022552490234
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "16-same-mouth",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          639.974670410156,
+          347.862121582031
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.974670410156,
+          347.862121582031
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6500.2333984375,
+        1920.22546386719
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6500.0,
+        1920.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1765,
+        "ratio": 0.993247045582442,
+        "reference_actor_pixels": 1777,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.93333333333317,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 203.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "camera_error_world": 0.000352689326973632,
+        "expected_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "expected_camera_world": [
+          75.8287811279297,
+          14.2140007019043,
+          40.177921295166
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "17-real-exit",
+      "objects": 343.0,
+      "primitives": 11477.0,
+      "projection": {
+        "image_body_center": [
+          639.971984863281,
+          347.868103027344
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          639.971984863281,
+          347.868103027344
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        6182.87841796875,
+        2617.79223632812
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        6180.0,
+        2620.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1597,
+        "ratio": 0.896687254351488,
+        "reference_actor_pixels": 1781,
+        "roi": [
+          559,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "draw_calls": 363.0,
+      "focus_policy": "fixture focus-exit pause disconnected equally; no product/focus validation",
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "expected_camera_world": [
+          25.5,
+          14.2140007019043,
+          21.0
+        ]
+      },
+      "height": 720,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "18-main-return",
+      "objects": 574.0,
+      "primitives": 12965.0,
+      "projection": {
+        "image_body_center": [
+          640.0,
+          347.869873046875
+        ],
+        "image_size": [
+          1280,
+          720
+        ],
+        "logical_body_center": [
+          640.0,
+          347.869873046875
+        ],
+        "logical_to_image_scale": [
+          1.0,
+          1.0
+        ],
+        "logical_viewport": [
+          0.0,
+          0.0,
+          1280.0,
+          720.0
+        ]
+      },
+      "reached": [
+        1150.0,
+        700.0
+      ],
+      "render": true,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "visibility": {
+        "normal_actor_pixels": 1776,
+        "ratio": 0.998875140607424,
+        "reference_actor_pixels": 1778,
+        "roi": [
+          560,
+          267,
+          160,
+          160
+        ],
+        "scope": "bounded player Body-only differential (shadow excluded), scenery geometry hidden reference; no full-map visibility claim"
+      },
+      "width": 1280
+    }
+  ],
+  "scope": "isolated visual-walk fixture; frozen spawn/time pressure and enemy attacks; NOT natural combat or fun evidence",
+  "screenshots": [
+    "01-main-waterfall-960.png",
+    "01-main-waterfall-reference-960.png",
+    "02-real-entrance-960.png",
+    "02-real-entrance-reference-960.png",
+    "03-hidden-arrival-960.png",
+    "03-hidden-arrival-reference-960.png",
+    "04-cave-threshold-960.png",
+    "04-cave-threshold-reference-960.png",
+    "05-first-opening-960.png",
+    "05-first-opening-reference-960.png",
+    "06-receiving-clearing-960.png",
+    "06-receiving-clearing-reference-960.png",
+    "06-receiving-clearing-same-fx-player-reference-960.png",
+    "06-receiving-clearing-enemy-reference-960.png",
+    "06-receiving-clearing-tell-reference-960.png",
+    "07-pool-bypass-960.png",
+    "07-pool-bypass-reference-960.png",
+    "08-stream-turn-960.png",
+    "08-stream-turn-reference-960.png",
+    "09-inner-approach-960.png",
+    "09-inner-approach-reference-960.png",
+    "10-shrine-lip-960.png",
+    "10-shrine-lip-reference-960.png",
+    "10-shrine-lip-same-fx-player-reference-960.png",
+    "10-shrine-lip-enemy-reference-960.png",
+    "10-shrine-lip-tell-reference-960.png",
+    "11-root-sanctuary-960.png",
+    "11-root-sanctuary-reference-960.png",
+    "12-west-return-960.png",
+    "12-west-return-reference-960.png",
+    "13-return-pool-960.png",
+    "13-return-pool-reference-960.png",
+    "14-root-passage-960.png",
+    "14-root-passage-reference-960.png",
+    "15-return-turn-960.png",
+    "15-return-turn-reference-960.png",
+    "16-same-mouth-960.png",
+    "16-same-mouth-reference-960.png",
+    "17-real-exit-960.png",
+    "17-real-exit-reference-960.png",
+    "18-main-return-960.png",
+    "18-main-return-reference-960.png",
+    "01-main-waterfall-1280.png",
+    "01-main-waterfall-reference-1280.png",
+    "02-real-entrance-1280.png",
+    "02-real-entrance-reference-1280.png",
+    "03-hidden-arrival-1280.png",
+    "03-hidden-arrival-reference-1280.png",
+    "04-cave-threshold-1280.png",
+    "04-cave-threshold-reference-1280.png",
+    "05-first-opening-1280.png",
+    "05-first-opening-reference-1280.png",
+    "06-receiving-clearing-1280.png",
+    "06-receiving-clearing-reference-1280.png",
+    "06-receiving-clearing-same-fx-player-reference-1280.png",
+    "06-receiving-clearing-enemy-reference-1280.png",
+    "06-receiving-clearing-tell-reference-1280.png",
+    "07-pool-bypass-1280.png",
+    "07-pool-bypass-reference-1280.png",
+    "08-stream-turn-1280.png",
+    "08-stream-turn-reference-1280.png",
+    "09-inner-approach-1280.png",
+    "09-inner-approach-reference-1280.png",
+    "10-shrine-lip-1280.png",
+    "10-shrine-lip-reference-1280.png",
+    "10-shrine-lip-same-fx-player-reference-1280.png",
+    "10-shrine-lip-enemy-reference-1280.png",
+    "10-shrine-lip-tell-reference-1280.png",
+    "11-root-sanctuary-1280.png",
+    "11-root-sanctuary-reference-1280.png",
+    "12-west-return-1280.png",
+    "12-west-return-reference-1280.png",
+    "13-return-pool-1280.png",
+    "13-return-pool-reference-1280.png",
+    "14-root-passage-1280.png",
+    "14-root-passage-reference-1280.png",
+    "15-return-turn-1280.png",
+    "15-return-turn-reference-1280.png",
+    "16-same-mouth-1280.png",
+    "16-same-mouth-reference-1280.png",
+    "17-real-exit-1280.png",
+    "17-real-exit-reference-1280.png",
+    "18-main-return-1280.png",
+    "18-main-return-reference-1280.png"
+  ],
+  "time_scale": 1.0,
+  "wall_seconds": 123.086629
+}

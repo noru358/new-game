@@ -1,0 +1,5 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Jungle southern circuit — isolated development run
+Baseline/candidate route counts: [[(1700.0, 1150.0), 43, 43], [(2150.0, 250.0), 85, 85], [(1300.0, 680.0), 44, 44], [(1150.0, 700.0), 39, 39], [(2900.0, 1800.0), 97, 97], [(3400.0, 1850.0), 114, 114], [(4750.0, 850.0), 147, 147], [(2080.0, 2910.0), 106, 106]]
+Jungle emergent tree: checks=22294 failures=0 triangles=1101 dense_camera_rays=4677 covered_10px_cells=6150 bounds=[P: (0.0, 0.0, 0.0), S: (7.8, 9.0, 8.0)]

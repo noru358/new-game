@@ -1,0 +1,54 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3
+
+Hybrid scene ready: Jungle southern circuit — isolated development run
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"settle80","state":"main-undiscovered","ticks_usec":2391412,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"force-render","state":"main-undiscovered","ticks_usec":3960166,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6290.0,2630.0],"region":"jungle","stage":"settle80","state":"hidden-arrival","ticks_usec":4277596,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6290.0,2630.0],"region":"jungle","stage":"force-render","state":"hidden-arrival","ticks_usec":5655663,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6638.41259765625,2666.78588867188],"region":"jungle","stage":"normal-walk-start","state":"reward-approach","ticks_usec":6788577,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"normal-walk-end","state":"reward-approach","ticks_usec":21904309,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"settle80","state":"reward-approach","ticks_usec":21906857,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"force-render","state":"reward-approach","ticks_usec":23238612,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"settle80","state":"hidden-overview","ticks_usec":23355706,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"force-render","state":"hidden-overview","ticks_usec":24557478,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8949.2451171875,433.423980712891],"region":"jungle","stage":"settle80","state":"rear-return-12","ticks_usec":27657275,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8949.2451171875,433.423980712891],"region":"jungle","stage":"force-render","state":"rear-return-12","ticks_usec":28991008,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8529.5673828125,746.632385253906],"region":"jungle","stage":"settle80","state":"rear-return-13","ticks_usec":30974168,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[8529.5673828125,746.632385253906],"region":"jungle","stage":"force-render","state":"rear-return-13","ticks_usec":32308587,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[7639.53759765625,752.0],"region":"jungle","stage":"settle80","state":"rear-return-14","ticks_usec":34991986,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[7639.53759765625,752.0],"region":"jungle","stage":"force-render","state":"rear-return-14","ticks_usec":36325673,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6805.1474609375,1103.19226074219],"region":"jungle","stage":"settle80","state":"rear-return-15","ticks_usec":39645935,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6805.1474609375,1103.19226074219],"region":"jungle","stage":"force-render","state":"rear-return-15","ticks_usec":40979569,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6513.59033203125,1930.51428222656],"region":"jungle","stage":"settle80","state":"rear-return-16","ticks_usec":44207276,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6513.59033203125,1930.51428222656],"region":"jungle","stage":"force-render","state":"rear-return-16","ticks_usec":45541085,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6325.49267578125,2638.41015625],"region":"jungle","stage":"settle80","state":"exit-approach","ticks_usec":48073747,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[6325.49267578125,2638.41015625],"region":"jungle","stage":"force-render","state":"exit-approach","ticks_usec":49407518,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"settle80","state":"main-return","ticks_usec":49611064,"width":960}
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"force-render","state":"main-return","ticks_usec":50943775,"width":960}
+Hybrid scene ready: Jungle southern circuit — isolated development run
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"settle80","state":"main-undiscovered","ticks_usec":52687855,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"force-render","state":"main-undiscovered","ticks_usec":53887981,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6290.0,2630.0],"region":"jungle","stage":"settle80","state":"hidden-arrival","ticks_usec":54451837,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6290.0,2630.0],"region":"jungle","stage":"force-render","state":"hidden-arrival","ticks_usec":55784280,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6638.41259765625,2666.78588867188],"region":"jungle","stage":"normal-walk-start","state":"reward-approach","ticks_usec":56904892,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"normal-walk-end","state":"reward-approach","ticks_usec":72020776,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"settle80","state":"reward-approach","ticks_usec":72023457,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"force-render","state":"reward-approach","ticks_usec":73354584,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"settle80","state":"hidden-overview","ticks_usec":73402323,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[9935.146484375,501.243316650391],"region":"jungle","stage":"force-render","state":"hidden-overview","ticks_usec":74704663,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[8949.2451171875,433.423980712891],"region":"jungle","stage":"settle80","state":"rear-return-12","ticks_usec":77813224,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[8949.2451171875,433.423980712891],"region":"jungle","stage":"force-render","state":"rear-return-12","ticks_usec":79146895,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[8529.5673828125,746.632385253906],"region":"jungle","stage":"settle80","state":"rear-return-13","ticks_usec":81113982,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[8529.5673828125,746.632385253906],"region":"jungle","stage":"force-render","state":"rear-return-13","ticks_usec":82447485,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[7639.53759765625,752.0],"region":"jungle","stage":"settle80","state":"rear-return-14","ticks_usec":85125937,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[7639.53759765625,752.0],"region":"jungle","stage":"force-render","state":"rear-return-14","ticks_usec":86460126,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6805.1474609375,1103.19226074219],"region":"jungle","stage":"settle80","state":"rear-return-15","ticks_usec":89783969,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6805.1474609375,1103.19226074219],"region":"jungle","stage":"force-render","state":"rear-return-15","ticks_usec":91117288,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6513.59033203125,1930.51428222656],"region":"jungle","stage":"settle80","state":"rear-return-16","ticks_usec":94344313,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6513.59033203125,1930.51428222656],"region":"jungle","stage":"force-render","state":"rear-return-16","ticks_usec":95678038,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6325.49267578125,2638.41015625],"region":"jungle","stage":"settle80","state":"exit-approach","ticks_usec":98190172,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[6325.49267578125,2638.41015625],"region":"jungle","stage":"force-render","state":"exit-approach","ticks_usec":99524363,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"settle80","state":"main-return","ticks_usec":99750117,"width":1280}
+HIDDEN_CAPTURE_STAGE {"point":[1150.0,700.0],"region":"jungle","stage":"force-render","state":"main-return","ticks_usec":101083490,"width":1280}
+HIDDEN_RENDER {"checks":934,"failures":0,"images":22}

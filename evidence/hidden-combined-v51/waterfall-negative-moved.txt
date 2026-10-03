@@ -1,0 +1,7 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Jungle southern circuit — isolated development run
+FAIL: exactly one water sheet at authored coordinate (7600.0, 1650.0)
+Hybrid scene ready: Jungle southern circuit — isolated development run
+FAIL: exactly one water sheet at authored coordinate (7600.0, 1650.0)
+Jungle waterfall visibility: 29571 checks, 0 rendered cases, 2 adoption/contract failures, 0 strict opaque visibility failures, 0 documented known-limitation cases

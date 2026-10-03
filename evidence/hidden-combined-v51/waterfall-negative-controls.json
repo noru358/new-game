@@ -1,0 +1,28 @@
+{
+  "source_sha": "68ac49b03bb19b30059bb797ab61758505ed2b1a",
+  "engine_concurrency": 1,
+  "results": [
+    {
+      "mutation": "duplicate",
+      "exit_code": 1,
+      "detected": true,
+      "expected_failure": "all authored waterfall sheets retained",
+      "userdata": "CodexCombined/WaterfallVisibilityV48-negative-08f9a0fa-71c0-49a7-b398-23d77aea8b00"
+    },
+    {
+      "mutation": "moved",
+      "exit_code": 1,
+      "detected": true,
+      "expected_failure": "exactly one water sheet at authored coordinate",
+      "userdata": "CodexCombined/WaterfallVisibilityV48-negative-5b0d9892-9d28-4769-86c3-7f765b7aca17"
+    },
+    {
+      "mutation": "wrong-material",
+      "exit_code": 1,
+      "detected": true,
+      "expected_failure": "authored water material retained",
+      "userdata": "CodexCombined/WaterfallVisibilityV48-negative-c9613cff-f442-434d-94c1-485db3e5fb94"
+    }
+  ],
+  "scope": "actual scene water node mutations in isolated fixture copies; product source unchanged"
+}

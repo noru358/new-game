@@ -1,0 +1,12 @@
+--- a/DEV_STATUS.md
++++ b/DEV_STATUS.md
+@@ -575,3 +575,9 @@
+ - 사용자의M3에 맞는 arm64단일앱을 다시 export/sign/startup 검증하도록 패키지 도구에 아키텍처 옵션을 추가했다. 원래universal도 재현 가능하다. 현재 Mac runner는 job log에서 macos-26-arm64로 확인했다. 게임 런타임 코드는 이번 수정에서 변경하지 않았다. arm64결과와 실제 첨부 성공을 확인한 뒤 전달 완료로 기록한다.
+ 
+ - arm64직접 export시 공식4.6 template에 별도 `godot_macos_release.arm64`가 없다는 오류가 확인됐다(37066747249). 공식universal bundle을 만든 뒤 Mac의lipo로arm64만 남기고 기존metadata를 보존하여adhoc재서명/strict검증/4씬초기실행을 반복하도록 수정했다. 결과 확인 전 전달 완료로 쓰지 않는다.
++
++## 사원 숨은 안뜰 후보 — v50 component 인계
++
++- Original/circuit에 같은 안뜰 전용 데이터/opaque helper를 준비하고 canonical section 장착은 mount patch로 반환했다. 필드/포탈/수호3/발견ID/각성/보상/240초/저장 계약 보존. 본선 vestibule 보존. 제작자 시각 검토와 자동 검사는 사람 미감/재미 수용이 아니다.
++- 두씬128545구조검사/4168ray 가림0, 기존 전환·각성저장·circuit·지형5검사 PASS. 실제960/1280 baseline/candidate 각각26정상입력지점/72PNG. 신규배치 비악화 확인; 기존 ALTAR 중심Body가림96034.2%/128033.61%는 전후동일2strict실패로 보존한다. 상호작용 거리105 내 남동쪽 접근의 실제 보상/저장 검사를 별도로 인계한다.
++- 렌더 소스11fef3d(게임b019578), 포탈/flow는 아직 canonical1aac501+artmount이다. 부모 flow의 표기/재진입 패치와 통합 후 확인한다. 상세 integration/TEMPLE_GARDEN_V50.md; 핵심 전후2장 evidence/temple-garden-v50. 자연 전투·미감/재미·성능 수용 미검증, 사용자 전달본v48/canonical686228f 보존.

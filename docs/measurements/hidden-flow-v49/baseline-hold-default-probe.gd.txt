@@ -1,0 +1,39 @@
+extends SceneTree
+var reports := []
+func _initialize() -> void: call_deferred("run")
+func release() -> void:
+	for action in ["move_left","move_right","move_up","move_down"]: Input.action_release(action)
+func press(scene, direction: Vector2) -> void:
+	release()
+	var input := direction.rotated(-scene.player.input_rotation)
+	if input.x < -0.1: Input.action_press("move_left", -input.x)
+	if input.x > 0.1: Input.action_press("move_right", input.x)
+	if input.y < -0.1: Input.action_press("move_up", -input.y)
+	if input.y > 0.1: Input.action_press("move_down", input.y)
+func run() -> void:
+	for name in ["temple_circuit_run", "jungle_south_circuit"]:
+		var scene = load("res://game/"+name+".tscn").instantiate()
+		scene.profile_save_prefix = "user://"+name+"_hold"
+		scene.growth_save_prefix = scene.profile_save_prefix+"_growth"
+		root.add_child(scene)
+		await process_frame
+		scene.set_physics_process(false)
+		scene.wisp.set_physics_process(false)
+		var section = scene.temple_section
+		var layout = section.layout
+		scene.teleport(layout.RETURN_POINT)
+		press(scene,layout.RETURN_POINT.direction_to(layout.ENTRY_TRIGGER.get_center()))
+		var transitions := []
+		for frame in 180:
+			await physics_frame
+			var before: bool = section.in_garden
+			section.tick(1.0/60.0)
+			if before != section.in_garden: transitions.append({"frame":frame,"inside":section.in_garden,"point":[scene.player.position.x,scene.player.position.y]})
+		release()
+		reports.append({"scene":name,"transitions":transitions,"point":[scene.player.position.x,scene.player.position.y],"nominal_seconds":3.0,"normal_speed":SandboxPlayer.MOVE_SPEED,"time_scale":Engine.time_scale,"scope":"real player physics/input; scene time and spawn pressure frozen"})
+		scene.queue_free()
+		await process_frame
+	var file := FileAccess.open("res://hold-report.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(reports,"\t"))
+	print("HOLD_PROBE ",JSON.stringify(reports))
+	quit()
