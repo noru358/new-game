@@ -1,0 +1,14 @@
+--- a/DEV_STATUS.md
++++ b/DEV_STATUS.md
+@@ -2,6 +2,11 @@
+ 
+ > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
+ 
++## 왕궁 사원 독립 대표 구간 — native960 첫 반환 / 2026-10-03 UTC
++
++- 최신 PR54 HEAD296bde54에서 별도 `codex/palace-temple-preview-oct03`/draft PR55로 접근길→행렬문·큰청록/적색수호상→밝은중정→회랑을 제작했다. 공통hub/지역선택·저장/보상/경제/보스·기존맵 장착없음.
++- 실제검사game0e6950c: 카메라9/offset/배우크기유지, 정상입력7지점16.133active초, native960PNG4장/errors0,4headrayclear·UUID게임저장파일0. 접근에서두얼굴·몸체와문이보이며통과/중정/회랑의발·그림자가표본에서읽힌다. bbox통과해도수호상이기둥뒤에묻힌초기실패4장을보존하고크기·간격유지전진+표면합집합유지공면제거로고쳤다.
++- 미감/사람재미·모든중간프레임actor가시율·자연전투/대시/1280/전체권역·package는미검증. Library지원batch는준비사용불가로저장ID없어정확원격PNG로반환한다. 엔진종료·merge/main/production/canonical변경없음. 현재3단계대표아트/다음부모4화면검토후후속범위판단. 상세 integration/PALACE_NATIVE_REVIEW.md.
+ 
+ ## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03
+ 

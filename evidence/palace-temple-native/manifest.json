@@ -1,0 +1,39 @@
+{
+  "tested_source": "0e6950cd51e389e3373979c7f9fd466837027457",
+  "engine_version": "4.6.stable.official.89cea1439",
+  "engine_sha256": "974197a7e6663dba803ae97c3b2d987b77a37b6e70088400ecf0ccc591cbdfbc",
+  "images": [
+    {
+      "path": "evidence/palace-temple-native/01-approach-960.png",
+      "bytes": 116750,
+      "sha256": "742fcdd8ba6dbd74c4a410baa660a30e7e7efff13c8e49617010f4752e4280fa"
+    },
+    {
+      "path": "evidence/palace-temple-native/02-under-gate-960.png",
+      "bytes": 123516,
+      "sha256": "9dbe5d179bc332ef4ee1852c1846cef8386f386ffccb78d673be8e9fae9a89fe"
+    },
+    {
+      "path": "evidence/palace-temple-native/03-open-court-960.png",
+      "bytes": 66115,
+      "sha256": "b7fccd1d9ee2a4c5fb5faf544da2ca3665eb471fbb8510ece072e9106862ecfd"
+    },
+    {
+      "path": "evidence/palace-temple-native/04-cloister-960.png",
+      "bytes": 139713,
+      "sha256": "ac56fdbb31160c6d8ca8ab7a37ae6cfe303d5c53d7917847923ede4650d3a26f"
+    }
+  ],
+  "baseline_preserved": {
+    "project.godot": "f21492b8338e688ed91c2dea34d6196e594bfb2f3a69583167eefc94a7d7e723",
+    "game/player.gd": "807fe8ce2b76db80771239d0923d00fbe5d341cec1496228035754374b2e84b0",
+    "game/enemy.gd": "0f12c242f1012d5ed4b65ac36832c4dbf26039bc85ae4ec73e5613b03e70b9c9",
+    "game/run_growth.gd": "32137855b5985e66dd95ea109ef9c20d8dd960cd941e85fdfe04ab2ad81afd3b",
+    "game/run_profile.gd": "05123d70cfd191514239b2d4f660449b345dc7aec44fba35d37fa9991107dbaf",
+    "game/hybrid_height.gd": "71b3c82611c6a89467be8347694fcfdeba743404fd3a52ee5e9a7422ffadd16d",
+    "game/hybrid_region.gd": "8e68d0b0f10cf0d9c77331c371289e9bd7ec829f39359e539dc679ae87caebcf",
+    "game/temple_circuit_run.gd": "464bf9219e3c4f73ab8b2d9e3eec8135040dea723147f462df1e4057ee37ff21",
+    "game/jungle_pass.gd": "a3ef9c313a3089e2aaf4bd88d9d432b04754c924ade4a144ca5ba76e8ff2e09a",
+    "game/deep_wetland_trial.gd": "7e057deb53a2c8135bce0154aee5786be17d8edc54297311c3894a6b1d54a4f8"
+  }
+}

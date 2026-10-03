@@ -1,5 +1,7 @@
 # Palace approach ready for native review — 2026-10-03 UTC
 
+Native follow-up and tested guardian/paving corrections are recorded in `PALACE_NATIVE_REVIEW.md`. This preparation record and failed calculations remain preserved.
+
 Current tested source `f5d8b96`: recompose the independent PR55 slice after parent reviewed first PNGs. First evidence and limitations remain in `PALACE_TEMPLE_PREVIEW.md`; its geometry/route descriptions are superseded by this document.
 
 ## Concrete sequence
