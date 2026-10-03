@@ -10,6 +10,12 @@
 - 정상Input/카메라/공격/자동스폰65초도 전후 실행했다. 저밀도심한렉은 미재현/미해결; 사원 단발78.168→87.752ms가 남는다. 10762native/cache검사0fail·PNGbyte동일, 관련7회귀PASS. 전체CI/패키지실행/사람응답성/장시간은 미검증. 원본4진척JSONhash동일,02:08:39local 엔진0·슬롯반환.
 - 단계:2단계메타연결·첫권역제작중 성능회귀. 다음은 남은저밀도단발/renderer-presentation 원인진단과 별도재출정수정통합검증. draftPR56만 생성했고 병합/배포하지 않았다. 근거 docs/measurements/v49-native-lag/README.md. 부모메시지/PRattach tool은Transport closed로 실패해최종자동보고로인계한다.
 
+## v49 사원 단발 지연 — 코드-only 재조사 / 2026-10-04 KST
+
+- 새 엔진을 실행하지 않고 기존 raw를 재분석했다. 사원 interval78.168/87.752ms와6행 뒤 delayed viewport CPU75.109/85.110ms를 확인했다. 작은 같은행getter로renderer비용을배제하지 않는다. 추정wall15.396/15.520초이며 당시정확위치/run_time은원자료에없다. GPU/전체mainthread/셰이더원인은미확정이다.
+- 첫wisp_hit가 flash+pulse두draw를만드는경로와관측+2draw가일치하지만이벤트증거없음. ready풍경생성/fragment hittexture선생성은코드로확인. 21함수span·render pre/post·정확run_time/위치/route/firsthit 계측복사본과24초단일실행계획을준비했다. Python구조검사만PASS; Godot파싱/실행은부모슬롯대기다. 제품수정추가없음.
+- jungle baseline focus_resumes=1/after0 정정. 시점미기록이므로paired지표를완전통제비교로쓰지않는다. 사원두run은0. 세부 docs/measurements/v49-native-lag/temple-hitch-plan.md. 다음은통합담당슬롯반환후부모가배정하는한번의정렬계측이며사용자앱/세이브보존.
+
 ## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03
 
 - 부모가 합본 대표4PNG와 마지막diff를 검토하고 히든 장소/입출구 개선을 다음 플레이후보로 채택했다. 세lane 통합20359e1의 정확전체CI37129486967은116headless/preview/depth18사례/UI160PNG를 통과했다. 사원표면/조명 후속·캐릭터시안은 이 묶음에 포함하지 않는다.

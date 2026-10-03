@@ -1,0 +1,180 @@
+{
+  "time_basis": "5-second warmup plus sampled wall intervals; legacy samples do not record per-frame run_time or position",
+  "focus_resumes": 0,
+  "worst_interval": {
+    "index": 1252,
+    "approx_wall_seconds": 15.520364999999986,
+    "row": [
+      87.752,
+      12,
+      3.026,
+      1.01199996471405,
+      147.0
+    ]
+  },
+  "max_viewport_render_cpu": {
+    "index": 1258,
+    "approx_wall_seconds": 15.568245999999986,
+    "row": [
+      2.793,
+      12,
+      3.026,
+      85.1100006103516,
+      146.0
+    ]
+  },
+  "render_peak_row_offset": 6,
+  "neighbors": [
+    {
+      "index": 1248,
+      "approx_wall_seconds": 15.403868999999986,
+      "row": [
+        4.581,
+        12,
+        3.026,
+        0.940999984741211,
+        145.0
+      ]
+    },
+    {
+      "index": 1249,
+      "approx_wall_seconds": 15.415993999999985,
+      "row": [
+        12.125,
+        12,
+        3.026,
+        0.875999987125397,
+        145.0
+      ]
+    },
+    {
+      "index": 1250,
+      "approx_wall_seconds": 15.419785999999986,
+      "row": [
+        3.792,
+        12,
+        3.026,
+        1.35599994659424,
+        145.0
+      ]
+    },
+    {
+      "index": 1251,
+      "approx_wall_seconds": 15.432612999999986,
+      "row": [
+        12.827,
+        12,
+        3.026,
+        0.841000020503998,
+        145.0
+      ]
+    },
+    {
+      "index": 1252,
+      "approx_wall_seconds": 15.520364999999986,
+      "row": [
+        87.752,
+        12,
+        3.026,
+        1.01199996471405,
+        147.0
+      ]
+    },
+    {
+      "index": 1253,
+      "approx_wall_seconds": 15.532242999999985,
+      "row": [
+        11.878,
+        12,
+        3.026,
+        0.83899998664856,
+        146.0
+      ]
+    },
+    {
+      "index": 1254,
+      "approx_wall_seconds": 15.535771999999985,
+      "row": [
+        3.529,
+        12,
+        3.026,
+        0.889999985694885,
+        146.0
+      ]
+    },
+    {
+      "index": 1255,
+      "approx_wall_seconds": 15.548852999999985,
+      "row": [
+        13.081,
+        12,
+        3.026,
+        0.861999988555908,
+        146.0
+      ]
+    },
+    {
+      "index": 1256,
+      "approx_wall_seconds": 15.552248999999986,
+      "row": [
+        3.396,
+        12,
+        3.026,
+        0.926999986171722,
+        146.0
+      ]
+    },
+    {
+      "index": 1257,
+      "approx_wall_seconds": 15.565452999999986,
+      "row": [
+        13.204,
+        12,
+        3.026,
+        0.824999988079071,
+        146.0
+      ]
+    },
+    {
+      "index": 1258,
+      "approx_wall_seconds": 15.568245999999986,
+      "row": [
+        2.793,
+        12,
+        3.026,
+        85.1100006103516,
+        146.0
+      ]
+    },
+    {
+      "index": 1259,
+      "approx_wall_seconds": 15.582143999999985,
+      "row": [
+        13.898,
+        12,
+        3.026,
+        0.859000027179718,
+        146.0
+      ]
+    },
+    {
+      "index": 1260,
+      "approx_wall_seconds": 15.586104999999986,
+      "row": [
+        3.961,
+        13,
+        3.026,
+        0.564000010490417,
+        147.0
+      ]
+    }
+  ],
+  "columns": [
+    "post_draw_interval_ms",
+    "enemies",
+    "one_second_max_physics_ms",
+    "delayed_viewport_render_cpu_ms",
+    "draw_calls"
+  ],
+  "caveat": "Same-row render time is a delayed getter; no GPU or whole engine main-thread measurement."
+}
