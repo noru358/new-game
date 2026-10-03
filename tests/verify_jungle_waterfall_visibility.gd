@@ -196,11 +196,17 @@ func _authored_waterfall(mesh: Node) -> bool:
 
 func _capture(variant: String, size: Vector2i, pose: Dictionary) -> void:
 	scene.teleport(pose.point)
+	# Fixed visibility poses include facing: the new portal deliberately turns
+	# the player away on return, unlike v48. Pin the original right-facing
+	# sprite for comparable geometry/water pixels. Actual return-facing and
+	# ordinary-input traversal stay covered by verify_hidden_flow.
+	scene.player.facing = Vector2.RIGHT
 	scene._process(0.0)
 	scene.camera.position = scene.terrain.world_point(pose.point, 35) + scene.camera_offset
 	scene.camera.look_at(scene.terrain.world_point(pose.point, 35), Vector3.UP)
 	var body: Sprite3D = scene.actors[scene.player].get_node("Body")
 	check(not body.no_depth_test and body.alpha_cut == SpriteBase3D.ALPHA_CUT_DISCARD and body.modulate.a == 1.0, "ordinary opaque player depth, no bypass")
+	check(scene.player.facing == Vector2.RIGHT and not body.flip_h, "fixed original right-facing visibility pose")
 	var actor_error: float = scene.actors[scene.player].position.distance_to(scene.terrain.world_point(pose.point))
 	var camera_error: float = scene.camera.position.distance_to(scene.terrain.world_point(pose.point, 35) + scene.camera_offset)
 	check(actor_error < 0.001 and camera_error < 0.001, "fixed actor/camera synchronization")
@@ -251,7 +257,7 @@ func _capture(variant: String, size: Vector2i, pose: Dictionary) -> void:
 			adoption_pass = water_ratio >= 0.98
 			check(adoption_pass, "candidate return/entry water-comparable visibility: " + name)
 	elif pose.name == "returned": check(ratio < 0.60, "baseline reproduces known opaque rim masking")
-	captures.append({"variant": variant, "pose": pose.name, "point": [pose.point.x, pose.point.y], "width": size.x, "height": size.y, "visible_body_pixels": counts.scenery, "unobstructed_body_pixels": counts.bare, "ratio": ratio, "water_reference_body_pixels": counts["water-reference"], "water_comparable_ratio": water_ratio, "opaque_geometry_body_pixels": counts["opaque-only"], "opaque_geometry_ratio": opaque_ratio, "strict_full_scene_visibility_pass": ratio >= 0.98, "strict_opaque_visibility_pass": opaque_ratio >= 0.98, "strict_threshold": 0.98, "classification": classification, "adoption_gate": "not_applicable_baseline" if variant == "baseline" else "non_regression_only" if pose.name == "cooldown-edge" else "water_comparable_at_least_0.98", "adoption_pass": adoption_pass if variant == "candidate" else null, "baseline_ratios": {} if baseline.is_empty() else {"raw": baseline.ratio, "water_comparable": baseline.water_comparable_ratio, "opaque_geometry": baseline.opaque_geometry_ratio}, "actor_error": actor_error, "camera_error": camera_error, "image_prefix": name, "actual_render": true})
+	captures.append({"variant": variant, "pose": pose.name, "facing": [scene.player.facing.x,scene.player.facing.y], "body_flip_h":body.flip_h, "point": [pose.point.x, pose.point.y], "width": size.x, "height": size.y, "visible_body_pixels": counts.scenery, "unobstructed_body_pixels": counts.bare, "ratio": ratio, "water_reference_body_pixels": counts["water-reference"], "water_comparable_ratio": water_ratio, "opaque_geometry_body_pixels": counts["opaque-only"], "opaque_geometry_ratio": opaque_ratio, "strict_full_scene_visibility_pass": ratio >= 0.98, "strict_opaque_visibility_pass": opaque_ratio >= 0.98, "strict_threshold": 0.98, "classification": classification, "adoption_gate": "not_applicable_baseline" if variant == "baseline" else "non_regression_only" if pose.name == "cooldown-edge" else "water_comparable_at_least_0.98", "adoption_pass": adoption_pass if variant == "candidate" else null, "baseline_ratios": {} if baseline.is_empty() else {"raw": baseline.ratio, "water_comparable": baseline.water_comparable_ratio, "opaque_geometry": baseline.opaque_geometry_ratio}, "actor_error": actor_error, "camera_error": camera_error, "image_prefix": name, "actual_render": true})
 	print("WATERFALL ", JSON.stringify(captures[-1]))
 
 func _finish() -> void:
