@@ -1,0 +1,44 @@
+[
+	{
+		"nominal_seconds": 3.0,
+		"normal_speed": 300.0,
+		"point": [
+			5675.0009765625,
+			1579.64685058594
+		],
+		"scene": "temple_circuit_run",
+		"scope": "real player physics/input; scene time and spawn pressure frozen",
+		"time_scale": 1.0,
+		"transitions": [
+			{
+				"frame": 18,
+				"inside": true,
+				"point": [
+					5840.0,
+					1770.0
+				]
+			}
+		]
+	},
+	{
+		"nominal_seconds": 3.0,
+		"normal_speed": 300.0,
+		"point": [
+			7187.134765625,
+			2540.30224609375
+		],
+		"scene": "jungle_south_circuit",
+		"scope": "real player physics/input; scene time and spawn pressure frozen",
+		"time_scale": 1.0,
+		"transitions": [
+			{
+				"frame": 18,
+				"inside": true,
+				"point": [
+					6290.0,
+					2630.0
+				]
+			}
+		]
+	}
+]

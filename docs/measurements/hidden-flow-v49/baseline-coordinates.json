@@ -1,0 +1,282 @@
+[
+	{
+		"altar": [
+			8300.0,
+			480.0
+		],
+		"arrival": [
+			5840.0,
+			1770.0
+		],
+		"entry": [
+			1160.0,
+			730.0,
+			110.0,
+			110.0
+		],
+		"exit": [
+			5660.0,
+			1690.0,
+			100.0,
+			160.0
+		],
+		"idle_stays_inside": true,
+		"inside": {
+			"bounds": [
+				5600.0,
+				80.0,
+				3000.0,
+				2000.0
+			],
+			"camera_size": 9.0,
+			"facing": [
+				-1.0,
+				0.0
+			],
+			"hud": "숨은 정원 · 수호 적 0 / 3 · 안쪽 제단으로\n서쪽 입구로 회랑 복귀",
+			"labels": [
+				{
+					"text": "성소",
+					"visible": false,
+					"world": [
+						26.3999996185303,
+						2.0,
+						12.0
+					]
+				},
+				{
+					"text": "회랑으로",
+					"visible": true,
+					"world": [
+						57.0999984741211,
+						0.899999976158142,
+						17.6999988555908
+					]
+				},
+				{
+					"text": "정원의 불씨\n수호 적 0 / 3",
+					"visible": false,
+					"world": [
+						83.0,
+						1.39999997615814,
+						4.79999971389771
+					]
+				}
+			],
+			"overview_size": 37.0,
+			"point": [
+				5840.0,
+				1770.0
+			]
+		},
+		"open": {
+			"ALTAR": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"ENTRY_TRIGGER": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"EXIT_TRIGGER": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"FIELD_ENTRY": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"RETURN_POINT": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			}
+		},
+		"paths": {
+			"inside_to_altar": 118,
+			"inside_to_exit": 5,
+			"main_to_entry": 8
+		},
+		"return": [
+			1310.0,
+			920.0
+		],
+		"return_state": {
+			"bounds": [
+				0.0,
+				0.0,
+				4600.0,
+				3500.0
+			],
+			"camera_size": 9.0,
+			"facing": [
+				-1.0,
+				0.0
+			],
+			"hud": "성소의 문지기 · 4분 이후 성소에 접근하여 교전",
+			"labels": [
+				{
+					"text": "성소",
+					"visible": false
+				},
+				{
+					"text": "회랑으로",
+					"visible": true
+				},
+				{
+					"text": "정원의 불씨\n수호 적 0 / 3",
+					"visible": false
+				}
+			],
+			"point": [
+				1310.0,
+				920.0
+			]
+		},
+		"scene": "temple_circuit_run"
+	},
+	{
+		"altar": [
+			9860.0,
+			440.0
+		],
+		"arrival": [
+			6290.0,
+			2630.0
+		],
+		"entry": [
+			1250.0,
+			630.0,
+			100.0,
+			110.0
+		],
+		"exit": [
+			6100.0,
+			2510.0,
+			160.0,
+			220.0
+		],
+		"idle_stays_inside": true,
+		"inside": {
+			"bounds": [
+				6000.0,
+				80.0,
+				4200.0,
+				2800.0
+			],
+			"camera_size": 9.0,
+			"facing": [
+				-1.0,
+				0.0
+			],
+			"hud": "물길 너머 안쪽 유적 탐색\n길목 적은 돌파하거나 피해 갈 수 있습니다.",
+			"labels": [
+				{
+					"text": "관문",
+					"visible": false,
+					"world": [
+						43.2000007629395,
+						6.79999971389771,
+						11.1999998092651
+					]
+				},
+				{
+					"text": "계곡 안쪽 유적\nE · 보상 받기",
+					"visible": false,
+					"world": [
+						98.5999984741211,
+						1.5,
+						4.40000009536743
+					]
+				},
+				{
+					"text": "정글로",
+					"visible": true,
+					"world": [
+						61.7999992370605,
+						0.899999976158142,
+						26.1999988555908
+					]
+				}
+			],
+			"overview_size": 50.4,
+			"point": [
+				6290.0,
+				2630.0
+			]
+		},
+		"open": {
+			"ALTAR": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"ENTRY_TRIGGER": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"EXIT_TRIGGER": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"FIELD_ENTRY": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			},
+			"RETURN_POINT": {
+				"clear18": true,
+				"clear30": true,
+				"height": 0.0
+			}
+		},
+		"paths": {
+			"inside_to_altar": 182,
+			"inside_to_exit": 5,
+			"main_to_entry": 6
+		},
+		"return": [
+			1150.0,
+			700.0
+		],
+		"return_state": {
+			"bounds": [
+				0.0,
+				0.0,
+				5600.0,
+				3600.0
+			],
+			"camera_size": 9.0,
+			"facing": [
+				-1.0,
+				0.0
+			],
+			"hud": "관문 수호자 · 4분 이후 관문 안쪽에 접근하여 교전",
+			"labels": [
+				{
+					"text": "관문",
+					"visible": false
+				},
+				{
+					"text": "계곡 안쪽 유적\nE · 보상 받기",
+					"visible": false
+				},
+				{
+					"text": "정글로",
+					"visible": true
+				}
+			],
+			"point": [
+				1150.0,
+				700.0
+			]
+		},
+		"scene": "jungle_south_circuit"
+	}
+]
