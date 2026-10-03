@@ -30,7 +30,7 @@ func _run() -> void:
 			for water in waters:
 				if water.has_point(p): wet = true; break
 			check(wet, "mesh vertex above blocked water: " + str(p))
-	check(top > 11.0 and top < 11.5, "threefold height candidate")
+	check(top > 9.0 and top < 9.2, "uniform monumental scale candidate")
 	print("Wetland monument: ", checks, " checks, ", failures, " failures; height=", top)
 	scene.queue_free()
 	for i in 3: await process_frame

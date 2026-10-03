@@ -46,10 +46,10 @@ static func face(arena: Node3D) -> void:
 	arena.add_child(monument)
 	monument.position = arena.terrain.world_point(Wetland.FACE)
 	for piece in pieces: piece.reparent(monument, true)
-	monument.scale = Vector3(2.0, 3.0, 1.7)
-	monument.position = arena.terrain.world_point(Vector2(2540, 900))
+	monument.scale = Vector3(2.4, 2.4, 2.4)
+	monument.position = arena.terrain.world_point(Vector2(2440, 950))
 	monument.set_meta("visual_only", true)
-	monument.set_meta("scale_trial", Vector3(2.0, 3.0, 1.7))
+	monument.set_meta("scale_trial", Vector3(2.4, 2.4, 2.4))
 
 static func _face_components(arena: Node3D) -> void:
 	var p: Vector2 = Wetland.FACE
