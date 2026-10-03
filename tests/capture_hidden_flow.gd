@@ -91,6 +91,7 @@ func _walk(goal: Vector2) -> void:
 	_release()
 
 func _capture(state: String, size: Vector2i) -> void:
+	_capture_stage(state, "settle80")
 	_release()
 	var section = scene.temple_section
 	for frame in 80: await _step()
@@ -122,10 +123,26 @@ func _capture(state: String, size: Vector2i) -> void:
 	check(scene.actors[scene.player].position.distance_to(scene.terrain.world_point(scene.player.position)) < 0.03, state+" real actor visual follows physics")
 	check(hud.boss_clock.visible and hud.boss_clock.text == "보스까지 04:00", state+" boss240 clock preserved")
 	await process_frame
-	await RenderingServer.frame_post_draw
-	var bitmap := root.get_texture().get_image()
+	# A covered native window may never emit frame_post_draw. Force a real
+	# render for this fixed fixture without changing product focus behavior.
+	_capture_stage(state, "force-render")
+	var bitmap: Image
+	for attempt in 4:
+		RenderingServer.force_draw(false)
+		bitmap = root.get_texture().get_image()
+		if bitmap != null and not bitmap.is_empty() and bitmap.get_size() == size: break
+		await process_frame
+	if bitmap == null or bitmap.is_empty():
+		check(false, state + " bounded native image read failed")
+		return
 	check(bitmap.get_size() == size, state+" actual960/1280 pixels")
 	var filename := "%s-%d-%s.png" % [region,width,state]
 	check(bitmap.save_png(output.path_join(filename)) == OK, "write"+filename)
 	record["file"] = filename
 	captures.append(record)
+
+func _capture_stage(state: String, stage: String) -> void:
+	var record := {"region":region,"width":width,"state":state,"stage":stage,"ticks_usec":Time.get_ticks_usec(),"point":[scene.player.position.x,scene.player.position.y]}
+	print("HIDDEN_CAPTURE_STAGE ",JSON.stringify(record))
+	var file := FileAccess.open(output.path_join("progress.json"),FileAccess.WRITE)
+	if file != null: file.store_string(JSON.stringify(record,"  "))

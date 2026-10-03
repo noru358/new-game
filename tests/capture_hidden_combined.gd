@@ -18,9 +18,11 @@ func _capture(state: String, size: Vector2i) -> void:
 	var section = scene.temple_section
 	var approach: Vector2 = section.layout.ALTAR + Vector2(60, 60)
 	check(scene.navigation.is_open(approach, scene.ACTOR_CLEARANCE), region + " reward approach on legal ground")
+	_capture_stage("reward-approach", "normal-walk-start")
 	collecting_reward = true
 	await _walk(approach)
 	collecting_reward = false
+	_capture_stage("reward-approach", "normal-walk-end")
 	_release()
 	check(scene.player.position.distance_to(section.layout.ALTAR) < 105.0, region + " normal movement reaches reward radius")
 	if region == "temple":
