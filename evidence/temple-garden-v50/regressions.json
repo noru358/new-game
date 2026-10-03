@@ -1,0 +1,32 @@
+[
+  {
+    "name": "verify_garden_transition",
+    "exit": 0,
+    "error_text": false,
+    "seconds": 0.95
+  },
+  {
+    "name": "verify_temple_section",
+    "exit": 0,
+    "error_text": false,
+    "seconds": 1.6
+  },
+  {
+    "name": "verify_temple_circuit_run",
+    "exit": 0,
+    "error_text": false,
+    "seconds": 3.65
+  },
+  {
+    "name": "verify_terrain_coherence",
+    "exit": 0,
+    "error_text": false,
+    "seconds": 7.3
+  },
+  {
+    "name": "verify_surface_overlap",
+    "exit": 0,
+    "error_text": false,
+    "seconds": 1.71
+  }
+]
