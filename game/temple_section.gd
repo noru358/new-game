@@ -313,21 +313,7 @@ func _build_destination() -> void:
 
 func _build_garden() -> void:
 	_build_hidden_roots()
-	# Separate garden field: bent entry, pond forks, and a distant altar.
-	for point in [Vector2(5860, 1770), Vector2(6100, 1770), Vector2(6320, 1600), Vector2(6320, 1250), Vector2(6650, 550), Vector2(7000, 550), Vector2(7500, 550), Vector2(6800, 1560), Vector2(7300, 1560), Vector2(7950, 1500), Vector2(8020, 920), Vector2(8200, 490)]:
-		var stone := MeshInstance3D.new()
-		var slab := BoxMesh.new()
-		slab.size = Vector3(0.85, 0.035, 0.65)
-		stone.mesh = slab
-		stone.material_override = arena._material(Color("c5c7a7"))
-		stone.position = arena.terrain.world_point(point, 5)
-		stone.rotation.y = 0.3
-		hidden_visual_root.add_child(stone)
-	for point in [Vector2(5940, 1640), Vector2(6070, 1910), Vector2(6250, 330), Vector2(6660, 350), Vector2(6840, 720), Vector2(7500, 730), Vector2(7640, 1320), Vector2(6920, 1410), Vector2(7630, 1870), Vector2(8230, 1850), Vector2(8420, 730), Vector2(8050, 260)]:
-		var bush: MeshInstance3D = arena._sphere(0.65, Color("4d835c"))
-		bush.position = arena.terrain.world_point(point, 45)
-		bush.scale = Vector3(1.3, 0.9, 1.0)
-		hidden_visual_root.add_child(bush)
+	hidden_visual_root.add_child(preload("res://game/temple_garden_environment.gd").build(arena, layout))
 	_build_exit_label()
 	var altar := MeshInstance3D.new()
 	var base := CylinderMesh.new()
@@ -365,12 +351,7 @@ func _build_hidden_roots() -> void:
 
 
 func _build_entry_clues() -> void:
-	# Preserve the legacy clue arrangement relative to the active threshold.
-	for offset in [Vector2(-135, 95), Vector2(-85, -100)]:
-		var bush: MeshInstance3D = arena._sphere(0.65, Color("4d835c"))
-		bush.position = arena.terrain.world_point(layout.ENTRY_TRIGGER.get_center() + offset, 45)
-		bush.scale = Vector3(1.3, 0.9, 1.0)
-		main_entry_root.add_child(bush)
+	main_entry_root.add_child(preload("res://game/temple_garden_environment.gd").build_entry(arena, layout))
 
 
 func _hidden_place_id() -> String: return "TEMPLE_GARDEN"

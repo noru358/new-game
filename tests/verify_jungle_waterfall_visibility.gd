@@ -118,12 +118,26 @@ func _inspect(variant: String) -> void:
 	var section = scene.temple_section
 	check(scene.camera.size == 9.0 and scene.camera_offset == Vector3(14, 13.864, 14), "unchanged authored combat camera")
 	check(scene.terrain_mesh.material_override.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED, "terrain remains opaque")
-	var water_curtains := 0
-	for child in section.get_children():
+	var expected_water := []
+	var center: Vector2 = section.layout.ENTRY_TRIGGER.get_center()
+	for offset in [Vector2(-75, 5), Vector2(40, -180), Vector2(40, 115), Vector2(-180, -195)]:
+		expected_water.append({"point": center + offset, "depth": 1.25 if offset == Vector2(-75, 5) else 0.8})
+	for point in [Vector2(7600, 1650), Vector2(8520, 1140)]:
+		expected_water.append({"point": point, "depth": 0.8})
+	var curtains := []
+	for child in _descendants(section):
 		if child is MeshInstance3D and child.mesh is BoxMesh and is_equal_approx(child.mesh.size.y, 1.8):
-			water_curtains += 1
-			check(child.material_override.albedo_color == Color(0.4, 0.82, 0.85, 0.55), "authored water material retained")
-	check(water_curtains == 6, "all authored waterfall sheets retained")
+			curtains.append(child)
+			var material = child.material_override
+			check(material is StandardMaterial3D and material.albedo_color == Color(0.4, 0.82, 0.85, 0.55) and material.transparency == BaseMaterial3D.TRANSPARENCY_ALPHA, "authored water material retained")
+	check(curtains.size() == 6, "all authored waterfall sheets retained, including nested helpers")
+	for expected in expected_water:
+		var matches := 0
+		for curtain in curtains:
+			if curtain.global_position.is_equal_approx(scene.terrain.world_point(expected.point, 100)):
+				matches += 1
+				check(curtain.mesh.size.is_equal_approx(Vector3(0.10, 1.8, expected.depth)), "authored water sheet dimensions retained")
+		check(matches == 1, "exactly one water sheet at authored coordinate " + str(expected.point))
 	for pose in POSES:
 		check(scene.navigation.is_open(pose.point, scene.ACTOR_CLEARANCE), "actor never placed inside collision: " + pose.name)
 		check(not scene.navigation.find_path(scene.start_point, pose.point).is_empty(), "local pose remains reachable: " + pose.name)
@@ -132,6 +146,7 @@ func _inspect(variant: String) -> void:
 	var run_time: float = scene.run_time
 	# Real trigger-driven transitions, twice, including the existing cooldown.
 	for cycle in 2:
+		_press_world(Layout.RETURN_POINT.direction_to(Layout.ENTRY_TRIGGER.get_center()))
 		scene.teleport(Layout.ENTRY_TRIGGER.get_center())
 		section.portal_cooldown = 0.0
 		section.tick(0.0)
@@ -139,9 +154,14 @@ func _inspect(variant: String) -> void:
 		scene.teleport(Layout.EXIT_TRIGGER.get_center())
 		section.tick(0.4)
 		check(section.in_garden, "exit honors portal cooldown")
+		_release_input()
 		section.tick(0.41)
+		check(section.in_garden, "neutral teleport cannot bypass arrival latch after cooldown")
+		_press_world(Layout.FIELD_ENTRY.direction_to(Layout.EXIT_TRIGGER.get_center()))
+		section.tick(0.0)
 		check(not section.in_garden and scene.player.position == Layout.RETURN_POINT, "actual exit restores authored return")
 		check(scene.navigation.is_open(scene.player.position, scene.ACTOR_CLEARANCE), "returned actor collision-clear")
+	_release_input()
 	check(scene.player.health == health and scene.run_id == run_id and scene.run_time == run_time, "transitions preserve health/run identity/time")
 	await create_timer(0.5).timeout # Finish the real transition shade before pixels.
 	if not output.is_empty():
@@ -253,3 +273,21 @@ func _process(_delta: float) -> bool:
 		check(false, "180-second fixture watchdog expired")
 		_finish()
 	return false
+
+func _descendants(node: Node) -> Array:
+	var result := []
+	for child in node.get_children():
+		result.append(child)
+		result.append_array(_descendants(child))
+	return result
+
+func _release_input() -> void:
+	for action in ["move_left", "move_right", "move_up", "move_down"]: Input.action_release(action)
+
+func _press_world(direction: Vector2) -> void:
+	_release_input()
+	var movement := direction.rotated(-scene.player.input_rotation)
+	if movement.x < -0.1: Input.action_press("move_left", -movement.x)
+	if movement.x > 0.1: Input.action_press("move_right", movement.x)
+	if movement.y < -0.1: Input.action_press("move_up", -movement.y)
+	if movement.y > 0.1: Input.action_press("move_down", movement.y)

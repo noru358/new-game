@@ -88,6 +88,8 @@ func _draw() -> void:
 			var b := Vector2(area.end.x, a.y) if ramp.axis == 0 else Vector2(a.x, area.end.y)
 			draw_line(_map_point_at(a, arena.terrain.ramp_height(ramp, a)), _map_point_at(b, arena.terrain.ramp_height(ramp, b)), Color("354c47"), 1.1)
 	var legend := "물 · 중정 · 테라스 · 뜰 · 회랑 · 성소" if world_size.x > 2500.0 else "청록 물 · 금빛 중정 · 밝은 테라스"
+	if arena.region_id == RunProfile.JUNGLE_REGION:
+		legend = "숲길 · 석교 · 강변 · 능선 · 관문"
 	if bounds.position.x > 5100:
 		legend = "물길 · 바위 갈림길 · 안쪽 유적" if arena.region_id == RunProfile.JUNGLE_REGION else "굽은 진입로 · 연못 갈림길 · 안쪽 제단"
 	if not legend_override.is_empty(): legend = legend_override
@@ -103,14 +105,12 @@ func _draw() -> void:
 		if not bounds.has_point(actor.global_position): continue
 		var color := Color("e89681") if actor.role == TrainingEnemy.Role.BEAST else Color("f2ce71") if actor.role == TrainingEnemy.Role.LAMP else Color("71dcd3") if actor.role == TrainingEnemy.Role.ZONE else Color("c59adf") if actor.role == TrainingEnemy.Role.SUPPORT else Color("dce4d7")
 		draw_circle(_map_point(actor.global_position), 2.7, color)
-	if arena.has_method("is_place_discovered") and arena.region_id == RunProfile.TEMPLE_REGION and arena.is_place_discovered("TEMPLE_GARDEN"):
-		var garden_point := _map_point(Vector2(3120, 250)) if bounds.position.x < 5100 else _map_point(Vector2(8300, 480))
-		draw_circle(garden_point, 3.5, Color("b6f3a0"))
-		draw_string(get_theme_default_font(), garden_point + Vector2(5, -5), "정원", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("ddffd0"))
-	if arena.has_method("is_place_discovered") and arena.region_id == RunProfile.JUNGLE_REGION and arena.is_place_discovered("JUNGLE_GROTTO"):
-		var point := _map_point(Vector2(1300, 685)) if bounds.position.x < 5600 else _map_point(Vector2(8870, 440))
-		draw_circle(point, 3.5, Color("a1e8e7"))
-		draw_string(get_theme_default_font(), point + Vector2(5, -5), "계곡", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color("c5f5ef"))
+	if arena.get("temple_section") != null:
+		var marker: Dictionary = arena.temple_section.discovery_marker()
+		if not marker.is_empty() and bounds.has_point(marker.point):
+			var point := _map_point(marker.point)
+			draw_circle(point, 3.5, marker.color)
+			draw_string(get_theme_default_font(), point + Vector2(5, -5), marker.name, HORIZONTAL_ALIGNMENT_LEFT, -1, 11, marker.color.lightened(0.3))
 	if is_instance_valid(arena.player):
 		draw_circle(_map_point(arena.player.global_position), 4.7, Color("203f44"))
 		draw_circle(_map_point(arena.player.global_position), 3.2, Color.WHITE)

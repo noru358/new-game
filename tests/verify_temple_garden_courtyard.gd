@@ -36,13 +36,12 @@ func _run() -> void:
 		var walls: Array = scene.terrain.wall_areas.filter(func(r):return r.get("garden_courtyard",false))
 		if name=="hybrid_region": field_floors=floors;field_walls=walls
 		else: check(floors==field_floors and walls==field_walls,"Original and circuit mount identical field records")
-		var visual: Node3D = section.get_node_or_null("TempleGardenCourtyard")
-		# The component branch returns shared section mounting as a patch.
-		# Explicit helper mounting keeps this structural test useful before flow
-		# integration too; real rendered QA applies the entire mount patch.
-		if visual==null:
-			visual=preload("res://game/temple_garden_environment.gd").build(scene,layout)
-			section.add_child(visual)
+		var visual: Node3D = section.get_node_or_null("HiddenFieldVisuals/TempleGardenCourtyard")
+		check(visual != null, name + " real section mounts courtyard under hidden root")
+		if visual == null:
+			scene.queue_free()
+			await process_frame
+			continue
 		check(visual.get_child_count()==3,name+" bounded three opaque batches")
 		var triangles: Array = []
 		for mesh in visual.get_children():
