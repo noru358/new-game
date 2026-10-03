@@ -1,0 +1,1394 @@
+{
+  "base_commit": "a141b6cbe96c5143b23fefdaf9c809a90d3d3ae1",
+  "canonical_commit": "bad54d2cb650702306ebbfc56b7df5efb8a94c6d",
+  "preserved_doc_only_followup": "e860cb6d0723e6f4dbd8e5abf5af3118a761fb54",
+  "engine": "4.6.stable.official.89cea1439",
+  "renderer": "Native macOS Apple M3; OpenGL 4.1 Metal 90.5; Compatibility",
+  "tested_owned_source_sha256": {
+    "game/temple_circuit_environment.gd": "773a220abde1f1566a3ff8b3ebf34ceb52755edf50bc7c9c82ff08008a0f5d72",
+    "game/temple_place_composition.gd": "17dbe0284e1bf1805502f178ed7795c047a5616eeb2b078a078d6c46dba4ba0f",
+    "game/temple_place_composition.gd.uid": "6cf08efd41e72224a9bcaf254ac1f6b5316bcd47b959a5c0fc4506cd01724b04",
+    "tests/capture_temple_place_sequence.gd": "fb51a11c4bcf1828603a91153fbb19341778d0c2471ebecfe3f41b3361ba6123",
+    "tests/capture_temple_place_sequence.gd.uid": "adb4d01cf28200ac05d93740a690fb0e99d1f1b5760871b93bc66561ec2ae971",
+    "tests/verify_temple_place_composition.gd": "86f3ba6e80c0da37eb753cb499ee3d24cda4368afe4f8e3b8728476e634fb496",
+    "tests/verify_temple_place_composition.gd.uid": "a7218ad4ee10877a47ea56d2a7986eb80920416ee3c311cf8ba7abd356fa8e08"
+  },
+  "unchanged_nonowned_runtime_files": 213,
+  "checks": [
+    {
+      "name": "import",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 2.309,
+      "passed": true
+    },
+    {
+      "name": "verify_temple_place_composition",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 0.84,
+      "passed": true
+    },
+    {
+      "name": "verify_temple_circuit_run",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 3.767,
+      "passed": true
+    },
+    {
+      "name": "verify_circuit_court_elevation",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 0.85,
+      "passed": true
+    },
+    {
+      "name": "verify_circuit_route_completion",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 7.839,
+      "passed": true
+    },
+    {
+      "name": "verify_temple_circuit_encounters",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 0.764,
+      "passed": true
+    },
+    {
+      "name": "verify_temple_monument_scale",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 1.366,
+      "passed": true
+    },
+    {
+      "name": "verify_garden_transition",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 0.717,
+      "passed": true
+    },
+    {
+      "name": "verify_boss_visibility",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 1.864,
+      "passed": true
+    },
+    {
+      "name": "verify_surface_overlap",
+      "exit_code": 0,
+      "error_text": false,
+      "seconds": 1.644,
+      "passed": true
+    }
+  ],
+  "composition_checks": 13443,
+  "composition_failures": 0,
+  "rays": 5148,
+  "old_wall_occlusion_rays": 23,
+  "new_obstruction_rays": 0,
+  "surface_union": {
+    "after_courses": 73,
+    "after_union_map_units_squared": 1383939.64184573,
+    "area_delta_map_units_squared": 0.0,
+    "before_courses": 67,
+    "before_union_map_units_squared": 1383939.64184573,
+    "errors": [],
+    "positive_area_overlaps_after": 0,
+    "same_surface_lift_0_72": true,
+    "scope": "independent line-sweep area of rendered quad meshes; before is the rejected helper with only disjoint delta reverted",
+    "terrain_and_collision_unchanged": true
+  },
+  "render": {
+    "baseline": {
+      "walk_samples": 34,
+      "screenshots": 88,
+      "active_walk_seconds": 76.299999999997,
+      "wall_seconds": 132.603952,
+      "errors": [],
+      "player_scenery_visibility_min": 0.986997635933806,
+      "player_with_fixed_tell_visibility_min": 0.9392575928009,
+      "enemy_body_visibility_min": 1.0,
+      "enemy_tell_visibility_min": 1.0,
+      "fixed_enemy_tell_cases": 6,
+      "resolutions": [
+        [
+          960,
+          540
+        ],
+        [
+          1280,
+          720
+        ]
+      ],
+      "time_scale": 1.0,
+      "normal_input": true,
+      "labels_hidden": true,
+      "points": [
+        {
+          "name": "01-entry",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            650.0,
+            3000.0
+          ],
+          "reached": [
+            650.0,
+            3000.0
+          ],
+          "active_walk_seconds": 0.0,
+          "camera_error_world": 1.43051147460938e-05,
+          "player_visibility": 0.998005982053839
+        },
+        {
+          "name": "02-water-landing",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1120.0,
+            2820.0
+          ],
+          "reached": [
+            1120.22521972656,
+            2820.2333984375
+          ],
+          "active_walk_seconds": 1.93333333333333,
+          "camera_error_world": 1.72980853676563e-05,
+          "player_visibility": 0.998005982053839
+        },
+        {
+          "name": "03-west-stairs",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1650.0,
+            2275.0
+          ],
+          "reached": [
+            1649.50219726562,
+            2277.35546875
+          ],
+          "active_walk_seconds": 2.99999999999999,
+          "camera_error_world": 1.94512158486759e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "04-open-court",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2448.19067382812,
+            2099.12182617188
+          ],
+          "active_walk_seconds": 2.83333333333332,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 0.995793901156677
+        },
+        {
+          "name": "05-cloister-entry",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1450.0,
+            1900.0
+          ],
+          "reached": [
+            1452.37316894531,
+            1903.57495117188
+          ],
+          "active_walk_seconds": 3.93333333333352,
+          "camera_error_world": 1.74811393662822e-05,
+          "player_visibility": 0.998005982053839
+        },
+        {
+          "name": "06-cloister",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "reached": [
+            1450.46789550781,
+            1350.82360839844
+          ],
+          "active_walk_seconds": 1.66666666666675,
+          "camera_error_world": 1.72980853676563e-05,
+          "player_visibility": 0.992639327024185
+        },
+        {
+          "name": "07-hidden-return",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1310.0,
+            920.0
+          ],
+          "reached": [
+            1308.95703125,
+            919.190490722656
+          ],
+          "active_walk_seconds": 1.81666666666676,
+          "camera_error_world": 1.38857076308341e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "08-gallery-turn",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1650.0,
+            910.0
+          ],
+          "reached": [
+            1646.310546875,
+            912.0
+          ],
+          "active_walk_seconds": 1.08333333333336,
+          "camera_error_world": 1.71661376953125e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "09-sanctuary-reveal",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2650.0,
+            1000.0
+          ],
+          "reached": [
+            2650.16015625,
+            999.939514160156
+          ],
+          "active_walk_seconds": 3.26666666666648,
+          "camera_error_world": 1.71661376953125e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "10-human-door",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2800.0,
+            460.0
+          ],
+          "reached": [
+            2799.64819335938,
+            460.370574951172
+          ],
+          "active_walk_seconds": 2.08333333333321,
+          "camera_error_world": 1.8094697225024e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "11-boss-floor",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2800.0,
+            620.0
+          ],
+          "reached": [
+            2800.0,
+            622.768493652344
+          ],
+          "active_walk_seconds": 0.499999999999972,
+          "camera_error_world": 2.16633161471691e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "12-water-merge",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3350.0,
+            1190.0
+          ],
+          "reached": [
+            3347.73168945312,
+            1192.04626464844
+          ],
+          "active_walk_seconds": 3.14999999999982,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "13-open-bank",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3440.0,
+            1750.0
+          ],
+          "reached": [
+            3440.01782226562,
+            1750.27319335938
+          ],
+          "active_walk_seconds": 1.91666666666656,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "14-water-walk",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3400.0,
+            2080.0
+          ],
+          "reached": [
+            3401.8046875,
+            2082.28051757812
+          ],
+          "active_walk_seconds": 1.19999999999993,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 0.997923156801661
+        },
+        {
+          "name": "15-east-stairs",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3060.0,
+            2390.0
+          ],
+          "reached": [
+            3059.80395507812,
+            2389.47045898438
+          ],
+          "active_walk_seconds": 2.03333333333322,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "16-court-return",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2452.88671875,
+            2096.69897460938
+          ],
+          "active_walk_seconds": 2.64999999999985,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "17-entry-return",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1350.0,
+            2800.0
+          ],
+          "reached": [
+            1352.92761230469,
+            2799.93212890625
+          ],
+          "active_walk_seconds": 5.08333333333304,
+          "camera_error_world": 2.0631130610127e-05,
+          "player_visibility": 0.998005982053839
+        },
+        {
+          "name": "01-entry",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            650.0,
+            3000.0
+          ],
+          "reached": [
+            650.0,
+            3000.0
+          ],
+          "active_walk_seconds": 0.0,
+          "camera_error_world": 1.33514404296875e-05,
+          "player_visibility": 0.998875140607424
+        },
+        {
+          "name": "02-water-landing",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1120.0,
+            2820.0
+          ],
+          "reached": [
+            1120.22521972656,
+            2820.2333984375
+          ],
+          "active_walk_seconds": 1.93333333333322,
+          "camera_error_world": 1.72980853676563e-05,
+          "player_visibility": 0.998875140607424
+        },
+        {
+          "name": "03-west-stairs",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1650.0,
+            2275.0
+          ],
+          "reached": [
+            1649.50219726562,
+            2277.35546875
+          ],
+          "active_walk_seconds": 2.99999999999983,
+          "camera_error_world": 1.83938045665855e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "04-open-court",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2448.19067382812,
+            2099.12182617188
+          ],
+          "active_walk_seconds": 2.83333333333317,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 0.986997635933806
+        },
+        {
+          "name": "05-cloister-entry",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1450.0,
+            1900.0
+          ],
+          "reached": [
+            1452.37316894531,
+            1903.57495117188
+          ],
+          "active_walk_seconds": 3.93333333333311,
+          "camera_error_world": 1.74811393662822e-05,
+          "player_visibility": 0.999437570303712
+        },
+        {
+          "name": "06-cloister",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "reached": [
+            1450.46789550781,
+            1350.82360839844
+          ],
+          "active_walk_seconds": 1.66666666666657,
+          "camera_error_world": 1.56414225784829e-05,
+          "player_visibility": 0.986997635933806
+        },
+        {
+          "name": "07-hidden-return",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1310.0,
+            920.0
+          ],
+          "reached": [
+            1308.95703125,
+            919.190490722656
+          ],
+          "active_walk_seconds": 1.81666666666656,
+          "camera_error_world": 1.38857076308341e-05,
+          "player_visibility": 0.999437570303712
+        },
+        {
+          "name": "08-gallery-turn",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1650.0,
+            910.0
+          ],
+          "reached": [
+            1646.310546875,
+            912.0
+          ],
+          "active_walk_seconds": 1.08333333333327,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "09-sanctuary-reveal",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2650.0,
+            1000.0
+          ],
+          "reached": [
+            2650.16015625,
+            999.939514160156
+          ],
+          "active_walk_seconds": 3.26666666666648,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "10-human-door",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2800.0,
+            460.0
+          ],
+          "reached": [
+            2799.64819335938,
+            460.370574951172
+          ],
+          "active_walk_seconds": 2.08333333333321,
+          "camera_error_world": 1.80191455001477e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "11-boss-floor",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2800.0,
+            620.0
+          ],
+          "reached": [
+            2800.0,
+            622.768493652344
+          ],
+          "active_walk_seconds": 0.499999999999972,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "12-water-merge",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3350.0,
+            1190.0
+          ],
+          "reached": [
+            3347.73168945312,
+            1192.04626464844
+          ],
+          "active_walk_seconds": 3.14999999999982,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "13-open-bank",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3440.0,
+            1750.0
+          ],
+          "reached": [
+            3440.01782226562,
+            1750.27319335938
+          ],
+          "active_walk_seconds": 1.91666666666656,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "14-water-walk",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3400.0,
+            2080.0
+          ],
+          "reached": [
+            3401.8046875,
+            2082.28051757812
+          ],
+          "active_walk_seconds": 1.19999999999993,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 0.996493278784337
+        },
+        {
+          "name": "15-east-stairs",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3060.0,
+            2390.0
+          ],
+          "reached": [
+            3059.80395507812,
+            2389.47045898438
+          ],
+          "active_walk_seconds": 2.03333333333322,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "16-court-return",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2452.88671875,
+            2096.69897460938
+          ],
+          "active_walk_seconds": 2.64999999999985,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "17-entry-return",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1350.0,
+            2800.0
+          ],
+          "reached": [
+            1352.92761230469,
+            2799.93212890625
+          ],
+          "active_walk_seconds": 5.08333333333304,
+          "camera_error_world": 2.0631130610127e-05,
+          "player_visibility": 0.998875140607424
+        }
+      ]
+    },
+    "candidate": {
+      "walk_samples": 34,
+      "screenshots": 88,
+      "active_walk_seconds": 76.299999999997,
+      "wall_seconds": 132.709334,
+      "errors": [],
+      "player_scenery_visibility_min": 0.988179669030733,
+      "player_with_fixed_tell_visibility_min": 0.940382452193476,
+      "enemy_body_visibility_min": 1.0,
+      "enemy_tell_visibility_min": 1.0,
+      "fixed_enemy_tell_cases": 6,
+      "resolutions": [
+        [
+          960,
+          540
+        ],
+        [
+          1280,
+          720
+        ]
+      ],
+      "time_scale": 1.0,
+      "normal_input": true,
+      "labels_hidden": true,
+      "points": [
+        {
+          "name": "01-entry",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            650.0,
+            3000.0
+          ],
+          "reached": [
+            650.0,
+            3000.0
+          ],
+          "active_walk_seconds": 0.0,
+          "camera_error_world": 1.33514404296875e-05,
+          "player_visibility": 0.998005982053839
+        },
+        {
+          "name": "02-water-landing",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1120.0,
+            2820.0
+          ],
+          "reached": [
+            1120.22521972656,
+            2820.2333984375
+          ],
+          "active_walk_seconds": 1.93333333333333,
+          "camera_error_world": 1.31108545247116e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "03-west-stairs",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1650.0,
+            2275.0
+          ],
+          "reached": [
+            1649.50219726562,
+            2277.35546875
+          ],
+          "active_walk_seconds": 2.99999999999999,
+          "camera_error_world": 1.94512158486759e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "04-open-court",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2448.19067382812,
+            2099.12182617188
+          ],
+          "active_walk_seconds": 2.83333333333332,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 0.996845425867508
+        },
+        {
+          "name": "05-cloister-entry",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1450.0,
+            1900.0
+          ],
+          "reached": [
+            1452.37316894531,
+            1903.57495117188
+          ],
+          "active_walk_seconds": 3.93333333333352,
+          "camera_error_world": 1.74811393662822e-05,
+          "player_visibility": 0.999002991026919
+        },
+        {
+          "name": "06-cloister",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "reached": [
+            1450.46789550781,
+            1350.82360839844
+          ],
+          "active_walk_seconds": 1.66666666666675,
+          "camera_error_world": 1.72980853676563e-05,
+          "player_visibility": 0.993690851735016
+        },
+        {
+          "name": "07-hidden-return",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1310.0,
+            920.0
+          ],
+          "reached": [
+            1308.95703125,
+            919.190490722656
+          ],
+          "active_walk_seconds": 1.81666666666676,
+          "camera_error_world": 1.38857076308341e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "08-gallery-turn",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1650.0,
+            910.0
+          ],
+          "reached": [
+            1646.310546875,
+            912.0
+          ],
+          "active_walk_seconds": 1.08333333333336,
+          "camera_error_world": 1.71661376953125e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "09-sanctuary-reveal",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2650.0,
+            1000.0
+          ],
+          "reached": [
+            2650.16015625,
+            999.939514160156
+          ],
+          "active_walk_seconds": 3.26666666666648,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "10-human-door",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2800.0,
+            460.0
+          ],
+          "reached": [
+            2799.64819335938,
+            460.370574951172
+          ],
+          "active_walk_seconds": 2.08333333333321,
+          "camera_error_world": 1.80191455001477e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "11-boss-floor",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2800.0,
+            620.0
+          ],
+          "reached": [
+            2800.0,
+            622.768493652344
+          ],
+          "active_walk_seconds": 0.499999999999972,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "12-water-merge",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3350.0,
+            1190.0
+          ],
+          "reached": [
+            3347.73168945312,
+            1192.04626464844
+          ],
+          "active_walk_seconds": 3.14999999999982,
+          "camera_error_world": 1.80191455001477e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "13-open-bank",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3440.0,
+            1750.0
+          ],
+          "reached": [
+            3440.01782226562,
+            1750.27319335938
+          ],
+          "active_walk_seconds": 1.91666666666656,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "14-water-walk",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3400.0,
+            2080.0
+          ],
+          "reached": [
+            3401.8046875,
+            2082.28051757812
+          ],
+          "active_walk_seconds": 1.19999999999993,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 0.997923156801661
+        },
+        {
+          "name": "15-east-stairs",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            3060.0,
+            2390.0
+          ],
+          "reached": [
+            3059.80395507812,
+            2389.47045898438
+          ],
+          "active_walk_seconds": 2.03333333333322,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "16-court-return",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2452.88671875,
+            2096.69897460938
+          ],
+          "active_walk_seconds": 2.64999999999985,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "17-entry-return",
+          "resolution": [
+            960,
+            540
+          ],
+          "target": [
+            1350.0,
+            2800.0
+          ],
+          "reached": [
+            1352.92761230469,
+            2799.93212890625
+          ],
+          "active_walk_seconds": 5.08333333333304,
+          "camera_error_world": 2.0631130610127e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "01-entry",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            650.0,
+            3000.0
+          ],
+          "reached": [
+            650.0,
+            3000.0
+          ],
+          "active_walk_seconds": 0.0,
+          "camera_error_world": 1.33514404296875e-05,
+          "player_visibility": 0.998875140607424
+        },
+        {
+          "name": "02-water-landing",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1120.0,
+            2820.0
+          ],
+          "reached": [
+            1120.22521972656,
+            2820.2333984375
+          ],
+          "active_walk_seconds": 1.93333333333322,
+          "camera_error_world": 1.72980853676563e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "03-west-stairs",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1650.0,
+            2275.0
+          ],
+          "reached": [
+            1649.50219726562,
+            2277.35546875
+          ],
+          "active_walk_seconds": 2.99999999999983,
+          "camera_error_world": 1.94512158486759e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "04-open-court",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2448.19067382812,
+            2099.12182617188
+          ],
+          "active_walk_seconds": 2.83333333333317,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 0.988179669030733
+        },
+        {
+          "name": "05-cloister-entry",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1450.0,
+            1900.0
+          ],
+          "reached": [
+            1452.37316894531,
+            1903.57495117188
+          ],
+          "active_walk_seconds": 3.93333333333311,
+          "camera_error_world": 1.74811393662822e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "06-cloister",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "reached": [
+            1450.46789550781,
+            1350.82360839844
+          ],
+          "active_walk_seconds": 1.66666666666657,
+          "camera_error_world": 1.71661376953125e-05,
+          "player_visibility": 0.988179669030733
+        },
+        {
+          "name": "07-hidden-return",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1310.0,
+            920.0
+          ],
+          "reached": [
+            1308.95703125,
+            919.190490722656
+          ],
+          "active_walk_seconds": 1.81666666666656,
+          "camera_error_world": 1.37871093102149e-05,
+          "player_visibility": 0.999437570303712
+        },
+        {
+          "name": "08-gallery-turn",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1650.0,
+            910.0
+          ],
+          "reached": [
+            1646.310546875,
+            912.0
+          ],
+          "active_walk_seconds": 1.08333333333327,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "09-sanctuary-reveal",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2650.0,
+            1000.0
+          ],
+          "reached": [
+            2650.16015625,
+            999.939514160156
+          ],
+          "active_walk_seconds": 3.26666666666648,
+          "camera_error_world": 1.70864805113524e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "10-human-door",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2800.0,
+            460.0
+          ],
+          "reached": [
+            2799.64819335938,
+            460.370574951172
+          ],
+          "active_walk_seconds": 2.08333333333321,
+          "camera_error_world": 1.80191455001477e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "11-boss-floor",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2800.0,
+            620.0
+          ],
+          "reached": [
+            2800.0,
+            622.768493652344
+          ],
+          "active_walk_seconds": 0.499999999999972,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "12-water-merge",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3350.0,
+            1190.0
+          ],
+          "reached": [
+            3347.73168945312,
+            1192.04626464844
+          ],
+          "active_walk_seconds": 3.14999999999982,
+          "camera_error_world": 1.80191455001477e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "13-open-bank",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3440.0,
+            1750.0
+          ],
+          "reached": [
+            3440.01782226562,
+            1750.27319335938
+          ],
+          "active_walk_seconds": 1.91666666666656,
+          "camera_error_world": 2.02978098968742e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "14-water-walk",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3400.0,
+            2080.0
+          ],
+          "reached": [
+            3401.8046875,
+            2082.28051757812
+          ],
+          "active_walk_seconds": 1.19999999999993,
+          "camera_error_world": 2.16002499655588e-05,
+          "player_visibility": 0.996493278784337
+        },
+        {
+          "name": "15-east-stairs",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            3060.0,
+            2390.0
+          ],
+          "reached": [
+            3059.80395507812,
+            2389.47045898438
+          ],
+          "active_walk_seconds": 2.03333333333322,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "16-court-return",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            2450.0,
+            2100.0
+          ],
+          "reached": [
+            2452.88671875,
+            2096.69897460938
+          ],
+          "active_walk_seconds": 2.64999999999985,
+          "camera_error_world": 2.19137673411751e-05,
+          "player_visibility": 1.0
+        },
+        {
+          "name": "17-entry-return",
+          "resolution": [
+            1280,
+            720
+          ],
+          "target": [
+            1350.0,
+            2800.0
+          ],
+          "reached": [
+            1352.92761230469,
+            2799.93212890625
+          ],
+          "active_walk_seconds": 5.08333333333304,
+          "camera_error_world": 2.0631130610127e-05,
+          "player_visibility": 1.0
+        }
+      ]
+    }
+  },
+  "active_walk_delta_seconds": 0.0,
+  "isolation": "Standalone baseline/candidate copies, separate unique TemplePlaceV49 userdata; source project config and ordinary saves unchanged",
+  "limits": [
+    "Frozen spawn/time/attack pressure; fixed real enemies and tells; no natural combat claim",
+    "Existing enemy warning overlaps hero: raw Body minimum about 94%; scenery-only minimum about 99%; overlap not solved",
+    "Bounded samples and rays, not full-map visibility proof",
+    "Human place/beauty/fun acceptance, integrated full CI and Windows native unverified"
+  ]
+}
