@@ -5,6 +5,9 @@ on:
     paths:
       - '.github/workflows/windows-smoke.yml'
       - 'scripts/windows_export_smoke.py'
+      - 'scripts/windows_preview_contract.py'
+      - 'scripts/test_windows_preview_contract.py'
+      - '.github/playtest-version'
       - 'scripts/launch_price_trial.py'
       - 'tests/test_price_trial_launcher.py'
       - 'tests/price_trial_probe.gd'
@@ -32,6 +35,12 @@ jobs:
         with:
           ref: ${{ env.SOURCE_SHA }}
           persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify preview isolation and config contracts
+        shell: pwsh
+        run: python scripts/test_windows_preview_contract.py
       - name: Export and start the Windows release executable
         shell: pwsh
         run: >-
@@ -40,6 +49,7 @@ jobs:
           --scratch "$env:RUNNER_TEMP/new-game-windows-smoke"
           --report "$env:RUNNER_TEMP/new-game-windows-smoke-report"
           --commit "$env:SOURCE_SHA"
+          --preview-label "$(Get-Content .github/playtest-version)"
       - name: Verify isolated price-trial copies on Windows
         shell: pwsh
         run: >-
