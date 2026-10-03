@@ -1,0 +1,1220 @@
+{
+  "base": "1aac501f097ff565f5fd249b9411ab91e64b3223",
+  "canonical_ancestor": "686228f1d2f7cad0f09311c2006f46c6c16ce9d3",
+  "adopted_art_source": "1549d377e979016a304c1cd815699ffd4b2a4116",
+  "art_status": "adopted representative implementation base, not final art; game helper byte-identical to adopted source",
+  "receipts": {
+    "impact": {
+      "source_commit": "b651b04aff22745f75fc17f631ceb088a4e8c89d",
+      "variant": "candidate",
+      "kind": "impact",
+      "native": false,
+      "engine_exit_codes": [
+        0,
+        0
+      ],
+      "source_preserved": true,
+      "version": "4.6.stable.official.89cea1439"
+    },
+    "native_walk_before": {
+      "source_commit": "a7489960a2f07716ab3bae81348826c46e6d1b38",
+      "variant": "baseline",
+      "kind": "walk",
+      "native": true,
+      "engine_exit_codes": [
+        0,
+        1
+      ],
+      "source_preserved": true,
+      "version": "4.6.stable.official.89cea1439"
+    },
+    "native_walk_after": {
+      "source_commit": "a7489960a2f07716ab3bae81348826c46e6d1b38",
+      "variant": "candidate",
+      "kind": "walk",
+      "native": true,
+      "engine_exit_codes": [
+        0,
+        1
+      ],
+      "source_preserved": true,
+      "version": "4.6.stable.official.89cea1439"
+    },
+    "native_live_combat_before": {
+      "source_commit": "09ed5314b1ab1f211b2e2abc6eee0bdc12f58f76",
+      "variant": "baseline",
+      "kind": "combat",
+      "native": true,
+      "engine_exit_codes": [
+        0,
+        0
+      ],
+      "source_preserved": true,
+      "version": "4.6.stable.official.89cea1439"
+    },
+    "headless_live_combat_after": {
+      "source_commit": "09ed5314b1ab1f211b2e2abc6eee0bdc12f58f76",
+      "variant": "candidate",
+      "kind": "combat",
+      "native": false,
+      "engine_exit_codes": [
+        0,
+        0
+      ],
+      "source_preserved": true,
+      "version": "4.6.stable.official.89cea1439"
+    },
+    "contracts": {
+      "source_commit": "09ed5314b1ab1f211b2e2abc6eee0bdc12f58f76",
+      "variant": "candidate",
+      "kind": "verify",
+      "native": false,
+      "engine_exit_codes": [
+        0,
+        0
+      ],
+      "source_preserved": true,
+      "version": "4.6.stable.official.89cea1439"
+    }
+  },
+  "results": {
+    "impact": {
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "candidate_blocked": 1,
+      "errors": [],
+      "old_blocked": 8,
+      "rays": 132,
+      "regressions": [],
+      "scope": "production-vs-kit static geometry rays on 3 cloister route shoulders and 4 actor heights, not full-map pixels or human art/fun"
+    },
+    "native_walk_before": {
+      "active_walk_seconds": 32.9999999999994,
+      "engine": "4.6-stable (official)",
+      "errors": [
+        "Player scenery visibility below98% at wall-shoulder",
+        "Enemy tell visibility below95% at wall-shoulder",
+        "Player scenery visibility below98% at wall-shoulder",
+        "Enemy tell visibility below95% at wall-shoulder"
+      ],
+      "normal_input": true,
+      "render": true,
+      "resolutions": [
+        [
+          960,
+          540
+        ],
+        [
+          1280,
+          720
+        ]
+      ],
+      "samples": [
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 109.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 644,
+            "ratio": 0.986217457886677,
+            "reference_pixels": 653,
+            "roi": [
+              395,
+              163,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 722,
+            "ratio": 1.0,
+            "reference_pixels": 722,
+            "roi": [
+              275,
+              45,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "camera_error_world": 0.00945930555462837,
+            "expected_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "expected_camera_world": [
+              28.5301361083984,
+              14.2140007019043,
+              31.0367126464844
+            ]
+          },
+          "height": 540,
+          "name": "entry",
+          "objects": 247.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 754,
+            "ratio": 0.996036988110964,
+            "reference_pixels": 757,
+            "roi": [
+              399,
+              180,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 31024.0,
+          "reached": [
+            1453.013671875,
+            1703.67126464844
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1700.0
+          ],
+          "width": 960
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 111.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 643,
+            "ratio": 0.987711213517665,
+            "reference_pixels": 651,
+            "roi": [
+              396,
+              164,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 352,
+            "ratio": 0.902564102564103,
+            "reference_pixels": 390,
+            "roi": [
+              276,
+              45,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "camera_error_world": 0.00903351604938507,
+            "expected_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "expected_camera_world": [
+              30.9408721923828,
+              14.2140007019043,
+              27.0935535430908
+            ]
+          },
+          "height": 540,
+          "name": "wall-shoulder",
+          "objects": 249.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 511,
+            "ratio": 0.612709832134293,
+            "reference_pixels": 834,
+            "roi": [
+              400,
+              181,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 31048.0,
+          "reached": [
+            1694.08728027344,
+            1309.35534667969
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1695.0,
+            1310.0
+          ],
+          "width": 960
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 109.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 644,
+            "ratio": 0.990769230769231,
+            "reference_pixels": 650,
+            "roi": [
+              395,
+              163,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 718,
+            "ratio": 1.0,
+            "reference_pixels": 718,
+            "roi": [
+              275,
+              45,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "camera_error_world": 0.00970138423144817,
+            "expected_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "expected_camera_world": [
+              28.5237426757812,
+              14.2140007019043,
+              27.5202293395996
+            ]
+          },
+          "height": 540,
+          "name": "cloister",
+          "objects": 247.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 753,
+            "ratio": 0.99867374005305,
+            "reference_pixels": 754,
+            "roi": [
+              399,
+              180,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 31024.0,
+          "reached": [
+            1452.37426757812,
+            1352.02294921875
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "width": 960
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 112.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 1140,
+            "ratio": 0.991304347826087,
+            "reference_pixels": 1150,
+            "roi": [
+              554,
+              244,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 1274,
+            "ratio": 1.0,
+            "reference_pixels": 1274,
+            "roi": [
+              434,
+              127,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "camera_error_world": 0.00938483886420727,
+            "expected_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "expected_camera_world": [
+              28.5301361083984,
+              14.2140007019043,
+              31.0367126464844
+            ]
+          },
+          "height": 720,
+          "name": "entry",
+          "objects": 247.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 1338,
+            "ratio": 0.997762863534676,
+            "reference_pixels": 1341,
+            "roi": [
+              559,
+              267,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 31024.0,
+          "reached": [
+            1453.013671875,
+            1703.67126464844
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1700.0
+          ],
+          "width": 1280
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 114.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 1144,
+            "ratio": 0.992194275802255,
+            "reference_pixels": 1153,
+            "roi": [
+              554,
+              245,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 623,
+            "ratio": 0.90684133915575,
+            "reference_pixels": 687,
+            "roi": [
+              434,
+              128,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "camera_error_world": 0.00983841251581907,
+            "expected_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "expected_camera_world": [
+              30.9408721923828,
+              14.2140007019043,
+              27.0935535430908
+            ]
+          },
+          "height": 720,
+          "name": "wall-shoulder",
+          "objects": 249.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 921,
+            "ratio": 0.612367021276596,
+            "reference_pixels": 1504,
+            "roi": [
+              560,
+              268,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 31048.0,
+          "reached": [
+            1694.08728027344,
+            1309.35534667969
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1695.0,
+            1310.0
+          ],
+          "width": 1280
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 112.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 1150,
+            "ratio": 0.99052540913006,
+            "reference_pixels": 1161,
+            "roi": [
+              553,
+              244,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 1273,
+            "ratio": 1.0,
+            "reference_pixels": 1273,
+            "roi": [
+              433,
+              127,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "camera_error_world": 0.00925511308014393,
+            "expected_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "expected_camera_world": [
+              28.5237426757812,
+              14.2140007019043,
+              27.5202293395996
+            ]
+          },
+          "height": 720,
+          "name": "cloister",
+          "objects": 247.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 1347,
+            "ratio": 0.997777777777778,
+            "reference_pixels": 1350,
+            "roi": [
+              559,
+              267,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 31024.0,
+          "reached": [
+            1452.37426757812,
+            1352.02294921875
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "width": 1280
+        }
+      ],
+      "scope": "normal input court-to-cloister decision image; frozen encounter pressure and fixed real telegraph; no live-combat or human-art acceptance",
+      "teleport": false
+    },
+    "native_walk_after": {
+      "active_walk_seconds": 32.9999999999994,
+      "engine": "4.6-stable (official)",
+      "errors": [
+        "Player scenery visibility below98% at wall-shoulder",
+        "Player scenery visibility below98% at wall-shoulder"
+      ],
+      "normal_input": true,
+      "render": true,
+      "resolutions": [
+        [
+          960,
+          540
+        ],
+        [
+          1280,
+          720
+        ]
+      ],
+      "samples": [
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 112.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 646,
+            "ratio": 0.984756097560976,
+            "reference_pixels": 656,
+            "roi": [
+              395,
+              163,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 719,
+            "ratio": 1.0,
+            "reference_pixels": 719,
+            "roi": [
+              275,
+              45,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "camera_error_world": 0.00933765340596437,
+            "expected_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "expected_camera_world": [
+              28.5301361083984,
+              14.2140007019043,
+              31.0367126464844
+            ]
+          },
+          "height": 540,
+          "name": "entry",
+          "objects": 250.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 754,
+            "ratio": 0.996036988110964,
+            "reference_pixels": 757,
+            "roi": [
+              399,
+              180,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 22421.0,
+          "reached": [
+            1453.013671875,
+            1703.67126464844
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1700.0
+          ],
+          "width": 960
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 114.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 643,
+            "ratio": 0.987711213517665,
+            "reference_pixels": 651,
+            "roi": [
+              396,
+              164,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 388,
+            "ratio": 0.997429305912596,
+            "reference_pixels": 389,
+            "roi": [
+              276,
+              45,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "camera_error_world": 0.00964150205254555,
+            "expected_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "expected_camera_world": [
+              30.9408721923828,
+              14.2140007019043,
+              27.0935535430908
+            ]
+          },
+          "height": 540,
+          "name": "wall-shoulder",
+          "objects": 252.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 720,
+            "ratio": 0.863309352517986,
+            "reference_pixels": 834,
+            "roi": [
+              400,
+              181,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 22445.0,
+          "reached": [
+            1694.08728027344,
+            1309.35534667969
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1695.0,
+            1310.0
+          ],
+          "width": 960
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 112.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 645,
+            "ratio": 0.989263803680982,
+            "reference_pixels": 652,
+            "roi": [
+              395,
+              163,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 718,
+            "ratio": 1.0,
+            "reference_pixels": 718,
+            "roi": [
+              275,
+              45,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "camera_error_world": 0.00906168576329947,
+            "expected_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "expected_camera_world": [
+              28.5237426757812,
+              14.2140007019043,
+              27.5202293395996
+            ]
+          },
+          "height": 540,
+          "name": "cloister",
+          "objects": 250.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 753,
+            "ratio": 0.99867374005305,
+            "reference_pixels": 754,
+            "roi": [
+              399,
+              180,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 22421.0,
+          "reached": [
+            1452.37426757812,
+            1352.02294921875
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "width": 960
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 115.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 1140,
+            "ratio": 0.991304347826087,
+            "reference_pixels": 1150,
+            "roi": [
+              554,
+              244,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 1274,
+            "ratio": 1.0,
+            "reference_pixels": 1274,
+            "roi": [
+              434,
+              127,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "camera_error_world": 0.00876437593251467,
+            "expected_actor_world": [
+              14.5301361083984,
+              0.0,
+              17.0367126464844
+            ],
+            "expected_camera_world": [
+              28.5301361083984,
+              14.2140007019043,
+              31.0367126464844
+            ]
+          },
+          "height": 720,
+          "name": "entry",
+          "objects": 250.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 1337,
+            "ratio": 0.997761194029851,
+            "reference_pixels": 1340,
+            "roi": [
+              559,
+              267,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 22421.0,
+          "reached": [
+            1453.013671875,
+            1703.67126464844
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1700.0
+          ],
+          "width": 1280
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 117.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 1143,
+            "ratio": 0.9921875,
+            "reference_pixels": 1152,
+            "roi": [
+              554,
+              245,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 685,
+            "ratio": 0.997088791848617,
+            "reference_pixels": 687,
+            "roi": [
+              434,
+              127,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "camera_error_world": 0.00967385154217482,
+            "expected_actor_world": [
+              16.9408721923828,
+              0.0,
+              13.0935535430908
+            ],
+            "expected_camera_world": [
+              30.9408721923828,
+              14.2140007019043,
+              27.0935535430908
+            ]
+          },
+          "height": 720,
+          "name": "wall-shoulder",
+          "objects": 252.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 1280,
+            "ratio": 0.851630073186959,
+            "reference_pixels": 1503,
+            "roi": [
+              560,
+              268,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 22445.0,
+          "reached": [
+            1694.08728027344,
+            1309.35534667969
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1695.0,
+            1310.0
+          ],
+          "width": 1280
+        },
+        {
+          "approach": "normal input: court to west stairs, original northbound cloister route and right shoulder; no teleport",
+          "camera_size": 9.0,
+          "draw_calls": 115.0,
+          "enemy_body_visibility": {
+            "normal_pixels": 1149,
+            "ratio": 0.99137187230371,
+            "reference_pixels": 1159,
+            "roi": [
+              553,
+              244,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "enemy_tell_visibility": {
+            "normal_pixels": 1273,
+            "ratio": 1.0,
+            "reference_pixels": 1273,
+            "roi": [
+              433,
+              127,
+              400,
+              400
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "follow_check": {
+            "actor_error_world": 0.0,
+            "actual_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "camera_error_world": 0.00909125804901123,
+            "expected_actor_world": [
+              14.5237426757812,
+              0.0,
+              13.5202293395996
+            ],
+            "expected_camera_world": [
+              28.5237426757812,
+              14.2140007019043,
+              27.5202293395996
+            ]
+          },
+          "height": 720,
+          "name": "cloister",
+          "objects": 250.0,
+          "player_scenery_visibility": {
+            "normal_pixels": 1347,
+            "ratio": 0.997777777777778,
+            "reference_pixels": 1350,
+            "roi": [
+              559,
+              267,
+              160,
+              160
+            ],
+            "scope": "fixed real enemy Body/telegraph differential, scenery hidden reference with same actors; bounded sample"
+          },
+          "primitives": 22421.0,
+          "reached": [
+            1452.37426757812,
+            1352.02294921875
+          ],
+          "render": true,
+          "run_time_frozen": 0.0,
+          "target": [
+            1450.0,
+            1350.0
+          ],
+          "width": 1280
+        }
+      ],
+      "scope": "normal input court-to-cloister decision image; frozen encounter pressure and fixed real telegraph; no live-combat or human-art acceptance",
+      "teleport": false
+    },
+    "native_live_combat_before": {
+      "complete": true,
+      "engine": "4.6-stable (official)",
+      "errors": [],
+      "records": [
+        {
+          "active_seconds": 10.9833333333335,
+          "attack_frames": 491,
+          "camera_size": 9.0,
+          "captures": [
+            "entry-live-warning-960.png"
+          ],
+          "distance": 1001.04581919312,
+          "frame_interval_median_ms": 16.672,
+          "frame_interval_p95_ms": 18.13,
+          "health": 40.0,
+          "kills": 0,
+          "place": "entry",
+          "resolution": [
+            960,
+            540
+          ],
+          "surviving_enemies_attacks_fired": 8,
+          "synthetic_start": [
+            1450.0,
+            1700.0
+          ],
+          "warning_frames": 220
+        },
+        {
+          "active_seconds": 10.9833333333335,
+          "attack_frames": 493,
+          "camera_size": 9.0,
+          "captures": [
+            "entry-live-warning-1280.png"
+          ],
+          "distance": 1045.03730544448,
+          "frame_interval_median_ms": 16.659,
+          "frame_interval_p95_ms": 18.238,
+          "health": 55.0,
+          "kills": 0,
+          "place": "entry",
+          "resolution": [
+            1280,
+            720
+          ],
+          "surviving_enemies_attacks_fired": 7,
+          "synthetic_start": [
+            1450.0,
+            1700.0
+          ],
+          "warning_frames": 194
+        }
+      ],
+      "scope": "Normal 60Hz movement/attack/AI/time. Synthetic placement and two80HP enemies per place; ambient arrivals/growth modal/wisp suppressed equally. No natural progression, human fun, sound or sustained performance verdict.",
+      "variant": "baseline"
+    },
+    "headless_live_combat_after": {
+      "complete": true,
+      "engine": "4.6-stable (official)",
+      "errors": [],
+      "records": [
+        {
+          "active_seconds": 10.9833333333335,
+          "attack_frames": 490,
+          "camera_size": 9.0,
+          "captures": [],
+          "distance": 2366.0679782629,
+          "frame_interval_median_ms": 0.7,
+          "frame_interval_p95_ms": 108.724,
+          "health": 70.0,
+          "kills": 0,
+          "place": "entry",
+          "resolution": [
+            960,
+            540
+          ],
+          "surviving_enemies_attacks_fired": 7,
+          "synthetic_start": [
+            1450.0,
+            1700.0
+          ],
+          "warning_frames": 183
+        },
+        {
+          "active_seconds": 10.9833333333335,
+          "attack_frames": 496,
+          "camera_size": 9.0,
+          "captures": [],
+          "distance": 2754.2515463829,
+          "frame_interval_median_ms": 0.595,
+          "frame_interval_p95_ms": 109.006,
+          "health": 70.0,
+          "kills": 1,
+          "place": "entry",
+          "resolution": [
+            1280,
+            720
+          ],
+          "surviving_enemies_attacks_fired": 4,
+          "synthetic_start": [
+            1450.0,
+            1700.0
+          ],
+          "warning_frames": 164
+        }
+      ],
+      "scope": "Normal 60Hz movement/attack/AI/time. Synthetic placement and two80HP enemies per place; ambient arrivals/growth modal/wisp suppressed equally. No natural progression, human fun, sound or sustained performance verdict.",
+      "variant": "candidate"
+    },
+    "body_cause": {
+      "point": [
+        1694.08728027344,
+        1309.35534667969
+      ],
+      "scope": "headless static opaque texture sample rays at native reached point; camera billboard footprint; excludes actors/tells; not raster visibility or live combat",
+      "opaque_texture_samples": 176,
+      "before_owners": {
+        "/root/TempleCircuitRun/CircuitSanctuaryBackdrop/ReclaimedCourtMasonry/WeatheredCourtyardWalls": 57
+      },
+      "after_owners": {
+        "/root/TempleCircuitRun/TempleEntryCluster/BrokenMasonry": 17,
+        "/root/TempleCircuitRun/TempleEntryCluster/ShelteredGrowth": 1
+      },
+      "newly_blocked_samples": 0,
+      "unblocked_samples": 39,
+      "residual_masonry_owner": "first broken pillar Rect2(1770,1280,117,112), top109 game units; hits x1773.47..1796.53 z1372.93..1392",
+      "interpretation": "existing threshold failure improves, but residual occlusion is caused by new pillar/growth; no sampled ray regression is not proof of zero full-sprite pixel regressions"
+    },
+    "contracts": {
+      "actor_shadow_bottom": 0.00799999991431832,
+      "checks": 38,
+      "contact_max_lift": 0.725000025704503,
+      "contact_min_floor_separation": 0.169999979436398,
+      "contact_min_lift": 0.669999979436398,
+      "errors": [],
+      "install_ms": 196.936,
+      "mesh_bounds": {
+        "BrokenMasonry": [
+          17.3099994659424,
+          0.0,
+          11.9399995803833,
+          21.4599990844727,
+          1.0900000333786,
+          16.8799991607666
+        ],
+        "ShelteredGrowth": [
+          17.306999206543,
+          -0.0326425060629845,
+          13.9112901687622,
+          18.996395111084,
+          0.981554508209229,
+          16.1944484710693
+        ],
+        "StoneSoilContacts": [
+          16.7095699310303,
+          0.00669999979436398,
+          12.3445997238159,
+          17.36669921875,
+          0.00725000025704503,
+          16.6982746124268
+        ]
+      },
+      "original_hall_vertices_remaining": 0,
+      "resources": {
+        "ground": 468,
+        "growth": 6291,
+        "stone": 1200
+      }
+    }
+  },
+  "pending": [
+    "candidate native live combat960/1280 (GUI slot unavailable at handoff)",
+    "human art/place/fun judgement",
+    "natural progression and sustained GPU performance"
+  ]
+}

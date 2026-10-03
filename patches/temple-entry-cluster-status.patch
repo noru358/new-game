@@ -1,0 +1,16 @@
+--- a/DEV_STATUS.md
++++ b/DEV_STATUS.md
+@@ -1,6 +1,13 @@
+ # DEV_STATUS — 루프 정복 게임
+
+ > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
++
++## 사원 대표 입구 kit — 구현 기반 인계 / 2026-10-03
++
++- production 1aac501의 독립 codex/temple-entry-kit-oct03. 부모가 전체 GALLERY_HALL 장식 교체를 대표 군집 구현 기반으로 채택했으며 최종 아트 승인은 아니다. 게임 helper는 채택1549d37과 동일하고 공유 mount는 patch로 반환한다. tested game/최종 계약·headless 전투 SHA09ed5314b1ab1f211b2e2abc6eee0bdc12f58f76, native 보행 tested SHAa7489960a2f07716ab3bae81348826c46e6d1b38.
++- 38계약/terrain/접점 검사 오류0, 132국소 중심광선의 새 가림0. 960/1280 native 정상입력 보행 전후 각33초를 촬영했다. 벽 근접(1694.0873,1309.3553) Body 표시율 기존61.27/61.24%→후보86.33/85.16%로 개선됐지만98% 실패2는 남는다. 예고는90.26/90.68%→99.74/99.71%로95% 통과. 잔여 가림은 첫 새 파손 기둥17표본·식생1표본이며 기준벽57표본보다 감소했다. 전체 가림 해결/픽셀 무회귀로 표기하지 않는다.
++- 기존 native 실제 AI 전투와 후보 headless AI 전투는 각각960/1280·10.983초 완료했다. 후보 native 전투는 GUI0 지시로 미검증이다. 기존 지형/충돌/조명/캐릭터/hidden/저장/경제/240초 계약 유지, 사용자 앱과 원본 checkout 보존. 바로 다음은 부모의 residual pillar 판단·공유 mount 및 GUI 배정 후 후보 native 전투다. 미감/장소감/재미/자연완주/지속 GPU 성능 미검증. 실제 shadow 아랫면0.8과 contact 최대0.725 비교로 과거 중심값 검사 오판을 보정했다. evidence/temple-entry-kit/HANDOFF.md와 summary.json 참조.
++
+
+
+ ## 현재 사용자 제출 기준 — v48 / 2026-10-03 KST
