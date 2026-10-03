@@ -1,0 +1,21 @@
+{
+  "owned_pid": 25738,
+  "exit": -6,
+  "elapsed_seconds": 25.655,
+  "source_game_commit": "1cd01604ea16a7cea0b0df50b2e3aa04c5a8c9d5",
+  "source_copy_commit": "5006b8e690690c44e0f9fa61733b77f756feb746",
+  "qa_only_instrumentation": "329301c + inherited constant parse correction",
+  "original_save_before": {
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_profile_a.json": "1bc63dd0d6e67c584954ebb523c1eb67c1ad4a930a66ad15e0d3d447c35d5096",
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_unlocks_a.json": "d6ed89c3f9cf81ff636cc293813c617314611813803501540a40b0fafc6a017a",
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_unlocks_b.json": "877bf1bdbb3606b7fae3b90cab17750d5fa30bef7d8fa77589852f0b3db888a8",
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_profile_b.json": "0f6ae88ab01ddbd2752ce8cf440f15eb79088ee7a2c0a7f7719cc6230b38bb1c"
+  },
+  "original_save_after": {
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_profile_a.json": "1bc63dd0d6e67c584954ebb523c1eb67c1ad4a930a66ad15e0d3d447c35d5096",
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_unlocks_a.json": "d6ed89c3f9cf81ff636cc293813c617314611813803501540a40b0fafc6a017a",
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_unlocks_b.json": "877bf1bdbb3606b7fae3b90cab17750d5fa30bef7d8fa77589852f0b3db888a8",
+    "/Users/lty/Library/Application Support/LoopConquest-FieldPreview-v45/first_region_shared_v45_profile_b.json": "0f6ae88ab01ddbd2752ce8cf440f15eb79088ee7a2c0a7f7719cc6230b38bb1c"
+  },
+  "original_save_unchanged": true
+}

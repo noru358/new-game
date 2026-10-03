@@ -95,7 +95,9 @@ def prepare(source, target):
             modified = wrap(modified, file, method)
         lines = modified.splitlines(keepends=True)
         line = next(i for i, text in enumerate(lines) if text.startswith("extends "))
-        lines.insert(line + 1, 'const V49HitchTrace = preload("res://tests/fixtures/v49_hitch_trace.gd")\n')
+        # hybrid_region inherits this constant from the instrumented hybrid_height.
+        if file != "game/hybrid_region.gd":
+            lines.insert(line + 1, 'const V49HitchTrace = preload("res://tests/fixtures/v49_hitch_trace.gd")\n')
         (target / file).write_text("".join(lines))
         manifest["files"][file] = {"source_sha256": hashlib.sha256(original.encode()).hexdigest(), "methods": methods}
     project = (target / "project.godot").read_text()
@@ -108,7 +110,8 @@ def prepare(source, target):
     profiler = (source / "tests/profile_spawn_lag.gd").read_text()
     profiler = profiler.replace("extends SceneTree\n", 'extends SceneTree\nconst Trace = preload("res://tests/fixtures/v49_hitch_trace.gd")\n')
     profiler = profiler.replace("func _initialize():\n", "func _initialize():\n\tTrace.reset()\n")
-    profiler = profiler.replace("RenderingServer.frame_post_draw.connect(sample_frame)", "RenderingServer.frame_post_draw.connect(sample_frame)\n\tRenderingServer.frame_pre_draw.connect(func(): Trace.mark(\"render_pre_draw\"))")
+    profiler = profiler.replace('\n\troot.add_child(arena)', '\n\tif arena.get_script() == null:\n\t\tprinterr("QA scene script failed to load")\n\t\tquit(2)\n\t\treturn\n\troot.add_child(arena)')
+    profiler = profiler.replace("RenderingServer.frame_post_draw.connect(sample_frame)", "RenderingServer.frame_post_draw.connect(sample_frame)\n\tRenderingServer.frame_pre_draw.connect(sample_pre_draw)")
     profiler = profiler.replace("create_timer(60.0)", "create_timer(19.0)")
     profiler = profiler.replace('FileAccess.open(output,FileAccess.WRITE)', 'report["timeline"] = Trace.report()\n\tFileAccess.open(output,FileAccess.WRITE)')
     profiler = profiler.replace("func sample_frame():\n", "func sample_frame():\n\tTrace.mark(\"render_post_draw\", {\"run_time\":arena.run_time, \"position\":str(arena.player.position), \"camera\":str(arena.camera.position), \"route_index\":route_index, \"waypoint\":waypoint, \"xp\":arena.growth.xp, \"level\":arena.growth.level, \"attack_step\":arena.player.attack_step, \"pending_spawns\":arena.pending_spawns.size(), \"enemies\":arena._active_enemy_count()})\n")
@@ -116,6 +119,7 @@ def prepare(source, target):
     # Add absolute clocks and engine frame IDs alongside the existing sample columns.
     profiler = profiler.replace('frames.append([float(now-last_usec)/1000.0,', 'Trace.mark("frame_sample", [now, Engine.get_frames_drawn(), Engine.get_process_frames(), Engine.get_physics_frames(), float(now-last_usec)/1000.0, Performance.get_monitor(Performance.TIME_PROCESS)*1000.0])\n\t\tframes.append([float(now-last_usec)/1000.0,')
     profiler = profiler.replace('\n\troot.get_texture().get_image().save_png(output.trim_suffix(".json")+".png")', '')
+    profiler = profiler.replace('\n\tquit()\nfunc sample_frame():', '\n\tRenderingServer.frame_pre_draw.disconnect(sample_pre_draw)\n\tRenderingServer.frame_post_draw.disconnect(sample_frame)\n\tquit()\nfunc sample_pre_draw():\n\tTrace.mark("render_pre_draw")\nfunc sample_frame():')
     (target / "tests/profile_v49_hitch.gd").write_text(profiler)
     (target / "v49-hitch-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     return manifest

@@ -41,6 +41,9 @@ def analyze(report):
             "first_events": first,
             "longest_script_spans": sorted([e for e in events if ":" in e[0]], key=lambda e: e[2] - e[1], reverse=True)[:20],
             "longest_pre_post_wall_intervals": sorted(render, key=lambda e: e["ms"], reverse=True)[:10],
+            "longest_sampled_pre_post_wall_intervals": sorted(
+                [item for item in render if item["pre"][1] >= first.get("frame_sample", [None, 0])[1]],
+                key=lambda e: e["ms"], reverse=True)[:10],
             "limits": "Script spans overlap; do not sum nested spans. pre/post boundaries include renderer work/waits, not GPU-only time. Use event IDs, wall timestamps and per-frame run_time rather than delayed viewport getter for alignment.",
         }
     return result

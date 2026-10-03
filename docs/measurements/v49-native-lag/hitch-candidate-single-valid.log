@@ -1,0 +1,46 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3
+
+Hybrid scene ready: Temple circuit — isolated four-minute run
+PROFILE_SAMPLE natural spawn temple
+
+================================================================
+handle_crash: Program crashed with signal 11
+Engine version: Godot Engine v4.6.stable.official (89cea143987d564363e15d207438530651d943ac)
+Dumping the backtrace. Please include this when reporting the bug on: https://github.com/godotengine/godot/issues
+[1] 1   libsystem_platform.dylib            0x000000018f615744 _sigtramp + 56
+[2] std::__1::recursive_mutex::lock()
+[3] std::__1::recursive_mutex::lock()
+[4] GDScript::cancel_pending_functions(bool) (in Godot) + 60
+[5] GDScript::~GDScript() (in Godot) + 440
+[6] GDScriptLambdaSelfCallable::GDScriptLambdaSelfCallable(Object*, GDScriptFunction*, Vector<Variant> const&)
+[7] Callable::~Callable() (in Godot) + 72
+[8] ObjectDB::cleanup()
+[9] Object::_remove_user_signal(StringName const&)
+[10] Object::~Object() (in Godot) + 384
+[11] Main::cleanup(bool) (in Godot) + 1236
+[12] OS_MacOS_NSApp::cleanup() (in Godot) + 64
+[13] DefaultAllocator::alloc(unsigned long)
+[14] 14  CoreFoundation                      0x000000018f6bd9ec __CFNOTIFICATIONCENTER_IS_CALLING_OUT_TO_AN_OBSERVER__ + 148
+[15] 15  CoreFoundation                      0x000000018f74a0bc ___CFXRegistrationPost_block_invoke + 92
+[16] 16  CoreFoundation                      0x000000018f74a000 _CFXRegistrationPost + 440
+[17] 17  CoreFoundation                      0x000000018f68c408 _CFXNotificationPost + 740
+[18] 18  Foundation                          0x0000000190ec34a4 -[NSNotificationCenter postNotificationName:object:userInfo:] + 88
+[19] 19  AppKit                              0x0000000193cff898 -[NSApplication terminate:] + 1580
+[20] OS_MacOS_NSApp::start_main()
+[21] 21  CoreFoundation                      0x000000018f6c8344 __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__ + 36
+[22] 22  CoreFoundation                      0x000000018f6c8240 __CFRunLoopDoObservers + 648
+[23] 23  CoreFoundation                      0x000000018f6c78ec __CFRunLoopRun + 924
+[24] 24  CoreFoundation                      0x000000018f79a264 _CFRunLoopRunSpecificWithOptions + 532
+[25] 25  HIToolbox                           0x000000019c4b3560 RunCurrentEventLoopInMode + 320
+[26] 26  HIToolbox                           0x000000019c4b68bc ReceiveNextEventCommon + 488
+[27] 27  HIToolbox                           0x000000019c64014c _BlockUntilNextEventMatchingListInMode + 48
+[28] 28  AppKit                              0x00000001941aa3d0 _DPSBlockUntilNextEventMatchingListInMode + 228
+[29] 29  AppKit                              0x0000000193afe084 _DPSNextEvent + 576
+[30] 30  AppKit                              0x000000019469396c -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:] + 688
+[31] 31  AppKit                              0x0000000194693678 -[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:] + 72
+[32] 32  AppKit                              0x0000000193af113c -[NSApplication run] + 368
+[33] main (in Godot) + 924
+[34] 34  dyld                                0x000000018f2404e4 start + 6992
+-- END OF C++ BACKTRACE --
+================================================================

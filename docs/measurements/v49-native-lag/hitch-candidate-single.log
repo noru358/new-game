@@ -1,0 +1,15 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3
+
+SCRIPT ERROR: Parse Error: Could not resolve class "res://game/hybrid_region.gd".
+          at: GDScript::reload (res://game/temple_circuit_run.gd:1)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/profile_v49_hitch.gd:35)
+ERROR: Failed to load script "res://game/temple_circuit_run.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript.cpp:2907)
+   GDScript backtrace (most recent call first):
+       [0] run (res://tests/profile_v49_hitch.gd:35)
+SCRIPT ERROR: Invalid access to property or key 'rng' on a base object of type 'Node3D'.
+          at: run (res://tests/profile_v49_hitch.gd:39)
+          GDScript backtrace (most recent call first):
+              [0] run (res://tests/profile_v49_hitch.gd:39)

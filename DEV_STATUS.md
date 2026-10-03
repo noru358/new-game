@@ -10,6 +10,12 @@
 - 정상Input/카메라/공격/자동스폰65초도 전후 실행했다. 저밀도심한렉은 미재현/미해결; 사원 단발78.168→87.752ms가 남는다. 10762native/cache검사0fail·PNGbyte동일, 관련7회귀PASS. 전체CI/패키지실행/사람응답성/장시간은 미검증. 원본4진척JSONhash동일,02:08:39local 엔진0·슬롯반환.
 - 단계:2단계메타연결·첫권역제작중 성능회귀. 다음은 남은저밀도단발/renderer-presentation 원인진단과 별도재출정수정통합검증. draftPR56만 생성했고 병합/배포하지 않았다. 근거 docs/measurements/v49-native-lag/README.md. 부모메시지/PRattach tool은Transport closed로 실패해최종자동보고로인계한다.
 
+## v49 사원 단발 지연 — 단일 정렬 계측 반환 / 2026-10-04 KST
+
+- 부모전용슬롯에서기존캐시후보1cd01604/5006b8e를21함수QA계측했다(a665eff아님). 동일native조건에서83.892ms지연,renderpre→post83.068ms,+6행viewportCPU81.398ms를확인. 정확위치(2046.728,943.9999),game15.4167초,route6/waypoint14/적12. 앞선첫중정설과first-wisp-hit설은반증됐다.
+- 타깃반복의측정스크립트44call union0.734ms는draw전에실행됐다. 중첩process0.443/base0.436/attack0.262ms를합산하지않는다. 타깃중hit/pulse/audio/spawn/path새호출없음. renderer내부native구분(최초표시자원/셰이더/driver동기화)은미확정;추가제품패치없음.
+- 첫QA중복상수parse실패보존/수정,후속sceneparse로그오류0. 관측23.983active초/focus0/2272frame은저장됐지만종료cleanup signal11/exit-6이므로전체PASS아님. cap80000은22.603trace초에소진(타깃16.036–16.119보다뒤). anonymousQA콜백제거/disconnect후속은실행미검증. 원본4savehash동일/ownedPID종료/ps엔진0·슬롯반환했고통합담당이현재슬롯소유. raw와한계는temple-hitch-plan.md.
+
 ## v49 사원 단발 지연 — 코드-only 재조사 / 2026-10-04 KST
 
 - 새 엔진을 실행하지 않고 기존 raw를 재분석했다. 사원 interval78.168/87.752ms와6행 뒤 delayed viewport CPU75.109/85.110ms를 확인했다. 작은 같은행getter로renderer비용을배제하지 않는다. 추정wall15.396/15.520초이며 당시정확위치/run_time은원자료에없다. GPU/전체mainthread/셰이더원인은미확정이다.

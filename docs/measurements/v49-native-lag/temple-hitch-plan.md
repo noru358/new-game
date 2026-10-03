@@ -40,6 +40,42 @@ Both renderer peaks align with the isolated hitch after the same6-row delay. Thi
 
 Player hitstop only changes attack elapsed time (`player._advance_attack`); it does not block the engine or explain a78–88ms wall interval by itself.
 
+## Slot-assigned single trace result
+
+Parent assigned a native slot after the integrator returned it. This is the original cache candidate's product source `1cd01604`, QA copy from evidence HEAD `5006b8e` plus21 wrappers; **not** integration candidate `a665eff`. Official4.6/GL Compatibility/1280×720/vsync1/physics60/time_scale1/seed481 match prior runs. Source/copy manifest is preserved locally. No product changes were added.
+
+The sampled hitch was reproduced: post-draw interval83.892ms at row1252; render pre→post83.068ms; delayed viewport CPU81.398ms at row1258 (+6 rows again). Exact trace clocks are relative to fixture initialization:
+
+| Boundary/state | Observed value |
+|---|---:|
+| Previous post-draw |16.035692s|
+| Target pre-draw |16.036514s|
+| Target post-draw |16.119582s|
+| Process/draw frame ID |1811|
+| Physics frame ID |926|
+| Game time at target |15.4166667s|
+| Player / camera |(2046.728,943.9999) / (34.00865,14.21401,23.43998)|
+| Route / waypoint |6 /14|
+| Enemies / pending spawns |12 /0|
+| Attack step / XP / level |2 /2 /1|
+
+This is the **late route toward(2650,1000)**, rather than the earlier assumed first court approach. The marker data establish position/time for this trace only; old uninstrumented files have no such fields.
+
+The measured scripts execute **before**, rather than inside, the83ms pre/post bracket. In that same iteration,44 recorded calls have a0.734ms union of clock spans (their naive nested sum1.548ms double-counts work). The prior post→current pre gap is0.822ms. Derived `_process`0.443ms contains base `_process`0.436ms, which contains `_draw_attack_at`0.262ms; these are **not three separate contributions**. Region physics0.108ms includes its base0.071ms and section tick0.023ms. Other actor callbacks are separately included in the union. These measurements rule out these sampled script calls as the direct83ms CPU span; they are not whole-engine main-thread/GPU measurements and do not cover every node callback.
+
+**First-wisp-hit/pulse hypothesis is falsified for this hitch.** First `_on_wisp_hit` starts3.032086s (well before the target); the preceding hit starts15.501691s, ends15.501896s, creates its pulse by15.501883s; the next hit starts17.486624s. No new sphere/flash/hit is created during the target iteration or draw interval. Likewise no player hit callback was recorded anywhere in this run. The nearest sound call starts15.819990s and costs0.445ms, and the next is16.552460s. The nearest preceding path calculation ends16.019503s (0.026ms); the next starts16.119703s after the stall. The next spawn scheduling event starts16.185830s, also after it. None provides an83ms script span coincident with the hitch. A+2 draw-call change cannot be read as proof of two new pulse objects.
+
+The evidence now narrows the target to **work/wait inside the renderer pre/post bracket**, with a matching delayed viewport CPU peak. First-visible geometry/material/glyph work and driver synchronization remain candidates. The trace does not identify a native subcall, GPU duration or shader compiler. A hitch-aligned native stack capture around12–20s at this location is the next discriminating measurement if separately assigned; no speculative pulse warmup, art removal, density reduction or renderer switch is justified by this run. No further engine was started after slot return.
+
+Limits and failures are explicit:
+
+- The first attempt failed before gameplay because the QA generator inserted an inherited constant twice. It was fixed only in the QA generator/copy; actual temple scene script parsing then produced no errors. Godot check-only sometimes returned0 despite dependency errors, so logs were inspected. The failed attempt's35s owned-process watchdog terminated it and its log/meta are retained.
+- The observed run saved complete23.9833 active seconds /2272 sample frames /focus resumes0 to JSON. The80,000-event cap was reached at22.602769 trace seconds, **after** the16.036–16.119 target, dropping12,608 later events. The target and its neighbor/event evidence are present. This is not a complete24s timeline, and the analyzer excludes startup draws from the sampled-ranking list.
+- **After writing the JSON**, native Godot cleanup crashed with signal11 in `GDScript::cancel_pending_functions`/`GDScript::~GDScript`/`ObjectDB::cleanup`; process exit-6 after25.655s. The timeline was already stored, but this is **not** a clean end-to-end PASS. The next generator removes its anonymous pre-draw lambda and disconnects QA render callbacks at quit; that cleanup adjustment has **not** been engine-tested. The crash's exact cause is unproved and should not be presented as a product bug fix.
+- Original4save JSON hashes before/after match. Owned native PID25738 exited; read-only process check confirmed no Godot/LoopConquest. Slot was returned immediately to the parent; the integrator now owns it.
+
+Raw data/log/meta: `hitch-candidate-single-valid*`; “valid” in the filename means the scene ran and wrote its sample, not a full validation verdict. `temple-hitch-aligned-window.json` contains the targeted draw, all nearby events and same-iteration spans; `hitch-candidate-single-analysis.json` is the reproducible summary. No user app or save was modified.
+
 ## Prepared code and one bounded run
 
 `tests/prepare_v49_hitch_probe.py` copies a source tree into a new directory, assigns a fresh `CodexV49Lag-UUID` user directory, and adds21 timing wrappers to **that ephemeral copy only**. Base/derived wrapper names differ to preserve super dispatch without recursion. No scene geometry, enemy budget, sound, warning mesh, texture content or quality is changed. `tests/fixtures/v49_hitch_trace.gd` keeps bounded events in memory and writes at exit; no per-event disk logging or screenshots during the sample. Markers record clock timestamps and engine process/physics/draw IDs, while post-draw context records active run time, player/camera position, route/waypoint, XP/level/attack state, pending spawns and enemies. The analyzer reports longest script spans and render pre/post intervals. Nested spans must not be summed.
