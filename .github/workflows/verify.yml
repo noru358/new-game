@@ -110,7 +110,7 @@ jobs:
           done
           test "$(find verification-logs/ui-copy/verify_growth_card_descriptions -name '*.png' | wc -l)" -eq 4
           test "$(find verification-logs/ui-copy/capture_world_destination_labels -name '*.png' | wc -l)" -eq 50
-          test "$(find verification-logs/ui-copy/verify_jungle_waterfall_visibility -name '*.png' | wc -l)" -eq 48
+          test "$(find verification-logs/ui-copy/verify_jungle_waterfall_visibility -name '*.png' | wc -l)" -eq 96
       - name: Verify isolated price-trial copies
         run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4
