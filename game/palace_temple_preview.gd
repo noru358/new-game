@@ -19,6 +19,16 @@ func _init() -> void:
 
 func _ready() -> void:
 	super._ready()
+	# Reuse the existing rotated TempleBlock geometry and navigation support.
+	var obstacles: Array = []
+	for block in simulation.get_children():
+		if not block is TempleBlock: continue
+		for wall in terrain.wall_areas:
+			if block.position.is_equal_approx(wall.area.get_center()):
+				block.rotation = wall.get("angle",0.0)
+				break
+		obstacles.append(block)
+	navigation.setup(obstacles,terrain.map_size)
 	growth.growth_ended = true
 	growth.hud.hide()
 	growth.xp_bar.hide()
@@ -30,7 +40,7 @@ func _ready() -> void:
 
 func spawn_enemies() -> void:
 	if OS.get_cmdline_user_args().has("--palace-walk-only"): return
-	for spec in [[Vector2(1940, 1580), TrainingEnemy.Role.FRAGMENT, 22.0], [Vector2(2160, 1610), TrainingEnemy.Role.BEAST, 45.0], [Vector2(2450, 1290), TrainingEnemy.Role.LAMP, 30.0]]:
+	for spec in [[Vector2(2400, 2680), TrainingEnemy.Role.FRAGMENT, 22.0], [Vector2(2650, 2720), TrainingEnemy.Role.BEAST, 45.0], [Vector2(3300, 2500), TrainingEnemy.Role.LAMP, 30.0]]:
 		_spawn_enemy_at(spec[0], spec[1], spec[2])
 
 func _on_enemy_defeated(_enemy: TrainingEnemy) -> void: kills += 1
