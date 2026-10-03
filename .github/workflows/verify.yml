@@ -46,6 +46,18 @@ jobs:
             fi
           done
           exit "$failed"
+      - name: Verify shared preview across fresh engine processes
+        shell: bash
+        run: |
+          evidence="$GITHUB_WORKSPACE/docs/measurements/preview-lifecycle-v46/ci-run"
+          set +e
+          python3 scripts/check_preview_lifecycle.py --godot "$(command -v godot)" --output "$evidence"
+          status=$?
+          mkdir -p verification-logs/preview-lifecycle
+          for file in "$evidence"/summary.json "$evidence"/*-report.json "$evidence"/*first-divergence.json "$evidence"/*.txt; do
+            if [[ -f "$file" ]]; then cp "$file" verification-logs/preview-lifecycle/; fi
+          done
+          exit "$status"
       - name: Verify actor depth with isolated software rendering
         shell: bash
         run: |
