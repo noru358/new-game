@@ -39,7 +39,7 @@ func _run() -> void:
 		root.size = size
 		root.content_scale_size = Vector2i(1280,720)
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-		for point in [scene.Wetland.ENTRY,scene.Wetland.PROCESSION,scene.Wetland.FACE_BANK,scene.Wetland.TEMPLE_COURT,Vector2(3620,970),Vector2(3980,970),Vector2(4060,690),Vector2(4600,690),scene.Field.INNER_COURT,Vector2(4780,1670),scene.Field.OFFERING_GROVE,Vector2(3420,1630)]:
+		for point in [scene.Wetland.ENTRY,scene.Wetland.PROCESSION,scene.Wetland.FACE_BANK,scene.Wetland.TEMPLE_COURT,Vector2(1050,980),Vector2(1600,980),Vector2(1900,1020),Vector2(2070,1100),Vector2(2000,750),Vector2(2050,650),Vector2(2100,620),Vector2(2050,700),Vector2(2050,800),Vector2(2050,950),Vector2(2840,1530),Vector2(2870,1100),Vector2(3620,970),Vector2(3980,970),Vector2(4060,690),Vector2(4600,690),scene.Field.INNER_COURT,Vector2(4780,1670),scene.Field.OFFERING_GROVE,Vector2(3420,1630)]:
 			scene.teleport(point)
 			for i in 30: await process_frame
 			scene.set_process(false)

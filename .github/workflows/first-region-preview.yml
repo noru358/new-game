@@ -92,10 +92,11 @@ jobs:
           godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_run.gd
           test "$(find wetland-run-render -name '*.png' | wc -l)" -eq 6
       - name: Compare fixed wetland presentation views
+        if: always()
         run: |
           mkdir -p "$RUNNER_TEMP/wetland-baseline" presentation-baseline presentation-candidate
-          git fetch --no-tags origin 2eae0971f8eb04ea89d73986101d54efe62d3577
-          git archive 2eae0971f8eb04ea89d73986101d54efe62d3577 | tar -x -C "$RUNNER_TEMP/wetland-baseline"
+          git fetch --no-tags origin d1eb0f18c6bf56c62a87146f6898414abbb824e6
+          git archive d1eb0f18c6bf56c62a87146f6898414abbb824e6 | tar -x -C "$RUNNER_TEMP/wetland-baseline"
           cp tests/capture_wetland_presentation.gd "$RUNNER_TEMP/wetland-baseline/tests/"
           sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WetlandV44-PresentationBaseline#' "$RUNNER_TEMP/wetland-baseline/project.godot"
           godot --headless --editor --path "$RUNNER_TEMP/wetland-baseline" --quit
