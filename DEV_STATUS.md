@@ -3,6 +3,13 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
+## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03
+
+- 부모가 합본 대표4PNG와 마지막diff를 검토하고 히든 장소/입출구 개선을 다음 플레이후보로 채택했다. 세lane 통합20359e1의 정확전체CI37129486967은116headless/preview/depth18사례/UI160PNG를 통과했다. 사원표면/조명 후속·캐릭터시안은 이 묶음에 포함하지 않는다.
+- 사원 실제보상claim 뒤 상단의 기존한줄을 `정원 보상 획득 · 들어온 회랑으로 복귀`로 갱신한다. 새UI/보상규칙 없음. 기존제단접근fixture에 미수령→실제claim→귀환 HUD상태검사를 추가했다.
+- 배포label은 .github/playtest-version의v49이며 패키지제목/앱/아카이브에 적용된다. 원본project.godot·v45공통v7 save-family·profile/player/growth는 유지한다. 모든프리셋의 docs/tests/scripts/patches/integration/evidence와 remapped개발texture 배제검사는 그대로다.
+- 정확최종소스의 전체CI와Macarm64패키지를 진행하고, production1aac501 기준draftPR·공식artifact·로컬hash/파일목록/strictcodesign 검증경로로 인계한다. 사용자앱 실행/교체/저장·main/production/canonical merge·공개release는 하지 않는다. 미감/기존가림전부/자연완주/장기성능은 여전히미검증이다.
+
 ## v51 세 lane 히든 — native 완료·정확HEAD CI 확인 / 2026-10-03
 
 - production1aac501 기준 flow aa3ff60의9/temple d2abbff의4/부모지정 jungle e06a2fa의1 전체선형커밋을 독립후보에 통합했다. flow roots/latch/표기 아래 두 helper를 장착했고 정글 물은 정확 main4+hidden2다. 보상/저장/240초/포탈4/무리6/altar 보존, 문턱0.5, 습지 null·가짜marker 검사 완료. 미채택 본선사원 표면·조명실험은 통합하지 않았다.

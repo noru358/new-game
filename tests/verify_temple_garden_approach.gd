@@ -50,7 +50,12 @@ func _run() -> void:
 	for action in ["move_left","move_right","move_up","move_down"]:Input.action_release(action)
 	var reached:Vector2=scene.player.position
 	check(reached.distance_to(target)<4 and reached.distance_to(section.layout.ALTAR)<105,"normal input reaches permitted reward distance")
+	var hud=scene.get_node("RunFlowHudPresenter")
+	hud.refresh()
+	check(hud.objective.text.contains("안쪽 제단으로"),"unclaimed reward retains altar objective")
 	check(section.claim_garden_reward() and section.garden_claimed,"reward succeeds from southeast approach without standing in altar")
+	hud.refresh()
+	check(hud.objective.text=="정원 보상 획득 · 들어온 회랑으로 복귀","actual claim changes existing HUD line to return objective")
 	var second:bool=section.claim_garden_reward()
 	check(not second,"reward stays once per run")
 	var saved:=RunProfile.new();saved.save_prefix=scene.profile_save_prefix;saved.load_state()
@@ -58,6 +63,8 @@ func _run() -> void:
 	scene._close_awakening_receipt()
 	section.leave_garden()
 	check(scene.player.position==section.layout.RETURN_POINT and not section.in_garden,"return contract preserved")
+	hud.refresh()
+	check(not hud.objective.text.contains("정원 보상 획득"),"main-field return removes hidden reward objective")
 	var report:Dictionary={"failures":failures,"target":[target.x,target.y],"reached":[reached.x,reached.y],"distance_to_altar":reached.distance_to(section.layout.ALTAR),"normal_movement_seconds":active,"guardians":section.guardians_defeated,"claimed":section.garden_claimed,"saved_awakening":saved.awakenings.has("EMBER_GARDEN"),"scope":"normal input on final approach; synthetic guardian damage; actual reward+save+return; no natural combat/fun claim"}
 	var path:=OS.get_environment("GARDEN_APPROACH_OUTPUT")
 	if not path.is_empty():

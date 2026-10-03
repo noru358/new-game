@@ -276,8 +276,8 @@ func _update_hud() -> void:
 		section_hud.text = ("성소 교전 중" if boss_active else "성소 밖 · 보스 대기 / HP 유지") + "\n보스전 재도전 " + ("사용 완료" if retry_used else "1회 남음") + " · 출입 자유 / 보스 HP 유지"
 
 	if in_garden:
-		section_hud.text = "숨은 정원 · 수호 적 %d / 3 · 안쪽 제단으로" % guardians_defeated
-		section_hud.text += "\n들어온 문턱으로 회랑 복귀"
+		section_hud.text = "정원 보상 획득 · 들어온 회랑으로 복귀" if garden_claimed else "숨은 정원 · 수호 적 %d / 3 · 안쪽 제단으로" % guardians_defeated
+		if not garden_claimed: section_hud.text += "\n들어온 문턱으로 회랑 복귀"
 	if garden_message.contains("실패"): section_hud.text += "\n" + garden_message
 
 

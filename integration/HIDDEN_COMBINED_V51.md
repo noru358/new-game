@@ -1,3 +1,13 @@
+# BUILD v49 submission follow-up
+
+Parent accepted the20359e1 hidden place/transition candidate after exact CI37129486967 and4 representative PNGs. This accepts the next playable candidate; human final art/fun, full visibility and natural completion remain unverified. Separate temple art experiments and character work are excluded.
+
+Only follow-up product change: temple successful claim updates the existing objective line to `정원 보상 획득 · 들어온 회랑으로 복귀`. Existing approach fixture checks unclaimed→actual claim→main return HUD states. `.github/playtest-version` isv49; packaging alone sets app/title/archive version and retains sharedv45/v7 save family. Source project/player/profile/growth are unchanged. All6 development roots/import remaps remain excluded.
+
+Final commit receives whole CI and hosted Macarm64 native export before handoff. Production1aac501 remains draft PR base. No merge/canonical/main move, public release or user app/save change. Archive/hash/size/file list/strict signature and official artifact plus local verification path are returned after packaging, without committing those reports into a new untested HEAD.
+
+---
+
 # Hidden integration v51 — native candidate, exact-head CI required
 
 Source at evidence snapshot: `f0a26e8179774efa234336a105ab1e93ba137b20`; native source `a58162e514b87d40cecf5225d5af13caaedb3825`; game mounting source `a9642b033f0a5304a45b27bdef639e3be250b1a6`. Every native dependency (game scripts/scenes/shaders plus capture/inherited fixtures) is byte-identical to current source; the only later test change is the waterfall visibility fixture. Final evidence commit must receive its own full GitHub verification check. This remains an independent candidate, not a release or first-region completion.

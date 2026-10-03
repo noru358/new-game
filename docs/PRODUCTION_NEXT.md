@@ -1,5 +1,11 @@
 # 다음 제작 지시 — 첫 지역을 완성품 수준으로 묶기
 
+## BUILD v49 제출 묶음 — 부모 채택 이후
+
+히든합본20359e1 정확전체CI 성공 및 대표4PNG 검토 후 부모가 다음플레이후보로 채택했다. 제출범위는 히든장소/출입·표기와 사원보상후 귀환안내 한줄이다. 본선사원 군집/표면·조명 후속 및 캐릭터시안은 제외한다.
+
+v49 previewlabel만 갱신하며 기존v45공통v7기록과 제품게임계약을 유지한다. 관련실제보상/HUD검사→정확HEAD 전체CI·Macarm64 nativeexport→압축해제/hash/파일목록/strictcodesign/개발자료·importremap배제확인→production기준draftPR 및 공식artifact/검증로컬경로 인계 순서다. 패키지검사 후에도 사용자앱/세이브를 열지 않으며 merge/canonical/main/공개release는 부모판단이다.
+
 ## 세 lane 히든 후보 v51 — 부모 채택 판단 단계
 
 flow aa3ff60(9커밋)/temple d2abbff(4)/jungle e06a2fa(1)를 production1aac501 기준 독립합본에 장착했다. helper는 flow root/latch/표기를 따르고 물6개·보상/저장/240초·좌표·습지무히든 계약을 검사했다. 사원 본선 표면/조명실험은 미채택으로 제외했다.
