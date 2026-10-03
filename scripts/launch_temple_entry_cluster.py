@@ -35,6 +35,7 @@ def main():
     parser.add_argument("--baseline", action="store_true")
     parser.add_argument("--measure-only", action="store_true")
     parser.add_argument("--all-sizes", action="store_true")
+    parser.add_argument("--entry-only", action="store_true")
     parser.add_argument("--native-slot-granted", action="store_true")
     args = parser.parse_args()
     native = args.kind in ["walk", "combat"] and not args.measure_only
@@ -77,6 +78,7 @@ def main():
     if args.baseline: user_args.append("--temple-entry-baseline")
     if args.measure_only: user_args.append("--measure-only")
     if args.all_sizes: user_args.append("--entry-all-sizes")
+    if args.entry_only: user_args.append("--entry-only")
     if user_args: command += ["--", *user_args]
     commands.append(command)
     env = dict(os.environ, REGION_LANDMARK="temple",

@@ -38,7 +38,9 @@ func _run() -> void:
 		root.content_scale_size = Vector2i(1280,720)
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 		for i in 5: await process_frame
-		for sample in [{"name":"entry","at":Vector2(1450,1700)},{"name":"wall-shoulder","at":Vector2(1620,1370)}]:
+		var samples:Array=[{"name":"entry","at":Vector2(1450,1700)}]
+		if not OS.get_cmdline_user_args().has("--entry-only"):samples.append({"name":"wall-shoulder","at":Vector2(1620,1370)})
+		for sample in samples:
 			scene = load("res://game/temple_circuit_run.tscn").instantiate()
 			scene.profile_save_prefix = "user://combat_profile_"+sample.name+str(size.x)
 			scene.growth_save_prefix = scene.profile_save_prefix+"_unlocks"
