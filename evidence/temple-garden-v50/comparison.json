@@ -1,0 +1,239 @@
+{
+  "candidate_render_tested_sha": "11fef3d70566d5a029b68f617a52af77b0bc741d",
+  "game_sha": "b0195780aa4baef67f852aecd48d6e707e3b7e6c",
+  "strict_candidate_failed_cases": [
+    "Body visibility below98% at garden_stone",
+    "Body visibility below98% at garden_stone"
+  ],
+  "strict_baseline_failed_cases": [
+    "Body visibility below98% at 01-threshold",
+    "Player not visibly evidenced at north_pond",
+    "Body visibility below98% at north_pond",
+    "Body scenery visibility below98% at rooted_bank player_scenery_visibility",
+    "Body scenery visibility below98% at east_pond player_scenery_visibility",
+    "Body visibility below98% at garden_stone",
+    "Body visibility below98% at threshold_return",
+    "Body visibility below98% at 01-threshold",
+    "Player not visibly evidenced at north_pond",
+    "Body visibility below98% at north_pond",
+    "Body scenery visibility below98% at rooted_bank player_scenery_visibility",
+    "Body scenery visibility below98% at east_pond player_scenery_visibility",
+    "Body visibility below98% at garden_stone",
+    "Body visibility below98% at threshold_return"
+  ],
+  "body_delta_regressions_over_3_percent": [],
+  "body_samples": [
+    {
+      "name": "00-main-cloister",
+      "width": 960,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "01-threshold",
+      "width": 960,
+      "metric": "visibility",
+      "before": 0.955134596211366,
+      "after": 1.0,
+      "delta": 0.04486540378863402
+    },
+    {
+      "name": "first_fork",
+      "width": 960,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "west_pond",
+      "width": 960,
+      "metric": "player_scenery_visibility",
+      "before": 0.996842105263158,
+      "after": 0.992639327024185,
+      "delta": -0.004202778238972971
+    },
+    {
+      "name": "tended_walk",
+      "width": 960,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "north_pond",
+      "width": 960,
+      "metric": "visibility",
+      "before": 0.0,
+      "after": 1.0,
+      "delta": 1.0
+    },
+    {
+      "name": "rooted_bank",
+      "width": 960,
+      "metric": "player_scenery_visibility",
+      "before": 0.976793248945148,
+      "after": 0.9957805907173,
+      "delta": 0.018987341772152
+    },
+    {
+      "name": "east_pond",
+      "width": 960,
+      "metric": "player_scenery_visibility",
+      "before": 0.956340956340956,
+      "after": 0.998960498960499,
+      "delta": 0.04261954261954304
+    },
+    {
+      "name": "garden_stone",
+      "width": 960,
+      "metric": "visibility",
+      "before": 0.342,
+      "after": 0.342,
+      "delta": 0.0
+    },
+    {
+      "name": "north_return",
+      "width": 960,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "west_return",
+      "width": 960,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "threshold_return",
+      "width": 960,
+      "metric": "visibility",
+      "before": 0.955089820359281,
+      "after": 1.0,
+      "delta": 0.04491017964071897
+    },
+    {
+      "name": "12-main-return",
+      "width": 960,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "00-main-cloister",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 0.999437570303712,
+      "after": 0.999437570303712,
+      "delta": 0.0
+    },
+    {
+      "name": "01-threshold",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 0.958380202474691,
+      "after": 0.999437570303712,
+      "delta": 0.04105736782902103
+    },
+    {
+      "name": "first_fork",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "west_pond",
+      "width": 1280,
+      "metric": "player_scenery_visibility",
+      "before": 0.995271867612293,
+      "after": 0.988179669030733,
+      "delta": -0.007092198581560072
+    },
+    {
+      "name": "tended_walk",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "north_pond",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 0.0,
+      "after": 1.0,
+      "delta": 1.0
+    },
+    {
+      "name": "rooted_bank",
+      "width": 1280,
+      "metric": "player_scenery_visibility",
+      "before": 0.973995271867612,
+      "after": 0.986997635933806,
+      "delta": 0.013002364066193928
+    },
+    {
+      "name": "east_pond",
+      "width": 1280,
+      "metric": "player_scenery_visibility",
+      "before": 0.963200934579439,
+      "after": 0.995327102803738,
+      "delta": 0.032126168224299034
+    },
+    {
+      "name": "garden_stone",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 0.336139169472503,
+      "after": 0.336139169472503,
+      "delta": 0.0
+    },
+    {
+      "name": "north_return",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "west_return",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 1.0,
+      "after": 1.0,
+      "delta": 0.0
+    },
+    {
+      "name": "threshold_return",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 0.944319460067492,
+      "after": 0.999437253798537,
+      "delta": 0.05511779373104497
+    },
+    {
+      "name": "12-main-return",
+      "width": 1280,
+      "metric": "visibility",
+      "before": 0.999437570303712,
+      "after": 0.999437570303712,
+      "delta": 0.0
+    }
+  ],
+  "candidate_fixed_enemy_min_body": 1.0,
+  "candidate_fixed_enemy_min_tell": 1.0,
+  "candidate_player_scenery_min_with_same_tells": 0.986997635933806,
+  "scope": "No complete strict pixel PASS. Existing altar-center body occlusion identical before/after (960342/1000,1280599/1782). Other sampled bodies/tells meet thresholds. Frozen time/spawn/attacks and disconnected fixture window focus pause are not natural play. Late candidate GUI briefly overlapped parent flow capture; exact duration unmeasured. No performance verdict."
+}

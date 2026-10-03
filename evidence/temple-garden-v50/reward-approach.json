@@ -1,0 +1,17 @@
+{
+  "claimed": true,
+  "distance_to_altar": 85.4209289550781,
+  "failures": [],
+  "guardians": 3,
+  "normal_movement_seconds": 0.55,
+  "reached": [
+    8360.0,
+    540.80078125
+  ],
+  "saved_awakening": true,
+  "scope": "normal input on final approach; synthetic guardian damage; actual reward+save+return; no natural combat/fun claim",
+  "target": [
+    8360.0,
+    540.0
+  ]
+}
