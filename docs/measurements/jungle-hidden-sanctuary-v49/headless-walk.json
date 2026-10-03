@@ -1,0 +1,1648 @@
+{
+  "acceleration": false,
+  "active_walk_seconds": 80.3666666666634,
+  "engine": "4.6-stable (official)",
+  "errors": [],
+  "expected_screenshots": 0,
+  "measure_only": true,
+  "normal_input": true,
+  "region": "jungle",
+  "rejected_targets": [],
+  "render": false,
+  "resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ]
+  ],
+  "samples": [
+    {
+      "active_walk_seconds": 3.54999999999999,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "camera_error_world": 0.000367654749425128,
+        "expected_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "expected_camera_world": [
+          25.4601230621338,
+          14.2140007019043,
+          20.9731578826904
+        ]
+      },
+      "height": 540,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "01-main-waterfall",
+      "reached": [
+        1146.01232910156,
+        697.315856933594
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.533333333333332,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "camera_error_world": 0.000321133440593258,
+        "expected_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "expected_camera_world": [
+          26.9947052001953,
+          14.2140007019043,
+          20.8529243469238
+        ]
+      },
+      "height": 540,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "02-real-entrance",
+      "reached": [
+        1299.47058105469,
+        685.292419433594
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        1300.0,
+        685.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "expected_camera_world": [
+          76.8999938964844,
+          14.2140007019043,
+          40.2999992370605
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "03-hidden-arrival",
+      "reached": [
+        6290.0,
+        2630.0
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6290.0,
+        2630.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.28333333333333,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "camera_error_world": 0.000377635762561113,
+        "expected_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "expected_camera_world": [
+          81.0139846801758,
+          14.2140007019043,
+          40.3463821411133
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "04-cave-threshold",
+      "reached": [
+        6701.39892578125,
+        2634.63842773438
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6700.0,
+        2630.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.71666666666666,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "camera_error_world": 0.000333104107994586,
+        "expected_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "expected_camera_world": [
+          85.4349822998047,
+          14.2140007019043,
+          39.1652145385742
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "05-first-opening",
+      "reached": [
+        7143.49853515625,
+        2516.52172851562
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7140.0,
+        2520.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.6166666666667,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "camera_error_world": 0.000338800105964765,
+        "expected_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "expected_camera_world": [
+          88.6939697265625,
+          14.2140007019043,
+          36.8248863220215
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "06-receiving-clearing",
+      "reached": [
+        7469.39697265625,
+        2282.48876953125
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7470.0,
+        2280.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.40000000000017,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "camera_error_world": 0.000350703281583264,
+        "expected_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "expected_camera_world": [
+          88.9005508422852,
+          14.2140007019043,
+          28.2996845245361
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "07-pool-bypass",
+      "reached": [
+        7490.05517578125,
+        1429.96850585938
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7490.0,
+        1430.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.36666666666678,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "camera_error_world": 0.00032154525979422,
+        "expected_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "expected_camera_world": [
+          95.8764877319336,
+          14.2140007019043,
+          29.2768383026123
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "08-stream-turn",
+      "reached": [
+        8187.64892578125,
+        1527.68383789062
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        8190.0,
+        1530.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.73333333333328,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "camera_error_world": 0.00034638206125237,
+        "expected_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "expected_camera_world": [
+          105.904479980469,
+          14.2140007019043,
+          27.1817626953125
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "09-inner-approach",
+      "reached": [
+        9190.4482421875,
+        1318.17639160156
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        9190.0,
+        1320.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.56666666666652,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "camera_error_world": 0.00035169770126231,
+        "expected_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "expected_camera_world": [
+          111.398475646973,
+          14.2140007019043,
+          23.711498260498
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "10-shrine-lip",
+      "reached": [
+        9739.84765625,
+        971.149963378906
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        9740.0,
+        970.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 1.99999999999989,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "camera_error_world": 0.000352859497070312,
+        "expected_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "expected_camera_world": [
+          112.610336303711,
+          14.2140007019043,
+          18.3965644836426
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "11-root-sanctuary",
+      "reached": [
+        9861.0341796875,
+        439.656341552734
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        9860.0,
+        440.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.81666666666651,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "camera_error_world": 0.000316136924084276,
+        "expected_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "expected_camera_world": [
+          103.486511230469,
+          14.2140007019043,
+          18.3708305358887
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "12-west-return",
+      "reached": [
+        8948.6513671875,
+        437.083129882812
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        8950.0,
+        440.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.09999999999988,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "camera_error_world": 0.000329126807628199,
+        "expected_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "expected_camera_world": [
+          99.2953491210938,
+          14.2140007019043,
+          21.4230690002441
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "13-return-pool",
+      "reached": [
+        8529.53515625,
+        742.306945800781
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        8530.0,
+        740.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.73333333333318,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "camera_error_world": 0.000324876949889585,
+        "expected_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "expected_camera_world": [
+          90.3026809692383,
+          14.2140007019043,
+          21.4111289978027
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "14-root-passage",
+      "reached": [
+        7630.2685546875,
+        741.112854003906
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7630.0,
+        740.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.48333333333314,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "camera_error_world": 0.000321483035804704,
+        "expected_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "expected_camera_world": [
+          81.9382019042969,
+          14.2140007019043,
+          25.0088062286377
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "15-return-turn",
+      "reached": [
+        6793.8203125,
+        1100.88061523438
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6790.0,
+        1100.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.34999999999981,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "camera_error_world": 0.000328152673318982,
+        "expected_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "expected_camera_world": [
+          79.0023345947266,
+          14.2140007019043,
+          33.2022552490234
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "16-same-mouth",
+      "reached": [
+        6500.2333984375,
+        1920.22546386719
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6500.0,
+        1920.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 2.93333333333317,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "camera_error_world": 0.000331242277752608,
+        "expected_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "expected_camera_world": [
+          75.8287811279297,
+          14.2140007019043,
+          40.177921295166
+        ]
+      },
+      "height": 540,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "17-real-exit",
+      "reached": [
+        6182.87841796875,
+        2617.79223632812
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6180.0,
+        2620.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "expected_camera_world": [
+          25.5,
+          14.2140007019043,
+          21.0
+        ]
+      },
+      "height": 540,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "18-main-return",
+      "reached": [
+        1150.0,
+        700.0
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "width": 960
+    },
+    {
+      "active_walk_seconds": 3.5499999999998,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "camera_error_world": 0.000323805783409625,
+        "expected_actor_world": [
+          11.4601230621338,
+          0.0,
+          6.97315835952759
+        ],
+        "expected_camera_world": [
+          25.4601230621338,
+          14.2140007019043,
+          20.9731578826904
+        ]
+      },
+      "height": 720,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "01-main-waterfall",
+      "reached": [
+        1146.01232910156,
+        697.315856933594
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.533333333333303,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "camera_error_world": 0.000323176005622372,
+        "expected_actor_world": [
+          12.9947052001953,
+          0.0,
+          6.85292387008667
+        ],
+        "expected_camera_world": [
+          26.9947052001953,
+          14.2140007019043,
+          20.8529243469238
+        ]
+      },
+      "height": 720,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "02-real-entrance",
+      "reached": [
+        1299.47058105469,
+        685.292419433594
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        1300.0,
+        685.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          62.8999977111816,
+          0.0,
+          26.2999992370605
+        ],
+        "expected_camera_world": [
+          76.8999938964844,
+          14.2140007019043,
+          40.2999992370605
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "03-hidden-arrival",
+      "reached": [
+        6290.0,
+        2630.0
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6290.0,
+        2630.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.28333333333326,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "camera_error_world": 0.000331242277752608,
+        "expected_actor_world": [
+          67.0139846801758,
+          0.0,
+          26.3463840484619
+        ],
+        "expected_camera_world": [
+          81.0139846801758,
+          14.2140007019043,
+          40.3463821411133
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "04-cave-threshold",
+      "reached": [
+        6701.39892578125,
+        2634.63842773438
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6700.0,
+        2630.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.71666666666657,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "camera_error_world": 0.000333104107994586,
+        "expected_actor_world": [
+          71.4349822998047,
+          0.0,
+          25.1652164459229
+        ],
+        "expected_camera_world": [
+          85.4349822998047,
+          14.2140007019043,
+          39.1652145385742
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "05-first-opening",
+      "reached": [
+        7143.49853515625,
+        2516.52172851562
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7140.0,
+        2520.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.61666666666657,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "camera_error_world": 0.000338800105964765,
+        "expected_actor_world": [
+          74.6939697265625,
+          0.0,
+          22.8248863220215
+        ],
+        "expected_camera_world": [
+          88.6939697265625,
+          14.2140007019043,
+          36.8248863220215
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "06-receiving-clearing",
+      "reached": [
+        7469.39697265625,
+        2282.48876953125
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7470.0,
+        2280.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.39999999999981,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "camera_error_world": 0.000350703281583264,
+        "expected_actor_world": [
+          74.9005508422852,
+          0.0,
+          14.2996845245361
+        ],
+        "expected_camera_world": [
+          88.9005508422852,
+          14.2140007019043,
+          28.2996845245361
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "07-pool-bypass",
+      "reached": [
+        7490.05517578125,
+        1429.96850585938
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7490.0,
+        1430.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.36666666666653,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "camera_error_world": 0.00032154525979422,
+        "expected_actor_world": [
+          81.8764877319336,
+          0.0,
+          15.2768383026123
+        ],
+        "expected_camera_world": [
+          95.8764877319336,
+          14.2140007019043,
+          29.2768383026123
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "08-stream-turn",
+      "reached": [
+        8187.64892578125,
+        1527.68383789062
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        8190.0,
+        1530.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.73333333333312,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "camera_error_world": 0.00034638206125237,
+        "expected_actor_world": [
+          91.9044799804688,
+          0.0,
+          13.1817636489868
+        ],
+        "expected_camera_world": [
+          105.904479980469,
+          14.2140007019043,
+          27.1817626953125
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "09-inner-approach",
+      "reached": [
+        9190.4482421875,
+        1318.17639160156
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        9190.0,
+        1320.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.56666666666652,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "camera_error_world": 0.00035169770126231,
+        "expected_actor_world": [
+          97.3984756469727,
+          0.0,
+          9.71149921417236
+        ],
+        "expected_camera_world": [
+          111.398475646973,
+          14.2140007019043,
+          23.711498260498
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "10-shrine-lip",
+      "reached": [
+        9739.84765625,
+        971.149963378906
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        9740.0,
+        970.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 1.99999999999989,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "camera_error_world": 0.000352859497070312,
+        "expected_actor_world": [
+          98.6103363037109,
+          0.0,
+          4.39656352996826
+        ],
+        "expected_camera_world": [
+          112.610336303711,
+          14.2140007019043,
+          18.3965644836426
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "11-root-sanctuary",
+      "reached": [
+        9861.0341796875,
+        439.656341552734
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        9860.0,
+        440.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.81666666666651,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "camera_error_world": 0.000316136924084276,
+        "expected_actor_world": [
+          89.4865112304688,
+          0.0,
+          4.37083101272583
+        ],
+        "expected_camera_world": [
+          103.486511230469,
+          14.2140007019043,
+          18.3708305358887
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "12-west-return",
+      "reached": [
+        8948.6513671875,
+        437.083129882812
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        8950.0,
+        440.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.09999999999988,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "camera_error_world": 0.000329126807628199,
+        "expected_actor_world": [
+          85.2953491210938,
+          0.0,
+          7.4230694770813
+        ],
+        "expected_camera_world": [
+          99.2953491210938,
+          14.2140007019043,
+          21.4230690002441
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "13-return-pool",
+      "reached": [
+        8529.53515625,
+        742.306945800781
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        8530.0,
+        740.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.73333333333318,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "camera_error_world": 0.000324876949889585,
+        "expected_actor_world": [
+          76.3026809692383,
+          0.0,
+          7.41112852096558
+        ],
+        "expected_camera_world": [
+          90.3026809692383,
+          14.2140007019043,
+          21.4111289978027
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "14-root-passage",
+      "reached": [
+        7630.2685546875,
+        741.112854003906
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        7630.0,
+        740.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.48333333333314,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "camera_error_world": 0.000321483035804704,
+        "expected_actor_world": [
+          67.9382019042969,
+          0.0,
+          11.0088062286377
+        ],
+        "expected_camera_world": [
+          81.9382019042969,
+          14.2140007019043,
+          25.0088062286377
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "15-return-turn",
+      "reached": [
+        6793.8203125,
+        1100.88061523438
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6790.0,
+        1100.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 3.34999999999981,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "camera_error_world": 0.000328152673318982,
+        "expected_actor_world": [
+          65.0023345947266,
+          0.0,
+          19.2022533416748
+        ],
+        "expected_camera_world": [
+          79.0023345947266,
+          14.2140007019043,
+          33.2022552490234
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "16-same-mouth",
+      "reached": [
+        6500.2333984375,
+        1920.22546386719
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6500.0,
+        1920.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 2.93333333333317,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "camera_error_world": 0.000331242277752608,
+        "expected_actor_world": [
+          61.8287811279297,
+          0.0,
+          26.177921295166
+        ],
+        "expected_camera_world": [
+          75.8287811279297,
+          14.2140007019043,
+          40.177921295166
+        ]
+      },
+      "height": 720,
+      "in_hidden": true,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "17-real-exit",
+      "reached": [
+        6182.87841796875,
+        2617.79223632812
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        6180.0,
+        2620.0
+      ],
+      "width": 1280
+    },
+    {
+      "active_walk_seconds": 0.0,
+      "approach": "normal movement inputs; actual entrance/return transport only",
+      "camera_offset": [
+        14.0,
+        13.8640003204346,
+        14.0
+      ],
+      "camera_size": 9.0,
+      "follow_check": {
+        "actor_error_world": 0.0,
+        "actual_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "camera_error_world": 0.0,
+        "expected_actor_world": [
+          11.5,
+          0.0,
+          7.0
+        ],
+        "expected_camera_world": [
+          25.5,
+          14.2140007019043,
+          21.0
+        ]
+      },
+      "height": 720,
+      "in_hidden": false,
+      "move_speed": 300.0,
+      "move_speed_multiplier": 1.12,
+      "name": "18-main-return",
+      "reached": [
+        1150.0,
+        700.0
+      ],
+      "render": false,
+      "run_time_frozen": 0.0,
+      "target": [
+        1150.0,
+        700.0
+      ],
+      "width": 1280
+    }
+  ],
+  "scope": "isolated visual-walk fixture; frozen spawn/time pressure and enemy attacks; NOT natural combat or fun evidence",
+  "screenshots": [],
+  "time_scale": 1.0,
+  "wall_seconds": 111.614801
+}

@@ -16,15 +16,20 @@ const SECOND_APPROACH := Vector2(9190, 1320)
 # Fixed authored paths: stream spine, two ravines, western return passage.
 # Grid strips below only build their shared visual and collision geometry.
 const PATHS := [
-	{"width": 170.0, "points": [Vector2(6190, 2630), Vector2(7020, 2630), Vector2(7480, 2220)]},
+	{"width": 130.0, "points": [Vector2(6190, 2630), Vector2(7020, 2630), Vector2(7480, 2220)]},
 	{"width": 210.0, "points": [Vector2(7480, 2220), Vector2(8080, 2150), Vector2(8190, 1530), Vector2(8840, 1490), Vector2(9280, 970), Vector2(9740, 970), ALTAR]},
 	{"width": 155.0, "points": [Vector2(7480, 2220), Vector2(7270, 1810), Vector2(7490, 1430), Vector2(8190, 1530)]},
 	{"width": 155.0, "points": [Vector2(8840, 1490), Vector2(9260, 1960), Vector2(9680, 1670), Vector2(9740, 970)]},
 	{"width": 140.0, "points": [ALTAR, Vector2(8950, 440), Vector2(8530, 740), Vector2(7630, 740), Vector2(6790, 1100), Vector2(6500, 1920), FIELD_ENTRY]},
 ]
 const CLEARINGS := [Rect2(7300, 2060, 880, 440), Rect2(8920, 1640, 550, 450), Rect2(9520, 220, 530, 430)]
-const POOLS := [Rect2(7450, 1650, 430, 380), Rect2(8970, 1090, 390, 370), Rect2(8280, 930, 570, 350)]
+const POOLS := [Rect2(7450, 1650, 430, 380), Rect2(8970, 1090, 390, 370), Rect2(8280, 930, 570, 350), Rect2(6300, 2740, 740, 100), Rect2(7040, 2600, 560, 240)]
 const LANDMARKS := [Vector2(7480, 2220), Vector2(7490, 1430), Vector2(9260, 1960), Vector2(8530, 740), ALTAR]
+const CAVE_SHOULDER := Rect2(6700, 2320, 280, 140)
+const SANCTUARY_BACK := Rect2(9480, 80, 560, 140)
+# Existing field/encounters remain a small separate place, with a short threshold
+# opening onto the receiving pool; the western loop leads back to that threshold.
+const PLACE_VIEWS := [Vector2(6700, 2630), Vector2(7140, 2520), FIRST_APPROACH, Vector2(8190, 1530), SECOND_APPROACH, Vector2(9740, 970), ALTAR, Vector2(8530, 740), Vector2(6500, 1920)]
 
 
 static func _walkable(point: Vector2) -> bool:
@@ -82,6 +87,7 @@ static func install(terrain) -> void:
 	for rect in [Rect2(6000, 80, 4200, 40), Rect2(6000, 2840, 4200, 40), Rect2(6000, 80, 40, 2800), Rect2(10160, 80, 40, 2800)]:
 		terrain.wall_areas.append({"area": rect, "base": 0.0, "height": 175.0, "color": Color("375a50"), "discovery_id": "JUNGLE_GROTTO"})
 	terrain.wall_areas.append({"area": Rect2(5600, 0, 400, 3000), "base": 0.0, "height": 200.0, "visual": false})
+	preload("res://game/jungle_hidden_terrain.gd").install(terrain)
 
 
 static func surface_name(point: Vector2) -> String:

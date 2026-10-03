@@ -1,0 +1,69 @@
+{
+  "variant": "candidate",
+  "engine": "4.6.stable.official.89cea1439",
+  "results": [
+    {
+      "name": "import",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 2.181,
+      "passed": true
+    },
+    {
+      "name": "parse_hidden_fixture",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 0.238,
+      "passed": true
+    },
+    {
+      "name": "parse_walk_fixture",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 0.237,
+      "passed": true
+    },
+    {
+      "name": "verify_jungle_hidden_sanctuary",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 2.368,
+      "passed": true
+    },
+    {
+      "name": "verify_jungle_section",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 2.413,
+      "passed": true
+    },
+    {
+      "name": "verify_jungle_south_circuit",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 2.289,
+      "passed": true
+    },
+    {
+      "name": "verify_jungle_route",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 1.477,
+      "passed": true
+    },
+    {
+      "name": "verify_jungle_waterfall_visibility",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 4.791,
+      "passed": true
+    },
+    {
+      "name": "verify_terrain_coherence",
+      "exit_code": 0,
+      "errors": false,
+      "seconds": 7.434,
+      "passed": true
+    }
+  ]
+}

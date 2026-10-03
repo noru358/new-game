@@ -1,0 +1,787 @@
+{
+  "count": 194,
+  "total_bytes": 11649389,
+  "revisions": {
+    "baseline": "unchanged pinned source84PNG",
+    "prior-candidate": "earlier completed36point run84PNG; previous bank geometry",
+    "candidate": "exact final source incomplete26PNG,first10points at960"
+  },
+  "pngs": {
+    "baseline/01-main-waterfall-1280.png": {
+      "bytes": 132013,
+      "sha256": "6396c6fe7affd508e0111bbd2f42deb7e26bd7bd973f8d76ce8c50dd2f5a5680"
+    },
+    "baseline/01-main-waterfall-960.png": {
+      "bytes": 95705,
+      "sha256": "b35ce918ce14dbb638e3a602156faa3c7758f2068b7c949b323d5f1f9dabc392"
+    },
+    "baseline/01-main-waterfall-reference-1280.png": {
+      "bytes": 33455,
+      "sha256": "6e8fe6ce592e6b4fcadc0d17b2a9d33ab3c8913237d235be84692c5858cf7c82"
+    },
+    "baseline/01-main-waterfall-reference-960.png": {
+      "bytes": 28109,
+      "sha256": "5ef2884b7f0696b8be127c6ea94d959cfa74da2f23e59f5224baa1066c5297b3"
+    },
+    "baseline/02-real-entrance-1280.png": {
+      "bytes": 129506,
+      "sha256": "3136f507e50304f7ce414f1d0bcc9c281dc57510d02136e2d3864ebc5c958543"
+    },
+    "baseline/02-real-entrance-960.png": {
+      "bytes": 94757,
+      "sha256": "f65e6d788a51ccdaddfe69a5f34a3fa186aa39c4dec4167c833fdcbc7293994d"
+    },
+    "baseline/02-real-entrance-reference-1280.png": {
+      "bytes": 33461,
+      "sha256": "d79c7bbb120fd208d9869ca883ef4b4a844edcb0f8fac762e03c2ed5bbc214a4"
+    },
+    "baseline/02-real-entrance-reference-960.png": {
+      "bytes": 28105,
+      "sha256": "546d1837d9eb978d1eaa06b1f39895fa76634600ec5e77a573dd49f3d461c77c"
+    },
+    "baseline/03-hidden-arrival-1280.png": {
+      "bytes": 104696,
+      "sha256": "3cacd3585e95c586632e0300595e0eb45c8b7ab98d2ac6ddda81325354d225a1"
+    },
+    "baseline/03-hidden-arrival-960.png": {
+      "bytes": 79285,
+      "sha256": "311010760638771d5f93519c6d9e983331d23da13ca0f3f278cfe7cf40c49211"
+    },
+    "baseline/03-hidden-arrival-reference-1280.png": {
+      "bytes": 37966,
+      "sha256": "7c18aed4c6dc3bd21b2e696764c1b445d7e9d44327f51861e86aed155d7aeb4a"
+    },
+    "baseline/03-hidden-arrival-reference-960.png": {
+      "bytes": 33055,
+      "sha256": "27db5eb627b90e4dafd52379437dea8d0583af00c46663f6df0a7c74bcdfc8e5"
+    },
+    "baseline/04-cave-threshold-1280.png": {
+      "bytes": 118917,
+      "sha256": "0333d2312bf82fb103da69aad0d6c554f3767702644ee5fcb94dcc0dcd3230fb"
+    },
+    "baseline/04-cave-threshold-960.png": {
+      "bytes": 89861,
+      "sha256": "e3c992af9abf53be0537d95dfe462ba8f4952f20233d064f88a538e2a10c07c0"
+    },
+    "baseline/04-cave-threshold-reference-1280.png": {
+      "bytes": 38301,
+      "sha256": "99405ac528012e7a4f3a1d567908709716387c68697d6db3f667740ca46996b6"
+    },
+    "baseline/04-cave-threshold-reference-960.png": {
+      "bytes": 33235,
+      "sha256": "fdcf8c30187c4926122219a7d71588c399aac780bd2d13d08df61b9d1fb99dc2"
+    },
+    "baseline/05-first-opening-1280.png": {
+      "bytes": 125727,
+      "sha256": "ac5de1912da29f34dae81870b9faa3c40f590263aaa4ef93b95923be60b3801b"
+    },
+    "baseline/05-first-opening-960.png": {
+      "bytes": 96392,
+      "sha256": "1d48c7c3bc1d7b673db0d95087bc2333dc5745ddf0a06436a108bd6b59d0b374"
+    },
+    "baseline/05-first-opening-reference-1280.png": {
+      "bytes": 38325,
+      "sha256": "32fe58f03319d1c65e9a9471aa338d8fc9928dda6d86ea492ac737198c9d915b"
+    },
+    "baseline/05-first-opening-reference-960.png": {
+      "bytes": 33221,
+      "sha256": "f4b40343fd840e96ce55b8db4b60ac7818019e65226b1f7648b5d0e5219f46bf"
+    },
+    "baseline/06-receiving-clearing-1280.png": {
+      "bytes": 141502,
+      "sha256": "657ab3fc5c2ff93cb54905a8afebd8d9653113455b6ab4d3fec51d5fd09e1342"
+    },
+    "baseline/06-receiving-clearing-960.png": {
+      "bytes": 105614,
+      "sha256": "97156fd8e5fde500f557c09bee27648fdb31cdd7c7402aad9b24e606b00e6c44"
+    },
+    "baseline/06-receiving-clearing-enemy-reference-1280.png": {
+      "bytes": 42323,
+      "sha256": "e8f3fa3c6d52c9ceda5b2b21fafe13c17af221e8793c2ff7c778640e25fb4591"
+    },
+    "baseline/06-receiving-clearing-enemy-reference-960.png": {
+      "bytes": 35664,
+      "sha256": "72d7da8b7805d2bc62a039cde7dddb8d38e02aecbe1adc2a00ab1be4403d834f"
+    },
+    "baseline/06-receiving-clearing-reference-1280.png": {
+      "bytes": 38464,
+      "sha256": "0be8f0f71ac094f24db45d7edde0e3951d18ea6bb5b1314548680a8dea5f88dc"
+    },
+    "baseline/06-receiving-clearing-reference-960.png": {
+      "bytes": 33327,
+      "sha256": "ba27e466a2890d6752b047216704011e7310d08c1bf7ab799810bf8b60b90722"
+    },
+    "baseline/06-receiving-clearing-same-fx-player-reference-1280.png": {
+      "bytes": 42323,
+      "sha256": "e8f3fa3c6d52c9ceda5b2b21fafe13c17af221e8793c2ff7c778640e25fb4591"
+    },
+    "baseline/06-receiving-clearing-same-fx-player-reference-960.png": {
+      "bytes": 35664,
+      "sha256": "72d7da8b7805d2bc62a039cde7dddb8d38e02aecbe1adc2a00ab1be4403d834f"
+    },
+    "baseline/06-receiving-clearing-tell-reference-1280.png": {
+      "bytes": 42323,
+      "sha256": "e8f3fa3c6d52c9ceda5b2b21fafe13c17af221e8793c2ff7c778640e25fb4591"
+    },
+    "baseline/06-receiving-clearing-tell-reference-960.png": {
+      "bytes": 35664,
+      "sha256": "72d7da8b7805d2bc62a039cde7dddb8d38e02aecbe1adc2a00ab1be4403d834f"
+    },
+    "baseline/07-pool-bypass-1280.png": {
+      "bytes": 132690,
+      "sha256": "6059183b2a14fc4c1a55651dee7b72aef5da5aee9adee614f88ad75d1abf8afe"
+    },
+    "baseline/07-pool-bypass-960.png": {
+      "bytes": 98345,
+      "sha256": "33f0cb857ce3c3253f9e3bd6e288032db174e929457a68471165f7eea981bcec"
+    },
+    "baseline/07-pool-bypass-reference-1280.png": {
+      "bytes": 38094,
+      "sha256": "bff2f3bf90e2e2b8eb756c005e6072756fb2b73b92a557c85845331f9643846a"
+    },
+    "baseline/07-pool-bypass-reference-960.png": {
+      "bytes": 33203,
+      "sha256": "3b7bcaec8800a841bb83dfde0b3f9867fd42bb606b695da296406a1d8239b878"
+    },
+    "baseline/08-stream-turn-1280.png": {
+      "bytes": 132616,
+      "sha256": "4a36a4be802e9d6f36875d3752ae66acfd143ff56ad86e6492ee91bfe765280b"
+    },
+    "baseline/08-stream-turn-960.png": {
+      "bytes": 97676,
+      "sha256": "07eb5cc72c2bb2d5365e0311daa63c8edc23eaadb832678dcbdf7169a2168dde"
+    },
+    "baseline/08-stream-turn-reference-1280.png": {
+      "bytes": 38366,
+      "sha256": "dcfc48abcf15f4f7e833d8f7ac8a42d59a0e1af92f74b59a9a3bdf01c3a81ace"
+    },
+    "baseline/08-stream-turn-reference-960.png": {
+      "bytes": 33319,
+      "sha256": "cf0c18ddf87f01137266acf4e304dd2a8b38bf4d96d5987f391104e7dd43ad05"
+    },
+    "baseline/09-inner-approach-1280.png": {
+      "bytes": 131978,
+      "sha256": "64670b59977afdcff7889af0b2f701152f6b9f032f9c388f1cdb9852d231bfad"
+    },
+    "baseline/09-inner-approach-960.png": {
+      "bytes": 96389,
+      "sha256": "45390cdf72de157aed8cd61004642739ae2a10a3e220afbffc5c6d3d262456f9"
+    },
+    "baseline/09-inner-approach-reference-1280.png": {
+      "bytes": 38387,
+      "sha256": "2922ea57d5afde6de86a12d3918c4ee1ca31467f39543b2237bf33ad333ed7b6"
+    },
+    "baseline/09-inner-approach-reference-960.png": {
+      "bytes": 33153,
+      "sha256": "2d1c288c3ac1407d6347a9bd4519fee3e4415ed8b2dfc0909ba1b5ef28d20caa"
+    },
+    "baseline/10-shrine-lip-1280.png": {
+      "bytes": 113416,
+      "sha256": "f5e494788c3440f3a59a6f1d16d6fa89e3bca609b77714fee7310c6fb28a4f63"
+    },
+    "baseline/10-shrine-lip-960.png": {
+      "bytes": 84956,
+      "sha256": "486bce6b8b54defed928bbfeb1ae454e8d0e26acbb2c8818248d1f5bedd5a511"
+    },
+    "baseline/10-shrine-lip-enemy-reference-1280.png": {
+      "bytes": 42628,
+      "sha256": "16624a8fa45adeecac6f8401d97c591c3fd3e75dd3a92bc387f00c6846f0dbad"
+    },
+    "baseline/10-shrine-lip-enemy-reference-960.png": {
+      "bytes": 35775,
+      "sha256": "d9cc3a9dd0947df638b17a4d38cbb56262639689531e84e45e2da52a01569bf4"
+    },
+    "baseline/10-shrine-lip-reference-1280.png": {
+      "bytes": 38361,
+      "sha256": "dad62dc97c48af2e8c28d69ccd4dc69463160421fc3e7736aca1ec42d97dcb3f"
+    },
+    "baseline/10-shrine-lip-reference-960.png": {
+      "bytes": 33156,
+      "sha256": "782b5dbc4dd31cc7a318e9ec5bcee1ff782c16190de0a3e53778d532f0931fa4"
+    },
+    "baseline/10-shrine-lip-same-fx-player-reference-1280.png": {
+      "bytes": 42628,
+      "sha256": "16624a8fa45adeecac6f8401d97c591c3fd3e75dd3a92bc387f00c6846f0dbad"
+    },
+    "baseline/10-shrine-lip-same-fx-player-reference-960.png": {
+      "bytes": 35775,
+      "sha256": "d9cc3a9dd0947df638b17a4d38cbb56262639689531e84e45e2da52a01569bf4"
+    },
+    "baseline/10-shrine-lip-tell-reference-1280.png": {
+      "bytes": 42628,
+      "sha256": "16624a8fa45adeecac6f8401d97c591c3fd3e75dd3a92bc387f00c6846f0dbad"
+    },
+    "baseline/10-shrine-lip-tell-reference-960.png": {
+      "bytes": 35775,
+      "sha256": "d9cc3a9dd0947df638b17a4d38cbb56262639689531e84e45e2da52a01569bf4"
+    },
+    "baseline/11-root-sanctuary-1280.png": {
+      "bytes": 98099,
+      "sha256": "fe9a895586018a8cb37308e3103e3fcb80bed7ba12bc8945d01ce15db4669b1e"
+    },
+    "baseline/11-root-sanctuary-960.png": {
+      "bytes": 74032,
+      "sha256": "8778f4214a36b09fe44c769f48a93bd3c7c72ec142c25c9bb07072183f929694"
+    },
+    "baseline/11-root-sanctuary-reference-1280.png": {
+      "bytes": 38243,
+      "sha256": "50997d9da9a5a849f48635140ed844e1ab73d3250411afeb0c8663a1d3bfeca9"
+    },
+    "baseline/11-root-sanctuary-reference-960.png": {
+      "bytes": 33033,
+      "sha256": "b54b21347a6f0ede984fe77e4b61b0397f77d003232553958f03ad17d6b5f7f1"
+    },
+    "baseline/12-west-return-1280.png": {
+      "bytes": 137877,
+      "sha256": "1bc9b1b4d442f7c5850e01cbec92d7c3cb41035e5ed26cfe90955f2bc4aa0e94"
+    },
+    "baseline/12-west-return-960.png": {
+      "bytes": 99592,
+      "sha256": "5292812ed9030aab02ac64ee6daa8578451ccc00e2d5083b5a918ea60c6589c3"
+    },
+    "baseline/12-west-return-reference-1280.png": {
+      "bytes": 38387,
+      "sha256": "85d83544b5e3e8f00482ef8fa372244a187b3b60da3ebae20b8b19db2b52fc31"
+    },
+    "baseline/12-west-return-reference-960.png": {
+      "bytes": 33230,
+      "sha256": "e778e42cf789e8282c2d1b929e6bfcc963a44b2b9379097ebe2cb85e03a11ff8"
+    },
+    "baseline/13-return-pool-1280.png": {
+      "bytes": 147991,
+      "sha256": "8aa62068b0220e95eae1e59a4e5f3970ff7661664a8ad37789cffb4b70906d09"
+    },
+    "baseline/13-return-pool-960.png": {
+      "bytes": 109294,
+      "sha256": "fd08ae322d4d49e96926b3d98b23c1e64eea6f8cfaa3eeb222e8f9b03373260f"
+    },
+    "baseline/13-return-pool-reference-1280.png": {
+      "bytes": 38313,
+      "sha256": "83ae7369f807fc27d68ac015ce1677e9e08aeb5d89e5de87df31fe295ccdd12d"
+    },
+    "baseline/13-return-pool-reference-960.png": {
+      "bytes": 33285,
+      "sha256": "e9ad767798d8ff299dd2a4ee089c08d12eaf0b9f80c8e7296299d2dabbe7153d"
+    },
+    "baseline/14-root-passage-1280.png": {
+      "bytes": 151513,
+      "sha256": "52ccd4e04a98febbf34e943909a1b4d1d46bfc48f1f28b176cf616b5bad33b80"
+    },
+    "baseline/14-root-passage-960.png": {
+      "bytes": 111132,
+      "sha256": "a87757d83025a72a47dabf38cb94e54f8dce66965908b42415599b9b7c8e1f53"
+    },
+    "baseline/14-root-passage-reference-1280.png": {
+      "bytes": 38062,
+      "sha256": "4a529fc9c8569bd649a7576221bff091d96cd0f97f7e94ff1201de5931b777b1"
+    },
+    "baseline/14-root-passage-reference-960.png": {
+      "bytes": 33167,
+      "sha256": "1302962e0484b9e3b028e2a78f80df0c0af6a78231fb3d24ead7f601f41a7530"
+    },
+    "baseline/15-return-turn-1280.png": {
+      "bytes": 153006,
+      "sha256": "1f3056cb48d70f2dd6599352c0c10b67e5d48cd90d2bf1489d2f918989e7cef7"
+    },
+    "baseline/15-return-turn-960.png": {
+      "bytes": 112836,
+      "sha256": "72d48e88dedd303337b8cfb2fdd12fa98024971cb7816a1e73439d584c8ca07d"
+    },
+    "baseline/15-return-turn-reference-1280.png": {
+      "bytes": 37875,
+      "sha256": "a347929d5f6937a50291ab725fba26caa37b93112527312a5b18c85d9fb9a550"
+    },
+    "baseline/15-return-turn-reference-960.png": {
+      "bytes": 33086,
+      "sha256": "be2266d006ef6674ee61c156c5a6e785e463aa0bfedfa32b72fa4aaab9575d90"
+    },
+    "baseline/16-same-mouth-1280.png": {
+      "bytes": 141683,
+      "sha256": "a5bdde54fea5577af103e5a42a4a20d55830c86f152b4dfbaff2c6ecce926cc6"
+    },
+    "baseline/16-same-mouth-960.png": {
+      "bytes": 103142,
+      "sha256": "86417c5c11f150beb8c7c3a63cf4833fd91cedc01262ffbb9c87a16391527e54"
+    },
+    "baseline/16-same-mouth-reference-1280.png": {
+      "bytes": 37984,
+      "sha256": "7c0f154b9048f303d27912981382e83e38517b36bcde83ea8659657c7f335fe3"
+    },
+    "baseline/16-same-mouth-reference-960.png": {
+      "bytes": 33103,
+      "sha256": "551b14041663dfa6a0df0851f93dcb05a0e6cbf156d2b02cc5cea019727b59ac"
+    },
+    "baseline/17-real-exit-1280.png": {
+      "bytes": 99694,
+      "sha256": "8b8bf20fa20caae6ad42ec8289b0bb9dbec93d19b8c671f77e70c17182f33558"
+    },
+    "baseline/17-real-exit-960.png": {
+      "bytes": 75564,
+      "sha256": "c503daa2aebe56f5fc04fa40a52611892d99c8b9c7afce30b5755d2424307826"
+    },
+    "baseline/17-real-exit-reference-1280.png": {
+      "bytes": 37930,
+      "sha256": "a41dfdf833fc4c56b3abcec78347018640ab472bafae872e47e85abb8976a103"
+    },
+    "baseline/17-real-exit-reference-960.png": {
+      "bytes": 32980,
+      "sha256": "6d0b6e757965bb59bdb37aa4ba4b0756d23766d5d052d7d837482ca3b5733420"
+    },
+    "baseline/18-main-return-1280.png": {
+      "bytes": 132249,
+      "sha256": "4f8b0c507bdc3836a1e6807b62b798112e17bc8915a421df448d2a5eacd49cf0"
+    },
+    "baseline/18-main-return-960.png": {
+      "bytes": 95826,
+      "sha256": "c7d9923ec7434718c6cbf7f9fa4bfa301572c49c8428fde4e7b33f93ce0b7fab"
+    },
+    "baseline/18-main-return-reference-1280.png": {
+      "bytes": 33834,
+      "sha256": "0430c3ef85b03e2a19f5032e4c4ca692a80e6531dc0f21bb1b5edc70c041df60"
+    },
+    "baseline/18-main-return-reference-960.png": {
+      "bytes": 28507,
+      "sha256": "55c83d5d75b83116dd57754da67d7eee81a37e427dcae391071593914dc7aa06"
+    },
+    "prior-candidate/01-main-waterfall-1280.png": {
+      "bytes": 132040,
+      "sha256": "3f91933ee26462ca22b2241c30953f1a09bbaf3d8104eaf6f8dbdd7e82f95fc4"
+    },
+    "prior-candidate/01-main-waterfall-960.png": {
+      "bytes": 95878,
+      "sha256": "fa20c4b92a21787d33ec78128d2f9e6f3c2ff7bda73bfe8f2f2f8fd0cc8965b3"
+    },
+    "prior-candidate/01-main-waterfall-reference-1280.png": {
+      "bytes": 33457,
+      "sha256": "edcd7ed51091a4ff35d24cb72b6cd619855ef30c8d3877d4cf94c09854eb6403"
+    },
+    "prior-candidate/01-main-waterfall-reference-960.png": {
+      "bytes": 28109,
+      "sha256": "5ef2884b7f0696b8be127c6ea94d959cfa74da2f23e59f5224baa1066c5297b3"
+    },
+    "prior-candidate/02-real-entrance-1280.png": {
+      "bytes": 129453,
+      "sha256": "d1182bfb70fe7bbda2b96d84770b076d8328bf48518fabb961499fde92b090d8"
+    },
+    "prior-candidate/02-real-entrance-960.png": {
+      "bytes": 94712,
+      "sha256": "33093d3fc93f5864147935f96b0c7dcfb3f2f178ab7163622dc9c986f27973ba"
+    },
+    "prior-candidate/02-real-entrance-reference-1280.png": {
+      "bytes": 33460,
+      "sha256": "1ac673f7937e7eb0f8136be3f942666c743a160d9827c260f3d13069cb865069"
+    },
+    "prior-candidate/02-real-entrance-reference-960.png": {
+      "bytes": 28102,
+      "sha256": "55577efebff5851bf3f1d5fa56f71326741aae17d077d3ef93ef68c53e9a02e8"
+    },
+    "prior-candidate/03-hidden-arrival-1280.png": {
+      "bytes": 73427,
+      "sha256": "f4c801dacf8c95ba896983612e146e6b4fe0447305a99ca350bf609b7b19d07a"
+    },
+    "prior-candidate/03-hidden-arrival-960.png": {
+      "bytes": 58397,
+      "sha256": "63cb7ea9ad7d0e122b32eb67ac367a2e5679d975e7be9798cbcf3c8bd005643c"
+    },
+    "prior-candidate/03-hidden-arrival-reference-1280.png": {
+      "bytes": 38011,
+      "sha256": "4dd7bc28818676e2c97ec77f65f6c95c352ac623968399aeb101f11fd94de895"
+    },
+    "prior-candidate/03-hidden-arrival-reference-960.png": {
+      "bytes": 32918,
+      "sha256": "fa73262207c9a799c4737765b1cd4c2f6588929134c7a130c13d12b31eb120da"
+    },
+    "prior-candidate/04-cave-threshold-1280.png": {
+      "bytes": 81525,
+      "sha256": "c39854c916ff6185dc456734edfcf9bf5032ab1b1c707f370b17628920107b9a"
+    },
+    "prior-candidate/04-cave-threshold-960.png": {
+      "bytes": 65097,
+      "sha256": "87d1334ff9abca26e28265130534b5961a82bd7ec4b43792efca254ba1bd38b8"
+    },
+    "prior-candidate/04-cave-threshold-reference-1280.png": {
+      "bytes": 38250,
+      "sha256": "2adadf90877f9ce0b9196047582adf880936bed75980d3be5eb3f081642b3679"
+    },
+    "prior-candidate/04-cave-threshold-reference-960.png": {
+      "bytes": 33154,
+      "sha256": "67b7a7041caee5543302ed2170083102f8b642789d86552b3dc1c768dfedee8c"
+    },
+    "prior-candidate/05-first-opening-1280.png": {
+      "bytes": 91309,
+      "sha256": "d20f6d83207337b1b84826fa4b9dcdc8b144312c6572dc7ad2383f037a54fc46"
+    },
+    "prior-candidate/05-first-opening-960.png": {
+      "bytes": 71597,
+      "sha256": "34d18344cad30b32cccabb62eeaaf06e622fe4b15e8a22b5949b0355d83aad13"
+    },
+    "prior-candidate/05-first-opening-reference-1280.png": {
+      "bytes": 38304,
+      "sha256": "2ddc787eb66956f43f7be1eb141eb34667a2771a55da13a9b6f0dadce32cf1af"
+    },
+    "prior-candidate/05-first-opening-reference-960.png": {
+      "bytes": 33157,
+      "sha256": "d0d115e47f0b061052a12b12cafeda8d9f2f3ca961b91e2a5575b74f8fc6d922"
+    },
+    "prior-candidate/06-receiving-clearing-1280.png": {
+      "bytes": 98214,
+      "sha256": "99ced1e1a00143d1166be3fd20ba8f3b27e4076c8ea9504922efd44e65377394"
+    },
+    "prior-candidate/06-receiving-clearing-960.png": {
+      "bytes": 75631,
+      "sha256": "5fe163fb65931cb1d4f2a7918ad2da63480a7052d1c1a91b2c641e57f68c726e"
+    },
+    "prior-candidate/06-receiving-clearing-enemy-reference-1280.png": {
+      "bytes": 42249,
+      "sha256": "6daba1191aec2516692d3b04ac53f214f4003bcb796852938ec8354f20a95956"
+    },
+    "prior-candidate/06-receiving-clearing-enemy-reference-960.png": {
+      "bytes": 35508,
+      "sha256": "d1abff5f387a163791481bc6276c68d6c51faec627bede022da4a9387ec99072"
+    },
+    "prior-candidate/06-receiving-clearing-reference-1280.png": {
+      "bytes": 38328,
+      "sha256": "77d9efb47fe0abfe3fc16b9cf360ab146126d5a3f1c0b704f9bcd4dab9ad9313"
+    },
+    "prior-candidate/06-receiving-clearing-reference-960.png": {
+      "bytes": 33131,
+      "sha256": "d1de61d9ffb9e5c7cdc4766a09df743d2fa0045b59568a886662c2dec3a57a68"
+    },
+    "prior-candidate/06-receiving-clearing-same-fx-player-reference-1280.png": {
+      "bytes": 42249,
+      "sha256": "6daba1191aec2516692d3b04ac53f214f4003bcb796852938ec8354f20a95956"
+    },
+    "prior-candidate/06-receiving-clearing-same-fx-player-reference-960.png": {
+      "bytes": 35508,
+      "sha256": "d1abff5f387a163791481bc6276c68d6c51faec627bede022da4a9387ec99072"
+    },
+    "prior-candidate/06-receiving-clearing-tell-reference-1280.png": {
+      "bytes": 42249,
+      "sha256": "6daba1191aec2516692d3b04ac53f214f4003bcb796852938ec8354f20a95956"
+    },
+    "prior-candidate/06-receiving-clearing-tell-reference-960.png": {
+      "bytes": 35508,
+      "sha256": "d1abff5f387a163791481bc6276c68d6c51faec627bede022da4a9387ec99072"
+    },
+    "prior-candidate/07-pool-bypass-1280.png": {
+      "bytes": 83529,
+      "sha256": "2fbb8c8d8887de1898d30d7e130158d55a61a1f4d3cdae53811b52c2980d7a77"
+    },
+    "prior-candidate/07-pool-bypass-960.png": {
+      "bytes": 66187,
+      "sha256": "7b8eb54994c0416dd45a4a479e495b36606555d45b1dc195a6232e3bac483bed"
+    },
+    "prior-candidate/07-pool-bypass-reference-1280.png": {
+      "bytes": 38120,
+      "sha256": "3d9ed4916a40baa67392a2fd0a2d54b8a2abbb852c998cf8816ecbef7adbfe12"
+    },
+    "prior-candidate/07-pool-bypass-reference-960.png": {
+      "bytes": 33124,
+      "sha256": "446776e4853e552aaf0203482a4bf6babc5a5ffe6a1b6428c0654fcdf9be7d85"
+    },
+    "prior-candidate/08-stream-turn-1280.png": {
+      "bytes": 76630,
+      "sha256": "f0674039d0147c11aa1b6f56153e0163ef9107819d554fff937647f9fbcb0566"
+    },
+    "prior-candidate/08-stream-turn-960.png": {
+      "bytes": 60453,
+      "sha256": "dbdff8755e8888f4a48c515980c714875355527c86191bb2e71900aa1e1fd757"
+    },
+    "prior-candidate/08-stream-turn-reference-1280.png": {
+      "bytes": 38288,
+      "sha256": "bb932b6e4b9a3458d3907061f72e6dc4e30e1ef49c384a9dd5ce33e5ebc9ffa0"
+    },
+    "prior-candidate/08-stream-turn-reference-960.png": {
+      "bytes": 33151,
+      "sha256": "9bfc8624b748c9d467799f036f6ee0d31f1d5ad41cf0f3bed69cbd63bcf48242"
+    },
+    "prior-candidate/09-inner-approach-1280.png": {
+      "bytes": 73830,
+      "sha256": "0c4a9f18409e113568cc5c278179e0d60eebccf0616cb12e694db308ca6081d7"
+    },
+    "prior-candidate/09-inner-approach-960.png": {
+      "bytes": 58007,
+      "sha256": "445d90b902c4860d27c5e7affec79503cb392f52e6f9e9daffae2929aa23d7ab"
+    },
+    "prior-candidate/09-inner-approach-reference-1280.png": {
+      "bytes": 38285,
+      "sha256": "59ee748bf4062c45de0bd2d01c30ada94e1c7c7ab3c6727b01254f86a7506f74"
+    },
+    "prior-candidate/09-inner-approach-reference-960.png": {
+      "bytes": 33056,
+      "sha256": "00e1b7ff97113c3889f5080978b9593aaf2a7fd2e996ad44e05a1a0d004865f8"
+    },
+    "prior-candidate/10-shrine-lip-1280.png": {
+      "bytes": 82766,
+      "sha256": "9a33ef389e5dd32c3c312a0dd9f5640dadd2895470af54f0db7c29e159aca4fe"
+    },
+    "prior-candidate/10-shrine-lip-960.png": {
+      "bytes": 64863,
+      "sha256": "67c2e77812d611912887e34611b269a2d3fe66ff34c18dc876b6a57b9bc089c2"
+    },
+    "prior-candidate/10-shrine-lip-enemy-reference-1280.png": {
+      "bytes": 42494,
+      "sha256": "36d3f2373543bda72c003dd11b5b53f9cc2582239d52af936c5810e7703fafe9"
+    },
+    "prior-candidate/10-shrine-lip-enemy-reference-960.png": {
+      "bytes": 35721,
+      "sha256": "d322c1e7110e8628c4a90eb4b34ddc4589d70a82bdf7e298fc8a29a5eaace57f"
+    },
+    "prior-candidate/10-shrine-lip-reference-1280.png": {
+      "bytes": 38230,
+      "sha256": "c002b0b4a9476a9391d2dfd1c90c0a1248e2b5a3bd6fc544bee37d0e59aa81b9"
+    },
+    "prior-candidate/10-shrine-lip-reference-960.png": {
+      "bytes": 33094,
+      "sha256": "9ed3dbe179affa4f94dd7cdc42b2864c29a330a5776dd6f194bb813ac7051f54"
+    },
+    "prior-candidate/10-shrine-lip-same-fx-player-reference-1280.png": {
+      "bytes": 42494,
+      "sha256": "36d3f2373543bda72c003dd11b5b53f9cc2582239d52af936c5810e7703fafe9"
+    },
+    "prior-candidate/10-shrine-lip-same-fx-player-reference-960.png": {
+      "bytes": 35721,
+      "sha256": "d322c1e7110e8628c4a90eb4b34ddc4589d70a82bdf7e298fc8a29a5eaace57f"
+    },
+    "prior-candidate/10-shrine-lip-tell-reference-1280.png": {
+      "bytes": 42494,
+      "sha256": "36d3f2373543bda72c003dd11b5b53f9cc2582239d52af936c5810e7703fafe9"
+    },
+    "prior-candidate/10-shrine-lip-tell-reference-960.png": {
+      "bytes": 35721,
+      "sha256": "d322c1e7110e8628c4a90eb4b34ddc4589d70a82bdf7e298fc8a29a5eaace57f"
+    },
+    "prior-candidate/11-root-sanctuary-1280.png": {
+      "bytes": 73478,
+      "sha256": "7c1c08b758878329e4248fbbb4e9e31fc8b8a7b2af1f8cc74978654afa83ed03"
+    },
+    "prior-candidate/11-root-sanctuary-960.png": {
+      "bytes": 57851,
+      "sha256": "fd3f1b01514e906187f7cd761a4145f35a341e67b481e7303beb77974d75f5d2"
+    },
+    "prior-candidate/11-root-sanctuary-reference-1280.png": {
+      "bytes": 38034,
+      "sha256": "61c9d724c2d43ffa83809edffae4e2f0c1b1dd7df2439174dceedf5f85868336"
+    },
+    "prior-candidate/11-root-sanctuary-reference-960.png": {
+      "bytes": 32862,
+      "sha256": "6a6ca6907c9c4229c79d23b61602552be9f2bfc6cc9c7e6cfa271ac02fe04fbd"
+    },
+    "prior-candidate/12-west-return-1280.png": {
+      "bytes": 87137,
+      "sha256": "16bd9da32eeeecc700cff1cf100f026264928b904b9a2b73a755f5ef826bd7b5"
+    },
+    "prior-candidate/12-west-return-960.png": {
+      "bytes": 67321,
+      "sha256": "6eb86a52f332cbf73d033b572dafe81d5aa6fe68eb1345e35a30575d8d435810"
+    },
+    "prior-candidate/12-west-return-reference-1280.png": {
+      "bytes": 38353,
+      "sha256": "ec2c3a1c3aaf6f8475162a24fc1141d88ed7dc7dacffc9c44759c0eda7ec9419"
+    },
+    "prior-candidate/12-west-return-reference-960.png": {
+      "bytes": 33215,
+      "sha256": "941d7b91cae4f2ada14b59ed1785893e44174501bc78bbcef515591e67a23178"
+    },
+    "prior-candidate/13-return-pool-1280.png": {
+      "bytes": 81116,
+      "sha256": "55115a552f9c2612ab51d9b3c05e25beb30b70cfc5fded16651cd1cc38e15376"
+    },
+    "prior-candidate/13-return-pool-960.png": {
+      "bytes": 64344,
+      "sha256": "7be06e3e98574c493458737bc604b7b9f59ea6501c009211d8d9c9400d743146"
+    },
+    "prior-candidate/13-return-pool-reference-1280.png": {
+      "bytes": 38313,
+      "sha256": "ac9e5e11a0cb27f5ca99735ad728e6181f30acfcca7b349499e3d747563fee23"
+    },
+    "prior-candidate/13-return-pool-reference-960.png": {
+      "bytes": 33165,
+      "sha256": "7384c31bf4356ab3296737539c5d90b7eeb31616bea2f35958e4ffb4636db9da"
+    },
+    "prior-candidate/14-root-passage-1280.png": {
+      "bytes": 93249,
+      "sha256": "1457af2107541c4997db813a1197f21c0b2ef0fa23bfec7f4492da79e2f4fdd5"
+    },
+    "prior-candidate/14-root-passage-960.png": {
+      "bytes": 72488,
+      "sha256": "7f894dfe3de69e9f936d7edc88bd33b74b667e0ebaed2715b899b8db8809d7a2"
+    },
+    "prior-candidate/14-root-passage-reference-1280.png": {
+      "bytes": 38082,
+      "sha256": "eb24df3138be0bd950252916580726724dedb73cc23fdb203a9d356a78273c9f"
+    },
+    "prior-candidate/14-root-passage-reference-960.png": {
+      "bytes": 33100,
+      "sha256": "60022a701ffbc1b9c4329a3a0a6a4cbea30c9bc77e04afb313bc878ed7e6b249"
+    },
+    "prior-candidate/15-return-turn-1280.png": {
+      "bytes": 95802,
+      "sha256": "9e464d1a706781e7b179211f6c66e47a5d48369c252d3c39aa94de91792bfcdb"
+    },
+    "prior-candidate/15-return-turn-960.png": {
+      "bytes": 75505,
+      "sha256": "c8383aace3df8a21418ebc1e9eeba4d921f90cee9dd87b3a181c0b7d5ef860f5"
+    },
+    "prior-candidate/15-return-turn-reference-1280.png": {
+      "bytes": 37920,
+      "sha256": "cb46244afbe72df4e0d4050948a39f9fb881783e6ca1ce603722f692f2185e25"
+    },
+    "prior-candidate/15-return-turn-reference-960.png": {
+      "bytes": 32928,
+      "sha256": "56916e373a9fc031ce0be28efd9957ba6668864fcbd08111ccfb7350f5c4c3b2"
+    },
+    "prior-candidate/16-same-mouth-1280.png": {
+      "bytes": 90096,
+      "sha256": "5961a2314426997d5c77a85bdbaf8cf0ffb46780fd7217f3b1a3f09338f0eae1"
+    },
+    "prior-candidate/16-same-mouth-960.png": {
+      "bytes": 70358,
+      "sha256": "726b70643f62c911283af30a9157d7625739b17b8b0815718c565b3b0cae94d4"
+    },
+    "prior-candidate/16-same-mouth-reference-1280.png": {
+      "bytes": 38038,
+      "sha256": "d20b25937341e08380f4b91c49ff0f440eda3c76c0834fa0c3e28ba7447fb9c7"
+    },
+    "prior-candidate/16-same-mouth-reference-960.png": {
+      "bytes": 33043,
+      "sha256": "e6801f7b0b8c34f961d49aae2bebcff0740f51ff821bc538a470990a77dbd0a8"
+    },
+    "prior-candidate/17-real-exit-1280.png": {
+      "bytes": 69991,
+      "sha256": "467f89cc761cdb715ccc169d24a3bcc6829720113e1b9caccbd7fb55a1250f76"
+    },
+    "prior-candidate/17-real-exit-960.png": {
+      "bytes": 56283,
+      "sha256": "094b8d0af1641f7d9db906fecf593dbf9f91ac8ddeea3e9f73573e4a36b0bd64"
+    },
+    "prior-candidate/17-real-exit-reference-1280.png": {
+      "bytes": 37973,
+      "sha256": "7d7f6e13fb3ba15037b96d33eb0d618c79ac9b84baa93c49c426b596cbe878ca"
+    },
+    "prior-candidate/17-real-exit-reference-960.png": {
+      "bytes": 32845,
+      "sha256": "f82c2f2346ce6225ce140a21fa2ec78311e38659cbb40e0548645808e42f1973"
+    },
+    "prior-candidate/18-main-return-1280.png": {
+      "bytes": 132249,
+      "sha256": "4f8b0c507bdc3836a1e6807b62b798112e17bc8915a421df448d2a5eacd49cf0"
+    },
+    "prior-candidate/18-main-return-960.png": {
+      "bytes": 95826,
+      "sha256": "c7d9923ec7434718c6cbf7f9fa4bfa301572c49c8428fde4e7b33f93ce0b7fab"
+    },
+    "prior-candidate/18-main-return-reference-1280.png": {
+      "bytes": 33834,
+      "sha256": "0430c3ef85b03e2a19f5032e4c4ca692a80e6531dc0f21bb1b5edc70c041df60"
+    },
+    "prior-candidate/18-main-return-reference-960.png": {
+      "bytes": 28507,
+      "sha256": "55c83d5d75b83116dd57754da67d7eee81a37e427dcae391071593914dc7aa06"
+    },
+    "candidate/01-main-waterfall-960.png": {
+      "bytes": 95719,
+      "sha256": "65200bde836cb241e61d793200bc3a0d7773a8f26a6c937e014a78bddec3a64d"
+    },
+    "candidate/01-main-waterfall-reference-960.png": {
+      "bytes": 28109,
+      "sha256": "5ef2884b7f0696b8be127c6ea94d959cfa74da2f23e59f5224baa1066c5297b3"
+    },
+    "candidate/02-real-entrance-960.png": {
+      "bytes": 94695,
+      "sha256": "a1a026d8fc5d4e3e4e69daf2cd935a3709b62f8c8c1744e1777e628f40f5347b"
+    },
+    "candidate/02-real-entrance-reference-960.png": {
+      "bytes": 28102,
+      "sha256": "55577efebff5851bf3f1d5fa56f71326741aae17d077d3ef93ef68c53e9a02e8"
+    },
+    "candidate/03-hidden-arrival-960.png": {
+      "bytes": 58368,
+      "sha256": "2db53a4e68acce55693a1204699a145d2486949789f222998833f3c06a4beb20"
+    },
+    "candidate/03-hidden-arrival-reference-960.png": {
+      "bytes": 32918,
+      "sha256": "fa73262207c9a799c4737765b1cd4c2f6588929134c7a130c13d12b31eb120da"
+    },
+    "candidate/04-cave-threshold-960.png": {
+      "bytes": 64626,
+      "sha256": "a955480dbf438b0589c282f58fbcd9965e90e4be127333a7d4bc90f27157215a"
+    },
+    "candidate/04-cave-threshold-reference-960.png": {
+      "bytes": 33154,
+      "sha256": "67b7a7041caee5543302ed2170083102f8b642789d86552b3dc1c768dfedee8c"
+    },
+    "candidate/05-first-opening-960.png": {
+      "bytes": 70604,
+      "sha256": "ed6d2d9a4ec72a2ae8561587c31b1e9c4ba1f814440d294e0771b3ede0203274"
+    },
+    "candidate/05-first-opening-reference-960.png": {
+      "bytes": 33167,
+      "sha256": "2ee6c2e4b4a01e3658db2bf974ec96cd5bf414b2f3ec36d1ad3bd7086e888ab5"
+    },
+    "candidate/06-receiving-clearing-960.png": {
+      "bytes": 74779,
+      "sha256": "2cfe2d6be19284a0337d0327e8cc10ec97a9c93aa4c54f6945d41d9ba6df4502"
+    },
+    "candidate/06-receiving-clearing-enemy-reference-960.png": {
+      "bytes": 35503,
+      "sha256": "3da5a0bf9244bd1a9acb6348674c3ccae1bd2d4136937e7ac5d79124d9e761ef"
+    },
+    "candidate/06-receiving-clearing-reference-960.png": {
+      "bytes": 33130,
+      "sha256": "e38c849e38e91c83d2280f0b86d355d89ea6344cbb914193602b0c0edf6e2da5"
+    },
+    "candidate/06-receiving-clearing-same-fx-player-reference-960.png": {
+      "bytes": 35503,
+      "sha256": "3da5a0bf9244bd1a9acb6348674c3ccae1bd2d4136937e7ac5d79124d9e761ef"
+    },
+    "candidate/06-receiving-clearing-tell-reference-960.png": {
+      "bytes": 35503,
+      "sha256": "3da5a0bf9244bd1a9acb6348674c3ccae1bd2d4136937e7ac5d79124d9e761ef"
+    },
+    "candidate/07-pool-bypass-960.png": {
+      "bytes": 66380,
+      "sha256": "2c66a8aa13dd3b43c55fe45e204f0586aeb2b95dce62c8242cfc6b012b67b687"
+    },
+    "candidate/07-pool-bypass-reference-960.png": {
+      "bytes": 33131,
+      "sha256": "1120190cf45d62a209c89ebc0159398ec45c25c953f1532f23a9bc3242680a61"
+    },
+    "candidate/08-stream-turn-960.png": {
+      "bytes": 60356,
+      "sha256": "47669c56e47ecbfb6c8b90a8bf2b9133271b514c091c1f4c2a198bc2d144fe0e"
+    },
+    "candidate/08-stream-turn-reference-960.png": {
+      "bytes": 33151,
+      "sha256": "9bfc8624b748c9d467799f036f6ee0d31f1d5ad41cf0f3bed69cbd63bcf48242"
+    },
+    "candidate/09-inner-approach-960.png": {
+      "bytes": 57470,
+      "sha256": "8a3241e57d0cbb235d66f2d00af853c2d3d9755f501da3fef1eeb5ce92308a45"
+    },
+    "candidate/09-inner-approach-reference-960.png": {
+      "bytes": 33056,
+      "sha256": "00e1b7ff97113c3889f5080978b9593aaf2a7fd2e996ad44e05a1a0d004865f8"
+    },
+    "candidate/10-shrine-lip-960.png": {
+      "bytes": 62374,
+      "sha256": "826a977aeac3390c2e57ba7a912b7d04826084c6b4412db52e57dbc5bcbe4a27"
+    },
+    "candidate/10-shrine-lip-enemy-reference-960.png": {
+      "bytes": 35725,
+      "sha256": "668a84b8d3c0f4a61cdb14562ac48427e666cc0430e202b4d3516dc7bf5a5ab4"
+    },
+    "candidate/10-shrine-lip-reference-960.png": {
+      "bytes": 33097,
+      "sha256": "4af4bf723b8690fa52583ad4c138a3c254c5ee91593b552599511764ae3e23b1"
+    },
+    "candidate/10-shrine-lip-same-fx-player-reference-960.png": {
+      "bytes": 35725,
+      "sha256": "668a84b8d3c0f4a61cdb14562ac48427e666cc0430e202b4d3516dc7bf5a5ab4"
+    },
+    "candidate/10-shrine-lip-tell-reference-960.png": {
+      "bytes": 35725,
+      "sha256": "668a84b8d3c0f4a61cdb14562ac48427e666cc0430e202b4d3516dc7bf5a5ab4"
+    }
+  }
+}

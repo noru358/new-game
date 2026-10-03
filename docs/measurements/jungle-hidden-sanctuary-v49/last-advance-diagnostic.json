@@ -1,0 +1,40 @@
+{
+	"active_seconds": 1.98333333333333,
+	"errors": [],
+	"follow": {
+		"follow_check": {
+			"actor_error_world": 0.0,
+			"actual_actor_world": [
+				98.6103363037109,
+				0.0,
+				4.39656352996826
+			],
+			"camera_error_world": 0.000358277058694512,
+			"expected_actor_world": [
+				98.6103363037109,
+				0.0,
+				4.39656352996826
+			],
+			"expected_camera_world": [
+				112.610336303711,
+				14.2140007019043,
+				18.3965644836426
+			]
+		}
+	},
+	"from": [
+		9739.84765625,
+		971.149963378906
+	],
+	"goal": [
+		9860.0,
+		440.0
+	],
+	"initial_setup": "explicit diagnostic relocation to exact last native position; not approach/render evidence",
+	"reached": [
+		9861.0341796875,
+		439.656341552734
+	],
+	"same_capture_walk_implementation": true,
+	"wall_seconds": 4.537056
+}
