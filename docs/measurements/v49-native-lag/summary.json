@@ -1,0 +1,783 @@
+{
+  "schema": "v49_native_lag_v1",
+  "base_sha": "296bde54f987372750e652c608c62b8e6309192c",
+  "code_sha": "1cd01604ea16a7cea0b0df50b2e3aa04c5a8c9d5",
+  "hardware": "Mac15,12 / Apple M3 / 8 CPU / 24 GiB",
+  "method": "native frame_post_draw wall interval; 1280x720; GL Compatibility; vsync enabled; screen60Hz; physics60; time_scale1; no fixed_fps; renderer submissions are not presented/display FPS",
+  "steady": {
+    "baseline-temple-draw": [
+      {
+        "enemies": 0,
+        "samples": 2400,
+        "submission_interval_ms": {
+          "mean": 8.333,
+          "p95": 13.521,
+          "worst": 14.327
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 13.807,
+          "p95": 14.223,
+          "worst": 14.314
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.129,
+          "p95": 0.196,
+          "worst": 0.256
+        },
+        "render_cpu_ms": {
+          "mean": 0.685,
+          "p95": 1.049,
+          "worst": 1.591
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 109.0,
+          "p95": 109.0,
+          "worst": 109.0
+        },
+        "render_objects": {
+          "mean": 286.0,
+          "p95": 286.0,
+          "worst": 286.0
+        },
+        "nodes": {
+          "mean": 262.0,
+          "p95": 262.0,
+          "worst": 262.0
+        },
+        "physics_active": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        },
+        "collision_pairs": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "islands": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        }
+      },
+      {
+        "enemies": 8,
+        "samples": 2401,
+        "submission_interval_ms": {
+          "mean": 8.332,
+          "p95": 13.415,
+          "worst": 14.257
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 13.536,
+          "p95": 14.021,
+          "worst": 14.054
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.518,
+          "p95": 0.586,
+          "worst": 0.751
+        },
+        "render_cpu_ms": {
+          "mean": 0.746,
+          "p95": 1.103,
+          "worst": 1.715
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 143.893,
+          "p95": 147.0,
+          "worst": 149.0
+        },
+        "render_objects": {
+          "mean": 317.893,
+          "p95": 321.0,
+          "worst": 323.0
+        },
+        "nodes": {
+          "mean": 313.022,
+          "p95": 318.0,
+          "worst": 321.0
+        },
+        "physics_active": {
+          "mean": 9.0,
+          "p95": 9.0,
+          "worst": 9.0
+        },
+        "collision_pairs": {
+          "mean": 3.858,
+          "p95": 5.0,
+          "worst": 5.0
+        },
+        "islands": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        }
+      },
+      {
+        "enemies": 72,
+        "samples": 1947,
+        "submission_interval_ms": {
+          "mean": 10.268,
+          "p95": 24.275,
+          "worst": 26.482
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 23.609,
+          "p95": 25.195,
+          "worst": 25.195
+        },
+        "physics_1s_peak_ms": {
+          "mean": 1.967,
+          "p95": 2.146,
+          "worst": 2.218
+        },
+        "render_cpu_ms": {
+          "mean": 1.277,
+          "p95": 1.743,
+          "worst": 2.342
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 403.752,
+          "p95": 413.0,
+          "worst": 415.0
+        },
+        "render_objects": {
+          "mean": 577.752,
+          "p95": 587.0,
+          "worst": 589.0
+        },
+        "nodes": {
+          "mean": 712.562,
+          "p95": 735.0,
+          "worst": 737.0
+        },
+        "physics_active": {
+          "mean": 73.0,
+          "p95": 73.0,
+          "worst": 73.0
+        },
+        "collision_pairs": {
+          "mean": 123.076,
+          "p95": 128.0,
+          "worst": 131.0
+        },
+        "islands": {
+          "mean": 1.036,
+          "p95": 1.0,
+          "worst": 2.0
+        }
+      }
+    ],
+    "candidate-temple": [
+      {
+        "enemies": 0,
+        "samples": 2398,
+        "submission_interval_ms": {
+          "mean": 8.34,
+          "p95": 13.573,
+          "worst": 21.058
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 14.198,
+          "p95": 14.256,
+          "worst": 21.036
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.158,
+          "p95": 0.253,
+          "worst": 0.255
+        },
+        "render_cpu_ms": {
+          "mean": 0.789,
+          "p95": 1.252,
+          "worst": 2.243
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 109.0,
+          "p95": 109.0,
+          "worst": 109.0
+        },
+        "render_objects": {
+          "mean": 286.0,
+          "p95": 286.0,
+          "worst": 286.0
+        },
+        "nodes": {
+          "mean": 262.0,
+          "p95": 262.0,
+          "worst": 262.0
+        },
+        "physics_active": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        },
+        "collision_pairs": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "islands": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        }
+      },
+      {
+        "enemies": 8,
+        "samples": 2400,
+        "submission_interval_ms": {
+          "mean": 8.334,
+          "p95": 13.337,
+          "worst": 22.313
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 14.023,
+          "p95": 14.253,
+          "worst": 22.316
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.925,
+          "p95": 2.043,
+          "worst": 3.814
+        },
+        "render_cpu_ms": {
+          "mean": 0.922,
+          "p95": 1.359,
+          "worst": 2.338
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 141.748,
+          "p95": 144.0,
+          "worst": 148.0
+        },
+        "render_objects": {
+          "mean": 315.748,
+          "p95": 318.0,
+          "worst": 322.0
+        },
+        "nodes": {
+          "mean": 312.915,
+          "p95": 318.0,
+          "worst": 321.0
+        },
+        "physics_active": {
+          "mean": 9.0,
+          "p95": 9.0,
+          "worst": 9.0
+        },
+        "collision_pairs": {
+          "mean": 3.557,
+          "p95": 5.0,
+          "worst": 5.0
+        },
+        "islands": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        }
+      },
+      {
+        "enemies": 72,
+        "samples": 2392,
+        "submission_interval_ms": {
+          "mean": 8.359,
+          "p95": 11.103,
+          "worst": 24.868
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 12.417,
+          "p95": 22.431,
+          "worst": 24.87
+        },
+        "physics_1s_peak_ms": {
+          "mean": 2.243,
+          "p95": 2.29,
+          "worst": 6.068
+        },
+        "render_cpu_ms": {
+          "mean": 1.284,
+          "p95": 1.736,
+          "worst": 2.801
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 401.403,
+          "p95": 409.0,
+          "worst": 412.0
+        },
+        "render_objects": {
+          "mean": 575.403,
+          "p95": 583.0,
+          "worst": 586.0
+        },
+        "nodes": {
+          "mean": 712.658,
+          "p95": 733.0,
+          "worst": 737.0
+        },
+        "physics_active": {
+          "mean": 73.0,
+          "p95": 73.0,
+          "worst": 73.0
+        },
+        "collision_pairs": {
+          "mean": 112.55,
+          "p95": 120.0,
+          "worst": 123.0
+        },
+        "islands": {
+          "mean": 1.947,
+          "p95": 3.0,
+          "worst": 4.0
+        }
+      }
+    ],
+    "baseline-jungle": [
+      {
+        "enemies": 0,
+        "samples": 2400,
+        "submission_interval_ms": {
+          "mean": 8.333,
+          "p95": 13.573,
+          "worst": 14.037
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 13.761,
+          "p95": 14.009,
+          "worst": 14.035
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.175,
+          "p95": 0.251,
+          "worst": 0.256
+        },
+        "render_cpu_ms": {
+          "mean": 1.529,
+          "p95": 2.825,
+          "worst": 3.429
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 354.0,
+          "p95": 354.0,
+          "worst": 354.0
+        },
+        "render_objects": {
+          "mean": 606.0,
+          "p95": 606.0,
+          "worst": 606.0
+        },
+        "nodes": {
+          "mean": 964.0,
+          "p95": 964.0,
+          "worst": 964.0
+        },
+        "physics_active": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        },
+        "collision_pairs": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "islands": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        }
+      },
+      {
+        "enemies": 8,
+        "samples": 2397,
+        "submission_interval_ms": {
+          "mean": 8.349,
+          "p95": 13.369,
+          "worst": 14.817
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 13.354,
+          "p95": 13.83,
+          "worst": 14.566
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.846,
+          "p95": 1.008,
+          "worst": 2.951
+        },
+        "render_cpu_ms": {
+          "mean": 1.457,
+          "p95": 2.652,
+          "worst": 3.496
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 379.089,
+          "p95": 382.0,
+          "worst": 386.0
+        },
+        "render_objects": {
+          "mean": 628.089,
+          "p95": 631.0,
+          "worst": 635.0
+        },
+        "nodes": {
+          "mean": 1014.87,
+          "p95": 1019.0,
+          "worst": 1023.0
+        },
+        "physics_active": {
+          "mean": 9.0,
+          "p95": 9.0,
+          "worst": 9.0
+        },
+        "collision_pairs": {
+          "mean": 3.694,
+          "p95": 5.0,
+          "worst": 5.0
+        },
+        "islands": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        }
+      },
+      {
+        "enemies": 72,
+        "samples": 1556,
+        "submission_interval_ms": {
+          "mean": 12.854,
+          "p95": 20.527,
+          "worst": 30.489
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 25.935,
+          "p95": 27.124,
+          "worst": 27.182
+        },
+        "physics_1s_peak_ms": {
+          "mean": 3.919,
+          "p95": 4.731,
+          "worst": 4.731
+        },
+        "render_cpu_ms": {
+          "mean": 2.063,
+          "p95": 3.247,
+          "worst": 3.769
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 636.31,
+          "p95": 646.0,
+          "worst": 649.0
+        },
+        "render_objects": {
+          "mean": 885.31,
+          "p95": 895.0,
+          "worst": 898.0
+        },
+        "nodes": {
+          "mean": 1414.971,
+          "p95": 1437.0,
+          "worst": 1442.0
+        },
+        "physics_active": {
+          "mean": 73.0,
+          "p95": 73.0,
+          "worst": 73.0
+        },
+        "collision_pairs": {
+          "mean": 111.458,
+          "p95": 117.0,
+          "worst": 120.0
+        },
+        "islands": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        }
+      }
+    ],
+    "candidate-jungle": [
+      {
+        "enemies": 0,
+        "samples": 2401,
+        "submission_interval_ms": {
+          "mean": 8.331,
+          "p95": 13.538,
+          "worst": 13.948
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 13.715,
+          "p95": 13.805,
+          "worst": 13.945
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.163,
+          "p95": 0.209,
+          "worst": 0.216
+        },
+        "render_cpu_ms": {
+          "mean": 1.468,
+          "p95": 2.722,
+          "worst": 3.299
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 354.0,
+          "p95": 354.0,
+          "worst": 354.0
+        },
+        "render_objects": {
+          "mean": 609.0,
+          "p95": 609.0,
+          "worst": 609.0
+        },
+        "nodes": {
+          "mean": 964.0,
+          "p95": 964.0,
+          "worst": 964.0
+        },
+        "physics_active": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        },
+        "collision_pairs": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "islands": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        }
+      },
+      {
+        "enemies": 8,
+        "samples": 2401,
+        "submission_interval_ms": {
+          "mean": 8.335,
+          "p95": 13.253,
+          "worst": 13.776
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 13.144,
+          "p95": 13.403,
+          "worst": 13.435
+        },
+        "physics_1s_peak_ms": {
+          "mean": 0.875,
+          "p95": 0.811,
+          "worst": 4.275
+        },
+        "render_cpu_ms": {
+          "mean": 1.422,
+          "p95": 2.591,
+          "worst": 3.286
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 382.768,
+          "p95": 387.0,
+          "worst": 391.0
+        },
+        "render_objects": {
+          "mean": 634.768,
+          "p95": 639.0,
+          "worst": 643.0
+        },
+        "nodes": {
+          "mean": 1014.796,
+          "p95": 1020.0,
+          "worst": 1023.0
+        },
+        "physics_active": {
+          "mean": 9.0,
+          "p95": 9.0,
+          "worst": 9.0
+        },
+        "collision_pairs": {
+          "mean": 3.895,
+          "p95": 5.0,
+          "worst": 5.0
+        },
+        "islands": {
+          "mean": 1.0,
+          "p95": 1.0,
+          "worst": 1.0
+        }
+      },
+      {
+        "enemies": 72,
+        "samples": 1775,
+        "submission_interval_ms": {
+          "mean": 11.271,
+          "p95": 16.337,
+          "worst": 30.479
+        },
+        "engine_process_1s_peak_ms": {
+          "mean": 18.154,
+          "p95": 30.467,
+          "worst": 30.697
+        },
+        "physics_1s_peak_ms": {
+          "mean": 3.979,
+          "p95": 6.671,
+          "worst": 6.671
+        },
+        "render_cpu_ms": {
+          "mean": 2.006,
+          "p95": 3.225,
+          "worst": 4.061
+        },
+        "render_gpu_unavailable_ms": {
+          "mean": 0.0,
+          "p95": 0.0,
+          "worst": 0.0
+        },
+        "draw_calls": {
+          "mean": 632.312,
+          "p95": 642.0,
+          "worst": 645.0
+        },
+        "render_objects": {
+          "mean": 884.312,
+          "p95": 894.0,
+          "worst": 897.0
+        },
+        "nodes": {
+          "mean": 1413.75,
+          "p95": 1435.0,
+          "worst": 1439.0
+        },
+        "physics_active": {
+          "mean": 73.0,
+          "p95": 73.0,
+          "worst": 73.0
+        },
+        "collision_pairs": {
+          "mean": 113.459,
+          "p95": 117.0,
+          "worst": 120.0
+        },
+        "islands": {
+          "mean": 1.112,
+          "p95": 2.0,
+          "worst": 2.0
+        }
+      }
+    ]
+  },
+  "walk_combat": {
+    "baseline-walk-temple-clean": {
+      "samples": 7186,
+      "submission_interval_ms": {
+        "mean": 8.35,
+        "p95": 13.399,
+        "worst": 78.168
+      },
+      "enemy_count_min": 4,
+      "enemy_count_max": 54,
+      "active_seconds": 64.9499999999976,
+      "focus_resumes": 0,
+      "route_index": 7,
+      "position": "(2699.204, 874.7477)"
+    },
+    "candidate-walk-temple": {
+      "samples": 7186,
+      "submission_interval_ms": {
+        "mean": 8.35,
+        "p95": 12.979,
+        "worst": 87.752
+      },
+      "enemy_count_min": 4,
+      "enemy_count_max": 54,
+      "active_seconds": 64.9499999999976,
+      "focus_resumes": 0,
+      "route_index": 7,
+      "position": "(2702.616, 821.1887)"
+    },
+    "baseline-walk-jungle-clean": {
+      "samples": 6884,
+      "submission_interval_ms": {
+        "mean": 8.717,
+        "p95": 12.872,
+        "worst": 28.571
+      },
+      "enemy_count_min": 4,
+      "enemy_count_max": 53,
+      "active_seconds": 64.9166666666643,
+      "focus_resumes": 1,
+      "route_index": 6,
+      "position": "(3145.0, 2285.07)"
+    },
+    "candidate-walk-jungle": {
+      "samples": 7162,
+      "submission_interval_ms": {
+        "mean": 8.378,
+        "p95": 13.257,
+        "worst": 29.764
+      },
+      "enemy_count_min": 4,
+      "enemy_count_max": 53,
+      "active_seconds": 64.9333333333309,
+      "focus_resumes": 0,
+      "route_index": 6,
+      "position": "(3145.0, 2285.07)"
+    }
+  }
+}
