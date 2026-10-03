@@ -52,12 +52,13 @@ static func install(terrain) -> void:
 	# permanent low curbs. Retain the original eastern collider as one rectangle
 	# so even zero-clearance queries cannot slip through a split's shared seam.
 	# Its two visual rectangles cover exactly that original blocked footprint.
+	# A 21-unit rise clears the existing >20 coherence minimum and actor rays.
 	for rim in [
 		[Rect2(1240, 590, 150, 30), 185.0, true, true],
 		[Rect2(1350, 430, 100, 390), 185.0, false, true],
 		[Rect2(1350, 430, 100, 200), 185.0, true, false],
-		[Rect2(1350, 630, 100, 190), 20.0, true, false],
-		[Rect2(1240, 760, 150, 40), 20.0, true, true],
+		[Rect2(1350, 630, 100, 190), 21.0, true, false],
+		[Rect2(1240, 760, 150, 40), 21.0, true, true],
 		[Rect2(1110, 440, 230, 110), 185.0, true, true],
 	]:
 		terrain.wall_areas.append({"area": rim[0], "base": 0.0, "height": rim[1], "visual": rim[2], "collidable": rim[3], "color": Color("41695b"), "discovery_id": "JUNGLE_GROTTO"})

@@ -57,7 +57,7 @@ func _geometry_contract() -> void:
 		check(wall.base == 0.0 and wall.color == Color("41695b"), "original opaque rim color/base")
 	check(areas == OLD_RIMS, "exact original collider rectangles including unsplit eastern seam")
 	check(visible_areas.size() == 5, "only one eastern visual footprint split")
-	check(heights.get(Rect2(1240, 760, 150, 40), -1) == 20.0 and heights.get(Rect2(1350, 630, 100, 190), -1) == 20.0, "two permanent 20-unit near-side curbs")
+	check(heights.get(Rect2(1240, 760, 150, 40), -1) == 21.0 and heights.get(Rect2(1350, 630, 100, 190), -1) == 21.0, "two permanent 21-unit near-side curbs")
 	check(heights.get(Rect2(1350, 430, 100, 200), -1) == 185.0 and heights.get(OLD_RIMS[0], -1) == 185.0 and heights.get(OLD_RIMS[3], -1) == 185.0, "northern high silhouette retained")
 	for x in range(1080, 1481, 5):
 		for y in range(400, 851, 5):
