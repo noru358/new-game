@@ -57,6 +57,7 @@ var replay_button: Button
 var retry_button: Button
 var boss_warning_mesh := ImmediateMesh.new()
 var echo_wisp_mod_enabled := false
+var companion_focus_trial := false
 var ember_strike_mod_enabled := false
 var echo_wisp_fired_sequence := -1
 var grotto_awakening_applied := false
@@ -165,6 +166,10 @@ func _apply_preparation() -> void:
 		player.moving_slash_damage_bonus += 0.10
 	elif profile.attack_branch == "COMPANION":
 		wisp.permanent_damage_bonus += 0.10
+		if companion_focus_trial:
+			var focus=preload("res://game/companion_focus.gd").new()
+			focus.setup(self)
+			add_child(focus)
 	if profile.equipped_weapon == "W_FLOW":
 		player.flow_weave_enabled = true
 		player.moving_slash_distance_multiplier = 1.20

@@ -5,6 +5,8 @@ on:
     paths:
       - 'game/deep_wetland*'
       - 'game/wetland_boss*'
+      - 'game/companion_focus.gd'
+      - 'tests/verify_companion_focus.gd'
       - 'tests/capture_wetland_boss.gd'
       - 'tests/capture_wetland_run.gd'
       - 'game/wetland_environment.gd'
@@ -99,11 +101,20 @@ jobs:
           godot --headless --editor --path "$RUNNER_TEMP/wetland-baseline" --quit
           WETLAND_CAPTURE_DIR="$PWD/presentation-baseline" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/wetland-baseline" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
           WETLAND_CAPTURE_DIR="$PWD/presentation-candidate" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path . --audio-driver Dummy --rendering-driver opengl3 --script res://tests/capture_wetland_presentation.gd
+      - name: Capture companion focus contract
+        run: |
+          mkdir -p "$RUNNER_TEMP/companion-focus" companion-focus-render
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/companion-focus"
+          sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#CompanionFocusV46-CI#' "$RUNNER_TEMP/companion-focus/project.godot"
+          godot --headless --editor --path "$RUNNER_TEMP/companion-focus" --quit
+          FOCUS_CAPTURE_DIR="$PWD/companion-focus-render" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/companion-focus" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/verify_companion_focus.gd
+          test "$(find companion-focus-render -name '*.png' | wc -l)" -eq 2
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: deep-wetland-render
           path: |
+            companion-focus-render/
             presentation-baseline/
             presentation-candidate/
             wetland-render/

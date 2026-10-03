@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal defeated
 signal health_changed
 signal attack_landed(hit_position: Vector2, direction: Vector2, combo_step: int, finisher: bool)
+signal basic_target_struck(enemy: TrainingEnemy)
 signal hurt_received(hit_position: Vector2, direction: Vector2)
 signal damage_received(amount: float)
 signal moving_slash_landed(hit_position: Vector2)
@@ -463,6 +464,7 @@ func _hit_enemies(attack: Dictionary) -> void:
 			flow_wave_center = enemy.global_position
 		if attack_step == 3:
 			gather_sources.append(enemy.global_position)
+		var health_before: float = enemy.health
 		var counter: bool = enemy.take_direct_hit(ATTACK_DAMAGE * (1.0 + basic_damage_bonus + permanent_basic_damage_bonus) * attack.multiplier * (1.25 if flow_weave_attack else 1.0) * (1.0 + echo_finisher_damage_bonus if echo_finisher_enabled and attack_step == 4 else 1.0), push_direction, finisher)
 		if flow_weave_attack and not flow_weave_refund_used:
 			moving_slash_cooldown = maxf(0.0, moving_slash_cooldown - 0.22 - flow_weave_refund_bonus)
@@ -471,6 +473,8 @@ func _hit_enemies(attack: Dictionary) -> void:
 			gathered_enemies.append(enemy)
 			new_gathered = true
 		var effect_direction: Vector2 = (gather_target_global - enemy.global_position).normalized() if attack_step == 3 else push_direction
+		if enemy.health < health_before and enemy.health > 0.0 and not enemy.is_queued_for_deletion():
+			basic_target_struck.emit(enemy)
 		attack_landed.emit(enemy.global_position, effect_direction, attack_step, finisher)
 		if not impact_played_this_attack:
 			impact_played_this_attack = true

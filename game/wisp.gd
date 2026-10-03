@@ -95,6 +95,8 @@ func _outside_ruins(point: Vector2) -> Vector2:
 
 
 func find_target() -> TrainingEnemy:
+	var focus:=_focused_target()
+	if focus!=null:return focus
 	var nearest: TrainingEnemy
 	var best_distance := attack_range * attack_range
 	var fallback: TrainingEnemy
@@ -220,3 +222,22 @@ func _draw() -> void:
 		draw_line(shot_direction * 2.0, tip, Color(0.82, 1.0, 1.0, 0.9 * alpha), 3.0 * alpha)
 		draw_line(tip - shot_direction.rotated(0.7) * 5.0, tip, Color(0.38, 0.9, 1.0, 0.8 * alpha), 2.0 * alpha)
 		draw_line(tip - shot_direction.rotated(-0.7) * 5.0, tip, Color(0.38, 0.9, 1.0, 0.8 * alpha), 2.0 * alpha)
+
+func _focused_target()->TrainingEnemy:
+	if not is_instance_valid(player) or not player.has_meta(&"companion_focus_target"):return null
+	var reference=player.get_meta(&"companion_focus_target")
+	var target=reference.get_ref() if reference is WeakRef else null
+	if not is_instance_valid(target) or not target is TrainingEnemy or target.is_queued_for_deletion() or target.health<=0 or not target.is_in_group("training_enemies") or not player.get_parent().is_ancestor_of(target):
+		player.remove_meta(&"companion_focus_target")
+		return null
+	if target is GateBoss and (not target.encounter_active or (target.encounter_area.has_area() and not target.encounter_area.has_point(player.global_position))):
+		player.remove_meta(&"companion_focus_target")
+		return null
+	if global_position.distance_squared_to(target.global_position)>attack_range*attack_range:return null
+	var screen:=get_viewport().get_visible_rect()
+	var visible:bool=target_visibility_filter.call(target) if target_visibility_filter.is_valid() else screen.has_point(target.get_global_transform_with_canvas().origin)
+	if not visible or _visible_aim_point(target).is_empty():return null
+	var incoming:=0.0
+	for shot in get_tree().get_nodes_in_group("wisp_projectiles"):
+		if shot is WispProjectile and not shot.is_queued_for_deletion() and shot.target==target:incoming+=shot.damage
+	return target if incoming<target.health else null
