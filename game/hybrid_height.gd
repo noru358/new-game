@@ -74,6 +74,14 @@ var current_attack_elapsed := 0.0
 var previous_attack_direction := Vector2.RIGHT
 var current_attack_direction := Vector2.RIGHT
 var crowd_refresh_time := 0.0
+# Visual clipping uses only layer-4 terrain. Reuse stationary circle tests while
+# retaining the live ray path for all damage decisions.
+var warning_ring_clipping: Dictionary = {}
+var warning_blockers: Array[PhysicsBody2D] = []
+var warning_collision_state: Array = []
+var warning_blockers_dirty := true
+var warning_cache_frame := -1
+
 
 func _ready() -> void:
 	get_window().title = scene_title
@@ -86,6 +94,7 @@ func _ready() -> void:
 	simulation.process_mode = Node.PROCESS_MODE_PAUSABLE
 	simulation.hide()
 	add_child(simulation)
+	get_tree().tree_changed.connect(_warning_tree_changed)
 	var obstacles: Array = []
 	for area in terrain.barriers():
 		var block := TempleBlock.new()
@@ -1176,11 +1185,59 @@ func _draw_enemy_warnings(fraction: float) -> void:
 			warning_mesh.surface_add_vertex(Vector3.ZERO)
 	warning_mesh.surface_end()
 
+func _warning_tree_changed() -> void:
+	warning_blockers_dirty = true
+	warning_cache_frame = -1
+
+func _invalidate_warning_clipping() -> void:
+	warning_ring_clipping.clear()
+	warning_cache_frame = -1
+
+func _refresh_warning_clipping() -> void:
+	var frame := Engine.get_process_frames()
+	if warning_cache_frame == frame: return
+	warning_cache_frame = frame
+	if warning_blockers_dirty:
+		warning_blockers.clear()
+		for node in simulation.find_children("*", "PhysicsBody2D", true, false):
+			warning_blockers.append(node)
+		warning_blockers_dirty = false
+	# Exact state comparison catches transforms, layer/disabled changes, new or
+	# removed bodies/shapes. Shape.changed catches edits of the resource itself.
+	var state: Array = []
+	for body in warning_blockers:
+		if not is_instance_valid(body) or (body.collision_layer & 4) == 0: continue
+		state.append(body.get_rid())
+		state.append(body.global_transform)
+		for owner in body.get_shape_owners():
+			state.append(body.shape_owner_get_transform(owner))
+			state.append(body.is_shape_owner_disabled(owner))
+			for index in body.shape_owner_get_shape_count(owner):
+				var shape := body.shape_owner_get_shape(owner, index)
+				state.append(shape.get_rid())
+				if not shape.changed.is_connected(_invalidate_warning_clipping):
+					shape.changed.connect(_invalidate_warning_clipping)
+	if state != warning_collision_state:
+		warning_collision_state = state
+		warning_ring_clipping.clear()
+
 func _ring_segment_clear(center: Vector2, start_angle: float, end_angle: float, radius: float) -> bool:
+	_refresh_warning_clipping()
+	var circle := Vector3(center.x, center.y, radius)
+	var angles := Vector2(start_angle, end_angle)
+	if not warning_ring_clipping.has(circle):
+		# Moving seals/boss pulses must not grow a scene-long cache without bound.
+		if warning_ring_clipping.size() >= 64: warning_ring_clipping.clear()
+		warning_ring_clipping[circle] = {}
+	var segments: Dictionary = warning_ring_clipping[circle]
+	if segments.has(angles): return segments[angles]
+	var clear := true
 	for angle in [start_angle, (start_angle + end_angle) * 0.5, end_angle]:
 		if not clear_attack(center, center + Vector2.from_angle(angle) * radius):
-			return false
-	return true
+			clear = false
+			break
+	segments[angles] = clear
+	return clear
 
 func _warning_3d_strip(first: Vector3, second: Vector3, width: float, color: Color) -> void:
 	var direction := second - first
