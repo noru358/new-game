@@ -21,3 +21,9 @@ Official Godot4.6.3: monument488, representative wetland258, full field3201, act
 Exact-head rendering37095809833 and full CI37095809777 both succeeded. Rendered player visibility:44 playable samples,0 failures,min ratio0.9893;14 former points are now authored water and reported separately. Same-camera comparison was delivered to the user; no new app was delivered. Compare v46d1 with the same cameras/resolutions. Capture approach, face bank, side route, east bank and overview. New water-only former samples are reported separately; current shoreline samples are added rather than silently dropping failing points. Check actual existing-role enemies and warnings as well as isolated player pixels.
 
 No automatic fade/cutaway, camera change, save-format change or reward/damage tuning. Delivered v46 and canonical d1 remain unchanged. Human monumental impact, final art acceptance and long-session performance are not proven by these tests.
+
+## Carved face follow-through
+
+Exact game sourced0f84da replaced the11 primitive parts with2 opaque batches/484triangles inside the previous local envelope. Broad cheek planes, closed heavy lids, short nose, restrained lips, ear relief and a low worn crown keep the mass recognizable as carved temple architecture. No further terrain, camera or gameplay change. Parent reviewed actual1280/960 renders. Render37097226465 and completeCI37097226471 passed; PR48 merged production8380c69.
+
+Rendered player visibility remains44/0failures,min0.9893. Side-route static drawcalls80→72, face-bank80→76; primitive counts vary with culling and do not prove frame-time gains. Sculpture geometry7276 assertions and mounted monument1460 assertions passed locally. Human acceptance and long-session performance remain open.
