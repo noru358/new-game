@@ -3,14 +3,14 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
-## v51 세 lane 장착 후보 — GUI·최종CI 대기 / 2026-10-03
+## v51 세 lane 히든 — native 완료·정확HEAD CI 확인 / 2026-10-03
 
-- 부모가 지정한 정글 최종 `e06a2fa792945d7662bf29fe8546b3c519a089c6`의 base 이후1커밋을 추가 회수했다. flow9/temple4/jungle1 전체 선형범위 통합. 두 helper의 build/build_entry를 flow roots에 붙였고 정글 section의 기존 물/stone/bush/moss 루프는 제거했다. helper 물은 hidden2+main4 정확6개, 좌표/크기/alpha재질 보존. 기존 altar/ember/보상/수호6/발견ID/latch는 유지한다.
-- 정확 소스 `a9642b0` import+13영향검사PASS. 정글 실제 장착7009검사/1268ray/기존20/새가림0, 실제bank공면 음성1584→최종0. 습지 상속null/가짜marker 검사와 정상input 왕복도PASS. 같은 source의 로컬 headless1 전체순회114개 중109PASS,5고정FPS 실패. 제품/기대값 변경 없이 같은 game 소스의 기본physics 재검증5개 모두PASS(`68ac49b`). 중첩엔진2개는 Linux최종CI로 남긴다. 이를 단일정책 전체PASS로 부르지 않는다.
-- 정확 이전원격 `0a4e505` CI37126591308은115중109PASS/6FAIL. 통합 담당의 caption direct region_id가 옛 hybrid_height 씬에 없는 속성을 읽는 공통 원인이다. minimap1줄 optional get guard 수정 `78a2cd2`, 실패6+장착 로컬7PASS. 이후 단계depth/UI/price는 당시skip이며 통과로 쓰지 않는다. 최종HEAD CI는 아직 필요하다.
-- 실제 scene폭포 duplicate/moved/material 변경3음성대조가 모두 해당검사를 실패시켰다. 사용자 저장/제품소스는 변경하지 않았다. 원본3layout·project/profile/growth/player는 base와같다. jungle_grotto_layout의 승인된좁은굴/물받이/은행terrain 변화는 별도이며 포탈4/수호6/altar값을 검사한다.
-- parent/art probe의 covered-window frame_post_draw 대기에 대응해 capture fixture를 force_draw(false)+최대4image read/실제960·1280크기/정확단계 progress로 바꿨다(`68ac49b`). 제품focus나 사용자OS창 조작은 없다. 아직 통합GUI 슬롯 미배정/합본PNG0; 기존 정글최종26PNG나 이전왕복84PNG를 최종합본완료로 재사용하지 않는다.
-- 기존 사원 ALTAR 중심Body~34%, 정글water/FX부분가림, 사람미감/재미·자연완주·장시간성능은 남는다. 앱/세이브/MASTER/main/production/canonical은 보존. 다음은 GUI 슬롯의 bounded24화면·두맵보상접근과 정확HEAD LinuxfullCI다.
+- production1aac501 기준 flow aa3ff60의9/temple d2abbff의4/부모지정 jungle e06a2fa의1 전체선형커밋을 독립후보에 통합했다. flow roots/latch/표기 아래 두 helper를 장착했고 정글 물은 정확 main4+hidden2다. 보상/저장/240초/포탈4/무리6/altar 보존, 문턱0.5, 습지 null·가짜marker 검사 완료. 미채택 본선사원 표면·조명실험은 통합하지 않았다.
+- 합본native source a58162e: 공식Mac4.6stable960/1280 두히든34PNG·1644검사/실패0. 정상보행 입출구/근접표기/미니맵·보상·재지급거부·저장재로드·정글후반귀환12~16 확인. 사원79.78거리/실제수호3, 정글96.94거리 접근보상 성공. 수호적 피해는 합성/시간·압박은동결하며 자연전투 성공이 아니다. native 모든게임/fixture 의존파일은 후속 f0a26e와 동일하다.
+- 마지막f0a26e의 import+6영향검사를 지원기본physics로 다시PASS(정상입력flow290/0 포함). 실제장착13영향PASS/정글7009·1268ray·새가림0·bank공면0, 물duplicate/moved/material3음성 검출. 로컬114고정FPS109PASS/5FAIL과 기본physics5PASS는 분리한다. 지원기본physics인 정확87ba094 CI37128031291은116전체headless·runner·preview·depth960/1280 PASS. UI물1280 한건 실패/price skip을 보존했으며 최종 증거HEAD 전체CI 결과는 해당GitHub check로 확인한다.
+- 물실패는 기존 고정pose가 새귀환방향의 좌우flip을 상속한97.60% 결과다. 기존right-facing98.30%와 비교 가능하게 fixture 방향을 명시/assert했고98%기준·입력·6물계약을 유지했다. f0a26e Mac 해당1280 최소재현29601/0·98.2990%. 반대방향97.60% 원자료도 보존; 전구간98% 해결로 쓰지 않는다. 제품geometry 변경 없이 fixture만 고쳤다.
+- 첫native87ba094의 freed actor/실제수호1개 미소환 fixture실패도 보존하고 정상 접근/경고대기/valid guard로 수정했다. 엔진1개·UUIDuserdata·bounded force_draw 사용, 사용자OSfocus/앱/저장/checkout·MASTER·main/production/canonical은 보존했다. 증거와 변경목록은 integration/HIDDEN_COMBINED_V51.md 및 evidence/hidden-combined-v51에 있다.
+- 현재는 첫권역의 히든통합 테스트후보다. 다음은 정확최종HEAD CI완료와 부모의34화면 직접검토/채택판단이다. 사원정확ALTAR Body~34%, 정글물/FX·방향별가림, 사람미감/재미·자연완주·장시간성능은 미검증. merge/release/패키지/앱교체는 부모 소유다.
 
 ## v51 히든 합본 후보 체크포인트 — 미배포 / 2026-10-03
 

@@ -1,0 +1,83 @@
+{
+  "source_sha": "f0a26e8179774efa234336a105ab1e93ba137b20",
+  "engine": "/Users/lty/Documents/Codex/2026-10-03/task-10/runtime/Godot.app/Contents/MacOS/Godot",
+  "scripts": [
+    "tests/verify_hidden_combined_mount.gd",
+    "tests/verify_hidden_flow.gd",
+    "tests/verify_garden_transition.gd",
+    "tests/verify_jungle_hidden_sanctuary.gd",
+    "tests/verify_jungle_waterfall_visibility.gd",
+    "tests/verify_temple_garden_courtyard.gd"
+  ],
+  "results": [
+    {
+      "script": "import",
+      "exit_code": 0,
+      "seconds": 10.36,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/import.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-441fab4c-56e4-46d5-af56-f0d40e9da246",
+      "passed": true
+    },
+    {
+      "script": "verify_hidden_combined_mount",
+      "exit_code": 0,
+      "seconds": 3.62,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/verify_hidden_combined_mount.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-2954b528-2b42-4596-8285-3f39822c2e15",
+      "passed": true
+    },
+    {
+      "script": "verify_hidden_flow",
+      "exit_code": 0,
+      "seconds": 74.44,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/verify_hidden_flow.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-63e02061-a9e0-49ca-8fb5-6f3e230382db",
+      "passed": true
+    },
+    {
+      "script": "verify_garden_transition",
+      "exit_code": 0,
+      "seconds": 2.12,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/verify_garden_transition.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-62fe0be5-170b-4308-8427-5e2c7e5a088c",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_hidden_sanctuary",
+      "exit_code": 0,
+      "seconds": 2.47,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/verify_jungle_hidden_sanctuary.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-f84d24b7-d4c4-4e1f-8be4-c293fa393b32",
+      "passed": true
+    },
+    {
+      "script": "verify_jungle_waterfall_visibility",
+      "exit_code": 0,
+      "seconds": 4.9,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/verify_jungle_waterfall_visibility.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-82d4b98c-aae9-4df2-ba26-5993294fcc38",
+      "passed": true
+    },
+    {
+      "script": "verify_temple_garden_courtyard",
+      "exit_code": 0,
+      "seconds": 1.22,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/final-fixture-default-policy/verify_temple_garden_courtyard.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-41c0ed94-52f9-43b0-8be5-f985cc5638ab",
+      "passed": true
+    }
+  ],
+  "engine_concurrency": 1,
+  "fixed_fps": null,
+  "dedicated_excluded": "tests/verify_actor_terrain_depth.gd",
+  "nested_engine_fixtures_deferred_to_CI": [],
+  "scope": "serialized headless engine checks; isolated UUID userdata per fixture; no user save access",
+  "passed": true
+}

@@ -1,0 +1,83 @@
+{
+  "adapter": "Apple M3",
+  "adoption_scope": "return and before-entry water-comparable ratio >=0.98; existing cooldown ramp non-regression only, not a full visibility fix",
+  "captures": [
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "not_applicable_baseline",
+      "adoption_pass": null,
+      "baseline_ratios": {
+
+      },
+      "body_flip_h": false,
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "facing": [
+        1.0,
+        0.0
+      ],
+      "height": 720,
+      "image_prefix": "baseline-1280-before-entry",
+      "opaque_geometry_body_pixels": 5,
+      "opaque_geometry_ratio": 0.00281214848143982,
+      "point": [
+        1245.0,
+        685.0
+      ],
+      "pose": "before-entry",
+      "ratio": 0.00168728908886389,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": false,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "baseline",
+      "visible_body_pixels": 3,
+      "water_comparable_ratio": 0.0026857654431513,
+      "water_reference_body_pixels": 1117,
+      "width": 1280
+    },
+    {
+      "actor_error": 0.0,
+      "actual_render": true,
+      "adoption_gate": "water_comparable_at_least_0.98",
+      "adoption_pass": true,
+      "baseline_ratios": {
+
+      },
+      "body_flip_h": false,
+      "camera_error": 0.0,
+      "classification": "rim_fix_acceptance",
+      "facing": [
+        1.0,
+        0.0
+      ],
+      "height": 720,
+      "image_prefix": "candidate-1280-before-entry",
+      "opaque_geometry_body_pixels": 1753,
+      "opaque_geometry_ratio": 0.985939257592801,
+      "point": [
+        1245.0,
+        685.0
+      ],
+      "pose": "before-entry",
+      "ratio": 0.617547806524185,
+      "strict_full_scene_visibility_pass": false,
+      "strict_opaque_visibility_pass": true,
+      "strict_threshold": 0.98,
+      "unobstructed_body_pixels": 1778,
+      "variant": "candidate",
+      "visible_body_pixels": 1098,
+      "water_comparable_ratio": 0.982990152193375,
+      "water_reference_body_pixels": 1117,
+      "width": 1280
+    }
+  ],
+  "checks": 29601,
+  "engine": "4.6-stable (official)",
+  "errors": [],
+  "known_limitations": [],
+  "scope": "fixed local entrance/return poses, frozen pressure and synthetic access; not natural play",
+  "strict_opaque_visibility_failures": [],
+  "user_data_dir": "/Users/lty/Library/Application Support/CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-a544792e-194d-4689-882a-414ae6e90163"
+}

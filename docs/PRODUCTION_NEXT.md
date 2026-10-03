@@ -1,10 +1,12 @@
 # 다음 제작 지시 — 첫 지역을 완성품 수준으로 묶기
 
-## 세 lane 히든 후보 v51 — 최종 확인 단계
+## 세 lane 히든 후보 v51 — 부모 채택 판단 단계
 
-flow aa3ff60(9커밋)/temple d2abbff(4)/jungle e06a2fa(1)를 production1aac501 기준 독립합본으로 장착했다. 두 맵 helper는 flow root/latch/표기 소유를 따르고 정글 물중복을 제거했다. 두맵13영향회귀 및 정글최종은행공면0을 확인했다. 기존CI의 legacy region_id caption오류는1줄guard로 수정/관련7검사를 재검증했다. 로컬전체114순회의5고정FPS실패는 기본physics조건5PASS로 분리하며, 중첩engine2/depth/nativeUI는 최종LinuxCI에서 확인한다.
+flow aa3ff60(9커밋)/temple d2abbff(4)/jungle e06a2fa(1)를 production1aac501 기준 독립합본에 장착했다. helper는 flow root/latch/표기를 따르고 물6개·보상/저장/240초·좌표·습지무히든 계약을 검사했다. 사원 본선 표면/조명실험은 미채택으로 제외했다.
 
-남은 순서: 본선사원아트GUI종료 후 부모슬롯 배정 → covered-window 무기한signal을 피한 bounded fixture로960/1280 두히든의 정상출입/표기/후반아트/합법reward-save/return24화면 → 정확finalHEAD fullCI. 이전 lane PNG를 최종source 전체성공으로 전용하지 않는다. 미감·자연3맵완주·성능·기존가림은 여전히미검증이며 공유앱배포/merge/release는 부모판단이다.
+합본native a58162e의960/1280 34PNG·1644검사/0실패: 두맵 정상 출입/근접표기/발견앵커/실제보상·저장·정글후반귀환 완료. fixture수호피해합성/압박동결과 사람미감·자연완주를 구별한다. 정확87ba094 지원기본physics CI116headless/preview/depth는PASS, UI1280물97.60% 한실패는 방향미고정pose의spriteflip 상속이었다. 기존right-facing 비교계약을명시/assert하고98%기준을유지했으며 f0a26e Mac최소재현98.2990%로PASS. 반대방향/기존ramp·FX가림 한계는남긴다.
+
+다음: 이 증거commit의 정확HEAD fullCI 완료 확인 → 부모가 native34화면과 미해결가림/미감을 직접검토하여 채택판단. 로컬 고정FPS109/114와 기본physics후속5PASS를 단일정책 성공으로 섞지 않는다. 최종GitHub check와 integration/HIDDEN_COMBINED_V51.md/반환SHA를 따른다. 앱배포·merge/release/canonical 이동은 부모소유, 자연3맵완주·재미·장시간성능은 미검증이다.
 
 ## 히든 합본 v51 체크포인트 — 부모 통합 판단 대기
 

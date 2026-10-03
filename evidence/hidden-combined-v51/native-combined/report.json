@@ -1,0 +1,822 @@
+{
+  "source_sha": "a58162e514b87d40cecf5225d5af13caaedb3825",
+  "game_mount_source": "a9642b033f0a5304a45b27bdef639e3be250b1a6",
+  "engine": "4.6.stable.official.89cea1439",
+  "runs": [
+    {
+      "label": "native-temple960-focused",
+      "checks": 355,
+      "failures": 0,
+      "images": 6
+    },
+    {
+      "label": "native-temple1280",
+      "checks": 355,
+      "failures": 0,
+      "images": 6
+    },
+    {
+      "label": "native-jungle-both",
+      "checks": 934,
+      "failures": 0,
+      "images": 22
+    }
+  ],
+  "checks": 1644,
+  "failures": 0,
+  "captures": [
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-960-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "marker": [],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-undiscovered",
+      "width": 960,
+      "sha256": "a277711c596b48035196390a547d591cd075a9098eba07ab7c02d5ddeb880d78"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-hidden-arrival.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 0 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "label_screen": [
+        566.461181640625,
+        294.882629394531
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5840.0,
+        1770.0
+      ],
+      "region": "temple",
+      "state": "hidden-arrival",
+      "width": 960,
+      "sha256": "8ce040e87ab0a1d91a59449501660bc6ac4e011d2d11b301188a804026cec0a0"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-960-reward-approach.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 3 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        8362.48046875,
+        529.61474609375
+      ],
+      "region": "temple",
+      "reward": {
+        "claimed": true,
+        "distance": 79.7836608886719,
+        "guardians": 3,
+        "scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+      },
+      "state": "reward-approach",
+      "width": 960,
+      "sha256": "22c99c7006dc3f4a302ff9f7d38209d13eddb5ce81d5cde23a7e45a3b8425b4d"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 37.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-960-hidden-overview.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 3 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        8362.48046875,
+        529.61474609375
+      ],
+      "region": "temple",
+      "state": "hidden-overview",
+      "width": 960,
+      "sha256": "2f4241b1afbd0ad656a34ba484f3c91cad265eeb8ce9a6d185345a9d07563a65"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-960-exit-approach.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 3 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "label_screen": [
+        584.562316894531,
+        301.904724121094
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5813.1767578125,
+        1775.1796875
+      ],
+      "region": "temple",
+      "state": "exit-approach",
+      "width": 960,
+      "sha256": "2869aca9d380abbb41c81fb2c2b5bb80ab335f1e1dad700613bdc00eb938c8fb"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-960-main-return.png",
+      "hud": "",
+      "inside": false,
+      "marker": [
+        1215.0,
+        785.0
+      ],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-return",
+      "width": 960,
+      "sha256": "678ab3ff707b876ec5de3cde8027b4737b98fd5a77a01e0fb8739d2c6eae54c2"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-1280-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "marker": [],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-undiscovered",
+      "width": 1280,
+      "sha256": "88920bee5f182a2e622374887e448df64038855effdbc1c8a6d4dd92bfdb293d"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-hidden-arrival.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 0 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "label_screen": [
+        566.461181640625,
+        294.882629394531
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5840.0,
+        1770.0
+      ],
+      "region": "temple",
+      "state": "hidden-arrival",
+      "width": 1280,
+      "sha256": "3edfe05fff5e91bc37662fce4fb9525cc5ed277771408918068014c188d5829f"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-1280-reward-approach.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 3 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        8362.48046875,
+        529.61474609375
+      ],
+      "region": "temple",
+      "reward": {
+        "claimed": true,
+        "distance": 79.7836608886719,
+        "guardians": 3,
+        "scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+      },
+      "state": "reward-approach",
+      "width": 1280,
+      "sha256": "30f287c08c789bedaf05235829dd0e297696c5ffb7d24aa86b79e66dd75f7951"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 37.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-1280-hidden-overview.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 3 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        8362.48046875,
+        529.61474609375
+      ],
+      "region": "temple",
+      "state": "hidden-overview",
+      "width": 1280,
+      "sha256": "45786a16635098e41c80789e31e4f27a963f30837886e78611764ec75905d8a9"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "temple-1280-exit-approach.png",
+      "hud": "\uc228\uc740 \uc815\uc6d0 \u00b7 \uc218\ud638 \uc801 3 / 3 \u00b7 \uc548\ucabd \uc81c\ub2e8\uc73c\ub85c",
+      "inside": true,
+      "label_screen": [
+        584.562316894531,
+        301.904724121094
+      ],
+      "marker": [
+        8300.0,
+        480.0
+      ],
+      "point": [
+        5813.1767578125,
+        1775.1796875
+      ],
+      "region": "temple",
+      "state": "exit-approach",
+      "width": 1280,
+      "sha256": "5a6e01098ed04965d392cd3ebd0eb5a830a536b07f5e9a4e57358dac53cb1f7c"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "temple-1280-main-return.png",
+      "hud": "",
+      "inside": false,
+      "marker": [
+        1215.0,
+        785.0
+      ],
+      "point": [
+        1310.0,
+        920.0
+      ],
+      "region": "temple",
+      "state": "main-return",
+      "width": 1280,
+      "sha256": "178d15e8de6d13f8381230ad23ca02f15707efa8681ea4eb824a2fb82d70dddb"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "marker": [],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-undiscovered",
+      "width": 960,
+      "sha256": "5f47f3006fcfcf74939c5e58937966c036b340bd91127ca82656a42652ebd214"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-hidden-arrival.png",
+      "hud": "\ubb3c\uae38 \ub108\uba38 \uc548\ucabd \uc720\uc801 \ud0d0\uc0c9",
+      "inside": true,
+      "label_screen": [
+        583.431762695312,
+        298.127380371094
+      ],
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6290.0,
+        2630.0
+      ],
+      "region": "jungle",
+      "state": "hidden-arrival",
+      "width": 960,
+      "sha256": "9d5552ed76b9ea8d92e9d01e9fac35957b88b51b0da13aa4bc1448853deeb16a"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-reward-approach.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        9935.146484375,
+        501.243316650391
+      ],
+      "region": "jungle",
+      "reward": {
+        "claimed": true,
+        "distance": 96.9419326782227,
+        "guardians": 0,
+        "scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+      },
+      "state": "reward-approach",
+      "width": 960,
+      "sha256": "16987ee7c94e793b8f0a36170b7377b39c6b436fc529d6072e19c60cce5b93a3"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 50.4000015258789,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-hidden-overview.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        9935.146484375,
+        501.243316650391
+      ],
+      "region": "jungle",
+      "state": "hidden-overview",
+      "width": 960,
+      "sha256": "442cfee2ae19abe2d95f3063a24bb8dbbd2c2f34518e4692c2ea476449eea192"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-rear-return-12.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        8949.2451171875,
+        433.423980712891
+      ],
+      "region": "jungle",
+      "state": "rear-return-12",
+      "width": 960,
+      "sha256": "930836c71054c824a125793d9274a9f4ea5c77a454a23974df8db7a19359fd73"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-rear-return-13.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        8529.5673828125,
+        746.632385253906
+      ],
+      "region": "jungle",
+      "state": "rear-return-13",
+      "width": 960,
+      "sha256": "9432e72d641625b229aee42ee6d45c66bf8cb94384251d609bc5186dd501fcec"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-rear-return-14.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        7639.53759765625,
+        752.0
+      ],
+      "region": "jungle",
+      "state": "rear-return-14",
+      "width": 960,
+      "sha256": "d2fa7cd775b6dda2bf07a7a6164b01689ce7888ec653c7567564b94d78b9797f"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-rear-return-15.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6805.1474609375,
+        1103.19226074219
+      ],
+      "region": "jungle",
+      "state": "rear-return-15",
+      "width": 960,
+      "sha256": "d75452b19f291df8d15956441c788f43208b5a28e67d40fc66d6a79321378aaf"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-rear-return-16.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6513.59033203125,
+        1930.51428222656
+      ],
+      "region": "jungle",
+      "state": "rear-return-16",
+      "width": 960,
+      "sha256": "5a460a50b0ab0a3c97ddb13637ecd66d03d3ad2088b4cff981405dd469102acb"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-960-exit-approach.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "label_screen": [
+        568.108581542969,
+        283.881469726562
+      ],
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6325.49267578125,
+        2638.41015625
+      ],
+      "region": "jungle",
+      "state": "exit-approach",
+      "width": 960,
+      "sha256": "391decc94e2623ecae3c944198a62483ce427799ee87897f3f66f71e5e75ca8d"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-960-main-return.png",
+      "hud": "",
+      "inside": false,
+      "marker": [
+        1300.0,
+        685.0
+      ],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-return",
+      "width": 960,
+      "sha256": "e1b975f77622f8c4b16b6288e9aaf0eb22a6e15c18b2ec11424f2321fde45761"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-main-undiscovered.png",
+      "hud": "",
+      "inside": false,
+      "marker": [],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-undiscovered",
+      "width": 1280,
+      "sha256": "111e7847675eac825b2d43191f58ab0377b6de64b6ca6016d2ff2aa930578b97"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-hidden-arrival.png",
+      "hud": "\ubb3c\uae38 \ub108\uba38 \uc548\ucabd \uc720\uc801 \ud0d0\uc0c9",
+      "inside": true,
+      "label_screen": [
+        583.431762695312,
+        298.127380371094
+      ],
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6290.0,
+        2630.0
+      ],
+      "region": "jungle",
+      "state": "hidden-arrival",
+      "width": 1280,
+      "sha256": "74bcef7d0765625527476c78321ec0e2c21250344d25794b7319b7f5115901ce"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-reward-approach.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        9935.146484375,
+        501.243316650391
+      ],
+      "region": "jungle",
+      "reward": {
+        "claimed": true,
+        "distance": 96.9419326782227,
+        "guardians": 0,
+        "scope": "normal movement and real reward/save; synthetic guardian damage, frozen pressure; no natural-play claim"
+      },
+      "state": "reward-approach",
+      "width": 1280,
+      "sha256": "521aee88c6bf40afaccd16b149b4aa9593e44fd6a79b50006aa606368edc6a26"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 50.4000015258789,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-hidden-overview.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        9935.146484375,
+        501.243316650391
+      ],
+      "region": "jungle",
+      "state": "hidden-overview",
+      "width": 1280,
+      "sha256": "6c5a9a3ae9053828f0679a806fe799f70bffd0c7384e596f085df7a59513ba84"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-rear-return-12.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        8949.2451171875,
+        433.423980712891
+      ],
+      "region": "jungle",
+      "state": "rear-return-12",
+      "width": 1280,
+      "sha256": "6fa6ca76564de7d0fa8d3d946d0aa7c92f45db96e8a79de81ca8a47806fc7a7f"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-rear-return-13.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        8529.5673828125,
+        746.632385253906
+      ],
+      "region": "jungle",
+      "state": "rear-return-13",
+      "width": 1280,
+      "sha256": "6201a59893686ab55950915ba08fe7a29dc9a513a94460e8bde908e299d1c41e"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-rear-return-14.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        7639.53759765625,
+        752.0
+      ],
+      "region": "jungle",
+      "state": "rear-return-14",
+      "width": 1280,
+      "sha256": "ddac0900fe0071afe77c7436a709f567fa6dd56fccc3869a5df73f80393914ae"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-rear-return-15.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6805.1474609375,
+        1103.19226074219
+      ],
+      "region": "jungle",
+      "state": "rear-return-15",
+      "width": 1280,
+      "sha256": "e77b77a9d352f1a656477e4d1c0a6eb0e865e365fdd79234ab8b8dcc07e4a86a"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-rear-return-16.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6513.59033203125,
+        1930.51428222656
+      ],
+      "region": "jungle",
+      "state": "rear-return-16",
+      "width": 1280,
+      "sha256": "44b79bb591b914fb2a453e553561ead7cbe67978437b46f276d0e54d7b186001"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": true,
+      "exit_visible": true,
+      "file": "jungle-1280-exit-approach.png",
+      "hud": "\uc720\uc801 \ubcf4\uc0c1 \ud68d\ub4dd \u00b7 \ub4e4\uc5b4\uc628 \ubb3c\uae38\ub85c \ubcf5\uadc0",
+      "inside": true,
+      "label_screen": [
+        568.108581542969,
+        283.881378173828
+      ],
+      "marker": [
+        9860.0,
+        440.0
+      ],
+      "point": [
+        6325.49267578125,
+        2638.41015625
+      ],
+      "region": "jungle",
+      "state": "exit-approach",
+      "width": 1280,
+      "sha256": "43dd77635d94e0a76997884dd74b4fd00839e5e07736cd776cc974701ee90f4c"
+    },
+    {
+      "boss_clock": "\ubcf4\uc2a4\uae4c\uc9c0 04:00",
+      "camera_size": 9.0,
+      "corrected_source": true,
+      "exit_raw_visible": false,
+      "exit_visible": false,
+      "file": "jungle-1280-main-return.png",
+      "hud": "",
+      "inside": false,
+      "marker": [
+        1300.0,
+        685.0
+      ],
+      "point": [
+        1150.0,
+        700.0
+      ],
+      "region": "jungle",
+      "state": "main-return",
+      "width": 1280,
+      "sha256": "2176a2ddcc74223402914269ca7940499399c35dde971bd71bce4b948b766be4"
+    }
+  ],
+  "scope": "real native Mac960/1280, ordinary movement, actual rewards/save; synthetic guardian damage/frozen pressure; no natural run, human art/fun, full visibility or performance claim"
+}

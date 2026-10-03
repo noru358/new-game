@@ -1,0 +1,47 @@
+[
+  {
+    "mode": "opaque-only",
+    "crop": [
+      560,
+      270,
+      720,
+      410
+    ],
+    "changed_pixels": 633,
+    "pixels": 22400,
+    "files": [
+      "ci-production-v48-artifact/new-game/new-game/verification-logs/ui-copy/verify_jungle_waterfall_visibility/images/candidate-1280-before-entry-opaque-only-empty.png",
+      "ci-87ba094-artifact/new-game/new-game/verification-logs/ui-copy/verify_jungle_waterfall_visibility/images/candidate-1280-before-entry-opaque-only-empty.png"
+    ]
+  },
+  {
+    "mode": "water-reference",
+    "crop": [
+      560,
+      270,
+      720,
+      410
+    ],
+    "changed_pixels": 0,
+    "pixels": 22400,
+    "files": [
+      "ci-production-v48-artifact/new-game/new-game/verification-logs/ui-copy/verify_jungle_waterfall_visibility/images/candidate-1280-before-entry-water-reference-empty.png",
+      "ci-87ba094-artifact/new-game/new-game/verification-logs/ui-copy/verify_jungle_waterfall_visibility/images/candidate-1280-before-entry-water-reference-empty.png"
+    ]
+  },
+  {
+    "mode": "scenery",
+    "crop": [
+      560,
+      270,
+      720,
+      410
+    ],
+    "changed_pixels": 633,
+    "pixels": 22400,
+    "files": [
+      "ci-production-v48-artifact/new-game/new-game/verification-logs/ui-copy/verify_jungle_waterfall_visibility/images/candidate-1280-before-entry-scenery-empty.png",
+      "ci-87ba094-artifact/new-game/new-game/verification-logs/ui-copy/verify_jungle_waterfall_visibility/images/candidate-1280-before-entry-scenery-empty.png"
+    ]
+  }
+]
