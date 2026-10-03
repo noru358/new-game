@@ -1,0 +1,33 @@
+{
+  "repository": "noru358/new-game",
+  "base_commit": "1aac501f097ff565f5fd249b9411ab91e64b3223",
+  "canonical_commit": "686228f1d2f7cad0f09311c2006f46c6c16ce9d3",
+  "production_ref": "codex/first-region-production-v44",
+  "canonical_ref": "codex/current-playtest",
+  "base_canonical_runtime_diff": [
+    "CHANGELOG.md",
+    "DEV_STATUS.md",
+    "docs/PRODUCTION_NEXT.md"
+  ],
+  "ancestor_verified": true,
+  "github_pr53": {
+    "url": "https://github.com/noru358/new-game/pull/53",
+    "merged": true,
+    "head_sha": "caf602cedbbee657bf01d85ff7cf5a3c3db3d2aa",
+    "merge_commit_sha": "6a83d7b809d3a0c55749cd953339219368c51ed0"
+  },
+  "engine": "4.6.stable.official.89cea1439",
+  "shared_source_unedited": [
+    "game/jungle_section.gd",
+    "game/temple_section.gd",
+    "project.godot",
+    "game/run_profile.gd"
+  ],
+  "normal_saves_accessed": false,
+  "parent_mount_contract": "hidden_visual_root=build(arena,layout); main_entry_root=build_entry(arena,layout); flow lane owns visibility",
+  "limits": [
+    "human beauty/fun unverified",
+    "frozen pressure fixtures, not natural combat",
+    "full integrated CI/native package parent-owned"
+  ]
+}
