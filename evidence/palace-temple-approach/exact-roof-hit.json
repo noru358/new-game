@@ -1,0 +1,141 @@
+{
+	"camera_offset": [
+		14.0,
+		13.8640003204346,
+		14.0
+	],
+	"captures": [],
+	"engine": "4.6-stable (official)",
+	"failures": [
+		"Head ray occluded at 01-approach-960: ProcessionalGateLayeredRoofs"
+	],
+	"landmark_vertices": 17112,
+	"profile_nodes": 0,
+	"projection": [
+		{
+			"actual_point": [
+				1251.34204101562,
+				1567.57153320312
+			],
+			"bounds": {
+				"DistantRaisedHall": {
+					"in_frame_bbox_fraction": 0.0,
+					"rect": [
+						1541.97619628906,
+						505.315521240234,
+						2049.8203125,
+						1068.72290039062
+					]
+				},
+				"ProcessionalGateLayeredRoofs": {
+					"in_frame_bbox_fraction": 1.0,
+					"rect": [
+						162.761474609375,
+						31.327320098877,
+						815.568115234375,
+						430.176513671875
+					]
+				},
+				"ShadedPillaredCloister": {
+					"in_frame_bbox_fraction": 0.0551145745549122,
+					"rect": [
+						776.179443359375,
+						325.463073730469,
+						1763.44189453125,
+						1050.22778320312
+					]
+				},
+				"TurquoiseYakshaGuardian": {
+					"face_rect": [
+						208.3486328125,
+						145.731018066406,
+						319.981018066406,
+						246.298049926758
+					],
+					"in_frame_bbox_fraction": 1.0,
+					"rect": [
+						185.565704345703,
+						110.45125579834,
+						342.764038085938,
+						421.571502685547
+					]
+				},
+				"VermilionYakshaGuardian": {
+					"face_rect": [
+						658.3486328125,
+						145.731033325195,
+						769.981018066406,
+						246.298049926758
+					],
+					"in_frame_bbox_fraction": 1.0,
+					"rect": [
+						635.565612792969,
+						110.451263427734,
+						792.764038085938,
+						421.571502685547
+					]
+				}
+			},
+			"head_ray_hit": "ProcessionalGateLayeredRoofs",
+			"head_world": [
+				12.1956205368042,
+				0.708707094192505,
+				15.3579158782959
+			],
+			"hit_world": [
+				16.0988807678223,
+				4.57405090332031,
+				19.2611770629883
+			],
+			"normalized_to": [
+				960,
+				540
+			],
+			"ray_basis": [
+				0.579219698905945,
+				0.573593080043793,
+				0.579219698905945
+			],
+			"source_viewport": [
+				1280.0,
+				720.0
+			],
+			"stage": "01-approach-960"
+		}
+	],
+	"route": [
+		{
+			"active_seconds": 1.4,
+			"actual": [
+				640.101196289062,
+				2102.10620117188
+			],
+			"from": [
+				180.0,
+				2200.0
+			],
+			"index": 1,
+			"target": [
+				650.0,
+				2100.0
+			]
+		},
+		{
+			"active_seconds": 2.41666666666667,
+			"actual": [
+				1251.34204101562,
+				1567.57153320312
+			],
+			"from": [
+				640.101196289062,
+				2102.10620117188
+			],
+			"index": 2,
+			"target": [
+				1260.0,
+				1560.0
+			]
+		}
+	],
+	"walk_active_seconds": 3.81666666666667
+}
