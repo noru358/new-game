@@ -205,7 +205,10 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     report["status"] = "passed"
     (output / "PLAYTEST.txt").write_text(
         f"Loop Conquest {label} 필드 비교판\n소스: {commit}\n\n"
-        "기존 미리보기 앱을 종료한 뒤 압축을 풀고 새 .app을 실행하세요. v45의 공통 기록을 이어 쓰며 기존 v43/v44 기록과는 분리됩니다.\n"
+        f"아카이브를 다운로드 폴더에 저장하고 Downloads/LoopConquest-{label}/ 안에 압축을 풀어 앱을 보관하세요.\n"
+        f"Finder에서 Downloads/LoopConquest-{label}/ 안의 새 .app을 실행하세요. 플레이하는 동안 앱과 폴더를 이동하거나 삭제하지 마세요.\n"
+        "첨부파일을 Archive Utility로 여는 방법도 정상입니다. 나온 앱을 다운로드 폴더에 보관한 뒤 그 앱을 실행하면 됩니다.\n"
+        "기존 미리보기 앱을 종료한 뒤 새 앱을 실행하세요. v45의 공통 기록을 이어 쓰며 기존 v43/v44 기록과는 분리됩니다. 저장 초기화는 필요 없습니다.\n"
         "야영지 출정 화면에서 사원 → 정글 → 깊은 사원 습지로 진행합니다. 각 지역4분 이후 목적지 보스가 준비됩니다.\n"
         "각 지역 성공으로 다음 지역이 열리고, 정산/구매/장착/영구강화가 공통 기록으로 이어집니다. v45 기록이 없으면 신규 기록으로 시작합니다.\n"
         "첫 권역 전체 완성판이 아닙니다. 정상속도 재미·미감·장시간 성능은 별도 확인이 필요합니다.\n"

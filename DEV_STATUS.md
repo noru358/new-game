@@ -4,6 +4,10 @@
 
 ## v49 재출정 긴급 진단 — 엔진 미실행 / 2026-10-04
 
+- 사용자 후속 설명은 첨부→Archive Utility 해제→나온 앱 실행이다. 정상적인 사용 방법이며 사용자 과실로 판단하지 않는다. 실제 오류 실행 주체/소스SHA/파일 제거 주체는 로그만으로 미확정이다. Downloads 번들의 PCK719864bytes SHA25655e5bc52cf021843f04f68aefc14c37aa8dac954eaf2c3d101868dd5bc5fcb46와 executable/plist는 공식 배포본과 동일하다.
+- 알려진 codex-file-preview 임시 경로만 감지해 기존 hub 상태문구로 다음 실행부터 다운로드 폴더에 앱을 유지하도록 안내한다. 출정 차단/자동 이동/앱 교체/저장 변경은 없다. 최종 PLAYTEST에도 고정 Downloads 경로·번들 유지·저장 초기화 불필요를 명시했다. 로드 실패 복구/근본 해결을 입증한 것은 아니며 packaged 반복검사가 남는다.
+
+
 - 정확 배포296bde54에서 독립 codex/v49-redeparture-hotfix를 만들었다. 사용자 로그 godot2026-10-04T01.22.07.log에서 사원/정글 재출정이 임시 codex-file-preview-Hpz9Mi 앱의 PCK를 다시 열지 못해 실패했고 마지막 getcwd 오류도 확인했다. 해당 임시 폴더는 현재 없다. 저장 초기화로 해결할 문제가 아니다. 파일을 누가/언제 제거했는지는 미확정이다.
 - 사용자 기록은 읽기 전용 확인만 했다. 현재 v7 두 profile slot에는 사원/정글 소유 기록이 있으며 수정하지 않았다. 안정된 Downloads/LoopConquest-v49 앱의 PCK는 존재한다. 사용자 앱 실행/종료/교체와 보안 설정 변경은 하지 않았다.
 - hub 출정의 change_scene_to_file 오류를 기존 status_label에 안내하는 최소 수정과, 실제 viewport mouse 입력으로 사원→정글→사원→정글 반복 재출정/귀환·해금/잔액/정지상태 보존을 검사하는 fixture를 준비했다. 기존 shared session 전체 진행 기대값도 유지한다. diff whitespace 검사만 통과했고 엔진/패키지 회귀는 아직 실행하지 않았다.

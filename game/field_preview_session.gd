@@ -6,6 +6,13 @@ const PROFILE := "user://first_region_shared_v45_profile"
 const UNLOCKS := "user://first_region_shared_v45_unlocks"
 static func activate(tree: SceneTree, profile_prefix: String = PROFILE, unlock_prefix: String = UNLOCKS) -> void:
 	tree.root.set_meta(KEY, {"profile": profile_prefix, "unlocks": unlock_prefix})
+static func temporary_app_path(executable_path: String) -> bool:
+	# The attachment preview may unpack an app into a short-lived directory.
+	# Advisory only: never move a running bundle or modify its save location.
+	for component in executable_path.split("/"):
+		if component.begins_with("codex-file-preview-") and not component.ends_with(".app"): return true
+	return false
+
 static func active(tree: SceneTree) -> bool:
 	return tree.root.has_meta(KEY)
 static func configure(scene: Node) -> void:

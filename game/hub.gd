@@ -400,6 +400,8 @@ func _refresh() -> void:
 		branch_button.disabled = profile.load_error or not profile.attack_branch.is_empty() or not profile.attack_branch_available() or profile.currency < RunProfile.ATTACK_BRANCH_COST
 	reset_button.disabled = profile.load_error or profile.growth_ranks.values().all(func(value: Variant) -> bool: return int(value) == 0)
 	status_label.text = profile.save_block_reason() if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""
+	if not profile.load_error and preload("res://game/field_preview_session.gd").active(get_tree()) and preload("res://game/field_preview_session.gd").temporary_app_path(OS.get_executable_path()):
+		status_label.text += ("\n" if not status_label.text.is_empty() else "") + "현재 임시 폴더에서 실행 중입니다. 압축을 푼 앱을 다운로드 폴더에 보관하고, 다음 실행부터 그 앱을 여세요. 저장 기록은 유지됩니다."
 	if save_folder_button == null:
 		save_folder_button = _button(status_label.get_parent(), "저장 폴더 열기", func(): OS.shell_open(ProjectSettings.globalize_path(profile_save_prefix).get_base_dir()))
 	save_folder_button.visible = profile.load_error
