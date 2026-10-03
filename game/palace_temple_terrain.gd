@@ -8,7 +8,7 @@ const CLOISTER := Vector2(3550, 1940)
 const WAYPOINTS := [ENTRY, Vector2(650, 2100), REVEAL, GATE, COURT_CENTER, Vector2(3550, 2850), CLOISTER, Vector2(4100, 1940)]
 const GATE_ANGLE := -3.0 * PI / 4.0
 const GATE_LOCAL := Vector2(960, 1555)
-const GUARDIAN_LOCAL := [Vector2(1000, 1180), Vector2(1000, 1930)]
+const GUARDIAN_LOCAL := [Vector2(700, 1180), Vector2(700, 1930)]
 
 static func gate_point(local: Vector2) -> Vector2:
 	return GATE + (local-GATE_LOCAL).rotated(GATE_ANGLE)
@@ -26,6 +26,11 @@ func _init() -> void:
 		{"area": Rect2(1550, 1900, 2450, 1420), "height": 0.5, "color": Color("e6dcc1")},
 		{"area": Rect2(2300, 1710, 1780, 330), "height": 0.5, "color": Color("9caa9b")},
 	]
+	# Later place floors own overlaps, keeping the union without coplanar faces.
+	for index in floor_areas.size():
+		var cuts: Array = []
+		for later in range(index+1,floor_areas.size()): cuts.append(floor_areas[later].area)
+		floor_areas[index]["cutouts"] = cuts
 	wall_areas = [
 		{"area": Rect2(2260, 1470, 1850, 120), "height": 225.0},
 		{"area": Rect2(4050, 1150, 290, 530), "height": 580.0},

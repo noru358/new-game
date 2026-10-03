@@ -140,8 +140,8 @@ func _build(arena: Node3D) -> Node3D:
 	_begin()
 	_box(Vector3(2200,-6,1800),Vector3(4400,12,31390),Color("afbe85"))
 	for record in arena.terrain.floor_areas:
-		var a: Rect2 = record.area
-		_box(Vector3(a.get_center().x,0.25,a.get_center().y),Vector3(a.size.x,0.5,a.size.y),record.color)
+		for a in arena.terrain.surface_areas(record):
+			_box(Vector3(a.get_center().x,0.25,a.get_center().y),Vector3(a.size.x,0.5,a.size.y),record.color)
 	# Wide, sparse courses frame quiet combat paving; no busy checkerboard.
 	for z in [2080,3160]:
 		_box(Vector3(2775,0.7,z),Vector3(2250,0.3,14),Color("bebba0"))
