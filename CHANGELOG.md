@@ -510,3 +510,7 @@
 - Verify the combined source with the previous 72 script regressions, 9 actor/terrain depth poses at both Mac resolutions, native boss countdown/UI and normal-input jungle stone/route samples. A capture-only route script still reports one resource at process exit; its walk and images complete, while the ordinary route regression exits cleanly.
 - Export the exact `8c1986f` source as an ad-hoc signed Universal2 Mac app and intact ZIP, copy both to a new Downloads folder and reveal the app in Finder. Confirm 179 packed resources, no development resources, and unchanged ordinary save/config hashes.
 - Preserve v42 app and saves. Human visual acceptance, longer play/performance, audio and remaining map-wide occlusion audit stay open.
+
+
+## First-region three-department candidate (2026-10-03)
+- Temple place sequence, W_FLOW first-effective-hit consumption, and owned/equipped gear follow-through integrated for review. Shared finish reset and accurate hub description mounted. Individual Mac evidence retained; integrated CI/render and package pending. Delivered v47 remains unchanged.

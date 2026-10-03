@@ -437,7 +437,7 @@ func _refresh_discovery_cards() -> void:
 
 
 func _refresh_gear_effects() -> void:
-	var effects := {"W_START": "근거리 마력 타격 · 4타 전방 충격", "W_FLOW": "이동 베기 적중 → 다음 평타 +25% · 적중 시 베기 대기 -0.22초(공격당 1회)", "W_ECHO": "3타 집결 → 같은 지점에 4타 폭발", "A_EMBER": "여우불 마탄 피해 +15%"}
+	var effects := {"W_START": "근거리 마력 타격 · 4타 전방 충격", "W_FLOW": "이동 베기 적중 → 다음 적중 평타 +25% · 빗나가면 유지 · 베기 대기 -0.22초(공격당 1회)", "W_ECHO": "3타 집결 → 같은 지점에 4타 폭발", "A_EMBER": "여우불 마탄 피해 +15%"}
 	gear_effects_label.text = "[font_size=23][color=#f5d99c]%s[/color][/font_size]  %s\n%s" % [RunProfile.gear_name(selected_gear_id), _gear_state(selected_gear_id), effects[selected_gear_id]]
 	var option: String = profile.mod_for(selected_gear_id)
 	for id in AwakeningCatalog.ENTRIES:

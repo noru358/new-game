@@ -91,7 +91,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for fixture in verify_growth_card_descriptions capture_world_destination_labels verify_jungle_waterfall_visibility; do
+          for fixture in verify_growth_card_descriptions capture_world_destination_labels verify_jungle_waterfall_visibility verify_equipment_followthrough; do
             private="$RUNNER_TEMP/ui-copy-$fixture"
             mkdir -p "$private" "verification-logs/ui-copy/$fixture"
             git archive HEAD | tar -x -C "$private"
@@ -111,6 +111,7 @@ jobs:
           test "$(find verification-logs/ui-copy/verify_growth_card_descriptions -name '*.png' | wc -l)" -eq 4
           test "$(find verification-logs/ui-copy/capture_world_destination_labels -name '*.png' | wc -l)" -eq 50
           test "$(find verification-logs/ui-copy/verify_jungle_waterfall_visibility -name '*.png' | wc -l)" -eq 96
+          test "$(find verification-logs/ui-copy/verify_equipment_followthrough -name '*.png' | wc -l)" -eq 10
       - name: Verify isolated price-trial copies
         run: python3 tests/test_price_trial_launcher.py --godot godot --work-dir "$RUNNER_TEMP/price-trial-checks"
       - uses: actions/upload-artifact@v4

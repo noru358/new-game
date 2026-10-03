@@ -1,6 +1,7 @@
 extends RefCounted
 ## Reuse the existing sanctuary's authored stonework behind the new court.
 const Sanctuary = preload("res://game/temple_sanctuary_environment.gd")
+const PlaceComposition = preload("res://game/temple_place_composition.gd")
 const OFFSET := Vector3(-25.2, 0.0, -12.1)
 const MonumentScale = preload("res://game/temple_monument_scale.gd")
 const FOOTPRINT := MonumentScale.FOOTPRINT
@@ -21,6 +22,9 @@ static func build(arena: Node3D) -> Node3D:
 	groves.name = "FarBankGroves"
 	groves.position = -OFFSET
 	root.add_child(groves)
+	var places := PlaceComposition.build(arena)
+	places.position = -OFFSET
+	root.add_child(places)
 	root.name = "CircuitSanctuaryBackdrop"
 	root.position = OFFSET
 	root.set_meta("visual_only", true)
@@ -39,8 +43,7 @@ static func _build_court(arena: Node3D) -> Node3D:
 		if not wall.get("circuit_masonry", false): continue
 		var area: Rect2 = wall.area
 		var top: float = wall.height
-		builder._gallery_fragment(area, 0.0, top, footprints.size())
-		builder._reclaim_edges(area, 0.0, top, footprints.size())
+		PlaceComposition.masonry(builder, area, top, footprints.size())
 		footprints.append(area)
 	# Broad stone courses stay on the low raised court; every ramp band follows its slope.
 	var court: Rect2 = arena.terrain.plateaus[0].area

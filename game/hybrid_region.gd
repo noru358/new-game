@@ -639,6 +639,7 @@ func _finish_run(result: String) -> void:
 	if diagnostics != null: diagnostics.finish(self, result)
 	if temple_section != null: temple_section.retry_overlay.hide()
 	run_ended = true
+	player.clear_flow_weave()
 	end_result = result
 	paused = true
 	get_tree().paused = true
