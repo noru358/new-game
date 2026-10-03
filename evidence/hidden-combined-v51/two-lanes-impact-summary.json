@@ -33,7 +33,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_hidden_combined_mount.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-98334460-67bd-47d2-869e-ede0f992250f",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_hidden_combined_mount.txt"
     },
     {
       "script": "verify_hidden_flow",
@@ -42,7 +43,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_hidden_flow.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-be59a492-ee3b-420a-a522-93105f39620d",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_hidden_flow.txt"
     },
     {
       "script": "verify_garden_transition",
@@ -51,7 +53,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_garden_transition.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-f82a5cea-6e83-4474-a355-07d337687870",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_garden_transition.txt"
     },
     {
       "script": "verify_temple_garden_courtyard",
@@ -60,7 +63,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_temple_garden_courtyard.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-cfa6ae52-c47c-463f-af3a-9f7e48f515c7",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_temple_garden_courtyard.txt"
     },
     {
       "script": "verify_temple_garden_approach",
@@ -69,7 +73,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_temple_garden_approach.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-42e02760-55ed-4542-8232-4d214e1040b7",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_temple_garden_approach.txt"
     },
     {
       "script": "verify_temple_section",
@@ -78,7 +83,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_temple_section.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-d1843dd1-8f1b-490c-9690-e9ca99e0bf74",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_temple_section.txt"
     },
     {
       "script": "verify_temple_circuit_run",
@@ -87,7 +93,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_temple_circuit_run.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-55057811-8143-4cf0-bbbf-16803b2cf1e2",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_temple_circuit_run.txt"
     },
     {
       "script": "verify_jungle_section",
@@ -96,7 +103,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_jungle_section.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-40b34a21-f921-412e-a49d-778df5dc145d",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_jungle_section.txt"
     },
     {
       "script": "verify_jungle_south_circuit",
@@ -105,7 +113,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_jungle_south_circuit.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-b8f09520-6e41-4943-b67c-fa66be0eadb2",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_jungle_south_circuit.txt"
     },
     {
       "script": "verify_jungle_waterfall_visibility",
@@ -114,7 +123,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_jungle_waterfall_visibility.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-3baa9c17-0333-40ea-9d72-40211a1768fe",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_jungle_waterfall_visibility.txt"
     },
     {
       "script": "verify_deep_wetland_run",
@@ -123,7 +133,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_deep_wetland_run.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-52a7e1f4-31d8-4203-853b-acc00108f0d7",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_deep_wetland_run.txt"
     },
     {
       "script": "verify_terrain_coherence",
@@ -132,7 +143,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_terrain_coherence.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-c44d5400-74f3-4cec-a259-60b4649bc81e",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_terrain_coherence.txt"
     },
     {
       "script": "verify_surface_overlap",
@@ -141,7 +153,8 @@
       "errors": [],
       "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/two-lanes-head-impact/verify_surface_overlap.log",
       "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-451e8944-039f-4fa3-9c03-cf0cbd892f20",
-      "passed": true
+      "passed": true,
+      "portable_log": "verify_surface_overlap.txt"
     }
   ],
   "engine_concurrency": 1,

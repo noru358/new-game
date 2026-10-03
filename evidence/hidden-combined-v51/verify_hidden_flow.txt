@@ -1,0 +1,7 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Loop Conquest — 정글 절벽 관문
+Hybrid scene ready: Temple circuit — isolated four-minute run
+Hybrid scene ready: Jungle southern circuit — isolated development run
+HIDDEN_FLOW {"checks":290,"failures":0,"scenes":[{"checks":66,"cycles":[{"entry_frames":19,"exit_frames":15},{"entry_frames":18,"exit_frames":15},{"entry_frames":18,"exit_frames":15}],"failures":0,"scene":"hybrid_region","scope":"normal-speed player input/physics, no dash, frozen run pressure"},{"checks":133,"cycles":[{"entry_frames":19,"exit_frames":6},{"entry_frames":18,"exit_frames":6},{"entry_frames":18,"exit_frames":6}],"failures":0,"scene":"jungle_pass","scope":"normal-speed player input/physics, no dash, frozen run pressure"},{"checks":212,"cycles":[{"entry_frames":19,"exit_frames":15},{"entry_frames":18,"exit_frames":15},{"entry_frames":18,"exit_frames":15}],"failures":0,"scene":"temple_circuit_run","scope":"normal-speed player input/physics, no dash, frozen run pressure"},{"checks":290,"cycles":[{"entry_frames":19,"exit_frames":6},{"entry_frames":18,"exit_frames":6},{"entry_frames":18,"exit_frames":6}],"failures":0,"scene":"jungle_south_circuit","scope":"normal-speed player input/physics, no dash, frozen run pressure"}]}
