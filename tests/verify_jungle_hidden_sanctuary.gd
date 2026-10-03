@@ -69,8 +69,11 @@ func _run() -> void:
 	# Keep terrain bodies registered in the real physics world for collision rays.
 	for actor in scene.actors: actor.set_physics_process(false)
 	scene.wisp.set_physics_process(false)
-	var art := Helper.build(scene,scene.temple_section.layout)
-	root.add_child(art)
+	var art: Node3D = scene.temple_section.get_node_or_null("HiddenFieldVisuals/JungleHiddenSanctuary")
+	check(art != null, "real section mounts final sanctuary under flow root")
+	if art == null:
+		quit(1)
+		return
 	check(Layout.ENTRY_TRIGGER == Rect2(1250,630,100,110) and Layout.RETURN_POINT == Vector2(1150,700) and Layout.FIELD_ENTRY == Vector2(6290,2630) and Layout.EXIT_TRIGGER == Rect2(6100,2510,160,220), "four parent-owned portal coordinates preserved")
 	check(Layout.ALTAR == Vector2(9860,440) and Layout.FIRST_WAVE == [Vector2(7410,2330),Vector2(7960,2190),Vector2(8040,1890)] and Layout.SECOND_WAVE == [Vector2(8850,1460),Vector2(9270,1100),Vector2(9660,980)], "existing altar and six defenders preserved")
 	check(scene.camera.size == 9.0 and scene.camera_offset == Vector3(14,13.864,14), "fixed camera unchanged")

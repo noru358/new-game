@@ -42,6 +42,9 @@ func _run() -> void:
 				if name == "temple_circuit_run":
 					var threshold_floors: Array = scene.terrain.floor_areas.filter(func(record): return record.get("discovery_id", "") == "TEMPLE_GARDEN" and not section.field_area.encloses(record.area))
 					check(threshold_floors.size() == 1 and threshold_floors[0].height == 0.5 and threshold_floors[0].area == section.layout.ENTRY_TRIGGER.grow(30.0), "circuit threshold is exactly 0.5 at active entry")
+			if name == "jungle_south_circuit":
+				check(section.hidden_visual_root.get_node_or_null("JungleHiddenSanctuary") != null, "actual final jungle helper under flow root")
+				check(section.main_entry_root.get_node_or_null("JungleHiddenEntrance") != null and section.main_entry_root.get_child_count() == 1, "jungle helper replaces all original entry loops")
 			section.enter_garden()
 			section.tick(0.0)
 			check(section.in_garden and section.hidden_visual_root.visible and not section.main_entry_root.visible, name + " roots switch on actual entry")
