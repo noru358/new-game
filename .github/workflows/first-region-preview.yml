@@ -108,7 +108,8 @@ jobs:
           sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#CompanionFocusV46-CI#' "$RUNNER_TEMP/companion-focus/project.godot"
           godot --headless --editor --path "$RUNNER_TEMP/companion-focus" --quit
           FOCUS_CAPTURE_DIR="$PWD/companion-focus-render" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/companion-focus" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/verify_companion_focus.gd
-          test "$(find companion-focus-render -name '*.png' | wc -l)" -eq 2
+          FOCUS_CAPTURE_DIR="$PWD/companion-focus-render" LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s '-screen 0 1280x720x24' timeout 120 godot --path "$RUNNER_TEMP/companion-focus" --audio-driver Dummy --rendering-driver opengl3 --script res://tests/verify_companion_branch_ui.gd
+          test "$(find companion-focus-render -name '*.png' | wc -l)" -eq 4
       - uses: actions/upload-artifact@v4
         if: always()
         with:

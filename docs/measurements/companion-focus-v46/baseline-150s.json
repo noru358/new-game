@@ -1,0 +1,1860 @@
+{
+  "active_window_limit": 150.0,
+  "basic_wisp_timings": [
+    {
+      "latest_attack_sequence": 39,
+      "shot_active_seconds": 33.5333333333327,
+      "since_first_trigger_seconds": 0.133333333333326,
+      "since_latest_trigger_seconds": 0.133333333333326,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 42,
+      "shot_active_seconds": 34.4499999999993,
+      "since_first_trigger_seconds": 0.416666666666643,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 43,
+      "shot_active_seconds": 35.3999999999993,
+      "since_first_trigger_seconds": 0.433333333333309,
+      "since_latest_trigger_seconds": 0.433333333333309,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 49,
+      "shot_active_seconds": 37.2999999999992,
+      "since_first_trigger_seconds": 0.716666666666626,
+      "since_latest_trigger_seconds": 0.399999999999977,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 51,
+      "shot_active_seconds": 39.5166666666657,
+      "since_first_trigger_seconds": 0.133333333333326,
+      "since_latest_trigger_seconds": 0.133333333333326,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 55,
+      "shot_active_seconds": 49.8499999999985,
+      "since_first_trigger_seconds": 0.0666666666666629,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 59,
+      "shot_active_seconds": 50.8666666666651,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 61,
+      "shot_active_seconds": 52.9166666666649,
+      "since_first_trigger_seconds": 0.11666666666666,
+      "since_latest_trigger_seconds": 0.11666666666666,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 65,
+      "shot_active_seconds": 55.7166666666648,
+      "since_first_trigger_seconds": 0.599999999999966,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 3,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 67,
+      "shot_active_seconds": 56.5833333333314,
+      "since_first_trigger_seconds": 0.0833333333333286,
+      "since_latest_trigger_seconds": 0.0833333333333286,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 69,
+      "shot_active_seconds": 57.299999999998,
+      "since_first_trigger_seconds": 0.533333333333303,
+      "since_latest_trigger_seconds": 0.249999999999986,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 71,
+      "shot_active_seconds": 58.0166666666647,
+      "since_first_trigger_seconds": 0.649999999999963,
+      "since_latest_trigger_seconds": 0.366666666666646,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 73,
+      "shot_active_seconds": 58.7333333333313,
+      "since_first_trigger_seconds": 0.566666666666634,
+      "since_latest_trigger_seconds": 0.283333333333317,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 75,
+      "shot_active_seconds": 59.4499999999979,
+      "since_first_trigger_seconds": 0.683333333333294,
+      "since_latest_trigger_seconds": 0.399999999999977,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 78,
+      "shot_active_seconds": 60.2999999999979,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 79,
+      "shot_active_seconds": 61.0499999999978,
+      "since_first_trigger_seconds": 0.183333333333323,
+      "since_latest_trigger_seconds": 0.183333333333323,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 81,
+      "shot_active_seconds": 61.6333333333311,
+      "since_first_trigger_seconds": 0.449999999999974,
+      "since_latest_trigger_seconds": 0.149999999999991,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 82,
+      "shot_active_seconds": 62.3833333333311,
+      "since_first_trigger_seconds": 0.199999999999989,
+      "since_latest_trigger_seconds": 0.199999999999989,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 86,
+      "shot_active_seconds": 64.9333333333309,
+      "since_first_trigger_seconds": 0.716666666666626,
+      "since_latest_trigger_seconds": 0.716666666666626,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 89,
+      "shot_active_seconds": 65.6833333333309,
+      "since_first_trigger_seconds": 0.11666666666666,
+      "since_latest_trigger_seconds": 0.11666666666666,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 90,
+      "shot_active_seconds": 66.4333333333309,
+      "since_first_trigger_seconds": 0.549999999999969,
+      "since_latest_trigger_seconds": 0.549999999999969,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 93,
+      "shot_active_seconds": 67.0499999999975,
+      "since_first_trigger_seconds": 0.216666666666654,
+      "since_latest_trigger_seconds": 0.216666666666654,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 95,
+      "shot_active_seconds": 67.5166666666641,
+      "since_first_trigger_seconds": 0.399999999999977,
+      "since_latest_trigger_seconds": 0.133333333333326,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 100,
+      "shot_active_seconds": 69.0499999999974,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 101,
+      "shot_active_seconds": 69.666666666664,
+      "since_first_trigger_seconds": 0.299999999999983,
+      "since_latest_trigger_seconds": 0.299999999999983,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 102,
+      "shot_active_seconds": 70.2833333333306,
+      "since_first_trigger_seconds": 0.516666666666637,
+      "since_latest_trigger_seconds": 0.516666666666637,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 105,
+      "shot_active_seconds": 70.8166666666639,
+      "since_first_trigger_seconds": 0.283333333333317,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 107,
+      "shot_active_seconds": 71.3999999999972,
+      "since_first_trigger_seconds": 0.283333333333317,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 110,
+      "shot_active_seconds": 72.6499999999972,
+      "since_first_trigger_seconds": 0.449999999999974,
+      "since_latest_trigger_seconds": 0.133333333333326,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 114,
+      "shot_active_seconds": 75.6166666666637,
+      "since_first_trigger_seconds": 0.366666666666646,
+      "since_latest_trigger_seconds": 0.366666666666646,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 116,
+      "shot_active_seconds": 76.2333333333303,
+      "since_first_trigger_seconds": 0.366666666666646,
+      "since_latest_trigger_seconds": 0.366666666666646,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 118,
+      "shot_active_seconds": 76.8499999999969,
+      "since_first_trigger_seconds": 0.316666666666649,
+      "since_latest_trigger_seconds": 0.316666666666649,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 125,
+      "shot_active_seconds": 79.0333333333301,
+      "since_first_trigger_seconds": 0.0999999999999943,
+      "since_latest_trigger_seconds": 0.0999999999999943,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 127,
+      "shot_active_seconds": 79.7333333333301,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 128,
+      "shot_active_seconds": 80.3499999999967,
+      "since_first_trigger_seconds": 0.366666666666646,
+      "since_latest_trigger_seconds": 0.366666666666646,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 131,
+      "shot_active_seconds": 81.13333333333,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 133,
+      "shot_active_seconds": 81.73333333333,
+      "since_first_trigger_seconds": 0.316666666666649,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 134,
+      "shot_active_seconds": 82.3499999999966,
+      "since_first_trigger_seconds": 0.333333333333314,
+      "since_latest_trigger_seconds": 0.333333333333314,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 135,
+      "shot_active_seconds": 82.9499999999966,
+      "since_first_trigger_seconds": 0.366666666666646,
+      "since_latest_trigger_seconds": 0.366666666666646,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 137,
+      "shot_active_seconds": 83.5666666666632,
+      "since_first_trigger_seconds": 0.0666666666666629,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 138,
+      "shot_active_seconds": 84.1833333333298,
+      "since_first_trigger_seconds": 0.23333333333332,
+      "since_latest_trigger_seconds": 0.23333333333332,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 142,
+      "shot_active_seconds": 85.5666666666631,
+      "since_first_trigger_seconds": 0.399999999999977,
+      "since_latest_trigger_seconds": 0.399999999999977,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 144,
+      "shot_active_seconds": 86.0333333333297,
+      "since_first_trigger_seconds": 0.449999999999974,
+      "since_latest_trigger_seconds": 0.166666666666657,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 146,
+      "shot_active_seconds": 86.6499999999964,
+      "since_first_trigger_seconds": 0.183333333333323,
+      "since_latest_trigger_seconds": 0.183333333333323,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 148,
+      "shot_active_seconds": 87.266666666663,
+      "since_first_trigger_seconds": 0.0666666666666629,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 152,
+      "shot_active_seconds": 90.2333333333295,
+      "since_first_trigger_seconds": 0.499999999999972,
+      "since_latest_trigger_seconds": 0.499999999999972,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 153,
+      "shot_active_seconds": 95.7999999999958,
+      "since_first_trigger_seconds": 4.84999999999972,
+      "since_latest_trigger_seconds": 4.84999999999972,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 154,
+      "shot_active_seconds": 100.349999999996,
+      "since_first_trigger_seconds": 2.09999999999988,
+      "since_latest_trigger_seconds": 2.09999999999988,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 157,
+      "shot_active_seconds": 105.799999999995,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 158,
+      "shot_active_seconds": 106.416666666662,
+      "since_first_trigger_seconds": 0.283333333333317,
+      "since_latest_trigger_seconds": 0.283333333333317,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 160,
+      "shot_active_seconds": 106.949999999995,
+      "since_first_trigger_seconds": 0.283333333333317,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 161,
+      "shot_active_seconds": 107.566666666662,
+      "since_first_trigger_seconds": 0.0666666666666629,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 162,
+      "shot_active_seconds": 108.216666666662,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 171,
+      "shot_active_seconds": 112.733333333328,
+      "since_first_trigger_seconds": 0.5833333333333,
+      "since_latest_trigger_seconds": 0.5833333333333,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 173,
+      "shot_active_seconds": 116.916666666661,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 174,
+      "shot_active_seconds": 117.533333333328,
+      "since_first_trigger_seconds": 0.199999999999989,
+      "since_latest_trigger_seconds": 0.199999999999989,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 178,
+      "shot_active_seconds": 119.716666666661,
+      "since_first_trigger_seconds": 0.499999999999972,
+      "since_latest_trigger_seconds": 0.499999999999972,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 180,
+      "shot_active_seconds": 121.116666666661,
+      "since_first_trigger_seconds": 0.333333333333314,
+      "since_latest_trigger_seconds": 0.333333333333314,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 182,
+      "shot_active_seconds": 121.733333333328,
+      "since_first_trigger_seconds": 0.249999999999986,
+      "since_latest_trigger_seconds": 0.249999999999986,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 184,
+      "shot_active_seconds": 122.199999999994,
+      "since_first_trigger_seconds": 0.399999999999977,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 187,
+      "shot_active_seconds": 123.599999999994,
+      "since_first_trigger_seconds": 0.433333333333309,
+      "since_latest_trigger_seconds": 0.433333333333309,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 190,
+      "shot_active_seconds": 124.216666666661,
+      "since_first_trigger_seconds": 0.216666666666654,
+      "since_latest_trigger_seconds": 0.216666666666654,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 192,
+      "shot_active_seconds": 124.699999999994,
+      "since_first_trigger_seconds": 0.416666666666643,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 194,
+      "shot_active_seconds": 126.866666666661,
+      "since_first_trigger_seconds": 0.0666666666666629,
+      "since_latest_trigger_seconds": 0.0666666666666629,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 194,
+      "shot_active_seconds": 126.983333333327,
+      "since_first_trigger_seconds": 0.183333333333323,
+      "since_latest_trigger_seconds": 0.183333333333323,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 195,
+      "shot_active_seconds": 127.483333333327,
+      "since_first_trigger_seconds": 0.366666666666646,
+      "since_latest_trigger_seconds": 0.366666666666646,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 195,
+      "shot_active_seconds": 127.599999999994,
+      "since_first_trigger_seconds": 0.483333333333306,
+      "since_latest_trigger_seconds": 0.483333333333306,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 198,
+      "shot_active_seconds": 128.099999999994,
+      "since_first_trigger_seconds": 0.0666666666667197,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 198,
+      "shot_active_seconds": 128.216666666661,
+      "since_first_trigger_seconds": 0.183333333333479,
+      "since_latest_trigger_seconds": 0.183333333333479,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 199,
+      "shot_active_seconds": 128.716666666661,
+      "since_first_trigger_seconds": 0.400000000000318,
+      "since_latest_trigger_seconds": 0.400000000000318,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 200,
+      "shot_active_seconds": 128.799999999995,
+      "since_first_trigger_seconds": 0.483333333333718,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 201,
+      "shot_active_seconds": 129.266666666662,
+      "since_first_trigger_seconds": 0.466666666667038,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 201,
+      "shot_active_seconds": 129.416666666662,
+      "since_first_trigger_seconds": 0.150000000000119,
+      "since_latest_trigger_seconds": 0.150000000000119,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 203,
+      "shot_active_seconds": 129.883333333329,
+      "since_first_trigger_seconds": 0.0666666666667197,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 203,
+      "shot_active_seconds": 130.033333333329,
+      "since_first_trigger_seconds": 0.216666666666839,
+      "since_latest_trigger_seconds": 0.216666666666839,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 208,
+      "shot_active_seconds": 132.833333333331,
+      "since_first_trigger_seconds": 0.10000000000008,
+      "since_latest_trigger_seconds": 0.10000000000008,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 208,
+      "shot_active_seconds": 132.983333333331,
+      "since_first_trigger_seconds": 0.250000000000199,
+      "since_latest_trigger_seconds": 0.250000000000199,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 213,
+      "shot_active_seconds": 142.250000000005,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 213,
+      "shot_active_seconds": 142.450000000006,
+      "since_first_trigger_seconds": 0.200000000000159,
+      "since_latest_trigger_seconds": 0.200000000000159,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 215,
+      "shot_active_seconds": 143.650000000006,
+      "since_first_trigger_seconds": 0.0833333333333997,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 215,
+      "shot_active_seconds": 143.650000000006,
+      "since_first_trigger_seconds": 0.0833333333333997,
+      "since_latest_trigger_seconds": 0.0833333333333997,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 217,
+      "shot_active_seconds": 144.28333333334,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 217,
+      "shot_active_seconds": 144.28333333334,
+      "since_first_trigger_seconds": 0.0,
+      "since_latest_trigger_seconds": 0.0,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 219,
+      "shot_active_seconds": 144.883333333341,
+      "since_first_trigger_seconds": 0.0666666666667197,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 219,
+      "shot_active_seconds": 144.883333333341,
+      "since_first_trigger_seconds": 0.0666666666667197,
+      "since_latest_trigger_seconds": 0.0666666666667197,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    },
+    {
+      "latest_attack_sequence": 220,
+      "shot_active_seconds": 145.166666666674,
+      "since_first_trigger_seconds": 0.350000000000279,
+      "since_latest_trigger_seconds": 0.0500000000000398,
+      "trigger_entries_before_shot": 2,
+      "wisp_id": 20213223393687
+    },
+    {
+      "latest_attack_sequence": 220,
+      "shot_active_seconds": 145.500000000008,
+      "since_first_trigger_seconds": 0.383333333333638,
+      "since_latest_trigger_seconds": 0.383333333333638,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 54374958855
+    },
+    {
+      "latest_attack_sequence": 220,
+      "shot_active_seconds": 148.133333333343,
+      "since_first_trigger_seconds": 3.01666666666907,
+      "since_latest_trigger_seconds": 3.01666666666907,
+      "trigger_entries_before_shot": 1,
+      "wisp_id": 18539259889941
+    }
+  ],
+  "build": "companion",
+  "card_priority": [
+    "S_WISP_COUNT",
+    "S_WISP_CADENCE",
+    "S_WISP_DAMAGE",
+    "S_WISP_CHAIN",
+    "S_WISP_FOLLOWUP",
+    "S_WISP_SWEEP",
+    "S_WISP_REPLY",
+    "S_WISP_ORBIT",
+    "U_REACH",
+    "U_TEMPO",
+    "U_SLASH_SWEEP",
+    "U_SLASH_CADENCE",
+    "U_EDGE",
+    "U_STEP",
+    "S_SEAL"
+  ],
+  "checkpoints": [
+    {
+      "active_seconds": 0.116666666666667,
+      "active_wall_drift_seconds": -0.0300126666666667,
+      "cards": {
+
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 0,
+        "mean_since_latest_trigger_seconds": 0.0,
+        "next_shots_observed": 0,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "cumulative": {
+        "attack_presses": 0,
+        "basic_attacks_hitting": 0,
+        "basic_attacks_started": 0,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 0,
+        "close_samples_under_120": 0,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 0.0,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 0,
+        "fourth_attacks_started": 0,
+        "fourth_hit_targets": 0,
+        "nearest_enemy_distance_sum": 0.0,
+        "proximity_samples": 0,
+        "slash_hit_targets": 0,
+        "slash_requests": 0,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 0,
+        "slashes_performed": 0,
+        "third_attacks_hitting": 0,
+        "third_attacks_started": 0,
+        "third_hit_targets": 0,
+        "wisp_hit_events": 0,
+        "wisp_shots": 0,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 0.116666666666667,
+        "active_wall_seconds": 0.086654,
+        "attack_branch": "COMPANION",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+
+        },
+        "choice_wall_seconds": 0.0,
+        "choice_windows": 0,
+        "damage_events": 0,
+        "damage_taken_actual": 0.0,
+        "earned_currency": 0,
+        "health": 110.0,
+        "kills": 0,
+        "level": 1,
+        "level_heal_actual": 0.0,
+        "level_heal_events": 0,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 0,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 0,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 0.086654,
+        "weapon": "W_START",
+        "xp_remainder": 0
+      },
+      "focus_observation": {
+        "active_mark_seconds": 0.0,
+        "marked_shots": 0,
+        "primary_surviving_hits": 0,
+        "trial": false
+      },
+      "label": "initial",
+      "points_spent": 0,
+      "position": {
+        "x": 650.0,
+        "y": 1870.0
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 0,
+        "basic_attacks_hitting": 0,
+        "basic_attacks_started": 0,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 0,
+        "close_samples_under_120": 0,
+        "dash_requests": 0,
+        "dash_requests_failed": 0,
+        "dashes_performed": 0,
+        "distance_travelled": 0.0,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 0,
+        "fourth_attacks_started": 0,
+        "fourth_hit_targets": 0,
+        "nearest_enemy_distance_sum": 0.0,
+        "proximity_samples": 0,
+        "slash_hit_targets": 0,
+        "slash_requests": 0,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 0,
+        "slashes_performed": 0,
+        "third_attacks_hitting": 0,
+        "third_attacks_started": 0,
+        "third_hit_targets": 0,
+        "wisp_hit_events": 0,
+        "wisp_shots": 0,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "span_active_seconds": 0.116666666666667,
+      "span_from_points": 0,
+      "wisp_shots_counter_crosscheck": 0
+    },
+    {
+      "active_seconds": 28.5499999999997,
+      "active_wall_drift_seconds": -0.135340999999659,
+      "cards": {
+        "S_WISP_CADENCE": 1,
+        "S_WISP_DAMAGE": 1,
+        "S_WISP_REPLY": 1
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 0,
+        "mean_since_latest_trigger_seconds": 0.0,
+        "next_shots_observed": 0,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "cumulative": {
+        "attack_presses": 10,
+        "basic_attacks_hitting": 16,
+        "basic_attacks_started": 25,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 19,
+        "close_samples_under_120": 43,
+        "dash_requests": 3,
+        "dash_requests_failed": 0,
+        "dashes_performed": 3,
+        "distance_travelled": 6596.91306839883,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 1,
+        "fourth_attacks_started": 3,
+        "fourth_hit_targets": 1,
+        "nearest_enemy_distance_sum": 17762.1605892181,
+        "proximity_samples": 100,
+        "slash_hit_targets": 3,
+        "slash_requests": 8,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 3,
+        "slashes_performed": 8,
+        "third_attacks_hitting": 4,
+        "third_attacks_started": 5,
+        "third_hit_targets": 5,
+        "wisp_hit_events": 13,
+        "wisp_shots": 14,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 28.5499999999997,
+        "active_wall_seconds": 28.414659,
+        "attack_branch": "COMPANION",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 1,
+          "S_WISP_DAMAGE": 1,
+          "S_WISP_REPLY": 1
+        },
+        "choice_wall_seconds": 4.758253,
+        "choice_windows": 3,
+        "damage_events": 4,
+        "damage_taken_actual": 40.0,
+        "earned_currency": 15,
+        "health": 110.0,
+        "kills": 15,
+        "level": 4,
+        "level_heal_actual": 40.0,
+        "level_heal_events": 3,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 3,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 3,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 33.172912,
+        "weapon": "W_START",
+        "xp_remainder": 0
+      },
+      "focus_observation": {
+        "active_mark_seconds": 0.0,
+        "marked_shots": 0,
+        "primary_surviving_hits": 10,
+        "trial": false
+      },
+      "label": "after_3_points",
+      "points_spent": 3,
+      "position": {
+        "x": 368.189147949219,
+        "y": 1072.61218261719
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 10,
+        "basic_attacks_hitting": 16,
+        "basic_attacks_started": 25,
+        "basic_followup_trigger_actions": 0,
+        "basic_hit_targets": 19,
+        "close_samples_under_120": 43,
+        "dash_requests": 3,
+        "dash_requests_failed": 0,
+        "dashes_performed": 3,
+        "distance_travelled": 6596.91306839883,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 0.0,
+        "followup_trigger_entries_consumed": 0,
+        "fourth_attacks_hitting": 1,
+        "fourth_attacks_started": 3,
+        "fourth_hit_targets": 1,
+        "nearest_enemy_distance_sum": 17762.1605892181,
+        "proximity_samples": 100,
+        "slash_hit_targets": 3,
+        "slash_requests": 8,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 3,
+        "slashes_performed": 8,
+        "third_attacks_hitting": 4,
+        "third_attacks_started": 5,
+        "third_hit_targets": 5,
+        "wisp_hit_events": 13,
+        "wisp_shots": 14,
+        "wisp_shots_after_followup": 0,
+        "wisp_timer_followup_triggers": 0
+      },
+      "span_active_seconds": 28.433333333333,
+      "span_from_points": 0,
+      "wisp_shots_counter_crosscheck": 14
+    },
+    {
+      "active_seconds": 54.8833333333315,
+      "active_wall_drift_seconds": -0.138174333331499,
+      "cards": {
+        "S_WISP_CADENCE": 1,
+        "S_WISP_DAMAGE": 2,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_REPLY": 1
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 10,
+        "mean_since_latest_trigger_seconds": 0.160416666666658,
+        "next_shots_observed": 8,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 0,
+        "wisp_timer_followup_triggers": 10
+      },
+      "cumulative": {
+        "attack_presses": 23,
+        "basic_attacks_hitting": 33,
+        "basic_attacks_started": 62,
+        "basic_followup_trigger_actions": 10,
+        "basic_hit_targets": 39,
+        "close_samples_under_120": 109,
+        "dash_requests": 9,
+        "dash_requests_failed": 0,
+        "dashes_performed": 9,
+        "distance_travelled": 14692.4766158313,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 1.28333333333326,
+        "followup_trigger_entries_consumed": 10,
+        "fourth_attacks_hitting": 5,
+        "fourth_attacks_started": 8,
+        "fourth_hit_targets": 5,
+        "nearest_enemy_distance_sum": 37193.0751199722,
+        "proximity_samples": 229,
+        "slash_hit_targets": 15,
+        "slash_requests": 19,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 11,
+        "slashes_performed": 19,
+        "third_attacks_hitting": 6,
+        "third_attacks_started": 13,
+        "third_hit_targets": 8,
+        "wisp_hit_events": 32,
+        "wisp_shots": 32,
+        "wisp_shots_after_followup": 8,
+        "wisp_timer_followup_triggers": 10
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 54.8833333333315,
+        "active_wall_seconds": 54.745159,
+        "attack_branch": "COMPANION",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 1,
+          "S_WISP_DAMAGE": 2,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_REPLY": 1
+        },
+        "choice_wall_seconds": 9.538277,
+        "choice_windows": 6,
+        "damage_events": 13,
+        "damage_taken_actual": 130.0,
+        "earned_currency": 39,
+        "health": 84.0,
+        "kills": 39,
+        "level": 7,
+        "level_heal_actual": 104.0,
+        "level_heal_events": 6,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 6,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 6,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 64.283436,
+        "weapon": "W_START",
+        "xp_remainder": 0
+      },
+      "focus_observation": {
+        "active_mark_seconds": 0.0,
+        "marked_shots": 0,
+        "primary_surviving_hits": 22,
+        "trial": false
+      },
+      "label": "after_6_points",
+      "points_spent": 6,
+      "position": {
+        "x": 391.775085449219,
+        "y": 1136.0087890625
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 13,
+        "basic_attacks_hitting": 17,
+        "basic_attacks_started": 37,
+        "basic_followup_trigger_actions": 10,
+        "basic_hit_targets": 20,
+        "close_samples_under_120": 66,
+        "dash_requests": 6,
+        "dash_requests_failed": 0,
+        "dashes_performed": 6,
+        "distance_travelled": 8095.56354743242,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 1.28333333333326,
+        "followup_trigger_entries_consumed": 10,
+        "fourth_attacks_hitting": 4,
+        "fourth_attacks_started": 5,
+        "fourth_hit_targets": 4,
+        "nearest_enemy_distance_sum": 19430.9145307541,
+        "proximity_samples": 129,
+        "slash_hit_targets": 12,
+        "slash_requests": 11,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 8,
+        "slashes_performed": 11,
+        "third_attacks_hitting": 2,
+        "third_attacks_started": 8,
+        "third_hit_targets": 3,
+        "wisp_hit_events": 19,
+        "wisp_shots": 18,
+        "wisp_shots_after_followup": 8,
+        "wisp_timer_followup_triggers": 10
+      },
+      "span_active_seconds": 26.3333333333318,
+      "span_from_points": 3,
+      "wisp_shots_counter_crosscheck": 32
+    },
+    {
+      "active_seconds": 70.8166666666639,
+      "active_wall_drift_seconds": -0.12732966666394,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_REPLY": 1
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 38,
+        "mean_since_latest_trigger_seconds": 0.221153846153834,
+        "next_shots_observed": 26,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 2,
+        "wisp_timer_followup_triggers": 38
+      },
+      "cumulative": {
+        "attack_presses": 35,
+        "basic_attacks_hitting": 61,
+        "basic_attacks_started": 105,
+        "basic_followup_trigger_actions": 38,
+        "basic_hit_targets": 77,
+        "close_samples_under_120": 201,
+        "dash_requests": 15,
+        "dash_requests_failed": 0,
+        "dashes_performed": 15,
+        "distance_travelled": 20016.1587118022,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 5.74999999999967,
+        "followup_trigger_entries_consumed": 36,
+        "fourth_attacks_hitting": 9,
+        "fourth_attacks_started": 15,
+        "fourth_hit_targets": 9,
+        "nearest_enemy_distance_sum": 54809.7367458344,
+        "proximity_samples": 376,
+        "slash_hit_targets": 32,
+        "slash_requests": 30,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 21,
+        "slashes_performed": 30,
+        "third_attacks_hitting": 14,
+        "third_attacks_started": 23,
+        "third_hit_targets": 20,
+        "wisp_hit_events": 51,
+        "wisp_shots": 54,
+        "wisp_shots_after_followup": 26,
+        "wisp_timer_followup_triggers": 38
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 70.8166666666639,
+        "active_wall_seconds": 70.689337,
+        "attack_branch": "COMPANION",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_REPLY": 1
+        },
+        "choice_wall_seconds": 14.245701,
+        "choice_windows": 9,
+        "damage_events": 21,
+        "damage_taken_actual": 214.0,
+        "earned_currency": 72,
+        "health": 66.0,
+        "kills": 66,
+        "level": 10,
+        "level_heal_actual": 170.0,
+        "level_heal_events": 9,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 9,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 9,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 84.935038,
+        "weapon": "W_START",
+        "xp_remainder": 0
+      },
+      "focus_observation": {
+        "active_mark_seconds": 0.0,
+        "marked_shots": 0,
+        "primary_surviving_hits": 51,
+        "trial": false
+      },
+      "label": "after_9_points",
+      "points_spent": 9,
+      "position": {
+        "x": 895.065795898438,
+        "y": 1664.98962402344
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 12,
+        "basic_attacks_hitting": 28,
+        "basic_attacks_started": 43,
+        "basic_followup_trigger_actions": 28,
+        "basic_hit_targets": 38,
+        "close_samples_under_120": 92,
+        "dash_requests": 6,
+        "dash_requests_failed": 0,
+        "dashes_performed": 6,
+        "distance_travelled": 5323.68209597096,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 4.46666666666641,
+        "followup_trigger_entries_consumed": 26,
+        "fourth_attacks_hitting": 4,
+        "fourth_attacks_started": 7,
+        "fourth_hit_targets": 4,
+        "nearest_enemy_distance_sum": 17616.6616258621,
+        "proximity_samples": 147,
+        "slash_hit_targets": 17,
+        "slash_requests": 11,
+        "slash_requests_failed": 0,
+        "slashes_hitting": 10,
+        "slashes_performed": 11,
+        "third_attacks_hitting": 8,
+        "third_attacks_started": 10,
+        "third_hit_targets": 12,
+        "wisp_hit_events": 19,
+        "wisp_shots": 22,
+        "wisp_shots_after_followup": 18,
+        "wisp_timer_followup_triggers": 28
+      },
+      "span_active_seconds": 15.9333333333324,
+      "span_from_points": 6,
+      "wisp_shots_counter_crosscheck": 54
+    },
+    {
+      "active_seconds": 150.000000000012,
+      "active_wall_drift_seconds": -0.111464000011523,
+      "cards": {
+        "S_WISP_CADENCE": 3,
+        "S_WISP_CHAIN": 2,
+        "S_WISP_COUNT": 2,
+        "S_WISP_DAMAGE": 3,
+        "S_WISP_FOLLOWUP": 2,
+        "S_WISP_ORBIT": 2,
+        "S_WISP_REPLY": 2,
+        "S_WISP_SWEEP": 2
+      },
+      "companion_link": {
+        "basic_followup_trigger_actions": 94,
+        "mean_since_latest_trigger_seconds": 0.295643939393975,
+        "next_shots_observed": 88,
+        "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+        "pending_trigger_entries": 0,
+        "wisp_timer_followup_triggers": 109
+      },
+      "cumulative": {
+        "attack_presses": 83,
+        "basic_attacks_hitting": 117,
+        "basic_attacks_started": 221,
+        "basic_followup_trigger_actions": 94,
+        "basic_hit_targets": 151,
+        "close_samples_under_120": 404,
+        "dash_requests": 31,
+        "dash_requests_failed": 0,
+        "dashes_performed": 31,
+        "distance_travelled": 43949.8944275859,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 26.0166666666698,
+        "followup_trigger_entries_consumed": 109,
+        "fourth_attacks_hitting": 19,
+        "fourth_attacks_started": 32,
+        "fourth_hit_targets": 25,
+        "nearest_enemy_distance_sum": 225869.938696861,
+        "proximity_samples": 1066,
+        "slash_hit_targets": 69,
+        "slash_requests": 64,
+        "slash_requests_failed": 1,
+        "slashes_hitting": 44,
+        "slashes_performed": 63,
+        "third_attacks_hitting": 30,
+        "third_attacks_started": 45,
+        "third_hit_targets": 41,
+        "wisp_hit_events": 240,
+        "wisp_shots": 188,
+        "wisp_shots_after_followup": 88,
+        "wisp_timer_followup_triggers": 109
+      },
+      "dash_requests_pending": 0,
+      "diagnostics": {
+        "accessory": "A_EMBER",
+        "active_seconds": 150.000000000012,
+        "active_wall_seconds": 149.888536,
+        "attack_branch": "COMPANION",
+        "boss_engagements": 0,
+        "boss_first_times": {
+
+        },
+        "cards": {
+          "S_WISP_CADENCE": 3,
+          "S_WISP_CHAIN": 2,
+          "S_WISP_COUNT": 2,
+          "S_WISP_DAMAGE": 3,
+          "S_WISP_FOLLOWUP": 2,
+          "S_WISP_ORBIT": 2,
+          "S_WISP_REPLY": 2,
+          "S_WISP_SWEEP": 2
+        },
+        "choice_wall_seconds": 28.352912,
+        "choice_windows": 18,
+        "damage_events": 35,
+        "damage_taken_actual": 362.0,
+        "earned_currency": 234,
+        "health": 110.0,
+        "kills": 178,
+        "level": 19,
+        "level_heal_actual": 362.0,
+        "level_heal_events": 18,
+        "max_health": 110.0,
+        "pause_wall_seconds": 0.0,
+        "permanent_growth": {
+          "FINISH": 0.0,
+          "GUARD": 0.0,
+          "MOBILITY": 0.0,
+          "POWER": 2.0,
+          "RECOVERY": 0.0,
+          "SLASH": 0.0,
+          "SLASH_POWER": 0.0,
+          "SPEED": 0.0,
+          "VITALITY": 1.0,
+          "WISP": 2.0
+        },
+        "points_earned": 18,
+        "points_exhausted": 0,
+        "points_pending": 0,
+        "points_spent": 18,
+        "region": "O_TEMPLE",
+        "result": "IN_PROGRESS",
+        "schema": "local_run_diagnostics_v1",
+        "time_scale_max": 1.0,
+        "time_scale_min": 1.0,
+        "wall_seconds": 178.241448,
+        "weapon": "W_START",
+        "xp_remainder": 18
+      },
+      "focus_observation": {
+        "active_mark_seconds": 0.0,
+        "marked_shots": 0,
+        "primary_surviving_hits": 109,
+        "trial": false
+      },
+      "label": "final",
+      "points_spent": 18,
+      "position": {
+        "x": 3213.33349609375,
+        "y": 725.605651855469
+      },
+      "q_requests_pending": 0,
+      "span": {
+        "attack_presses": 48,
+        "basic_attacks_hitting": 56,
+        "basic_attacks_started": 116,
+        "basic_followup_trigger_actions": 56,
+        "basic_hit_targets": 74,
+        "close_samples_under_120": 203,
+        "dash_requests": 16,
+        "dash_requests_failed": 0,
+        "dashes_performed": 16,
+        "distance_travelled": 23933.7357157837,
+        "empowered_basic_hit_targets": 0,
+        "empowered_basics_hitting": 0,
+        "empowered_basics_started": 0,
+        "flow_refund_events": 0,
+        "followup_latest_latency_sum": 20.2666666666701,
+        "followup_trigger_entries_consumed": 73,
+        "fourth_attacks_hitting": 10,
+        "fourth_attacks_started": 17,
+        "fourth_hit_targets": 16,
+        "nearest_enemy_distance_sum": 171060.201951027,
+        "proximity_samples": 690,
+        "slash_hit_targets": 37,
+        "slash_requests": 34,
+        "slash_requests_failed": 1,
+        "slashes_hitting": 23,
+        "slashes_performed": 33,
+        "third_attacks_hitting": 16,
+        "third_attacks_started": 22,
+        "third_hit_targets": 21,
+        "wisp_hit_events": 189,
+        "wisp_shots": 134,
+        "wisp_shots_after_followup": 62,
+        "wisp_timer_followup_triggers": 71
+      },
+      "span_active_seconds": 79.1833333333476,
+      "span_from_points": 9,
+      "wisp_shots_counter_crosscheck": 188
+    }
+  ],
+  "choice_dwell_seconds": 1.5,
+  "choices": [
+    {
+      "active_seconds": 11.9500000000002,
+      "chosen": "S_WISP_REPLY",
+      "key": 2,
+      "offered": [
+        "U_REACH",
+        "S_WISP_REPLY",
+        "U_EDGE"
+      ],
+      "points_after": 1,
+      "points_before": 0
+    },
+    {
+      "active_seconds": 23.8999999999999,
+      "chosen": "S_WISP_CADENCE",
+      "key": 2,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_CADENCE",
+        "S_WISP_CHAIN"
+      ],
+      "points_after": 2,
+      "points_before": 1
+    },
+    {
+      "active_seconds": 28.5499999999997,
+      "chosen": "S_WISP_DAMAGE",
+      "key": 3,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_ORBIT",
+        "S_WISP_DAMAGE"
+      ],
+      "points_after": 3,
+      "points_before": 2
+    },
+    {
+      "active_seconds": 32.7333333333328,
+      "chosen": "S_WISP_FOLLOWUP",
+      "key": 3,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_SWEEP",
+        "S_WISP_FOLLOWUP"
+      ],
+      "points_after": 4,
+      "points_before": 3
+    },
+    {
+      "active_seconds": 37.3833333333325,
+      "chosen": "S_WISP_FOLLOWUP",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_FOLLOWUP",
+        "S_WISP_REPLY"
+      ],
+      "points_after": 5,
+      "points_before": 4
+    },
+    {
+      "active_seconds": 54.8833333333315,
+      "chosen": "S_WISP_DAMAGE",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_DAMAGE",
+        "S_SEAL"
+      ],
+      "points_after": 6,
+      "points_before": 5
+    },
+    {
+      "active_seconds": 59.1833333333313,
+      "chosen": "S_WISP_CADENCE",
+      "key": 3,
+      "offered": [
+        "U_EDGE",
+        "S_WISP_REPLY",
+        "S_WISP_CADENCE"
+      ],
+      "points_after": 7,
+      "points_before": 6
+    },
+    {
+      "active_seconds": 66.0333333333309,
+      "chosen": "S_WISP_CADENCE",
+      "key": 3,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_CHAIN",
+        "S_WISP_CADENCE"
+      ],
+      "points_after": 8,
+      "points_before": 7
+    },
+    {
+      "active_seconds": 70.8166666666639,
+      "chosen": "S_WISP_DAMAGE",
+      "key": 2,
+      "offered": [
+        "U_REACH",
+        "S_WISP_DAMAGE",
+        "U_SLASH_CADENCE"
+      ],
+      "points_after": 9,
+      "points_before": 8
+    },
+    {
+      "active_seconds": 76.6666666666636,
+      "chosen": "S_WISP_ORBIT",
+      "key": 2,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_ORBIT",
+        "U_STEP"
+      ],
+      "points_after": 10,
+      "points_before": 9
+    },
+    {
+      "active_seconds": 82.3666666666633,
+      "chosen": "S_WISP_CHAIN",
+      "key": 2,
+      "offered": [
+        "U_EDGE",
+        "S_WISP_CHAIN",
+        "U_STEP"
+      ],
+      "points_after": 11,
+      "points_before": 10
+    },
+    {
+      "active_seconds": 84.9833333333298,
+      "chosen": "S_WISP_ORBIT",
+      "key": 2,
+      "offered": [
+        "U_REACH",
+        "S_WISP_ORBIT",
+        "U_EDGE"
+      ],
+      "points_after": 12,
+      "points_before": 11
+    },
+    {
+      "active_seconds": 98.3499999999957,
+      "chosen": "S_WISP_REPLY",
+      "key": 2,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_REPLY",
+        "U_SLASH_CADENCE"
+      ],
+      "points_after": 13,
+      "points_before": 12
+    },
+    {
+      "active_seconds": 112.199999999995,
+      "chosen": "S_WISP_CHAIN",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_CHAIN",
+        "U_TEMPO"
+      ],
+      "points_after": 14,
+      "points_before": 13
+    },
+    {
+      "active_seconds": 124.966666666661,
+      "chosen": "S_WISP_COUNT",
+      "key": 2,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_COUNT",
+        "U_STEP"
+      ],
+      "points_after": 15,
+      "points_before": 14
+    },
+    {
+      "active_seconds": 131.199999999997,
+      "chosen": "S_WISP_SWEEP",
+      "key": 2,
+      "offered": [
+        "U_SLASH_SWEEP",
+        "S_WISP_SWEEP",
+        "U_REACH"
+      ],
+      "points_after": 16,
+      "points_before": 15
+    },
+    {
+      "active_seconds": 138.100000000002,
+      "chosen": "S_WISP_SWEEP",
+      "key": 2,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_SWEEP",
+        "U_EDGE"
+      ],
+      "points_after": 17,
+      "points_before": 16
+    },
+    {
+      "active_seconds": 144.666666666674,
+      "chosen": "S_WISP_COUNT",
+      "key": 2,
+      "offered": [
+        "U_TEMPO",
+        "S_WISP_COUNT",
+        "U_REACH"
+      ],
+      "points_after": 18,
+      "points_before": 17
+    }
+  ],
+  "companion_link": {
+    "basic_followup_trigger_actions": 94,
+    "mean_since_latest_trigger_seconds": 0.295643939393975,
+    "next_shots_observed": 88,
+    "note": "Deduplicated basic-hit card triggers and each wisp's next shot. Multiple triggers before one shot are retained as a batch. Observed latency does not attribute causal time saved, and cooldown-floor effects can be partial or zero.",
+    "pending_trigger_entries": 0,
+    "wisp_timer_followup_triggers": 109
+  },
+  "controller": "Inherited baseline: common 70s route, close pursuit, held basic, Q polls every 1.3s, close dash every 1.8s. Build-specific legal-card priorities; no rerolls.",
+  "controller_hz": 10,
+  "diagnostics": {
+    "accessory": "A_EMBER",
+    "active_seconds": 150.000000000012,
+    "active_wall_seconds": 149.890389,
+    "attack_branch": "COMPANION",
+    "boss_engagements": 0,
+    "boss_first_times": {
+
+    },
+    "cards": {
+      "S_WISP_CADENCE": 3,
+      "S_WISP_CHAIN": 2,
+      "S_WISP_COUNT": 2,
+      "S_WISP_DAMAGE": 3,
+      "S_WISP_FOLLOWUP": 2,
+      "S_WISP_ORBIT": 2,
+      "S_WISP_REPLY": 2,
+      "S_WISP_SWEEP": 2
+    },
+    "choice_wall_seconds": 28.352912,
+    "choice_windows": 18,
+    "damage_events": 35,
+    "damage_taken_actual": 362.0,
+    "earned_currency": 234,
+    "health": 110.0,
+    "kills": 178,
+    "level": 19,
+    "level_heal_actual": 362.0,
+    "level_heal_events": 18,
+    "max_health": 110.0,
+    "pause_wall_seconds": 0.0,
+    "permanent_growth": {
+      "FINISH": 0.0,
+      "GUARD": 0.0,
+      "MOBILITY": 0.0,
+      "POWER": 2.0,
+      "RECOVERY": 0.0,
+      "SLASH": 0.0,
+      "SLASH_POWER": 0.0,
+      "SPEED": 0.0,
+      "VITALITY": 1.0,
+      "WISP": 2.0
+    },
+    "points_earned": 18,
+    "points_exhausted": 0,
+    "points_pending": 0,
+    "points_spent": 18,
+    "region": "O_TEMPLE",
+    "result": "IN_PROGRESS",
+    "schema": "local_run_diagnostics_v1",
+    "time_scale_max": 1.0,
+    "time_scale_min": 1.0,
+    "wall_seconds": 178.243301,
+    "weapon": "W_START",
+    "xp_remainder": 18
+  },
+  "engine": "4.6.3-stable (official)",
+  "error": "",
+  "fixture": {
+    "attack_branch": "COMPANION",
+    "awakenings": [],
+    "bank": 6,
+    "cumulative_expenditure": 294,
+    "equality_basis": "Equal cumulative expenditure and prior history, not equal equipped price. Shared inventory W_FLOW/W_ECHO/A_EMBER costs104; VITALITY1 costs20; two offensive axes at rank2 cost110; branch costs60.",
+    "equipped_accessory": "A_EMBER",
+    "equipped_weapon": "W_START",
+    "fresh_earned": false,
+    "growth_ranks": {
+      "FINISH": 0,
+      "GUARD": 0,
+      "MOBILITY": 0,
+      "POWER": 2,
+      "RECOVERY": 0,
+      "SLASH": 0,
+      "SLASH_POWER": 0,
+      "SPEED": 0,
+      "VITALITY": 1,
+      "WISP": 2
+    },
+    "history": "Six prior levelups through add_levelup; temple SUCCESS earned100 then jungle SUCCESS earned100 through settle; each awards150 including success20/first-clear30.",
+    "lifetime_levelups": 6,
+    "owned_gear": {
+      "A_EMBER": true,
+      "W_ECHO": true,
+      "W_FLOW": true
+    },
+    "owned_mods": [],
+    "slotted_mods": {
+
+    },
+    "supplies": 0,
+    "synthetic_prior_history": true,
+    "total_currency_awarded": 300
+  },
+  "human_playtest": false,
+  "input_events": 2826,
+  "measurement_notes": "Attack/slash starts use existing sequence counters. Hitting actions and refund triggers are deduplicated per sequence; cooldown floors mean a trigger is not necessarily a full0.22s effective reduction; hit_targets count target events, not attacks. Wisp hits include projectile/chain/orbit events and are not shot accuracy. Requests failing to produce an action within0.4 active seconds are separate from actions; end-pending requests remain separate. No forced cards/XP, rerolls, damage tuning, health restoration or growth caps. First life only. Tactical policies are scripted assumptions. Unsettled limits are IN_PROGRESS, never economy settlement proof.",
+  "physics_hz": 60,
+  "policy": "common",
+  "result": "IN_PROGRESS",
+  "sample": "equal_investment_build_comparison_v2",
+  "seed": 250,
+  "source_sha256": {
+    "game/hybrid_height.gd": "71b3c82611c6a89467be8347694fcfdeba743404fd3a52ee5e9a7422ffadd16d",
+    "game/hybrid_region.gd": "3a4afdcbcb453b04cfe53275c6a88c9715da74b9ce18579b50e9f6d6f20e2879",
+    "game/player.gd": "a387d3b16ef3528966a86b0cc5c5f04759e5a7003ab65d4d449838660b05c3ab",
+    "game/run_diagnostics.gd": "418c96719ea551259383dbc4afd82be44786788053e459c66a366d5c3a880436",
+    "game/run_growth.gd": "3c3e54a7e647202753298c67d106bee38e32bbd2a042d6f8936cf9f32c3ac227",
+    "game/run_profile.gd": "05123d70cfd191514239b2d4f660449b345dc7aec44fba35d37fa9991107dbaf",
+    "game/temple_section.gd": "b6533876caef5d523be0827c2520c61dc56a922cb2a23d888ae85a98a228a1dd",
+    "game/wisp.gd": "e709065f005c195f6a560d748081aecd2266ff8ff147450c8b30a750b73b327f",
+    "game/wisp_projectile.gd": "ac5eed69f8073d18004e1271bc03da7a0783b5b63e364d0f3cd1e712495746c4",
+    "tests/sample_build_comparison.gd": "4cfc351eb8d9d3f743cb0914954546d6249ccea5946be02f282ee1594929518b",
+    "tests/sample_run_baseline.gd": "628e99ac19b4a0c6eb6165fbba822e4533419da435426cd2e0859028a5022718"
+  },
+  "stop_reason": "active_window_complete",
+  "time_scale": 1.0
+}

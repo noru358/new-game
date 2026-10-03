@@ -57,7 +57,7 @@ var replay_button: Button
 var retry_button: Button
 var boss_warning_mesh := ImmediateMesh.new()
 var echo_wisp_mod_enabled := false
-var companion_focus_trial := false
+var companion_focus_trial := true
 var ember_strike_mod_enabled := false
 var echo_wisp_fired_sequence := -1
 var grotto_awakening_applied := false

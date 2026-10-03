@@ -210,7 +210,7 @@ func _build_ui() -> void:
 	for id in RunProfile.ATTACK_BRANCHES:
 		attack_branch_buttons[id] = _button(attack_growth, "", _buy_attack_branch.bind(id))
 		attack_branch_buttons[id].add_theme_font_size_override("font_size", 17)
-		attack_branch_buttons[id].custom_minimum_size.y = 42
+		attack_branch_buttons[id].custom_minimum_size.y = 62 if id == "COMPANION" else 42
 		_apply_button_styles(attack_branch_buttons[id], 7)
 	reset_button = _button(growth, "성장 초기화 · 쓴 재화 전액 반환", _reset_growth)
 	var discoveries := _tab_page("발견·각성")
@@ -396,6 +396,7 @@ func _refresh() -> void:
 		var branch_button: Button = attack_branch_buttons[id]
 		var effect := "직접 공격 · 평타/이동 베기 피해 +10%" if id == "DIRECT" else "동행 공격 · 여우불 피해 +10%"
 		branch_button.text = effect + (" · 선택됨" if profile.attack_branch == id else " · 초기화 후 변경" if not profile.attack_branch.is_empty() else " · 구매 60" if profile.attack_branch_available() else " · 공격 성장 합계 4 필요")
+		if id == "COMPANION": branch_button.text += "\n평타 명중 대상에 2초간 사격 집중"
 		branch_button.disabled = profile.load_error or not profile.attack_branch.is_empty() or not profile.attack_branch_available() or profile.currency < RunProfile.ATTACK_BRANCH_COST
 	reset_button.disabled = profile.load_error or profile.growth_ranks.values().all(func(value: Variant) -> bool: return int(value) == 0)
 	status_label.text = profile.save_block_reason() if profile.load_error else "이전 정상 기록을 복구했습니다." if profile.recovered_backup else ""

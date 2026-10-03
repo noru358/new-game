@@ -22,7 +22,7 @@ func _run()->void:
 	for id in ["POWER","POWER","WISP","WISP"]:profile.buy_growth(id,6)
 	check(profile.buy_attack_branch("COMPANION"),"legal branch fixture")
 	scene=load("res://game/hybrid_region.tscn").instantiate()
-	check(not scene.companion_focus_trial,"trial remains opt-in before acceptance")
+	check(scene.companion_focus_trial,"accepted companion targeting is enabled by default")
 	scene.companion_focus_trial=true
 	scene.profile_save_prefix=prefix
 	scene.growth_save_prefix=prefix+"_unlocks"

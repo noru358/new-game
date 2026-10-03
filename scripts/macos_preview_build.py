@@ -42,9 +42,17 @@ def checked(command, cwd, log, timeout=180, env=None):
     return {"exit_code": result.returncode, "seconds": round(time.monotonic() - started, 3)}
 
 
+def preview_data_directory(home):
+    path = Path(home) / "Library/Application Support/LoopConquest-FieldPreview-v45"
+    if path.exists():
+        raise RuntimeError("Refusing startup fixtures over an existing preview data directory")
+    return path
+
+
 def smoke(workspace, scratch, output, commit, label, architecture, report):
     if sys.platform != "darwin":
         raise RuntimeError("This workflow must run on macOS; cross-export is not this smoke test")
+    expected_data = preview_data_directory(Path.home())
     if scratch.exists():
         raise RuntimeError("Refusing to reuse scratch files or previous exports")
     scratch.mkdir(parents=True)
@@ -89,7 +97,9 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     if text.count(old) != 1:
         raise RuntimeError("Unexpected original save-path contract")
     title = f"Loop Conquest - {label} Field Preview"
-    user_directory_name = f"LoopConquest-FieldPreview-{label}"
+    # v45 introduced the shared three-region v7 save family. Compatible previews
+    # continue it rather than silently resetting progress at each build label.
+    user_directory_name = expected_data.name
     bundle_id = "com.noru358.loopconquest.preview." + label.replace(".", "-")
     text = re.sub(r'^config/name="[^"]+"$', f'config/name="{title}"', text, count=1, flags=re.M)
     text = text.replace(old, f'config/custom_user_dir_name="{user_directory_name}"')
@@ -106,7 +116,7 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     # Produce that valid bundle first, then thin/re-sign on this native Mac when requested.
     config = config.replace('binary_format/architecture="universal"', 'binary_format/architecture="universal"', 1)
     presets.write_text(config)
-    report["packaging_changes"] = {"title": title, "separate_user_data": user_directory_name, "bundle_id": bundle_id, "source_commit": commit, "entry": "res://game/field_preview_entry.tscn"}
+    report["packaging_changes"] = {"title": title, "separate_user_data": user_directory_name, "bundle_id": bundle_id, "source_commit": commit, "save_compatibility": "v45 shared v7 records; no migration; close older preview before playing", "entry": "res://game/field_preview_entry.tscn"}
     checked([editor, "--headless", "--editor", "--path", workspace, "--quit"], scratch, output / "import.log", 240)
     deployment = scratch / "deployment"
     deployment.mkdir()
@@ -145,7 +155,6 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
             if len(fields) == 4:
                 aliases.setdefault(fields[0], []).append(fields[3])
     report["startup"] = []
-    expected_data = Path.home() / "Library/Application Support" / user_directory_name
     for name, scene in [("camp", "res://game/travel_camp.tscn"),
                         ("temple-circuit", "res://game/temple_circuit_run.tscn"),
                         ("jungle-south", "res://game/jungle_south_circuit.tscn"),
@@ -196,9 +205,9 @@ def smoke(workspace, scratch, output, commit, label, architecture, report):
     report["status"] = "passed"
     (output / "PLAYTEST.txt").write_text(
         f"Loop Conquest {label} 필드 비교판\n소스: {commit}\n\n"
-        "압축을 풀고 .app을 실행하세요. 이 버전 전용 저장을 사용합니다. 기존 v43/v44 기록을 덮어쓰지 않습니다.\n"
+        "기존 미리보기 앱을 종료한 뒤 압축을 풀고 새 .app을 실행하세요. v45의 공통 기록을 이어 쓰며 기존 v43/v44 기록과는 분리됩니다.\n"
         "야영지 출정 화면에서 사원 → 정글 → 깊은 사원 습지로 진행합니다. 각 지역4분 이후 목적지 보스가 준비됩니다.\n"
-        "각 지역 성공으로 다음 지역이 열리고, 정산/구매/장착/영구강화가 공통 기록으로 이어집니다. 신규 기록으로 시작합니다.\n"
+        "각 지역 성공으로 다음 지역이 열리고, 정산/구매/장착/영구강화가 공통 기록으로 이어집니다. v45 기록이 없으면 신규 기록으로 시작합니다.\n"
         "첫 권역 전체 완성판이 아닙니다. 정상속도 재미·미감·장시간 성능은 별도 확인이 필요합니다.\n"
         "검증 범위: 공식 Godot, 요청 아키텍처, ad-hoc 서명, Mac CI headless에서 앱과 다섯 씬 초기 실행. 습지 런 시작 검사는 Mac CI에만 선행 클리어 fixture를 주입했습니다.\n"
         "사용자 Mac에서의 GUI 첫 실행, Gatekeeper, 사운드와 GPU 플레이는 아직 미검증이며 notarization은 없습니다.\n",
