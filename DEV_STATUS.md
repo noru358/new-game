@@ -15,6 +15,13 @@
 
 
 
+## v49 Mac 성능 회귀 최소 수정 — 2026-10-04 KST
+
+- 배포296bde54 독립fix/v49-native-lag, 제품수정1cd01604: 반복 장판 예고의 정적지형48segment×3ray 캐시. damage/AI/스폰/화질/카메라/저장/아트 보존. 변경 충돌체 transform/shape/layer/disabled/추가삭제에서 무효화한다.
+- M3/공식4.6/GL/1280×720/기본60physics·time_scale1 native72 적: 렌더제출간격 사원mean10.268→8.359/p9524.275→11.103ms, 정글12.854→11.271/20.527→16.337ms. 실제표시FPS가 아니며GLGPU timer미지원. 계측clear_attack2387858→2054/20초, 예고CPU3.601→1.856ms/call.
+- 정상Input/카메라/공격/자동스폰65초도 전후 실행했다. 저밀도심한렉은 미재현/미해결; 사원 단발78.168→87.752ms가 남는다. 10762native/cache검사0fail·PNGbyte동일, 관련7회귀PASS. 전체CI/패키지실행/사람응답성/장시간은 미검증. 원본4진척JSONhash동일,02:08:39local 엔진0·슬롯반환.
+- 단계:2단계메타연결·첫권역제작중 성능회귀. 다음은 남은저밀도단발/renderer-presentation 원인진단과 별도재출정수정통합검증. draftPR56만 생성했고 병합/배포하지 않았다. 근거 docs/measurements/v49-native-lag/README.md. 부모메시지/PRattach tool은Transport closed로 실패해최종자동보고로인계한다.
+
 ## BUILD v49 제출 준비 — 부모 채택 히든 묶음 / 2026-10-03
 
 - 부모가 합본 대표4PNG와 마지막diff를 검토하고 히든 장소/입출구 개선을 다음 플레이후보로 채택했다. 세lane 통합20359e1의 정확전체CI37129486967은116headless/preview/depth18사례/UI160PNG를 통과했다. 사원표면/조명 후속·캐릭터시안은 이 묶음에 포함하지 않는다.

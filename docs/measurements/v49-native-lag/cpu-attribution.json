@@ -1,0 +1,92 @@
+{
+  "baseline-temple-instrumented": {
+    "frames": 1883,
+    "counters": {
+      "game/arena_navigation.gd:has_clear_path": [
+        45275,
+        175882,
+        17
+      ],
+      "game/arena_navigation.gd:is_open": [
+        2819,
+        27388,
+        20
+      ],
+      "game/enemy.gd:_chase_direction": [
+        41528,
+        236208,
+        56
+      ],
+      "game/enemy.gd:_physics_process": [
+        86400,
+        1319295,
+        214
+      ],
+      "game/hybrid_height.gd:_draw_enemy_warnings": [
+        1883,
+        6781485,
+        6775
+      ],
+      "game/hybrid_height.gd:_physics_process": [
+        1200,
+        216184,
+        700
+      ],
+      "game/hybrid_height.gd:_process": [
+        1883,
+        7706586,
+        7326
+      ],
+      "game/hybrid_height.gd:clear_attack": [
+        2387858,
+        2125035,
+        18
+      ]
+    }
+  },
+  "candidate-temple-instrumented": {
+    "frames": 2392,
+    "counters": {
+      "game/arena_navigation.gd:has_clear_path": [
+        44867,
+        175684,
+        20
+      ],
+      "game/arena_navigation.gd:is_open": [
+        2844,
+        26898,
+        29
+      ],
+      "game/enemy.gd:_chase_direction": [
+        42020,
+        209605,
+        67
+      ],
+      "game/enemy.gd:_physics_process": [
+        86400,
+        1306655,
+        217
+      ],
+      "game/hybrid_height.gd:_draw_enemy_warnings": [
+        2392,
+        4438987,
+        3314
+      ],
+      "game/hybrid_height.gd:_physics_process": [
+        1200,
+        226215,
+        608
+      ],
+      "game/hybrid_height.gd:_process": [
+        2392,
+        5653432,
+        3856
+      ],
+      "game/hybrid_height.gd:clear_attack": [
+        2054,
+        2143,
+        7
+      ]
+    }
+  }
+}
