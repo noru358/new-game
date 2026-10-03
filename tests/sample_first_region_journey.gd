@@ -1,0 +1,466 @@
+extends "res://tests/sample_run_baseline.gd"
+## Manual, normal-speed first-three-run journey; never a human playtest or CI test.
+## Requires a new marked XDG home; real scene changes keep the normal save names.
+## -- --isolation-root=/tmp/new-game-fresh-economy-UNIQUE --run-diagnostics
+##    --report-path=/absolute/fresh-economy.json [--smoke]
+## Optional bounded probes: --runs=1..3 --seconds=1..330 [--stop-input-at=180].
+
+var isolation_root := ""
+var smoke := false
+var journey: Dictionary = {}
+var card_trace: Array[Dictionary] = []
+var failure := ""
+var journey_started := 0
+var run_count := 3
+var stop_input_at := -1.0
+
+
+func _run() -> void:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--isolation-root="): isolation_root = argument.trim_prefix("--isolation-root=").trim_suffix("/")
+		elif argument.begins_with("--report-path="): report_path = argument.trim_prefix("--report-path=")
+		elif argument.begins_with("--seed="): seed_value = int(argument.trim_prefix("--seed="))
+		elif argument.begins_with("--runs="): run_count = int(argument.trim_prefix("--runs="))
+		elif argument.begins_with("--seconds="): limit_seconds = float(argument.trim_prefix("--seconds="))
+		elif argument.begins_with("--stop-input-at="): stop_input_at = float(argument.trim_prefix("--stop-input-at="))
+		elif argument == "--smoke": smoke = true
+	if run_count < 1 or run_count > 3 or not is_finite(limit_seconds) or limit_seconds < 1.0 or limit_seconds > 330.0 or not is_finite(stop_input_at) or (stop_input_at != -1.0 and (stop_input_at <= 0.0 or stop_input_at >= limit_seconds)) or (smoke and stop_input_at != -1.0):
+		printerr("FRESH_ECONOMY_REFUSED: Use --runs=1..3, --seconds=1..330, and an optional positive --stop-input-at below the active limit (not with --smoke)")
+		quit(1)
+		return
+	if not _isolated_empty_home():
+		printerr("FRESH_ECONOMY_REFUSED: ", failure)
+		quit(1)
+		return
+	Engine.time_scale = 1.0
+	seed(seed_value)
+	if smoke:
+		limit_seconds = 2.0
+		run_count = 1
+	journey_started = Time.get_ticks_usec()
+	journey = {
+		"sample": "v45_fresh_temple_circuit_three_run_journey", "human_playtest": false,
+		"smoke_only": smoke, "seed": seed_value, "controller_hz": 10,
+		"requested_runs": run_count, "stop_input_at_active_seconds": stop_input_at,
+		"outcome_probe": "intentional_stopped_input_loss_probe" if stop_input_at > 0.0 else "ordinary_controller_with_confirmed_retreat_bound",
+		"active_limit_per_run": limit_seconds, "choice_dwell_seconds": 1.5,
+		"controller": "Baseline input/card policy with temple-circuit route goals at (2450,2100),(1450,1350),(2640,1200),(2800,620) each70s; actual offerings and outcomes; no forced XP, health, cards, gear, currency or victory",
+		"stopped_input_policy": "When explicitly enabled, release all player movement/combat at the threshold and leave real enemies and automatic companions running. Continue actual offered card choices to avoid modal deadlock. This is an intentional stopped-input loss probe, not novice play or a normal failure distribution. If no loss occurs, use the real retreat confirmation at the active limit.",
+		"purchase_policy": "Between requested runs only: after run 1 buy affordable VITALITY 1 for +10 maximum HP. Then prioritize W_FLOW only after a real temple clear; otherwise buy A_EMBER when affordable. Buy and equip with separate button activations. After run 2 buy affordable POWER 1 if no new gear is available. No shopping after the final requested run. Save the remainder; no consumables or hidden rewards required.",
+		"retry_policy": "Use the existing boss retry once if offered before the active limit and before an enabled input-stop threshold; otherwise decline. At the active limit finish any current choice, request G retreat, and activate its confirm button.",
+		"isolation": {"root": isolation_root, "user_data_dir": OS.get_user_data_dir(), "normal_save_prefixes": true, "preview_session": true, "runtime_source": "2eae0971f8eb04ea89d73986101d54efe62d3577"},
+		"source_hashes_start": _source_hashes(), "runs": [], "complete": false,
+	}
+	preload("res://game/field_preview_session.gd").activate(self,"user://loop_conquest_profile","user://loop_conquest_1d_unlocks")
+	change_scene_to_file("res://game/travel_camp.tscn")
+	if not await _wait_scene("res://game/travel_camp.tscn"):
+		_finish()
+		return
+	journey["initial_state"] = _state(current_scene.preparation.profile, current_scene.preparation.unlocks)
+	for run_number in range(1, run_count + 1):
+		if not await _open_camp_preparation(): break
+		var hub = current_scene.preparation
+		var before := _state(hub.profile, hub.unlocks)
+		await _tab(hub.tabs, 0)
+		if not await _activate(hub.start_button): break
+		if not await _wait_scene("res://game/temple_circuit_run.tscn"): break
+		scene = current_scene
+		scene.rng.seed = seed_value
+		scene.growth.rng.seed = seed_value + 1
+		if scene.diagnostics == null:
+			failure = "--run-diagnostics is required; the real scene did not enable diagnostics"
+			break
+		var entry := {"run": run_number, "before_departure": before, "applied_on_departure": _applied(), "departure_reload_stable": before == _state(scene.profile, scene.growth.unlocks)}
+		print("FRESH_DEPARTURE ", JSON.stringify(entry))
+		await _play_run(entry)
+		journey.runs.append(entry)
+		_write_report()
+		if not failure.is_empty(): break
+		# The result's own R handler enforces the real ending/settlement gates.
+		var return_started := Time.get_ticks_usec()
+		while is_instance_valid(scene) and current_scene == scene:
+			_key(KEY_R)
+			await process_frame
+			if Time.get_ticks_usec() - return_started > 10000000:
+				failure = "Result R did not return to camp within 10 wall seconds"
+				break
+		if not failure.is_empty() or not await _wait_scene("res://game/travel_camp.tscn"): break
+		hub = current_scene.preparation
+		entry["camp_reload_state"] = _state(hub.profile, hub.unlocks)
+		entry["result_to_camp_stable"] = entry.after_settlement == entry.camp_reload_state
+		entry["purchases"] = []
+		if run_number < run_count and not smoke:
+			if not await _open_camp_preparation(): break
+			await _shop(hub, run_number, entry.purchases)
+		entry["after_shopping"] = _state(hub.profile, hub.unlocks)
+		entry["disk_reload_stable"] = _reload_matches(hub)
+		_validate_entry(entry)
+		_write_report()
+		print("FRESH_CAMP_LEDGER ", JSON.stringify(entry))
+		if not failure.is_empty(): break
+	journey.complete = failure.is_empty() and journey.runs.size() == run_count
+	_finish()
+
+
+func _isolated_empty_home() -> bool:
+	if not (isolation_root.begins_with("/tmp/new-game-fresh-economy-") or isolation_root.begins_with("/workspace/shared/new-game-fresh-economy-")) or isolation_root.contains(".."):
+		failure = "Provide a task-specific absolute --isolation-root"
+		return false
+	if not FileAccess.file_exists(isolation_root + "/.fresh-economy-sample"):
+		failure = "Missing explicit .fresh-economy-sample marker in isolated root"
+		return false
+	for name in ["XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"]:
+		if not OS.get_environment(name).begins_with(isolation_root + "/"):
+			failure = name + " is outside the isolated root"
+			return false
+	if not OS.get_user_data_dir().begins_with(isolation_root + "/"):
+		failure = "Godot user_data_dir is outside the isolated root"
+		return false
+	for prefix in ["user://loop_conquest_profile", "user://loop_conquest_1d_unlocks"]:
+		for suffix in ["_a.json", "_b.json"]:
+			if FileAccess.file_exists(prefix + suffix):
+				failure = "Existing campaign slot found; use a genuinely empty isolated home"
+				return false
+	return true
+
+
+func _wait_scene(path: String) -> bool:
+	var started := Time.get_ticks_usec()
+	while current_scene == null or current_scene.scene_file_path != path or not current_scene.is_node_ready():
+		await process_frame
+		if Time.get_ticks_usec() - started > 15000000:
+			failure = "Scene transition timed out: " + path
+			return false
+	await process_frame
+	return true
+
+
+func _key(code: Key) -> void:
+	for down in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = code
+		event.pressed = down
+		root.push_input(event, true)
+		actions_sent += 1
+
+
+func _camp_key(code: Key, down: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = code
+	event.pressed = down
+	Input.parse_input_event(event)
+	actions_sent += 1
+
+
+func _activate(button: Button) -> bool:
+	if button == null:
+		failure = "Required UI button was not found"
+		return false
+	if button.disabled or not button.is_visible_in_tree():
+		failure = "Required UI button is unavailable: " + button.text
+		return false
+	button.grab_focus()
+	await process_frame
+	var point := button.get_global_rect().get_center()
+	for down in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = down
+		event.position = point
+		root.push_input(event, true)
+		actions_sent += 1
+	await process_frame
+	return true
+
+
+func _tab(tabs: TabContainer, index: int) -> void:
+	var bar := tabs.get_tab_bar()
+	var point := bar.global_position + bar.get_tab_rect(index).get_center()
+	for down in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = down
+		event.position = point
+		root.push_input(event, true)
+		actions_sent += 1
+	await process_frame
+	if tabs.current_tab != index: failure = "Could not select preparation tab by UI input"
+
+
+func _open_camp_preparation() -> bool:
+	var camp = current_scene
+	if camp.preparation.visible: return true
+	var started := Time.get_ticks_usec()
+	# Walk to the departure station with the same real held keys the camp reads.
+	while camp._nearest_station().distance > camp.INTERACT_RANGE:
+		var goal: Vector3 = camp.stations[0].position
+		var toward: Vector3 = (goal - camp.player_visual.position).normalized()
+		var right: Vector3 = camp.camera.global_basis.x
+		var forward: Vector3 = -camp.camera.global_basis.z
+		var x := toward.dot(Vector3(right.x, 0, right.z).normalized())
+		var z := toward.dot(Vector3(forward.x, 0, forward.z).normalized())
+		_camp_key(KEY_A, x < -0.2)
+		_camp_key(KEY_D, x > 0.2)
+		_camp_key(KEY_W, z > 0.2)
+		_camp_key(KEY_S, z < -0.2)
+		await create_timer(0.1).timeout
+		if Time.get_ticks_usec() - started > 10000000:
+			failure = "Camp movement did not reach an interaction station"
+			break
+	for code in [KEY_A, KEY_D, KEY_W, KEY_S]: _camp_key(code, false)
+	_key(KEY_E)
+	await process_frame
+	if not camp.preparation.visible: failure = "Camp E did not open preparation"
+	return failure.is_empty()
+
+
+func _choose_card() -> void:
+	var index := 0
+	for id in PRIORITY:
+		if scene.growth.current_choices.has(id):
+			index = scene.growth.current_choices.find(id)
+			break
+	var entry := {"active_seconds": scene.run_time, "offered": scene.growth.current_choices.duplicate(), "chosen": scene.growth.current_choices[index], "key": index + 1, "lifetime_levelups": scene.growth.unlocks.lifetime_levelups}
+	var before: int = scene.growth.points_spent
+	super._choose_card()
+	entry["point_spent"] = scene.growth.points_spent == before + 1
+	card_trace.append(entry)
+
+
+func _play_run(entry: Dictionary) -> void:
+	choice_started = -1
+	next_control = 0.0
+	next_dash = 0.0
+	next_slash = 0.0
+	distance_walked = 0.0
+	previous_position = scene.player.global_position
+	card_trace = []
+	var started := Time.get_ticks_usec()
+	var events_before := actions_sent
+	var retry_decisions: Array[Dictionary] = []
+	var input_stop: Dictionary = {}
+	var stop_reason := "natural_result"
+	var next_progress := 0
+	while not scene.run_ended:
+		await process_frame
+		if scene.run_ended: break
+		var now := Time.get_ticks_usec()
+		if now >= next_progress:
+			print("FRESH_PROGRESS ", JSON.stringify({"run": entry.run, "active_seconds": scene.run_time, "wall_seconds": float(now - started) / 1000000.0, "tree_paused": paused, "arena_paused": scene.paused, "choosing": scene.growth.choosing, "retreat_open": scene.retreat_overlay.visible, "kills": scene.kills}))
+			next_progress = now + 30000000
+		distance_walked += previous_position.distance_to(scene.player.global_position)
+		previous_position = scene.player.global_position
+		if float(now - started) / 1000000.0 > limit_seconds + 180.0 or float(now - journey_started) / 1000000.0 > 1700.0:
+			failure = "Wall-time guard reached; no outcome was fabricated"
+			stop_reason = "wall_time_guard"
+			break
+		if scene.temple_section.retry_pending:
+			_release()
+			var retry: bool = scene.run_time < limit_seconds and not scene.temple_section.retry_used and (stop_input_at < 0.0 or scene.run_time < stop_input_at)
+			retry_decisions.append({"active_seconds": scene.run_time, "decision": "retry" if retry else "decline", "earned_currency": scene.run_currency})
+			var button: Button = scene.temple_section.retry_overlay.get_node("Retry") if retry else _button_text(scene.temple_section.retry_overlay, "이번 런 종료 · 사망 정산")
+			if not await _activate(button): break
+			continue
+		if stop_input_at > 0.0 and scene.run_time >= stop_input_at and input_stop.is_empty():
+			_release()
+			# Input.parse_input_event applies the queued releases on the next frame.
+			await process_frame
+			input_stop = {"active_seconds": scene.run_time, "diagnostics": scene.diagnostics.snapshot(scene), "player_position": {"x": scene.player.global_position.x, "y": scene.player.global_position.y}, "all_actions_released": true}
+			for action in ACTIONS:
+				if Input.is_action_pressed(action): input_stop.all_actions_released = false
+			print("FRESH_INPUT_STOP ", JSON.stringify(input_stop))
+		if scene.growth.choosing:
+			_release()
+			if choice_started < 0: choice_started = now
+			if now - choice_started >= 1500000:
+				_choose_card()
+				choice_started = now if scene.growth.choosing else -1
+			continue
+		choice_started = -1
+		if scene.run_time >= limit_seconds:
+			_release()
+			_key(KEY_G)
+			await process_frame
+			if not scene.retreat_overlay.visible:
+				failure = "G did not expose the real retreat confirmation"
+				break
+			if not await _activate(_button_text(scene.retreat_overlay, "귀환하기")): break
+			stop_reason = "active_limit_confirmed_retreat"
+			continue
+		if scene.paused: continue
+		if not input_stop.is_empty(): continue
+		if scene.run_time >= next_control:
+			_drive()
+			next_control = scene.run_time + 0.10
+	_release()
+	# SUCCESS/DEFEAT show their result after the real ending animation.
+	var result_started := Time.get_ticks_usec()
+	while scene.run_ended and scene.ending_remaining > 0.0:
+		await process_frame
+		if Time.get_ticks_usec() - result_started > 10000000:
+			failure = "The real result display did not finish opening"
+			break
+	entry.merge({"stop_reason": stop_reason, "input_stop": input_stop, "input_events": actions_sent - events_before, "distance_travelled": distance_walked, "card_choices": card_trace.duplicate(true), "retry_decisions": retry_decisions, "diagnostics": scene.diagnostics.snapshot(scene), "after_settlement": _state(scene.profile, scene.growth.unlocks), "settlement": {"result": scene.end_result, "earned": scene.run_currency, "lost": scene.profile.last_lost, "awarded": scene.profile.last_award, "first_clear": scene.profile.last_first_clear, "save_pending": scene.settlement_pending}, "result_text": scene.result_text.text})
+	if scene.settlement_pending: failure = "Real settlement save failed"
+
+
+func _button_text(parent: Node, value: String) -> Button:
+	for child in parent.get_children():
+		if child is Button and child.text == value: return child
+	return null
+
+
+func _shop(hub, run_number: int, purchases: Array) -> void:
+	if run_number == 1 and hub.profile.currency >= 20:
+		await _growth_purchase(hub, "VITALITY", purchases, "First affordable survival improvement: +10 maximum HP on the next departure")
+	var gear := "W_FLOW" if hub.profile.temple_owned and not hub.profile.owned_gear.has("W_FLOW") else "A_EMBER" if not hub.profile.owned_gear.has("A_EMBER") else ""
+	if not gear.is_empty() and hub.profile.currency >= int(RunProfile.GEAR_COST[gear]):
+		await _tab(hub.tabs, 1)
+		if not await _activate(hub.weapon_button if gear == "W_FLOW" else hub.accessory_button): return
+		var item := {"kind": "gear", "id": gear, "rationale": "Real temple clear unlocked movement-link weapon" if gear == "W_FLOW" else "Affordable companion-damage improvement; this accessory does not require a temple clear", "before": _state(hub.profile, hub.unlocks), "buy_button": hub.gear_action_button.text}
+		if not await _activate(hub.gear_action_button): return
+		item["after_buy_before_equip"] = _state(hub.profile, hub.unlocks)
+		item["equip_button"] = hub.gear_action_button.text
+		if not hub.profile.owned_gear.has(gear):
+			failure = "Purchase button did not add selected gear"
+			return
+		if not await _activate(hub.gear_action_button): return
+		item["after_equip"] = _state(hub.profile, hub.unlocks)
+		purchases.append(item)
+	elif run_number == 2 and hub.profile.currency >= 20 and int(hub.profile.growth_ranks.POWER) == 0:
+		await _growth_purchase(hub, "POWER", purchases, "No newly affordable gear; small direct-damage improvement while saving for later equipment")
+	if purchases.is_empty(): purchases.append({"kind": "save", "currency": hub.profile.currency, "rationale": "Policy's eligible improvement was not affordable; no unlock or money was fabricated"})
+
+
+func _growth_purchase(hub, id: String, purchases: Array, rationale: String) -> void:
+	await _tab(hub.tabs, 2)
+	await _tab(hub.growth_tabs, 1 if id == "VITALITY" else 0)
+	var item := {"kind": "growth", "id": id, "rationale": rationale, "before": _state(hub.profile, hub.unlocks), "button": hub.growth_buttons[id].text}
+	if not await _activate(hub.growth_buttons[id]): return
+	item["after"] = _state(hub.profile, hub.unlocks)
+	purchases.append(item)
+
+
+func _state(profile: RunProfile, unlocks: UnlockProgress) -> Dictionary:
+	var ranks := {}
+	for id in profile.growth_ranks: ranks[id] = int(profile.growth_ranks[id])
+	return {"currency": profile.currency, "owned_gear": profile.owned_gear.duplicate(true), "owned_outposts": profile.owned_outpost_ids.duplicate(), "weapon": profile.equipped_weapon, "accessory": profile.equipped_accessory, "growth": ranks, "attack_branch": profile.attack_branch, "owned_mods": profile.owned_mods.duplicate(), "slotted_mods": profile.slotted_mods.duplicate(), "awakenings": profile.awakenings.duplicate(), "lifetime_levelups": unlocks.lifetime_levelups, "profile_load_error": profile.load_error}
+
+
+func _reload_matches(hub) -> bool:
+	var profile := RunProfile.new()
+	profile.load_state()
+	var unlocks := UnlockProgress.new()
+	unlocks.load_progress()
+	return _state(profile, unlocks) == _state(hub.profile, hub.unlocks)
+
+
+func _validate_entry(entry: Dictionary) -> void:
+	for flag in ["departure_reload_stable", "result_to_camp_stable", "disk_reload_stable"]:
+		_require(bool(entry[flag]), "Run %d failed %s" % [entry.run, flag])
+	_require(entry.card_choices.size() == int(entry.diagnostics.points_spent), "Card trace and actual point spending disagree")
+	for choice in entry.card_choices:
+		_require(choice.point_spent and choice.offered.has(choice.chosen), "A recorded card choice did not spend its actual point")
+	_require(entry.settlement.result in ["SUCCESS", "DEFEAT", "RETREAT"] and entry.diagnostics.result == entry.settlement.result and not entry.settlement.save_pending, "Run lacks a valid saved outcome")
+	_require(entry.diagnostics.time_scale_min == 1.0 and entry.diagnostics.time_scale_max == 1.0, "Run did not remain at normal engine speed")
+	var earned := int(entry.settlement.earned)
+	var loss_rate: float = RunProfile.DEFEAT_LOSS_RATE if entry.settlement.result == "DEFEAT" else RunProfile.RETREAT_LOSS_RATE if entry.settlement.result == "RETREAT" else 0.0
+	var expected_loss := mini(maxi(0, earned - 1), ceili(earned * loss_rate))
+	var bonus := (RunProfile.SUCCESS_BONUS if entry.settlement.result == "SUCCESS" else 0) + (RunProfile.FIRST_CLEAR_BONUS if entry.settlement.first_clear else 0)
+	_require(earned == int(entry.diagnostics.earned_currency) and int(entry.settlement.lost) == expected_loss and int(entry.settlement.awarded) == earned - expected_loss + bonus, "Earned/lost/awarded settlement ledger is inconsistent")
+	if not entry.get("input_stop", {}).is_empty():
+		_require(entry.input_stop.all_actions_released, "Input-stop probe failed to release player movement/combat")
+	_require(entry.before_departure.currency + entry.settlement.awarded == entry.after_settlement.currency, "Settlement currency does not match the profile balance")
+	var current: Dictionary = entry.camp_reload_state
+	for purchase in entry.purchases:
+		if purchase.kind == "save": continue
+		_require(purchase.before == current, "A purchase did not begin with the recorded camp state")
+		var id: String = purchase.id
+		if purchase.kind == "growth":
+			var rank: int = purchase.before.growth[id]
+			_require(purchase.after.growth[id] == rank + 1 and purchase.after.currency == purchase.before.currency - int(RunProfile.GROWTH_COST[rank]), "Growth button did not perform the recorded purchase")
+			current = purchase.after
+		else:
+			var bought: Dictionary = purchase.after_buy_before_equip
+			var equipped: Dictionary = purchase.after_equip
+			_require(bought.owned_gear.has(id) and bought.currency == purchase.before.currency - int(RunProfile.GEAR_COST[id]), "Gear button did not perform the recorded purchase")
+			_require(bought.weapon == purchase.before.weapon and bought.accessory == purchase.before.accessory, "The purchase unexpectedly changed equipped gear")
+			_require(equipped["weapon" if id.begins_with("W_") else "accessory"] == id and equipped.currency == bought.currency, "The separate equip activation failed or changed currency")
+			current = equipped
+	_require(current == entry.after_shopping, "Final camp state does not match the purchase/equip ledger")
+
+
+func _require(condition: bool, message: String) -> void:
+	if not condition and failure.is_empty(): failure = message
+
+
+func _applied() -> Dictionary:
+	return {"max_health": scene.player.max_health, "basic_damage_bonus": scene.player.permanent_basic_damage_bonus, "wisp_damage_bonus": scene.wisp.permanent_damage_bonus, "flow_weave_enabled": scene.player.flow_weave_enabled, "echo_finisher_enabled": scene.player.echo_finisher_enabled, "slash_distance_multiplier": scene.player.moving_slash_distance_multiplier, "slash_cooldown_reduction": scene.player.permanent_slash_cooldown_reduction, "combo_steps": scene.player.combo_limit(), "lifetime_levelups": scene.growth.unlocks.lifetime_levelups}
+
+
+func _source_hashes() -> Dictionary:
+	var hashes := {}
+	for path in ["tests/sample_first_region_journey.gd", "game/temple_circuit_run.gd", "game/temple_circuit_run_terrain.gd", "game/field_preview_session.gd", "tests/sample_fresh_economy.gd", "tests/sample_run_baseline.gd", "game/hub.gd", "game/travel_camp.gd", "game/hybrid_region.gd", "game/temple_section.gd", "game/run_profile.gd", "game/run_growth.gd", "game/unlock_progress.gd", "game/run_diagnostics.gd", "game/player.gd"]:
+		if FileAccess.file_exists("res://" + path): hashes[path] = FileAccess.get_sha256("res://" + path)
+	return hashes
+
+
+func _write_report() -> void:
+	if report_path.is_empty(): return
+	var file := FileAccess.open(report_path, FileAccess.WRITE)
+	if file == null:
+		failure = "Cannot write requested evidence report"
+		return
+	file.store_string(JSON.stringify(journey, "  ") + "\n")
+
+
+func _finish() -> void:
+	_release()
+	journey["source_hashes_end"] = _source_hashes()
+	_require(journey.source_hashes_start == journey.source_hashes_end, "Sample source changed during execution")
+	journey["failure"] = failure
+	if not failure.is_empty(): journey.complete = false
+	journey["total_wall_seconds"] = float(Time.get_ticks_usec() - journey_started) / 1000000.0
+	_write_report()
+	print("FRESH_ECONOMY_RESULT ", JSON.stringify({"complete": journey.get("complete", false), "failure": failure, "report": report_path, "total_wall_seconds": journey.total_wall_seconds}))
+	paused = false
+	quit(0 if failure.is_empty() else 1)
+
+
+func _drive() -> void:
+	_action("dash", 0.0)
+	_action("moving_slash", 0.0)
+	var position: Vector2 = scene.player.global_position
+	var nearest: Node2D
+	var distance := 700.0
+	for enemy in get_nodes_in_group("training_enemies"):
+		if not is_instance_valid(enemy) or enemy.is_queued_for_deletion() or enemy.health <= 0.0: continue
+		var candidate: float = position.distance_to(enemy.global_position)
+		if candidate < distance and scene.clear_attack(position, enemy.global_position):
+			nearest = enemy
+			distance = candidate
+	var goal: Vector2 = [Vector2(2450,2100),Vector2(1450,1350),Vector2(2640,1200),Vector2(2800,620)][mini(3, floori(scene.run_time / 70.0))]
+	if nearest != null and (distance < 380.0 or scene.temple_section.boss_active):
+		var toward := position.direction_to(nearest.global_position)
+		goal = nearest.global_position - toward * 75.0
+		if distance < 55.0: goal = position - toward * 95.0
+	var direction := Vector2.ZERO
+	if position.distance_to(goal) > 18.0:
+		var path: PackedVector2Array = scene.navigation.find_path(position, goal)
+		if path.size() >= 2:
+			var next := 1
+			while next < path.size() - 1 and position.distance_to(path[next]) < 24.0: next += 1
+			direction = position.direction_to(path[next])
+	var input_direction: Vector2 = direction.rotated(-scene.player.input_rotation)
+	_action("move_left", maxf(0.0, -input_direction.x))
+	_action("move_right", maxf(0.0, input_direction.x))
+	_action("move_up", maxf(0.0, -input_direction.y))
+	_action("move_down", maxf(0.0, input_direction.y))
+	_action("attack", 1.0 if nearest != null and distance < 190.0 else 0.0)
+	if nearest != null and distance < 150.0 and scene.run_time >= next_slash:
+		_action("moving_slash", 1.0)
+		next_slash = scene.run_time + 1.3
+	if nearest != null and distance < 70.0 and scene.run_time >= next_dash:
+		_action("dash", 1.0)
+		next_dash = scene.run_time + 1.8
+
