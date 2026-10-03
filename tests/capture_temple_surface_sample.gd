@@ -1,6 +1,7 @@
 extends "res://tests/capture_temple_place_sequence.gd"
 ## Bounded surface comparison on the real production scene/camera/input path.
 const Finish = preload("res://game/temple_surface_sample.gd")
+var requested_size := Vector2i(960,540)
 func _initialize() -> void:
 	root.mode = Window.MODE_WINDOWED
 	super._initialize()
@@ -20,3 +21,20 @@ func _walk(goal: Vector2) -> void:
 	scene._set_paused(false)
 	Finish.install(scene)
 	await super._walk(goal)
+func _capture_checkpoint(label: String, width: int, record: Dictionary) -> void:
+	requested_size = Vector2i(width,width*9/16)
+	root.size = requested_size
+	for i in 5: await process_frame
+	await super._capture_checkpoint(label,width,record)
+func _image() -> Image:
+	# macOS Window.size can briefly differ from the GL drawable during native resize.
+	# Wait for the exact requested drawable; never rescale/crop a wrong-size frame.
+	for attempt in 30:
+		root.size = requested_size
+		for i in 3: await process_frame
+		await RenderingServer.frame_post_draw
+		var frame := root.get_texture().get_image()
+		if frame != null and not frame.is_empty() and frame.get_size() == requested_size: return frame
+		if attempt == 0: print("WINDOW_SETTLE: requested=",requested_size," window=",root.size," drawable=",frame.get_size() if frame != null else Vector2i.ZERO)
+	errors.append("Exact native drawable failed to settle at "+str(requested_size))
+	return null
