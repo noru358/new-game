@@ -32,7 +32,7 @@ func _run() -> void:
 			check(section.discovery_marker().is_empty(), "wetland prior discoveries do not create a fake marker")
 			section._refresh_hidden_labels()
 			section.tick(0.0)
-			scene.minimap._draw()
+			scene.minimap.queue_redraw()
 			check(not section.in_garden and scene.garden_terrain_mesh == null, "wetland null guards preserve main field")
 		else:
 			check(section.discovery_marker().is_empty(), name + " undiscovered entrance has no marker")
