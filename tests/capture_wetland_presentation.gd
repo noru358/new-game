@@ -21,7 +21,7 @@ func _run() -> void:
 		root.size = size
 		root.content_scale_size = Vector2i(1280,720)
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-		for sample in [{"name":"procession","point":scene.Wetland.PROCESSION},{"name":"face-bank","point":scene.Wetland.FACE_BANK},{"name":"court","point":scene.Wetland.TEMPLE_COURT},{"name":"inner-court","point":scene.Field.INNER_COURT}]:
+		for sample in [{"name":"procession","point":scene.Wetland.PROCESSION},{"name":"face-bank","point":scene.Wetland.FACE_BANK},{"name":"face-approach","point":Vector2(2070,1700)},{"name":"face-side-route","point":Vector2(2070,1100)},{"name":"face-east-bank","point":Vector2(2870,1100)},{"name":"court","point":scene.Wetland.TEMPLE_COURT},{"name":"inner-court","point":scene.Field.INNER_COURT}]:
 			scene.teleport(sample.point)
 			for i in 45: await process_frame
 			scene.set_process(false)

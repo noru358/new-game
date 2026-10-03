@@ -17,7 +17,9 @@ func _init() -> void:
 	water_areas = [
 		Rect2(80, 80, 640, 2090), Rect2(720, 80, 2100, 510),
 		Rect2(1350, 1290, 550, 520), Rect2(1500, 1190, 350, 100),
-		Rect2(2100, 650, 680, 620), Rect2(2450, 1760, 1450, 1150),
+		Rect2(2100, 650, 680, 620),
+		# The colossal face belongs to a connected sacred pool, not a walk-behind plinth.
+		Rect2(1350, 500, 1430, 430), Rect2(2450, 1760, 1450, 1150),
 		Rect2(1900, 2310, 550, 600), Rect2(750, 2740, 1150, 170),
 		Rect2(3450, 80, 460, 1330), Rect2(2780, 80, 670, 420)
 	]

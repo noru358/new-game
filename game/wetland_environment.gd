@@ -35,6 +35,23 @@ static func stone(arena: Node3D, p: Vector2, size: Vector3, color: Color, lift: 
 	return node
 
 static func face(arena: Node3D) -> void:
+	# A singular far-bank monument, contrasted with unchanged human-scale ruins.
+	# Keep the opaque geometry inside impassable water; no camera zoom or cutaway.
+	var first_child := arena.get_child_count()
+	_face_components(arena)
+	var pieces: Array[Node] = []
+	for i in range(first_child, arena.get_child_count()): pieces.append(arena.get_child(i))
+	var monument := Node3D.new()
+	monument.name = "MonumentalWetlandFace"
+	arena.add_child(monument)
+	monument.position = arena.terrain.world_point(Wetland.FACE)
+	for piece in pieces: piece.reparent(monument, true)
+	monument.scale = Vector3(2.4, 2.4, 2.4)
+	monument.position = arena.terrain.world_point(Vector2(2440, 950))
+	monument.set_meta("visual_only", true)
+	monument.set_meta("scale_trial", Vector3(2.4, 2.4, 2.4))
+
+static func _face_components(arena: Node3D) -> void:
 	var p: Vector2 = Wetland.FACE
 	stone(arena, p, Vector3(1.08, 1.6, 0.9), Color("8c9981"))
 	stone(arena, p + Vector2(0, 5), Vector3(1.24, 0.22, 1.0), Color("70896e"), 288)

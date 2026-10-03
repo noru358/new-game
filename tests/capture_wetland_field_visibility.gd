@@ -2,6 +2,7 @@ extends SceneTree
 var output := ""
 var failures := 0
 var results: Array = []
+var blocked_samples: Array = []
 func _initialize() -> void: call_deferred("_run")
 func _image() -> Image:
 	for i in 3: await process_frame
@@ -39,7 +40,10 @@ func _run() -> void:
 		root.size = size
 		root.content_scale_size = Vector2i(1280,720)
 		root.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
-		for point in [scene.Wetland.ENTRY,scene.Wetland.PROCESSION,scene.Wetland.FACE_BANK,scene.Wetland.TEMPLE_COURT,Vector2(3620,970),Vector2(3980,970),Vector2(4060,690),Vector2(4600,690),scene.Field.INNER_COURT,Vector2(4780,1670),scene.Field.OFFERING_GROVE,Vector2(3420,1630)]:
+		for point in [scene.Wetland.ENTRY,scene.Wetland.PROCESSION,scene.Wetland.FACE_BANK,scene.Wetland.TEMPLE_COURT,Vector2(1050,980),Vector2(1600,980),Vector2(1900,1020),Vector2(2070,1100),Vector2(2000,750),Vector2(1280,600),Vector2(1280,850),Vector2(1450,990),Vector2(1800,990),Vector2(2000,1020),Vector2(2050,650),Vector2(2100,620),Vector2(2050,700),Vector2(2050,800),Vector2(2050,950),Vector2(2840,1530),Vector2(2870,1100),Vector2(3620,970),Vector2(3980,970),Vector2(4060,690),Vector2(4600,690),scene.Field.INNER_COURT,Vector2(4780,1670),scene.Field.OFFERING_GROVE,Vector2(3420,1630)]:
+			if not scene.navigation.is_open(point, 30):
+				blocked_samples.append({"point":[point.x,point.y],"width":size.x,"reason":"authored water/collision; not a playable actor position"})
+				continue
 			scene.teleport(point)
 			for i in 30: await process_frame
 			scene.set_process(false)
@@ -60,7 +64,7 @@ func _run() -> void:
 			for i in meshes.size(): meshes[i].visible = visibility[i]
 			scene.set_process(true)
 	var file := FileAccess.open(output.path_join("visibility.json"),FileAccess.WRITE)
-	file.store_string(JSON.stringify({"cases":results,"failures":failures},"  "))
+	file.store_string(JSON.stringify({"cases":results,"failures":failures,"blocked_samples":blocked_samples},"  "))
 	file.close()
 	scene.queue_free()
 	for i in 3: await process_frame

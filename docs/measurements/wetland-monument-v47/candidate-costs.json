@@ -1,0 +1,104 @@
+{
+  "engine": "4.6-stable (official)",
+  "samples": [
+    {
+      "draw_calls": 82.0,
+      "name": "procession",
+      "objects": 203.0,
+      "primitives": 16546.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 80.0,
+      "name": "face-bank",
+      "objects": 202.0,
+      "primitives": 16464.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 87.0,
+      "name": "face-approach",
+      "objects": 209.0,
+      "primitives": 16758.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 80.0,
+      "name": "face-side-route",
+      "objects": 202.0,
+      "primitives": 16464.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 81.0,
+      "name": "face-east-bank",
+      "objects": 203.0,
+      "primitives": 16506.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 79.0,
+      "name": "court",
+      "objects": 201.0,
+      "primitives": 16422.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 80.0,
+      "name": "inner-court",
+      "objects": 200.0,
+      "primitives": 17159.0,
+      "width": 960
+    },
+    {
+      "draw_calls": 82.0,
+      "name": "procession",
+      "objects": 203.0,
+      "primitives": 16546.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 80.0,
+      "name": "face-bank",
+      "objects": 202.0,
+      "primitives": 16464.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 87.0,
+      "name": "face-approach",
+      "objects": 209.0,
+      "primitives": 16758.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 80.0,
+      "name": "face-side-route",
+      "objects": 202.0,
+      "primitives": 16464.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 81.0,
+      "name": "face-east-bank",
+      "objects": 203.0,
+      "primitives": 16506.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 79.0,
+      "name": "court",
+      "objects": 201.0,
+      "primitives": 16422.0,
+      "width": 1280
+    },
+    {
+      "draw_calls": 80.0,
+      "name": "inner-court",
+      "objects": 200.0,
+      "primitives": 17159.0,
+      "width": 1280
+    }
+  ],
+  "scope": "Static isolated same-camera render; no frame-time or human aesthetic claim"
+}
