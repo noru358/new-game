@@ -66,4 +66,31 @@ class Contract(unittest.TestCase):
         with self.assertRaises(RuntimeError):seed_wetland_access(self.root,COMMIT)
         with self.assertRaises(RuntimeError):shared_bytes(self.root,COMMIT)
 
+class ReleaseContentGuard(unittest.TestCase):
+    def test_development_roots_and_remapped_textures_are_rejected(self):
+        from windows_export_smoke import verify_release_contents
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            for name in ('docs', 'tests', 'scripts', 'patches', 'integration', 'evidence'):
+                directory = root / name
+                directory.mkdir()
+                imported = 'res://.godot/imported/' + name + '-fixture.ctex'
+                (directory / 'fixture.png.import').write_text('[remap]\npath="' + imported + '"\n')
+                for path in ('res://' + name + '/fixture.png.remap', imported):
+                    with self.subTest(root=name, path=path):
+                        with self.assertRaises(RuntimeError):
+                            verify_release_contents(root, 'Storing File: res://game/player.gdc\nStoring File: ' + path)
+            result = verify_release_contents(root, 'Storing File: res://game/player.gdc')
+            self.assertEqual(result['development_resources_packed'], 0)
+            self.assertEqual(result['development_imports_checked'], 6)
+
+    def test_all_presets_exclude_development_roots(self):
+        import re
+        text = (Path(__file__).resolve().parents[1] / 'export_presets.cfg').read_text()
+        exclusions = re.findall(r'^exclude_filter="([^"]*)"', text, re.M)
+        self.assertTrue(exclusions)
+        for value in exclusions:
+            for name in ('docs', 'tests', 'scripts', 'patches', 'integration', 'evidence'):
+                self.assertIn(name + '/*', value.split(','))
+
 if __name__=='__main__':unittest.main()

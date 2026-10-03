@@ -12,6 +12,8 @@
 - 부모가 합본에서 flow30/UI136/기존 behavior·meta 국소검사를4.6.3으로 재실행했다. 정확한 합본caf602c의 전체CI37114649664·실제렌더37114642485·Windows native37114649662가 통과했고 PR53으로6a83d7b에 병합했다. 합본 W_FLOW 장비 설명960/1280과 사원 포장·회랑 화면을 검토했다. 사원 전체34보행지점/88PNG/76.30active초/errors0을 확인했다. 최종v48 Mac 패키지와 해당 소스 전체CI는 진행 중이며 개별 Mac4.6 검사와 구별한다. 관련 근거: evidence/temple-place-v49, integration/HANDOFF.md, docs/measurements/ui-equipment-followthrough-v49.
 - 기존 폭포 옆 경사면의 부분 가림과 공격 예고가 몸체를 가로지르는 사례는 미해결로 남긴다. 이 합본을 첫 권역/출시/자연3맵 완주 완료로 부르지 않는다.
 
+- 최종 포장 검토에서 새 evidence/ 및 integration/ 경로가 기존 export 제외 목록 밖임을 확인했다. 모든 프리셋에서 제외하고 실제 export 로그의 개발 경로·import texture remap도 검사하도록 강화한다. 기존 제외 검사의 음성대조 실패를 보존했으며 새 순수 계약11검사와 Mac 저장 guard를 재실행한다. 이 포장 수정 전 빌드는 전달하지 않는다.
+
 ## 현재 사용자 제출 기준 — v47 / 2026-10-03 KST
 
 - 게임 파일 소스와 `codex/current-playtest`는 `bad54d2cb650702306ebbfc56b7df5efb8a94c6d`이다. 최종 전체CI37102242680, Mac 패키지37102242690 성공. 동일 게임 코드c8e1f3d의 실제 렌더37101064998/Windows native37101066598도 성공했다. main/기존 앱은 보존했다.

@@ -23,6 +23,7 @@ jobs:
       - name: Build and verify the native exported preview
         run: |
           python scripts/test_macos_preview_save_guard.py
+          python scripts/test_windows_preview_contract.py
           python scripts/macos_preview_build.py \
             --workspace "$GITHUB_WORKSPACE" \
             --scratch "$RUNNER_TEMP/mac-field-preview" \

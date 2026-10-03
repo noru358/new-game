@@ -59,25 +59,33 @@ def checked_run(arguments, cwd, environment, log_path, timeout):
 
 
 def verify_release_contents(workspace, export_log):
-    """Reject documentation and its remapped textures in the engine's pack log."""
+    """Reject development data and its remapped textures from the release pack."""
     packed = {path.strip() for path in
               re.findall(r"Storing File: (res://[^\r\n\x1b]+)", export_log)}
     if not packed:
         raise RuntimeError("Export log contains no packed-resource evidence")
-    documentation_imports = set()
-    for sidecar in (workspace / "docs").rglob("*.import"):
-        documentation_imports.update(re.findall(
-            r'"(res://\.godot/imported/[^"\r\n]+)"',
-            sidecar.read_text(encoding="utf-8"),
-        ))
+    roots = ('docs', 'tests', 'scripts', 'patches', 'integration', 'evidence')
+    imports = {}
+    for name in roots:
+        imports[name] = set()
+        for sidecar in (workspace / name).rglob('*.import'):
+            imports[name].update(re.findall(
+                r'"(res://\.godot/imported/[^"\r\n]+)"',
+                sidecar.read_text(encoding='utf-8'),
+            ))
+    development_imports = set().union(*imports.values())
+    prefixes = tuple('res://' + name + '/' for name in roots)
     leaked = sorted(path for path in packed
-                    if path.startswith("res://docs/") or path in documentation_imports)
+                    if path.startswith(prefixes) or path in development_imports)
     if leaked:
-        raise RuntimeError(f"Documentation leaked into the release pack: {leaked}")
+        raise RuntimeError(f"Development resources leaked into the release pack: {leaked}")
     return {"packed_resources": len(packed),
-            "documentation_imports_checked": len(documentation_imports),
+            "documentation_imports_checked": len(imports['docs']),
             "documentation_resources_packed": 0,
-            "evidence": "Godot export Storing File records and documentation import remaps"}
+            "development_imports_checked": len(development_imports),
+            "development_resources_packed": 0,
+            "excluded_development_roots": list(roots),
+            "evidence": "Godot export Storing File records and development import remaps"}
 
 
 def smoke(args, report):
