@@ -512,5 +512,5 @@
 - Preserve v42 app and saves. Human visual acceptance, longer play/performance, audio and remaining map-wide occlusion audit stay open.
 
 
-## First-region three-department candidate (2026-10-03)
-- Temple place sequence, W_FLOW first-effective-hit consumption, and owned/equipped gear follow-through integrated for review. Shared finish reset and accurate hub description mounted. Individual Mac evidence retained; integrated CI/render and package pending. Delivered v47 remains unchanged.
+## v48 submission preparation (2026-10-03)
+- Temple place sequence, W_FLOW first-effective-hit consumption, and owned/equipped gear follow-through integrated for review. Shared finish reset and accurate hub description mounted. Individual Mac evidence retained; exact integrated caf602c aggregate/render/Windows checks passed. Final v48 Mac package pending; delivered v47 remains unchanged.
