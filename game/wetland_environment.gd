@@ -12,16 +12,10 @@ static func build(arena: Node3D) -> void:
 		stone(arena, p, Vector3(0.65, 0.065, 0.75), Color("b9b28e"))
 	face(arena)
 	arena.add_child(preload("res://game/wetland_root_environment.gd").build(arena))
-	# Silhouettes stay in blocked water along the far bank, not over the route.
-	for p in arena._far_bank_groves():
-		stone(arena, p, Vector3(0.55, 2.4, 0.7), Color("394f44"))
-		stone(arena, p + Vector2(-35, 25), Vector3(1.45, 0.8, 1.25), Color("355b4a"), 340)
-	# Far-bank canopy clusters grow into blocked water only; the walking bank stays clear.
+	var groves: Array = arena._far_bank_groves().duplicate()
 	for i in 24:
-		var p := Vector2(820 + i * 79, 220 + sin(i * 0.6) * 90)
-		stone(arena, p, Vector3(0.3, 1.7 + 0.15 * (i % 3), 0.4), Color("344e40"))
-		for offset in [Vector2(-45, 0), Vector2(45, 20), Vector2(0, -50)]:
-			stone(arena, p + offset, Vector3(0.95, 0.42, 0.85), Color("3d6450"), 295 + (i % 4) * 14)
+		groves.append(Vector2(820+i*79,230+sin(i*0.6)*90))
+	arena.add_child(preload("res://game/wetland_canopy_environment.gd").build(arena,groves,"FarBankCanopyKit"))
 	# Reed clusters mark only existing blocked water boundaries.
 	for i in 24:
 		var p := Vector2(2470 + i * 53, 1810 + 15 * sin(i))
@@ -53,6 +47,10 @@ static func face(arena: Node3D) -> void:
 		stone(arena, p + Vector2(x, 80), Vector3(0.37, 0.09, 0.10), Color("a3aa8a"), 213)
 	stone(arena, p + Vector2(0, 90), Vector3(0.17, 0.38, 0.23), Color("a0a788"), 128)
 	stone(arena, p + Vector2(0, 82), Vector3(0.38, 0.065, 0.09), Color("485e4d"), 101)
+	# Broad layered headdress and moss cap tie the face to the temple architecture.
+	stone(arena,p,Vector3(1.35,0.13,1.08),Color("83967b"),310)
+	stone(arena,p,Vector3(1.12,0.16,0.9),Color("a0ab8a"),335)
+	stone(arena,p+Vector2(-38,17),Vector3(0.60,0.09,0.5),Color("5d7858"),362)
 
 static func dry_paths(arena: Node3D) -> void:
 	var st := SurfaceTool.new()
@@ -97,6 +95,8 @@ static func build_field(arena: Node3D) -> void:
 	for x in [4740, 4940, 5140]:
 		stone(arena, Vector2(x, 380), Vector3(0.8, 2.0, 0.8), Color("677e70"))
 		stone(arena, Vector2(x, 380), Vector3(1.15, 0.18, 1.0), Color("899982"), 360)
-	for point in [Vector2(4350, 300), Vector2(5500, 300)]:
-		stone(arena, point, Vector3(0.44, 2.4, 0.50), Color("3d5848"))
-		stone(arena, point, Vector3(1.45, 0.5, 1.35), Color("3d644f"), 370)
+	var beam = stone(arena,Vector2(4840,380),Vector3(1.20,0.16,0.77),Color("8a987e"),390)
+	beam.rotation.y=0
+	var broken_beam = stone(arena,Vector2(5060,380),Vector3(0.72,0.18,0.77),Color("7c9077"),391)
+	broken_beam.rotation.y=0
+	arena.add_child(preload("res://game/wetland_canopy_environment.gd").build(arena,[Vector2(4350,300),Vector2(5440,300)],"InnerCanopyKit"))
