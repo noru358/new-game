@@ -1,5 +1,11 @@
 # 다음 제작 지시 — 첫 지역을 완성품 수준으로 묶기
 
+## 세 lane 히든 후보 v51 — 최종 확인 단계
+
+flow aa3ff60(9커밋)/temple d2abbff(4)/jungle e06a2fa(1)를 production1aac501 기준 독립합본으로 장착했다. 두 맵 helper는 flow root/latch/표기 소유를 따르고 정글 물중복을 제거했다. 두맵13영향회귀 및 정글최종은행공면0을 확인했다. 기존CI의 legacy region_id caption오류는1줄guard로 수정/관련7검사를 재검증했다. 로컬전체114순회의5고정FPS실패는 기본physics조건5PASS로 분리하며, 중첩engine2/depth/nativeUI는 최종LinuxCI에서 확인한다.
+
+남은 순서: 본선사원아트GUI종료 후 부모슬롯 배정 → covered-window 무기한signal을 피한 bounded fixture로960/1280 두히든의 정상출입/표기/후반아트/합법reward-save/return24화면 → 정확finalHEAD fullCI. 이전 lane PNG를 최종source 전체성공으로 전용하지 않는다. 미감·자연3맵완주·성능·기존가림은 여전히미검증이며 공유앱배포/merge/release는 부모판단이다.
+
 ## 히든 합본 v51 체크포인트 — 부모 통합 판단 대기
 
 `codex/hidden-regions-combined-v51`은 production1aac501 기준의 flow aa3ff60 + temple d2abbff 두 lane 후보다. 실제 roots/발견표시/문턱0.5를 장착하고 old 장식 루프만 교체했으며, 정원·정글 기존 보상/저장/240초/좌표 계약은 유지한다. 정확한 검사 source와 변경 파일은 `integration/HIDDEN_COMBINED_V51.md` 및 반환 evidence를 따른다.

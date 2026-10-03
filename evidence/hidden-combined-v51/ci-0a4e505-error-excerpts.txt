@@ -1,0 +1,48 @@
+verify_hybrid_corner_ai.log
+SCRIPT ERROR: Invalid access to property or key 'region_id' on a base object of type 'Node3D (hybrid_height.gd)'.
+          at: HybridMinimap._draw (res://game/hybrid_minimap.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+Hybrid corner AI verification passed: three cliff contacts route through the stepping stones
+
+verify_hybrid_growth.log
+SCRIPT ERROR: Invalid access to property or key 'region_id' on a base object of type 'Node3D (hybrid_height.gd)'.
+          at: HybridMinimap._draw (res://game/hybrid_minimap.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+Hybrid growth verification passed: automatic XP, cards, combo, facing wisps and airborne seal
+
+verify_hybrid_combat_feedback.log
+SCRIPT ERROR: Invalid access to property or key 'region_id' on a base object of type 'Node3D (hybrid_height.gd)'.
+          at: HybridMinimap._draw (res://game/hybrid_minimap.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+Hybrid combat feedback verification passed: planar warnings, regular blocked ring, slope pull, wall-safe gather
+
+verify_hybrid_feedback.log
+SCRIPT ERROR: Invalid access to property or key 'region_id' on a base object of type 'Node3D (hybrid_height.gd)'.
+          at: HybridMinimap._draw (res://game/hybrid_minimap.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+Hybrid feedback verification passed: camera, air slash reach, mobility, wall clearance and both cliff detours
+
+verify_hybrid_height.log
+SCRIPT ERROR: Invalid access to property or key 'region_id' on a base object of type 'Node3D (hybrid_height.gd)'.
+          at: HybridMinimap._draw (res://game/hybrid_minimap.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+Hybrid height verification passed: four ramps, stepping stones, terrace/walking/dash barriers, melee, wisp targeting/projectiles, pursuit, visual height and pause
+
+verify_hybrid_roles.log
+SCRIPT ERROR: Invalid access to property or key 'region_id' on a base object of type 'Node3D (hybrid_height.gd)'.
+          at: HybridMinimap._draw (res://game/hybrid_minimap.gd:91)
+          GDScript backtrace (most recent call first):
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+              [0] _draw (res://game/hybrid_minimap.gd:91)
+Hybrid roles verification passed: four-hit growth, five roles, depth-tested warnings, bolt hit, blocked zone and support
+

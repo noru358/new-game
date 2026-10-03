@@ -1,0 +1,5 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Temple circuit — isolated four-minute run
+Temple garden courtyard: 128547 checks; 0 failures; [{"floor_pieces":70,"legal_actor_rays":2084,"mesh_counts":{"leaf_groups":37,"masonry_pieces":205,"mesh_instances":3,"paving_pieces":117,"root_strands":31,"vertices":59646},"obstructed_rays":0,"scene":"hybrid_region"},{"floor_pieces":70,"legal_actor_rays":2084,"mesh_counts":{"leaf_groups":37,"masonry_pieces":205,"mesh_instances":3,"paving_pieces":117,"root_strands":31,"vertices":59646},"obstructed_rays":0,"scene":"temple_circuit_run"}]

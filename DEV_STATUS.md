@@ -3,6 +3,15 @@
 > 작업 상태판. 단일 현행 설계 정본은 `LOOP_CONQUEST_MASTER.md` v4.0이다. 설계 합의와 실제 구현·검증을 구분한다.
 
 
+## v51 세 lane 장착 후보 — GUI·최종CI 대기 / 2026-10-03
+
+- 부모가 지정한 정글 최종 `e06a2fa792945d7662bf29fe8546b3c519a089c6`의 base 이후1커밋을 추가 회수했다. flow9/temple4/jungle1 전체 선형범위 통합. 두 helper의 build/build_entry를 flow roots에 붙였고 정글 section의 기존 물/stone/bush/moss 루프는 제거했다. helper 물은 hidden2+main4 정확6개, 좌표/크기/alpha재질 보존. 기존 altar/ember/보상/수호6/발견ID/latch는 유지한다.
+- 정확 소스 `a9642b0` import+13영향검사PASS. 정글 실제 장착7009검사/1268ray/기존20/새가림0, 실제bank공면 음성1584→최종0. 습지 상속null/가짜marker 검사와 정상input 왕복도PASS. 같은 source의 로컬 headless1 전체순회114개 중109PASS,5고정FPS 실패. 제품/기대값 변경 없이 같은 game 소스의 기본physics 재검증5개 모두PASS(`68ac49b`). 중첩엔진2개는 Linux최종CI로 남긴다. 이를 단일정책 전체PASS로 부르지 않는다.
+- 정확 이전원격 `0a4e505` CI37126591308은115중109PASS/6FAIL. 통합 담당의 caption direct region_id가 옛 hybrid_height 씬에 없는 속성을 읽는 공통 원인이다. minimap1줄 optional get guard 수정 `78a2cd2`, 실패6+장착 로컬7PASS. 이후 단계depth/UI/price는 당시skip이며 통과로 쓰지 않는다. 최종HEAD CI는 아직 필요하다.
+- 실제 scene폭포 duplicate/moved/material 변경3음성대조가 모두 해당검사를 실패시켰다. 사용자 저장/제품소스는 변경하지 않았다. 원본3layout·project/profile/growth/player는 base와같다. jungle_grotto_layout의 승인된좁은굴/물받이/은행terrain 변화는 별도이며 포탈4/수호6/altar값을 검사한다.
+- parent/art probe의 covered-window frame_post_draw 대기에 대응해 capture fixture를 force_draw(false)+최대4image read/실제960·1280크기/정확단계 progress로 바꿨다(`68ac49b`). 제품focus나 사용자OS창 조작은 없다. 아직 통합GUI 슬롯 미배정/합본PNG0; 기존 정글최종26PNG나 이전왕복84PNG를 최종합본완료로 재사용하지 않는다.
+- 기존 사원 ALTAR 중심Body~34%, 정글water/FX부분가림, 사람미감/재미·자연완주·장시간성능은 남는다. 앱/세이브/MASTER/main/production/canonical은 보존. 다음은 GUI 슬롯의 bounded24화면·두맵보상접근과 정확HEAD LinuxfullCI다.
+
 ## v51 히든 합본 후보 체크포인트 — 미배포 / 2026-10-03
 
 - 독립 `codex/hidden-regions-combined-v51`, 기준 production `1aac501`; canonical/사용자 앱은 v48 `686228f` 그대로다. 원격 `noru358/new-game`/ADMIN·관련 PR·ancestry를 확인했다. main을 기준으로 쓰거나 이동하지 않았다.

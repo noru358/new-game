@@ -1,0 +1,15 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Hybrid scene ready: Loop Conquest — 청록 폐사원
+Sanctuary projected coverage (1280, 720) at (3900.0, 1120.0): [P: (1161.986, 505.5851), S: (116.9611, 212.844)]
+Sanctuary projected coverage (1280, 720) at (4320.0, 1150.0): [P: (910.8218, 283.4077), S: (367.0168, 429.871)]
+Sanctuary projected coverage (1280, 720) at (4750.0, 1370.0): [P: (792.0279, 72.50011), S: (476.194, 591.0272)]
+Sanctuary projected coverage (960, 540) at (3900.0, 1120.0): [P: (871.4897, 379.1888), S: (87.72079, 159.633)]
+Sanctuary projected coverage (960, 540) at (4320.0, 1150.0): [P: (683.1163, 212.5558), S: (275.2626, 322.4032)]
+Sanctuary projected coverage (960, 540) at (4750.0, 1370.0): [P: (594.0209, 54.37508), S: (357.1455, 443.2704)]
+Temple environment resource counts: { "mesh_instances": 4, "materials": 4, "mesh_surfaces": 4, "vertices": 31536, "stone_blocks": 57, "paving_slabs": 120, "leaf_groups": 6, "root_strands": 10, "moss_patches": 10 }
+Sanctuary environment resource counts: { "mesh_instances": 5, "materials": 5, "vertices": 19713 }
+Hybrid scene ready: Loop Conquest — 정글 절벽 관문
+Temple environment verification: 0 failures

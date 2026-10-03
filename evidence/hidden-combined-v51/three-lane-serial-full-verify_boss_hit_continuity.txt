@@ -1,0 +1,5 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+BOSS_HIT_CONTINUITY jungle=false direct=94 companion=48 started=12 fired=12 interrupts=0
+BOSS_HIT_CONTINUITY jungle=true direct=94 companion=48 started=8 fired=8 interrupts=0
+Boss hit continuity: 0 failures

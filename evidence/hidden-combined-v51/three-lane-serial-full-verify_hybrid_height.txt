@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — Hybrid Court v09
+Hybrid height verification passed: four ramps, stepping stones, terrace/walking/dash barriers, melee, wisp targeting/projectiles, pursuit, visual height and pause

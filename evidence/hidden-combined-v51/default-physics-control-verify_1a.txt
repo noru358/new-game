@@ -1,0 +1,3 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+1A verification passed: movement, dash, 0.70s hit protection, 2/3/4-hit combo, separated gather, separated chase, wide fourth hit, pause, focus loss

@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Loop Conquest — 정글 절벽 관문
+Discovery UI and optional exploration: 0 failures

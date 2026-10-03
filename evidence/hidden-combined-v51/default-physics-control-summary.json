@@ -1,0 +1,78 @@
+{
+  "source_sha": "68ac49b03bb19b30059bb797ab61758505ed2b1a",
+  "engine": "/Users/lty/Documents/Codex/2026-10-03/task-10/runtime/Godot.app/Contents/MacOS/Godot",
+  "scripts": [
+    "tests/verify_1a.gd",
+    "tests/verify_1d_play_feedback.gd",
+    "tests/verify_1e.gd",
+    "tests/verify_gather_safety.gd",
+    "tests/verify_hybrid_audio_listener.gd"
+  ],
+  "results": [
+    {
+      "script": "import",
+      "exit_code": 0,
+      "seconds": 11.05,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/default-physics-control/import.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-ace8f8c0-b70a-4a0d-a5eb-f5177f9c170d",
+      "passed": true
+    },
+    {
+      "script": "verify_1a",
+      "exit_code": 0,
+      "seconds": 9.41,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/default-physics-control/verify_1a.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-857bdca4-0282-4f93-bcdc-25cac0e90a49",
+      "passed": true,
+      "portable_log": "default-physics-control-verify_1a.txt"
+    },
+    {
+      "script": "verify_1d_play_feedback",
+      "exit_code": 0,
+      "seconds": 5.67,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/default-physics-control/verify_1d_play_feedback.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-d97e0214-cba0-4a33-98eb-e86d62910799",
+      "passed": true,
+      "portable_log": "default-physics-control-verify_1d_play_feedback.txt"
+    },
+    {
+      "script": "verify_1e",
+      "exit_code": 0,
+      "seconds": 15.48,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/default-physics-control/verify_1e.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-569ae3eb-6ed2-4d58-b2de-52b1277036f2",
+      "passed": true,
+      "portable_log": "default-physics-control-verify_1e.txt"
+    },
+    {
+      "script": "verify_gather_safety",
+      "exit_code": 0,
+      "seconds": 0.95,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/default-physics-control/verify_gather_safety.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-2a5fc21e-f941-4794-9f75-3eaf5221ab97",
+      "passed": true,
+      "portable_log": "default-physics-control-verify_gather_safety.txt"
+    },
+    {
+      "script": "verify_hybrid_audio_listener",
+      "exit_code": 0,
+      "seconds": 3.37,
+      "errors": [],
+      "log": "/Users/lty/Documents/Codex/2026-10-03/task-10/qa/default-physics-control/verify_hybrid_audio_listener.log",
+      "userdata": "CodexCombined/LoopConquestHiddenFlow-TempleGardenV50-TemplePlaceV49-JungleHiddenV49-WaterfallVisibilityV48-4d82a1ca-0301-4ff0-955c-720dc0ae9ff7",
+      "passed": true,
+      "portable_log": "default-physics-control-verify_hybrid_audio_listener.txt"
+    }
+  ],
+  "engine_concurrency": 1,
+  "fixed_fps": null,
+  "dedicated_excluded": "tests/verify_actor_terrain_depth.gd",
+  "nested_engine_fixtures_deferred_to_CI": [],
+  "scope": "serialized headless engine checks; isolated UUID userdata per fixture; no user save access",
+  "passed": true
+}

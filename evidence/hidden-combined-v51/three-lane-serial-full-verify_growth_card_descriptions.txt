@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Layout checks are geometric only; rendered Korean glyphs, clipping and human readability require separate visual inspection.
+Growth card descriptions: 149 checks, 0 failures

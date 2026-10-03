@@ -1,0 +1,9 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+FAIL: lamp shot travels and deals 12 damage
+FAIL: warned straight shot can be dodged
+FAIL: lamp routes around ruin before aiming
+FAIL: moving off the marked area avoids activation
+FAIL: active area deals nine damage when entered
+FAIL: leaving aura removes speed and cooldown boosts
+1E verification failed

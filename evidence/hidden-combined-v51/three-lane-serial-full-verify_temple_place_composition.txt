@@ -1,0 +1,4 @@
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+
+Hybrid scene ready: Temple circuit — isolated four-minute run
+Temple place composition: 13443 checks, 0 failures; rays=5148; old_wall_occlusion_rays=23; new_obstruction_rays=0. Not aesthetic/fun acceptance.
