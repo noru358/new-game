@@ -35,36 +35,11 @@ static func stone(arena: Node3D, p: Vector2, size: Vector3, color: Color, lift: 
 	return node
 
 static func face(arena: Node3D) -> void:
-	# A singular far-bank monument, contrasted with unchanged human-scale ruins.
-	# Keep the opaque geometry inside impassable water; no camera zoom or cutaway.
-	var first_child := arena.get_child_count()
-	_face_components(arena)
-	var pieces: Array[Node] = []
-	for i in range(first_child, arena.get_child_count()): pieces.append(arena.get_child(i))
-	var monument := Node3D.new()
-	monument.name = "MonumentalWetlandFace"
+	var monument := preload("res://game/wetland_face_sculpture.gd").build(arena)
 	arena.add_child(monument)
-	monument.position = arena.terrain.world_point(Wetland.FACE)
-	for piece in pieces: piece.reparent(monument, true)
-	monument.scale = Vector3(2.4, 2.4, 2.4)
 	monument.position = arena.terrain.world_point(Vector2(2440, 950))
-	monument.set_meta("visual_only", true)
+	monument.scale = Vector3(2.4, 2.4, 2.4)
 	monument.set_meta("scale_trial", Vector3(2.4, 2.4, 2.4))
-
-static func _face_components(arena: Node3D) -> void:
-	var p: Vector2 = Wetland.FACE
-	stone(arena, p, Vector3(1.08, 1.6, 0.9), Color("8c9981"))
-	stone(arena, p + Vector2(0, 5), Vector3(1.24, 0.22, 1.0), Color("70896e"), 288)
-	# Eyes, brow and nose face the dry southern bank; no glowing gimmicks.
-	for x in [-46, 46]:
-		stone(arena, p + Vector2(x, 79), Vector3(0.29, 0.09, 0.07), Color("354b42"), 189)
-		stone(arena, p + Vector2(x, 80), Vector3(0.37, 0.09, 0.10), Color("a3aa8a"), 213)
-	stone(arena, p + Vector2(0, 90), Vector3(0.17, 0.38, 0.23), Color("a0a788"), 128)
-	stone(arena, p + Vector2(0, 82), Vector3(0.38, 0.065, 0.09), Color("485e4d"), 101)
-	# Broad layered headdress and moss cap tie the face to the temple architecture.
-	stone(arena,p,Vector3(1.35,0.13,1.08),Color("83967b"),310)
-	stone(arena,p,Vector3(1.12,0.16,0.9),Color("a0ab8a"),335)
-	stone(arena,p+Vector2(-38,17),Vector3(0.60,0.09,0.5),Color("5d7858"),362)
 
 static func dry_paths(arena: Node3D) -> void:
 	var st := SurfaceTool.new()

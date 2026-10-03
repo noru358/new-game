@@ -95,8 +95,8 @@ jobs:
         if: always()
         run: |
           mkdir -p "$RUNNER_TEMP/wetland-baseline" presentation-baseline presentation-candidate
-          git fetch --no-tags origin d1eb0f18c6bf56c62a87146f6898414abbb824e6
-          git archive d1eb0f18c6bf56c62a87146f6898414abbb824e6 | tar -x -C "$RUNNER_TEMP/wetland-baseline"
+          git fetch --no-tags origin f37e202e642d0a71ba1926dd58f7499a7af6f27f
+          git archive f37e202e642d0a71ba1926dd58f7499a7af6f27f | tar -x -C "$RUNNER_TEMP/wetland-baseline"
           cp tests/capture_wetland_presentation.gd "$RUNNER_TEMP/wetland-baseline/tests/"
           sed -i 's#Godot/app_userdata/Loop Conquest - 1G Complete Run v03#WetlandV44-PresentationBaseline#' "$RUNNER_TEMP/wetland-baseline/project.godot"
           godot --headless --editor --path "$RUNNER_TEMP/wetland-baseline" --quit
