@@ -24,7 +24,7 @@ func _init() -> void:
 	terrain = PassTerrain.new() if OS.get_cmdline_user_args().has("--jungle-route-baseline") else RouteTerrain.new()
 	start_point = Vector2(430, 1210)
 	enemy_points = [
-		Vector2(500, 1120), Vector2(970, 820), Vector2(1110, 1750),
+		Vector2(500, 1120), Vector2(970, 820), Vector2(1160, 1750),
 		Vector2(1860, 1120), Vector2(2530, 830), Vector2(3300, 1210),
 		Vector2(4210, 1100), Vector2(5080, 1150)
 	]

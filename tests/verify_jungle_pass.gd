@@ -21,6 +21,8 @@ func _run() -> void:
 	root.add_child(scene)
 	await physics_frame
 	await physics_frame
+	for point in scene.enemy_points:
+		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE + 6.0) and scene.navigation.find_path(scene.start_point, point).size() >= 2, "authored practice spawn is clear and connected: " + str(point))
 	_check(scene.display_bounds() == Rect2(0, 0, 5600, 2400) and scene.region_id == RunProfile.JUNGLE_REGION, "second region uses its own map and progress ID")
 	for point in [Vector2(1410, 1180), Vector2(1640, 265), Vector2(2180, 420), Vector2(2640, 1120), Vector2(2180, 2120), Vector2(3010, 1850), Vector2(3410, 1790), Vector2(4520, 1160)]:
 		_check(scene.navigation.is_open(point, scene.ACTOR_CLEARANCE) and scene.navigation.find_path(scene.player.position, point).size() >= 2, "ridge, detours and gate remain reachable from the entry")

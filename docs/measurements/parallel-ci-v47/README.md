@@ -8,4 +8,4 @@ Failure contract:240-second timeout, nonzero return, SCRIPT ERROR/Parse Error/li
 
 Six fake-engine tests exercise source/caller sentinel preservation, private dirs and inherited child paths, authored import-settings byte preservation, missing/duplicate coverage, nonzero and zero-exit error output, timeout descendants, import errors, symlinks and unsafe output. Parent reran them successfully. These are runner tests, not actual Godot performance evidence.
 
-Exact integrated CI, coverage equality and wall-time comparison are pending. No speedup claim until that result is inspected. Performance observations remain one runner sample, not a universal guarantee.
+Exact integrated CI37098234365 succeeded. Artifact11264958302 matches all103 generic fixture names from serial baseline, split52/51, all passed; dedicated lifecycle/render/price checks passed. Generic step446→265s and whole job525→363s (one matched-game-code runner sample:40.6%/30.9% less wall time). Peak RSS was not measured; concurrency remains2 and no universal speed guarantee is made. PR49 merged production495dc28. Raw candidate summary and normalized comparison are included.

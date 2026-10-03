@@ -40,6 +40,9 @@ func _ready() -> void:
 	var environment := preload("res://game/jungle_south_circuit_environment.gd").build(self)
 	add_child(environment)
 	main_decor.append(environment)
+	var emergent_tree := preload("res://game/jungle_emergent_tree.gd").build()
+	add_child(emergent_tree)
+	main_decor.append(emergent_tree)
 
 func _top(st: SurfaceTool, area: Rect2, elevation: Callable, color: Color) -> void:
 	# Quiet continuous material on the field candidate, without prototype checker cells.

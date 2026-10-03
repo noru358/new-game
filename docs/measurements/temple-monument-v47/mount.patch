@@ -1,0 +1,34 @@
+diff --git a/game/temple_circuit_environment.gd b/game/temple_circuit_environment.gd
+index 156e336..06c5bb1 100644
+--- a/game/temple_circuit_environment.gd
++++ b/game/temple_circuit_environment.gd
+@@ -2,7 +2,8 @@ extends RefCounted
+ ## Reuse the existing sanctuary's authored stonework behind the new court.
+ const Sanctuary = preload("res://game/temple_sanctuary_environment.gd")
+ const OFFSET := Vector3(-25.2, 0.0, -12.1)
+-const FOOTPRINT := Rect2(2572, 0, 456, 240)
++const MonumentScale = preload("res://game/temple_monument_scale.gd")
++const FOOTPRINT := MonumentScale.FOOTPRINT
+ const FAR_BANK_GROVES := [Vector2(330, 500), Vector2(420, 1150), Vector2(300, 1900), Vector2(1000, 300), Vector2(1530, 300)]
+ static func build(arena: Node3D) -> Node3D:
+ 	var root := Node3D.new()
+@@ -12,6 +13,7 @@ static func build(arena: Node3D) -> Node3D:
+ 	builder._shrine()
+ 	builder._finish_batch(root, builder._stone, "SteppedSanctuary", 0, true)
+ 	builder._finish_batch(root, builder._growth, "AttachedMoss", 2, false)
++	MonumentScale.apply(root)
+ 	var court := _build_court(arena)
+ 	court.position = -OFFSET
+ 	root.add_child(court)
+diff --git a/game/temple_circuit_run_terrain.gd b/game/temple_circuit_run_terrain.gd
+index 9ea7b0d..109475a 100644
+--- a/game/temple_circuit_run_terrain.gd
++++ b/game/temple_circuit_run_terrain.gd
+@@ -24,6 +24,7 @@ func _init() -> void:
+ 		if record.get("discovery_id", "") == "TEMPLE_GARDEN": wall_areas.append(record.duplicate(true))
+ 	water_areas.append(Layout.POND)
+ 	wall_areas.append({"area": preload("res://game/temple_circuit_environment.gd").FOOTPRINT, "height": 554.0, "visual": false})
++	wall_areas.append({"area": preload("res://game/temple_monument_scale.gd").NORTH_FOOTPRINT, "height": 655.8, "visual": false})
+ 	wall_areas.append({"area": Rect2(4600, 0, 990, 3500), "height": 200.0, "visual": false})
+ 
+ func height_at(point: Vector2) -> float:
